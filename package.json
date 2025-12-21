@@ -1,0 +1,16 @@
+{
+  "name": "quiz-app-platform",
+  "version": "1.0.0",
+  "description": "Quiz apps platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["quiz", "education", "learning"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

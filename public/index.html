@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Quiz App Platform</h1>
+            <p class="subtitle">Test your knowledge with our interactive quizzes!</p>
+        </header>
+
+        <!-- Quiz List View -->
+        <div id="quiz-list-view" class="view active">
+            <h2>Available Quizzes</h2>
+            <div id="quiz-list" class="quiz-grid"></div>
+        </div>
+
+        <!-- Quiz Taking View -->
+        <div id="quiz-view" class="view">
+            <button id="back-to-list" class="btn btn-secondary">← Back to Quizzes</button>
+            <div id="quiz-content">
+                <h2 id="quiz-title"></h2>
+                <p id="quiz-description"></p>
+                <div id="questions-container"></div>
+                <button id="submit-quiz" class="btn btn-primary">Submit Quiz</button>
+            </div>
+        </div>
+
+        <!-- Results View -->
+        <div id="results-view" class="view">
+            <div id="results-content">
+                <h2>Quiz Results</h2>
+                <div id="score-display"></div>
+                <div id="detailed-results"></div>
+                <button id="back-to-list-results" class="btn btn-primary">Back to Quizzes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
