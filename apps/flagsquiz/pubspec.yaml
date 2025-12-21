@@ -34,6 +34,8 @@ dependencies:
     path: ../../packages/quiz_engine
   quiz_engine_core:
     path: ../../packages/quiz_engine_core
+  shared_services:
+    path: ../../packages/shared_services
 
 scripts:
   postbuild: dart tool/build.dart
