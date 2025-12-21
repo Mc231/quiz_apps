@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/volodymyrshyrochuk/pet/quiz_engine_core/lib/**)",
+      "Read(//Users/volodymyrshyrochuk/pet/quiz_engine_core/**)",
+      "Read(//Users/volodymyrshyrochuk/pet/quiz_engine/lib/src/**)",
+      "Read(//Users/volodymyrshyrochuk/pet/quiz_engine/lib/src/quiz/**)",
+      "Read(//Users/volodymyrshyrochuk/pet/quiz_engine/test/**)",
+      "Read(//Users/volodymyrshyrochuk/pet/quiz_engine/lib/**)",
+      "Read(//Users/volodymyrshyrochuk/pet/quiz_engine/**)",
+      "Bash(flutter test:*)",
+      "Read(//private/tmp/**)",
+      "Bash(cat:*)",
+      "Bash(if [ -f coverage/lcov.info ])",
+      "Bash(then lcov --summary coverage/lcov.info)",
+      "Bash(else echo \"Coverage file not found\")",
+      "Bash(fi)",
+      "Bash(if [ -f .gitignore ])",
+      "Bash(then cat .gitignore)",
+      "Bash(else echo \"No .gitignore file\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

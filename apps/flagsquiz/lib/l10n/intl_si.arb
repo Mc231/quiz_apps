@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "කලාපය තෝරන්න",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "සියල්ලම",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "යුරෝපය",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "ආසියාව",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "අප්රිකාව",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "උතුරු ඇමරිකාව",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "දකුණු ඇමරිකාව",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "ඕෂනියා",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "ඔබේ ලකුණු",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "ඇන්ඩෝරා",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "එක්සත් අරාබි එමීර්",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "ඇන්ටිගුවා සහ බාබුඩා",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "ඇන්ගුයිලා",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "ඇෆ්ගනිස්ථානය",
+  "@af": {
+    "description": "text"
+  },
+  "al": "ඇල්බේනියාව",
+  "@al": {
+    "description": "text"
+  },
+  "am": "ආර්මේනියාව",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "ඇන්ගෝලාව",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "ඇන්ටාක්ටි",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "ආජන්ටිනාව",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "ඇමරිකානු සැමෝවා",
+  "@as": {
+    "description": "text"
+  },
+  "at": "ඔස්ට්රියාව",
+  "@at": {
+    "description": "text"
+  },
+  "au": "ඕස්ට්රේලියාව",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "අරුබා",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "ඕලන්ඩ්",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "අසර්බයනය",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "බොස්නියා සහ හර්සෙගො",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "බාබඩෝස්",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "බංගලාදේශය",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "බෙල්ජියම",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "බුර්කිනා ෆාසෝ",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "බල්ගේරියාව",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "බහරේනය",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "බුරුන්ඩි",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "බෙනින්",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "ශාන්ත බාර්තේලමි",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "බර්මියුඩා",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "බෲනායි",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "බොලිවියාව",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "බොනයාර්",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "බ්රසීලය",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "බහමාස්",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "භූතානය",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "බෝවෙට් දූපත",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "බොට්ස්වානා",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "බෙලාරුස්",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "බෙලීස්",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "කැනඩාව",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "කොකෝස් [කීලිං] දූපත්",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "කොංගෝ ප්රජාතන්ත්රවාදී ජනරජය",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "මධ්යම අප්රිකානු ජනරජය",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "කොංගෝ ජනරජය",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "ස්විට්සර්ලන්ත",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "අයිවරි කෝස්ට්",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "කුක් දූපත්",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "චිලී",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "කැමරූන්",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "චීනය",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "කොලොම්බියාව",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "කොස්ටාරිකාව",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "කියුබාව",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "කේප් වර්ඩ්",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "කුරාකාඕ",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "නත්තල් දූපත",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "ඩෙන්මාර්කය",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "ඩොමිනිකා",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "ඩොමිනිකන් ජනරජය",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "ඇල්ජීරියාව",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "ඉක්වදෝරය",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "එස්තෝනියාව",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "ඊජිප්තුව",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "බටහිර සහරා",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "එරිත්රියාව",
+  "@er": {
+    "description": "text"
+  },
+  "es": "ස්පාඤඤය",
+  "@es": {
+    "description": "text"
+  },
+  "et": "ඉතියෝපියා",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "ෆින්ලන්තය",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "ෆීජි",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "ෆෝක්ලන්ත දූපත්",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "මයික්රොනීසියාව",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "ෆාරෝ දූපත්",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "ප්රංශය",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "ගැබන්",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "එක්සත් රාජධානිය",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "ග්රෙනාඩා",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "ජෝර්ජියාව",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "ප්රංශ ගයනා",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "ගුවර්න්සි",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "ඝානාව",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "ජිබ්රෝල්ටර්",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "ග්රීන්ලන්තය",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "ගැම්බියාව",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "ගිනියාවේ",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "ග්වාඩෙලූප්",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "සමතීය ගිනියාවේ",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "ග්රීසිය",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "දකුණු ජෝර්ජියාව සහ දකුණු සැන්ඩ්විච් දූපත්",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "ග්වාතමාලාව",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "ගුවාම්",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "ගිනියාව-බිසාවු",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "ගයනා",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "හොංකොං",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "හර්ඞ් දූපත සහ මැක්ඩොනල්ඩ්",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "හොන්ඩුරාස්",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "ක්රොඒෂියාව",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "චෙක් ජනරජය",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "ජිබුටි",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "සයිප්රසය",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "ජර්මනිය",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "හයිටි",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "හංගේරියාව",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "ඉන්දුනීසියාව",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "අයර්ලන්තය",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "ඊශ්රායලය",
+  "@il": {
+    "description": "text"
+  },
+  "im": "අයිල් ඔෆ් මෑන්",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "ඉන්දියාව",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "බ්රිතාන්ය ඉන්දියානු සාගර භූමිය",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "ඉරාකය",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "ඉරානය",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "අයිස්ලන්තය",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "ඉතාලිය",
+  "@it": {
+    "description": "text"
+  },
+  "je": "ජර්සි",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "ජැමෙයිකාව",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "ජෝර්දානය",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "ජපානය",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "කෙන්යාව",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "කිර්ගිස්ට්",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "කාම්බෝජය",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "කිරිබටි",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "කොමෝරෝස්",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "ශාන්ත කිට්ස් සහ නෙවිස්",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "උතුරු කොරියාව",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "දකුණු කොරියාව",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "කුවේට්",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "කේමන් දූපත්",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "කසකස්තානය",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "ලාඕසය",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "ලෙබනනය",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "ශාන්ත ලුසියා",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "ලිච්ටෙන්ස්ට",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "ශ්රී ලංකාව",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "ලයිබීරියාවේ",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "ලෙසෝතෝ",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "ලිතුවේනියාව",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "ලක්සම්බර්ග්",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "ලැට්වියාව",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "ලිබියාව",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "මොරොක්කෝව",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "මොනාකෝ",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "මෝල්ඩෝවා",
+  "@md": {
+    "description": "text"
+  },
+  "me": "මොන්ටිනිග්ර",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "ශාන්ත මාටින්",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "මැඩගස්කර",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "මාෂල් දූපත්",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "උතුරු මැසිඩෝනියාව",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "මාලි",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "මියන්මාරය [බුරුමය]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "මොන්ගෝලියාව",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "මැකාවෝ",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "උතුරු මැරියනා දූපත්",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "මාටිනික්",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "මොරිටේනියා",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "මොන්ට්සර්ට්",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "මෝල්ටා",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "මොරිෂස්",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "මාලදිවයින",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "මලාවි",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "මෙක්සිකෝව",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "මැලේසියාව",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "මොසැම්බික්",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "නැමීබියාව",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "නව කැලිඩෝනියා",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "නයිජර්",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "නෝර්ෆෝක් දූපත",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "නයිජීරියාව",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "නිකරගුවාවේ",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "නෙදර්ලන්තය",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "නෝර්වේ",
+  "@no": {
+    "description": "text"
+  },
+  "np": "නේපාලය",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "නායුරු",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "නියු",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "නවසීලන්තය",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "ඕමානය",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "පැනමාව",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "පේරු",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "ප්රංශ පොලිනීසියාව",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "පැපුවා නිව්ගිනියාව",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "පිලිපීනය",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "පාකිස්තානය",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "පෝලන්තය",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "ශාන්ත පියරේ සහ මික්ලෝන්",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "පිට්කෙර්න් දූපත්",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "පුවර්ටෝ රිකෝ",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "පලස්තීනය",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "පෘතුගාලය",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "පැලව්",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "පැරගුවේ",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "කටාර්",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "රීයුනියන්",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "රුමේනියාව",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "සර්බියාව",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "රුසියාව",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "රුවන්ඩාව",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "සෞදි අරාබිය",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "සොලමන් දූපත්",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "සීෂෙල්ස්",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "සුඩානය",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "ස්වීඩනය",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "සිංගප්පූරුව",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "ශාන්ත හෙලේනා",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "ස්ලොවේනියා",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "ස්වැල්බාර්ඩ් සහ ජෑන් මේන්",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "ස්ලොවැකියාව",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "සියෙරා ලියොන්",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "සැන් මරිනෝ",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "සෙනගාලය",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "සෝමාලියාව",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "සුරිනාමය",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "දකුණු සුඩානය",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "සාඕ ටෝමෙ සහ ප්රින්සිප්",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "එල් සැල්වදෝ",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "සින්ට් මාර්ටන්",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "සිරියාව",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "ස්වාසිලන්තය",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "ටර්ක්ස් සහ කයිකෝස් දූපත්",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "චැඩ්",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "ප්රංශ දක්ෂිණ භූමි",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "ටෝගෝ",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "තායිලන්තය",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "ටජිකිස්ථානය",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "ටොකෙලූ",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "නැගෙනහිර ටිමෝර්",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "ටර්ක්මෙනි",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "ටියුනීසියාව",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "ටොන්ගා",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "තුර්කිය",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "ට්රිනිඩෑඩ් සහ ටො",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "ටුවාලු",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "තායිවානය",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "ටැන්සානිය",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "යුක්රේනය",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "උගන්ඩා",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "එක්සත් ජනපද සුළු පිටත දූපත්",
+  "@um": {
+    "description": "text"
+  },
+  "us": "එක්සත් ජනපදය",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "උරුගුවේ",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "උස්බෙකිස්ථානය",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "වතිකානු නගරය",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "ශාන්ත වින්සන්ට් සහ ග්රෙනඩින්ස්",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "වෙනිසියුලාව",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "බ්රිතාන්ය වර්ජින් දූපත්",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "එක්සත් ජනපද වර්ජින් දූපත්",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "වියට්නාමය",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "වනුආටු",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "වොලිස් සහ ෆුටුනා",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "සැමෝවා",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "කොසෝවෝ",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "යේමනය",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "මයෝට්",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "දකුණු අප්රිකාව",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "සැම්බියාව",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "සිම්බාබ්වේ",
+  "@zw": {
+    "description": "text"
+  }
+}

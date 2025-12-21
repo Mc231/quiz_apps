@@ -1,0 +1,42 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  # Invoked before lane execution
+  before_all do
+    update_fastlane
+  end
+
+  desc "Deploy a new version to GooglyPlay,  available tracks 'production, beta, alpha, internal'"
+  lane :test_track do |options|
+    track = options[:track]
+    if !track
+      UI.user_error!("Track not passed in parameters")
+      next
+    end
+    sh("flutter clean -v")
+    sh("flutter build appbundle -v")
+
+    upload_to_play_store(
+      track: track,
+      aab: '../build/app/outputs/bundle/release/app-release.aab',
+      json_key_data: ENV['GOOGLE_PLAY_JSON']
+    )
+  end
+
+end

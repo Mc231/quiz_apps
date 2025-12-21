@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "অঞ্চল নির্বাচন করুন",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "সব",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "ইউরোপ",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "এশিয়া",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "আফ্রিকা",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "উত্তর আমেরিকা",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "সাউথ আমেরিকা",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "ওশেনিয়া",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "আপনার স্কোর",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "এ্যান্ডোরা",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "সংযুক্ত আরব আমিরাত",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "অ্যান্টিগুয়া এবং বার্বুডা",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "এ্যাঙ্গুইলা",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "আফগানিস্তান",
+  "@af": {
+    "description": "text"
+  },
+  "al": "আলবেনিয়া",
+  "@al": {
+    "description": "text"
+  },
+  "am": "আরমেনিয়া",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "অ্যাঙ্গোলা",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "এন্টার্কটিকা",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "আর্জিণ্টিনা",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "আমেরিকান সামোয়া",
+  "@as": {
+    "description": "text"
+  },
+  "at": "অস্ট্রিয়া",
+  "@at": {
+    "description": "text"
+  },
+  "au": "অস্ট্রেলিয়া",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "আরুবা",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "আল্যান্ড",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "আজেরবাইজান",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "বসনিয়া ও হার্জেগো",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "বার্বাডোস",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "বাংলাদেশ",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "বেলজিয়াম",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "বুর্কিনা ফাসো",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "বুলগেরিয়া",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "বাহরাইন",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "বুরুন্ডি",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "বেনিন",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "সেন্ট বার্থেলেমি",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "বারমুডা",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "ব্রুনেই",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "বোলিভিয়া",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "বোনায়ার",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "ব্রাজিল",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "বাহামা",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "ভুটান",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "বোভেট দ্বীপ",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "বোট্স্বানা",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "বেলারুশ",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "বেলিজ",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "কানাডা",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "কোকোস [কিলিং] দ্বীপপুঞ্জ",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "গণতান্ত্রিক প্রজাতন্ত্র কঙ্গ",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "সেন্ট্রাল আফ্রিকান",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "কঙ্গো প্রজাতন্ত্র",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "সুইজারল্যান্ড",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "আইভরি কোস্ট",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "কুক দ্বীপ",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "চিলি",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "ক্যামেরুন",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "চীন",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "কলোম্বিয়া",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "কোস্টারিকা",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "কিউবা",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "কেপ ভার্দে",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "কুরাসাও",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "ক্রিসমাস দ্বীপ",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "ডেনমার্ক",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "ডোমিনিকা",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "ডোমিনিকান প্রজা",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "আলজেরিয়া",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "ইকোয়াডর",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "এস্তোনিয়া",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "মিশর",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "পশ্চিম সাহারা",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "ইরিত্রিয়া",
+  "@er": {
+    "description": "text"
+  },
+  "es": "স্পেন",
+  "@es": {
+    "description": "text"
+  },
+  "et": "ইথিওপিয়া",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "ফিনল্যাণ্ড",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "ফিজি",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "ফকল্যান্ড দ্বীপ",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "মাইক্রোনেশিয়া",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "ফারো দ্বীপপুঞ্জ",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "ফ্রান্স",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "গ্যাবন",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "যুক্তরাজ্য",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "গ্রেনাডা",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "জর্জিয়া",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "ফরাসি গায়ানা",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "গেঞ্জি",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "ঘানা",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "জিব্রালটার",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "গ্রীনল্যাণ্ড",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "গাম্বিয়াদেশ",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "গিনি",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "গুয়াডেলোপ",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "নিরক্ষীয় গিনি",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "গ্রীস",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "দক্ষিণ জর্জিয়া ও সাউথ স্যান্ডউইচ",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "গুয়েতেমালা",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "গুয়াম",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "গিনি-বিসাউ",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "গুয়ানা",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "হংকং",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "হার্ড দ্বীপ এবং ম্যাকডোনাল্",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "হন্ডুরাস",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "ক্রোয়েশিয়া",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "চেক প্রজাতন্ত্র",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "জিবুতি",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "সাইপ্রাস",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "জার্মানি",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "হাইতি",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "হাঙ্গেরি",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "ইন্দোনেশিয়া",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "আয়ারল্যান্ড",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "ইসরাইল",
+  "@il": {
+    "description": "text"
+  },
+  "im": "আইল অফ ম্যান",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "ভারত",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "ব্রিটিশ ভারত মহাসাগর",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "ইরাক",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "ইরান",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "আইসল্যান্ড",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "ইতালি",
+  "@it": {
+    "description": "text"
+  },
+  "je": "জার্সি",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "জ্যামাইকা",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "জর্ডান",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "জাপান",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "কেনিয়া",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "কিরগিজস্তান",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "কম্বোডিয়া",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "কিরিবাতি",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "কমোরোস",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "সেন্ট কিটস এবং নেভিস",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "উত্তর কোরিয়া",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "দক্ষিণ কোরিয়া",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "কুয়েত",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "কেম্যান দ্বীপ",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "কাজাকস্থান",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "লাত্তস",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "লেবানন",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "সেন্ট লুসিয়া",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "লিচেনস্টেইন",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "শ্রীলঙ্কা",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "লাইবেরিয়া",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "লেসোথো",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "লিথুয়ানিয়া",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "লাক্সেমবার্গ",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "লাটভিয়া",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "লিবিয়া",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "মরক্কো",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "মোনাকো",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "মলদোভা",
+  "@md": {
+    "description": "text"
+  },
+  "me": "মন্টিনিগ্রো",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "সেন্ট মার্টিন",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "মাদাগাস্কার",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "মার্শাল দ্বীপ",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "উত্তর ম্যাসেডোনি",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "মালি",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "মায়ানমার [বার্মা]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "মঙ্গোলিয়া",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "ম্যাকাও",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "উত্তর মারিয়ানা দ্বীপ",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "মার্টিনিক",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "মৌরিতানিয়া",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "মন্টসেরাট",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "মালটা",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "মরিশাস",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "মালদ্বীপ",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "মালাউই",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "মেক্সিকো",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "মালয়েশিয়া",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "মোজাম্বিক",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "নামিবিয়া",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "নিউ ক্যালেডোনিয়া",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "নাইজেরিয়া",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "নরফোক দ্বীপ",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "নাইজেরিয়া",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "নিকারাগুয়ে",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "নেদারল্যান্ডস",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "নরওয়ে",
+  "@no": {
+    "description": "text"
+  },
+  "np": "নেপাল",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "নাউরু",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "নিউই",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "নিউজিল্যান্ড",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "ওমান",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "পানামা",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "পেরু",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "ফরাসি পলিনেশিয়া",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "পাপুয়া নিউ গিনি",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "ফিলিপাইন",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "পাকিস্তান",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "পোল্যান্ড",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "সেন্ট পিয়েরে এবং মিকেলন",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "পিটকেরন দ্বীপপুঞ্জ",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "পুয়ের্তো রিকো",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "প্যালেস্টাইন",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "পর্তুগাল",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "পালাউ",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "প্যারাগুয়ে",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "কাতার",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "রিইউনিয়ন",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "রোমানিয়া",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "সার্বিয়া",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "রাশিয়া",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "রুয়ান্ডা",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "সৌদি আরব",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "সলোমন দ্বীপ",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "সিসিলি",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "সুদান",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "সুইডেন",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "সিঙ্গাপুর",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "সেন্ট হেলেনা",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "স্লোভানিয়া",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "সোয়ালবার্ড এবং জান মায়েন",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "শ্লোভাকিয়া",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "সিয়েরা লিওন",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "সান মেরিনো",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "সেনেগাল",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "সোমালিয়া",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "সুরিনাম",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "দক্ষিণ সুদান",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "সাও টোমে এবং প্রিন্সিপি",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "এল সালভাদোর",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "সেন্ট মার্টেন",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "সিরিয়া",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "সোয়াজিল্যান্ড",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "তুর্কস এবং কাইকোস দ্বীপপুঞ্জ",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "চাদ",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "ফরাসি দক্ষিণ অঞ্চ",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "টোগো",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "থাইল্যান্ড",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "তাজিকিস্থান",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "টোকেলাউ",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "পূর্ব তিমুর",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "তুর্কমেনিস্তান",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "তিউনিসিয়া",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "টোঙ্গা",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "তুরস্ক",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "ত্রিনিদাদ ও টোবাগ",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "টুভালু",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "তাইওয়ান",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "তানজিনিয়া",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "ইউক্রেন",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "উগান্ডা",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "মার্কিন ক্ষুদ্র বাইরের দ্বীপপুঞ্জ",
+  "@um": {
+    "description": "text"
+  },
+  "us": "যুক্তরাষ্ট্র",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "উরুগুয়ে",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "উজবেকিস্তান",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "ভ্যাটিকান সিটি",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "সেন্ট ভিনসেন্ট এবং গ্রেনাডাইনস",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "ভেনেজুয়েলা",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "ব্রিটিশ ভার্জিন দ্ব",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "মার্কিন ভার্জিন দ্বীপ",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "ভিয়েতনাম",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "ভানুয়াতু",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "ওয়ালিস এবং ফুটুনা",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "সামোয়া",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "কসোভো",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "ইয়েমেন",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "মায়োত্তে",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "সাউথ আফ্রিকা",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "জাম্বিয়া",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "জিম্বাবুয়ে",
+  "@zw": {
+    "description": "text"
+  }
+}

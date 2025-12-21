@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "Izvēlieties reģionu",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "Viss",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "Eiropa",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "Āzija",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "Āfrika",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "Ziemeļamerika",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "Dienvidamerika",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "Okeānija",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "Jūsu rezultāts",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "Andora",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "Apvienotie Arābu Emirāti",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "Antigva un Barbuda",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "Angilja",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "Afganistāna",
+  "@af": {
+    "description": "text"
+  },
+  "al": "Albānija",
+  "@al": {
+    "description": "text"
+  },
+  "am": "Armēnija",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "Angola",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "Antarktīda",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "Argentīna",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "Amerikas Samoa",
+  "@as": {
+    "description": "text"
+  },
+  "at": "Austrija",
+  "@at": {
+    "description": "text"
+  },
+  "au": "Austrālija",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "Aruba",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "Ālandes",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "Azerbaidžāna",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "Bosnija un Hercegovina",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "Barbadosa",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "Bangladeša",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "Beļģija",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "Burkinafaso",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "Bulgārija",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "Bahreina",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "Burundi",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "Benina",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "Svētais Bartolomejs",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "Bermuda",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "Bruneja",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "Bolīvija",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "Bonaire",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "Brazīlija",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "Bahamu salas",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "Butāna",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "Bouvet sala",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "Botsvāna",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "Baltkrievija",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "Beliza",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "Kanāda",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "Kokosu [Kīlinga] salas",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "Kongo Demokrātiskā Republika",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "Centrālāfrikas Republika",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "Kongo Republika",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "Šveice",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "Kotdivuāra",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "Kuka salas",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "Čīle",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "Kamerūna",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "Ķīna",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "Kolumbija",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "Kostarika",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "Kuba",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "Kaboverde",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "Kirasao",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "Ziemassvētku sala",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "Dānija",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "Dominika",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "Dominikānas Republika",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "Alžīrija",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "Ekvadora",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "Igaunija",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "Ēģipte",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "Rietumsahāra",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "Eritreja",
+  "@er": {
+    "description": "text"
+  },
+  "es": "Spānija",
+  "@es": {
+    "description": "text"
+  },
+  "et": "Etiopija",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "Somija",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "Fidži",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "Folklenda salas",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "Mikronēzija",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "Farēru salas",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "Francija",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "Gabona",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "Apvienotā Karaliste",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "Grenāda",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "Gruzijā",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "Franču Gviāna",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "Gērnsija",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "Gana",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "Gibraltārs",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "Grenlande",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "Gambija",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "Gvineja",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "Gvadelupa",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "Ekvatoriālā Gvineja",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "Grieķija",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "Dienviddžordžija un Dienvidsendviču salas",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "Gvatemala",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "Guama",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "Gvineja-Bisava",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "Gajāna",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "Honkonga",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "Hērdas sala un Makdonalda salas",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "Hondurasa",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "Horvātija",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "Čehija",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "Džibutija",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "Kipra",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "Vācija",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "Haiti",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "Ungārija",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "Indonēzija",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "Īrija",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "Izraēla",
+  "@il": {
+    "description": "text"
+  },
+  "im": "Menas sala",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "Indija",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "Britu Indijas okeāna teritorija",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "Irāka",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "Irāna",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "Islande",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "Itālija",
+  "@it": {
+    "description": "text"
+  },
+  "je": "Džērsija",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "Jamaika",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "Jordānija",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "Japāna",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "Kenija",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "Kirgizstāna",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "Kambodža",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "Kiribati",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "Komoru salas",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "Sentkitsa un Nevisa",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "Ziemeļkoreja",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "Dienvidkoreja",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "Kuveita",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "Kaimanu salas",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "Kazahstāna",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "Laosa",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "Libāna",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "Sentlūsija",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "Lihtenšteina",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "Šrilanka",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "Libērija",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "Lesoto",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "Lietuva",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "Luksemburga",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "Latvija",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "Lībija",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "Maroka",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "Monako",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "Moldova",
+  "@md": {
+    "description": "text"
+  },
+  "me": "Melnkalne",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "Svētais Mārtiņš",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "Madagaskara",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "Māršala salas",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "Ziemeļmaķedonija",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "Mali",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "Mjanma [Birma]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "Mongolija",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "Makao",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "Ziemeļu Marianas salas",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "Martinika",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "Mauritānija",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "Montserrata",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "Malta",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "Maurīcija",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "Maldīvija",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "Malāvija",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "Meksika",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "Malaizija",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "Mozambika",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "Namībija",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "Jaunkaledonija",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "Nigēra",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "Norfolkas sala",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "Nigērija",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "Nikaragva",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "Nīderlande",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "Norvēģija",
+  "@no": {
+    "description": "text"
+  },
+  "np": "Nepāla",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "Nauru",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "Niue",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "Jaunzēlande",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "Omāna",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "Panama",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "Peru",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "Francijas Polinēzija",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "Papua-Jaungvineja",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "Filipīnas",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "Pakistāna",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "Polija",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "Sentpjēra un Mikelona",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "Pitkērnas salas",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "Puertoriko",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "Palestīna",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "Portugāle",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "Palau",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "Paragvaja",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "Katara",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "Reinjona",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "Rumānija",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "Serbija",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "Krievija",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "Ruanda",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "Saūda Arābija",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "Zālamana salas",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "Seišelu salas",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "Sudāna",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "Zviedrija",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "Singapūra",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "Svētā Helēna",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "Slovēnija",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "Svalbāra un Jans Majens",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "Slovākija",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "Sjerraleone",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "Sanmarīno",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "Senegāla",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "Somālija",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "Surinama",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "Dienvidsudāna",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "Santome un Prinsipi",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "Salvadora",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "Sint Marten",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "Sīrija",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "Svazilenda",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "Tērksas un Kaikosas salas",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "Čada",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "Francijas dienvidu teritorijas",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "Togo",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "Taizeme",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "Tadžikistāna",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "Tokelau",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "Austrumtimora",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "Turkmenistāna",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "Tunisija",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "Tonga",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "Turcija",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "Trinidāda un Tobāgo",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "Tuvalu",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "Taivāna",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "Tanzānija",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "Ukraina",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "Uganda",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "ASV Mazās nomaļās salas",
+  "@um": {
+    "description": "text"
+  },
+  "us": "Amerikas Savienotās Valstis",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "Urugvaja",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "Uzbekistāna",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "Vatikāns",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "Sentvinsenta un Grenadīnas",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "Venecuēla",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "Britu Virdžīnu salas",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "ASV Virdžīnu salas",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "Vjetnama",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "Vanuatu",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "Volisa un Futūna",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "Samoa",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "Kosova",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "Jemena",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "Majota",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "Dienvidāfrika",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "Zambija",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "Zimbabve",
+  "@zw": {
+    "description": "text"
+  }
+}

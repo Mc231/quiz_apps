@@ -1,0 +1,6 @@
+# melos_managed_dependency_overrides: quiz_engine,quiz_engine_core
+dependency_overrides:
+  quiz_engine:
+    path: ../../packages/quiz_engine
+  quiz_engine_core:
+    path: ../../packages/quiz_engine_core

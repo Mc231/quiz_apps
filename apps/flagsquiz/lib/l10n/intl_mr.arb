@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "प्रदेश निवडा",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "सर्व",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "युरोप",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "आशिया",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "आफ्रिका",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "उत्तर अमेरिका",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "दक्षिण अमेरि",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "ओशियनिया",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "आपला स्कोअर",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "अँडोर",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "संयुक्त अरबी",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "अँटीगा आणि बार्बुड",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "अँगुइला",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "अफगाणि",
+  "@af": {
+    "description": "text"
+  },
+  "al": "अल्बानिया",
+  "@al": {
+    "description": "text"
+  },
+  "am": "आर्मेनिया",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "अंगोला",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "अँटार्",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "अर्जेंट",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "अमेरिकन समोआ",
+  "@as": {
+    "description": "text"
+  },
+  "at": "ऑस्ट्रिया",
+  "@at": {
+    "description": "text"
+  },
+  "au": "ऑस्ट्रेलिय",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "अरुबा",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "अलँड",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "अझरबाय",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "बोस्निया आणि हर्जे",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "बार्बडो",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "बांगलादे",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "बल्जियम",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "बुर्किना फासो",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "बल्गेरि",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "बहरीन",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "बुरुंडी",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "बेनिन",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "सेंट बार्थेलमी",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "बर्मुडा",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "ब्रुनेई",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "बोलिविया",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "बोनैरे",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "ब्राझील",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "बहामास",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "भूटान",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "बोवेट बेट",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "बोट्स",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "बेलरुस",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "बेलीझ",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "कॅनडा",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "कोकोस [कीलिंग] बेटे",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "कोंगो लोकशाही प्रजासत्",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "मध्य आफ्रिकन",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "कॉंगो प्रजासत्ताक",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "स्वित्झर्",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "आयव्हरी कोस्ट",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "कुक बेटे",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "चिली",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "कॅमेरून",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "चीन",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "कोलंबिय",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "कोस्टा रिका",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "क्यूबा",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "केप वर्दे",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "कुराकाओ",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "ख्रिसमस ब",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "डेन्मार्",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "डोमिनिका",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "डोमिनिकन रि",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "अल्जेरिया",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "इक्वाडो",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "एस्टोनिया",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "इजिप्त",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "वेस्टर्न सहार",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "एरिट्रिया",
+  "@er": {
+    "description": "text"
+  },
+  "es": "स्पेन",
+  "@es": {
+    "description": "text"
+  },
+  "et": "इथिओपी",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "फिनलँ",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "फिजी",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "फॉकलँड बेट",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "मायक्रोनेशिया",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "फॅरो बेट्स",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "फ्रान्स",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "गॅबोन",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "युनायटेड किं",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "ग्रेनाडा",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "जर्जिया",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "फ्रेंच गायना",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "गुर्नसी",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "घाना",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "जिब्रा",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "ग्रीन लँड",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "गॅम्बिया",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "गिनी",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "ग्वाडेल्यूप",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "इक्व्हेटोरियल",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "ग्रीस",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "दक्षिण जॉर्जिया आणि दक्षिण सँ",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "ग्वाटेमाला",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "गुअम",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "गिनी-बिसाऊ",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "गायना",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "हाँगकाँग",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "हर्ड बेट आणि मॅकडोना",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "होंडुरास",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "क्रोएशिया",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "चेक रिपब्लि",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "जिबुती",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "सायप्रस",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "जर्मनी",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "हैती",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "हंगेरी",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "भारतीयन",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "आयर्लं",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "इस्रायल",
+  "@il": {
+    "description": "text"
+  },
+  "im": "आयल ऑफ मॅन",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "भारत",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "ब्रिटीश हिंदू महा",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "इराक",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "इराण",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "आइसलँ",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "इटली",
+  "@it": {
+    "description": "text"
+  },
+  "je": "जर्सी",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "जमैका",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "जॉर्डन",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "जपान",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "केनिया",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "किर्गि",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "कंबोडि",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "किरिबाति",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "कोमोरोस",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "सेंट किट्स आणि नेव्हिस",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "उत्तर कोरिया",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "दक्षिण कोरिया",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "कुवैत",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "केमेन बेटे",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "कझाकस्ट",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "लाओस",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "लेबनॉन",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "सेंट लुसिया",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "लीचें",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "श्रीलंका",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "लाइबेरि",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "लेसोथो",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "लिथुनिया",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "लक्झम्",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "लाट्विया",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "लिबिया",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "मोरोक्को",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "मोनाको",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "मोल्डोवा",
+  "@md": {
+    "description": "text"
+  },
+  "me": "मॉन्टेन",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "संत मार्टिन",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "मॅडाग",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "मार्शल बेट",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "उत्तर मॅसेडो",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "मालि",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "म्यानमार [बर्मा]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "मंगोलि",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "मकाओ",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "उत्तर मारियाना बेटे",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "मार्टिनिक",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "मॉरिटानिया",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "मॉन्टसे",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "माल्टा",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "मॉरिशस",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "मालदीव",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "मालावी",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "मेक्सिको",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "मलेशिया",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "मोझांबिक",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "नामिबिया",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "न्यू कॅलेडोनिया",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "नायजर",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "नॉरफोक बेट",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "नायजेरिया",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "निकाराग्वा",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "नेदरलँ",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "नॉर्वे",
+  "@no": {
+    "description": "text"
+  },
+  "np": "नेपाल",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "नौरु",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "नियू",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "न्यूझीलँ",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "ओमान",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "पनामा",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "पेरू",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "फ्रेंच पॉलिनेशिय",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "पापुआ न्यू गिनी",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "फिलिपीन्",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "पाकिस्टन",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "पोलंड",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "सेंट पियरे आणि मिक्वेलॉन",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "पिटकेर्न बेटे",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "पोर्तो रिको",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "पॅलेस्टीन",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "पोर्तुग",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "पलाऊ",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "पराग्वे",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "कतार",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "रियुनियन",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "रोमानिया",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "सर्बिया",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "रशिया",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "रवांडा",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "सौदी अरेब",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "सलोमन बेट",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "सेशेल्स",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "सुडान",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "स्वीडन",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "सिंगापूर",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "सेंट हेलेना",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "स्लोवेनिया",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "स्वालबार्ड आणि जॅन मायेन",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "स्लोवाकिय",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "सिएरा लिओन",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "सॅन मरिनो",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "सेनेगल",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "सोमालिया",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "सुरिनाम",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "दक्षिण सुदान",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "साओ टोमे आणि प्रिन्सिपी",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "एल साल्वाडो",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "सेंट मार्टेन",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "सिरिया",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "स्वाझीलंड",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "तुर्क्स आणि कायकोस बेटे",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "चाड",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "फ्रेंच दक्षिण",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "टोगो",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "थायलंड",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "ताजिकि",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "टोकेलाऊ",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "पूर्व तिमोर",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "तुर्कमेन",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "ट्युनिश",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "तोंगा",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "तुर्की",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "त्रिनिदाद आणि टोब",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "तुवालू",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "तैवान",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "तान्झानि",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "युक्रेन",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "उगांडा",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "यूएस लहान बाहेरील बेटे",
+  "@um": {
+    "description": "text"
+  },
+  "us": "अमेरिका",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "उरग्वे",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "उझबेक",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "व्हॅटिकन सि",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "सेंट विन्सेंट आणि ग्रेनेडाइन्स",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "व्हेनेझे",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "ब्रिटीश वर्जिन",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "यूएस वर्जिन बेट",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "व्हिएतना",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "वानुआटू",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "वॉलिस आणि फुटुना",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "समोआ",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "कोसोवो",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "येमेन",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "मायोट्टे",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "दक्षिण आफ्र",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "झाम्बिया",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "झिम्ब",
+  "@zw": {
+    "description": "text"
+  }
+}

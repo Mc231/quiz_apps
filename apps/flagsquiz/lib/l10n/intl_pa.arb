@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "ਖੇਤਰ ਚੁਣੋ",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "ਸਾਰੇ",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "ਯੂਰਪ",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "ਏਸ਼ੀਆ",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "ਅਫਰੀਕਾ",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "ਉੱਤਰੀ ਅਮਰੀਕਾ",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "ਦੱਖਣੀ ਅਮਰੀਕਾ",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "ਓਸ਼ੀਆਨੀਆ",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "ਤੁਹਾਡਾ ਸਕੋਰ",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "ਐਂਡੋਰਾ",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "ਸੰਯੁਕਤ ਅਰਬ ਅਮੀਰਾ",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "ਐਂਟੀਗੁਆ ਅਤੇ ਬਾਰਬੁਡਾ",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "ਐਂਗੁਇਲਾ",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "ਅਫਗਾਨਿਸਤਾ",
+  "@af": {
+    "description": "text"
+  },
+  "al": "ਅਲਬਾਨੀਆ",
+  "@al": {
+    "description": "text"
+  },
+  "am": "ਅਰਮੀਨੀਆ",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "ਅੰਗੋਲਾ",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "ਅੰਟਾਰਕਟਿ",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "ਅਰਜਨਟੀਨਾ",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "ਅਮੈਰੀਕਨ ਸਮੋਆ",
+  "@as": {
+    "description": "text"
+  },
+  "at": "ਆਸਟਰੀਆ",
+  "@at": {
+    "description": "text"
+  },
+  "au": "ਆਸਟਰੇਲੀਆ",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "ਅਰੂਬਾ",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "ਆਲੈਂਡ",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "ਅਜ਼ਰਬਾਈ",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "ਬੋਸਨੀਆ ਅਤੇ ਹਰਜ਼ੇਗੋਵਿ",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "ਬਾਰਬਾਡੋਸ",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "ਬੰਗਲਾਦੇਸ਼",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "ਬੈਲਜੀਅਮ",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "ਬੁਰਕਿਨਾ ਫਾਸੋ",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "ਬੁਲਗਾਰੀਆ",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "ਬਹਿਰੀਨ",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "ਬੁਰੁੰਡੀ",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "ਬੇਨਿਨ",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "ਸੇਂਟ ਬਾਰਥਲੇਮੀ",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "ਬਰਮੂਡਾ",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "ਬਰੂਨਾਈ",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "ਬੋਲੀਵੀਆ",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "ਬੋਨੇਅਰ",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "ਬ੍ਰਾਜ਼ੀਲ",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "ਬਹਾਮਾਸ",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "ਭੂਟਾਨ",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "ਬੋਵੇਟ ਟਾਪੂ",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "ਬੋਤਸਵਾਨਾ",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "ਬੇਲਾਰੂਸ",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "ਬੇਲੀਜ਼",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "ਕੈਨੇਡਾ",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "ਕੋਕੋਸ [ਕੀਲਿੰਗ] ਟਾਪੂ",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "ਕਾਂਗੋ ਦਾ ਡੈਮੋਕਰੇਟਿਕ ਗਣਰਾਜ",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "ਮੱਧ ਅਫਰੀਕੀ ਗਣਰਾ",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "ਕਾਂਗੋ ਗਣਤੰਤਰ",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "ਸੁਟਜ਼ਰਲੈਂਡ",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "ਆਈਵਰੀ ਕੋਸਟ",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "ਕੁੱਕ ਟਾਪੂ",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "ਚਿਲੀ",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "ਕੈਮਰੂਨ",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "ਚੀਨ",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "ਕੋਲੰਬੀਆ",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "ਕੋਸਟਾਰੀਕਾ",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "ਕਿubaਬਾ",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "ਕੇਪ ਵਰਡੇ",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "ਕੁਰਾਕਾਓ",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "ਕ੍ਰਿਸਮਸ ਟਾਪੂ",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "ਡੈਨਮਾਰਕ",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "ਡੋਮਿਨਿਕਾ",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "ਡੋਮਿਨਿਕਨ ਰੀਪ",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "ਅਲਜੀਰੀਆ",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "ਇਕੂਏਟਰ",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "ਐਸਟੋਨੀਆ",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "ਮਿਸਰ",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "ਪੱਛਮੀ ਸਹਾਰਾ",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "ਏਰੀਟਰੀਆ",
+  "@er": {
+    "description": "text"
+  },
+  "es": "ਸਪੇਨ",
+  "@es": {
+    "description": "text"
+  },
+  "et": "ਇਥੋਪੀਆ",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "ਫਿਨਲੈਂਡ",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "ਫਿਜੀ",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "ਫਾਕਲੈਂਡ ਟਾਪੂ",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "ਮਾਈਕ੍ਰੋਨੇਸ਼ੀਆ",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "ਫੈਰੋ ਟਾਪੂ",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "ਫਰਾਂਸ",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "ਗੈਬਨ",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "ਸੰਯੁਕਤ ਰਾਜ",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "ਗ੍ਰੇਨਾਡਾ",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "ਜਾਰਜੀਆ",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "ਫ੍ਰੈਂਚ ਗੁਆਨਾ",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "ਗੁਰਨਸੀ",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "ਘਾਨਾ",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "ਜਿਬਰਾਲਟਰ",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "ਗ੍ਰੀਨਲੈਂਡ",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "ਗੈਂਬੀਆ",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "ਗਿੰਨੀ",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "ਗੁਆਡੇਲੋਪ",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "ਇਕੁਏਟੋਰੀਅਲ ਗਿੰਨੀ",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "ਗ੍ਰੀਸ",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "ਦੱਖਣੀ ਜਾਰਜੀਆ ਅਤੇ ਦੱਖਣੀ ਸੈਂਡਵਿਚ ਟਾਪੂ",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "ਗੁਆਟੇਮਾਲਾ",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "ਗੁਆਮ",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "ਗਿਨੀ-ਬਿਸਾਉ",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "ਗੁਆਨਾ",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "ਹਾਂਗ ਕਾਂਗ",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "ਹਰਡ ਆਈਲੈਂਡ ਅਤੇ ਮੈਕਡੋਨਲਡ ਆਈਲੈਂਡ",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "ਹੋਂਡੂਰਸ",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "ਕਰੋਸ਼ੀਆ",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "ਚੈੱਕ ਗਣਰਾਜ",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "ਜਿਬੂਤੀ",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "ਸਾਈਪ੍ਰਸ",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "ਜਰਮਨੀ",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "ਹੈਤੀ",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "ਹੰਗਰੀ",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "ਇੰਡੋਨੇਸ਼ੀਆ",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "ਆਇਰਲੈਂਡ",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "ਇਜ਼ਰਾਈਲ",
+  "@il": {
+    "description": "text"
+  },
+  "im": "ਆਇਲ ਆਫ਼ ਮੈਨ",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "ਭਾਰਤ",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "ਬ੍ਰਿਟਿਸ਼ ਹਿੰਦ ਮਹਾਸਾਗਰ",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "ਇਰਾਕ",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "ਈਰਾਨ",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "ਆਈਸਲੈਂਡ",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "ਇਟਲੀ",
+  "@it": {
+    "description": "text"
+  },
+  "je": "ਜਰਸੀ",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "ਜਮੈਕਾ",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "ਜੌਰਡਨ",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "ਜਪਾਨ",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "ਕੀਨੀਆ",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "ਕਿਰਗਿਸਤਾਨ",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "ਕੰਬੋਡੀਆ",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "ਕਿਰੀਬਤੀ",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "ਕੋਮੋਰੋਸ",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "ਸੇਂਟ ਕਿੱਟਸ ਅਤੇ ਨੇਵਿਸ",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "ਉੱਤਰੀ ਕੋਰੀਆ",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "ਦੱਖਣੀ ਕੋਰੀਆ",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "ਕੁਵੈਤ",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "ਕੇਮੈਨ ਟਾਪੂ",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "ਕਜ਼ਾਕਿਸਤਾਨ",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "ਲਾਓਸ",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "ਲੇਬਨਾਨ",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "ਸੇਂਟ ਲੂਸੀਆ",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "ਲੀਚਨਸਟਾਈ",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "ਸ਼੍ਰੀ ਲੰਕਾ",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "ਲਾਇਬੇਰੀਆ",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "ਲੇਸੋਥੋ",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "ਲਿਥੁਆਨੀਆ",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "ਲਕਸਮਬਰਗ",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "ਲਾਤਵੀਆ",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "ਲੀਬੀਆ",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "ਮੋਰੋਕੋ",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "ਮੋਨਾਕੋ",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "ਮਾਲਡੋਵਾ",
+  "@md": {
+    "description": "text"
+  },
+  "me": "ਮੌਂਟੇਨੇਗਰ",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "ਸੇਂਟ ਮਾਰਟਿਨ",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "ਮੈਡਾਗਾਸਕਰ",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "ਮਾਰਸ਼ਲ ਟਾਪੂ",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "ਉੱਤਰੀ ਮੈਸੇਡੋਨੀਆ",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "ਮਾਲੀ",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "ਮਿਆਂਮਾਰ [ਬਰਮਾ]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "ਮੰਗੋਲੀਆ",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "ਮਕਾਓ",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "ਉੱਤਰੀ ਮਾਰੀਆਨਾ ਟਾਪੂ",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "ਮਾਰਟਿਨਿਕ",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "ਮੌਰੀਤਾਨੀਆ",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "ਮੋਂਟਸੇਰੇ",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "ਮਾਲਟਾ",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "ਮਾਰੀਸ਼ਸ",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "ਮਾਲਦੀਵ",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "ਮਲਾਵੀ",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "ਮੈਕਸੀਕੋ",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "ਮਲੇਸ਼ੀਆ",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "ਮੋਜ਼ਾਮਬੀਕ",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "ਨਾਮੀਬੀਆ",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "ਨਿਊ ਕੈਲੇਡੋਨੀਆ",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "ਨਾਈਜਰ",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "ਨੌਰਫੋਕ ਟਾਪੂ",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "ਨਾਈਜੀਰੀਆ",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "ਨਿਕਾਰਾਗੁਆ",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "ਨੀਦਰਲੈਂਡਜ਼",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "ਨਾਰਵੇ",
+  "@no": {
+    "description": "text"
+  },
+  "np": "ਨੇਪਾਲ",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "ਨਾਉਰੂ",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "ਨਿਯੂ",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "ਨਿਊਜ਼ੀਲੈਂਡ",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "ਓਮਾਨ",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "ਪਨਾਮਾ",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "ਪੇਰੂ",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "ਫ੍ਰੈਂਚ ਪੋਲੀਨੇਸ਼ੀਆ",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "ਪਾਪੁਆ ਨਿ Gu ਗਿਨੀ",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "ਫਿਲੀਪੀਨਜ਼",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "ਪਾਕਿਸਤਾਨ",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "ਪੋਲੈਂਡ",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "ਸੇਂਟ ਪਿਅਰੇ ਅਤੇ ਮਿਕਵੇਲਨ",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "ਪਿਟਕੇਰਨ ਟਾਪੂ",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "ਪੋਰਟੋ ਰੀਕੋ",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "ਫਲਸਤੀਨ",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "ਪੁਰਤਗਾਲ",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "ਪਲਾਉ",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "ਪੈਰਾਗੁਏ",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "ਕਤਰ",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "ਰੀਯੂਨੀਅਨ",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "ਰੋਮਾਨੀਆ",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "ਸਰਬੀਆ",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "ਰੂਸ",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "ਰਵਾਂਡਾ",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "ਸਾ Saudiਦੀ ਅਰਬ",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "ਸੋਲੋਮਨ ਟਾਪੂ",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "ਸੇਚੇਲਜ਼",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "ਸੁਡਾਨ",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "ਸਵੀਡਨ",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "ਸਿੰਗਾਪੁਰ",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "ਸੇਂਟ ਹੇਲੇਨਾ",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "ਸਲੋਵੇਨੀਆ",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "ਸਵਾਲਬਾਰਡ ਅਤੇ ਜਾਨ ਮੇਯੇਨ",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "ਸਲੋਵਾਕੀਆ",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "ਸੀਅਰਾ ਲਿਓਨ",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "ਸੈਨ ਮਾਰੀਨੋ",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "ਸੇਨੇਗਲ",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "ਸੋਮਾਲੀਆ",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "ਸੂਰੀਨਾਮ",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "ਦੱਖਣੀ ਸੁਡਾਨ",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "ਸਾਓ ਟੋਮੇ ਅਤੇ ਪ੍ਰਿੰਸੀਪੀ",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "ਐਲ ਸਾਲਵਾਡੋਰ",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "ਸੇਂਟ ਮਾਰਟੇਨ",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "ਸੀਰੀਆ",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "ਸਵਾਜ਼ੀਲੈਂਡ",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "ਤੁਰਕਸ ਅਤੇ ਕੈਕੋਸ ਟਾਪੂ",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "ਚਾਡ",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "ਫ੍ਰੈਂਚ ਦੱਖਣੀ ਪ੍ਰਦੇਸ਼",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "ਟੋਗੋ",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "ਥਾਈਲੈਂਡ",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "ਤਜ਼ਾਕਿਸਤਾਨ",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "ਟੋਕੇਲਾਉ",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "ਪੂਰਬੀ ਤਿਮੋਰ",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "ਤੁਰਕਮੇਨ",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "ਟਿਊਨੀਸ਼ੀਆ",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "ਟੋਂਗਾ",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "ਤੁਰਕੀ",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "ਤ੍ਰਿਨੀਦਾਦ ਅਤੇ ਟੋਬਾਗੋ",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "ਤੂਵਾਲੂ",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "ਤਾਈਵਾਨ",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "ਤਨਜ਼ਾਨੀਆ",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "ਯੂਕਰੇਨ",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "ਯੂਗਾਂਡਾ",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "ਯੂਐਸ ਮਾਈਨਰ ਬਾਹਰੀ ਟਾਪੂ",
+  "@um": {
+    "description": "text"
+  },
+  "us": "ਸੰਯੁਕਤ ਰਾਜ",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "ਉਰੂਗਵੇ",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "ਉਜ਼ਬੇਕੀਨ",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "ਵੈਟੀਕਨ ਸਿਟੀ",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "ਸੇਂਟ ਵਿਨਸੈਂਟ ਅਤੇ ਗ੍ਰੇਨਾਡਾਈਨਜ਼",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "ਵੈਨਜ਼ੂਏ",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "ਬ੍ਰਿਟਿਸ਼ ਵਰਜਿਨ ਆਈਲੈਂਡ",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "ਯੂਐਸ ਵਰਜਿਨ ਟਾਪੂ",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "ਵੀਅਤਨਾਮ",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "ਵੈਨੂਆਟੂ",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "ਵਾਲਿਸ ਅਤੇ ਫੁਟੁਨਾ",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "ਸਮੋਆ",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "ਕੋਸੋਵੋ",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "ਯਮਨ",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "ਮਾਯੋਟ",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "ਦੱਖਣੀ ਅਫਰੀਕਾ",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "ਜ਼ੈਂਬੀਆ",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "ਜ਼ਿੰਬਾਬਵੇ",
+  "@zw": {
+    "description": "text"
+  }
+}

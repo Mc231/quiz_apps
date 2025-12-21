@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "ክልል ይምረጡ",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "ሁሉም",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "አውሮፓ",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "እስያ",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "አፍሪካ",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "ሰሜን አሜሪካ",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "ደቡብ አሜሪካ",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "ኦሺኒያ",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "የእርስዎ ውጤት",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "አንዶራ",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "የተባባበሩት አረብ",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "አንቲጉዋ እና ባርቡዳ",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "አንጉላ",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "አፍጋኒስታን",
+  "@af": {
+    "description": "text"
+  },
+  "al": "አልባኒያ",
+  "@al": {
+    "description": "text"
+  },
+  "am": "አርሜኒያ",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "አንጎላ",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "አንታርክቲካ",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "አርጀንቲና",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "የአሜሪካ ሳሞዋ",
+  "@as": {
+    "description": "text"
+  },
+  "at": "ኦስትሪያ",
+  "@at": {
+    "description": "text"
+  },
+  "au": "አውስትራሊያ",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "አሩባ",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "አላንድ",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "አዘርባጃን",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "ቦስኒያ እና ሄርዞጎ",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "ባርባዶስ",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "ባንግላድሽ",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "ቤልጄም",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "ቡርኪና ፋሶ",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "ቡልጋሪያ",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "ባህሬን",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "ቡሩንዲ",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "ቤኒን",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "ቅዱስ ባርቴሌሚ",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "ቤርሙዳ",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "ብሩኔይ",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "ቦሊቪያ",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "ቦናየር",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "ብራዚል",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "ባሐማስ",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "ቡሃታዊ",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "ቡቬት ደሴት",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "ቦትስዋና",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "ቤላሩስ",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "ቤሊዜ",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "ካናዳ",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "ኮኮስ [ኬሊንግ] ደሴቶች",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "የኮንጎ ዲሞክራቲክ ሪፐብ",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "ማዕከላዊ አፍሪካ ሪፐ",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "ኮንጎ ሪፐብሊክ",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "ስዊዘርላንድ",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "አይቮሪ ኮስት",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "ኩክ ደሴቶች",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "ቺሊ",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "ካሜሩን",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "ቻይና",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "ኮሎምቢያ",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "ኮስታሪካ",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "ኩባ",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "ኬፕ ቨርዴ",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "ኩራካዎ",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "የገና ደሴት",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "ዴንማሪክ",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "ዶሚኒካ",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "የዶሚኒካን ሪ",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "አልጄሪያ",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "ኢኳዶር",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "ኢስቶኒያ",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "ግብጽ",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "ምዕራብ ሳሃራ",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "ኤርትሪያ",
+  "@er": {
+    "description": "text"
+  },
+  "es": "ስፔን",
+  "@es": {
+    "description": "text"
+  },
+  "et": "ኢትዮጵያ",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "ፊንላንድ",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "ፊጂ",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "ፎልክላንድ ደሴቶች",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "ሚክሮኔዥያ",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "የፋሮ ደሴቶች",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "ፈረንሳይ",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "ጋቦን",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "እንግሊዝ",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "ግራናዳ",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "ጆርጂያ",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "የፈረንሳይ ጊያና",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "ጉዌርንሴይ",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "ጋና",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "ጂብራልታር",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "ግሪንላንድ",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "ጋምቢያ",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "ጊኒ",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "ጉደሎፕ",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "ኢኳቶሪያል ጊኒ",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "ግሪክ",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "ደቡብ ጆርጂያ እና የደቡብ ሳንድዊች",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "ጓቴማላ",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "ጉዋም",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "ጊኒያ-ቢሳው",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "ጉያና",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "ሆንግ ኮንግ",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "ሄርድ ደሴት እና ማክዶናልድ",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "ሆንዱራስ",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "ክሮሽያ",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "ቼክ ሪፐብሊክ",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "ጅቡቲ",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "ቆጵሮስ",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "ጀርመን",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "ሓይቲ",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "ሃንጋሪ",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "ኢንዶኔዥያ",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "አይርላንድ",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "እስራኤል",
+  "@il": {
+    "description": "text"
+  },
+  "im": "ደሴት ኦፍ ማን",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "ሕንድ",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "የብሪታንያ የህንድ ውቅ",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "ኢራቅ",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "ኢራን",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "አይስላንድ",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "ጣሊያን",
+  "@it": {
+    "description": "text"
+  },
+  "je": "ጀርሲ",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "ጃማይካ",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "ዮርዳኖስ",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "ጃፓን",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "ኬንያ",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "ክይርጋዝስታን",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "ካምቦዲያ",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "ኪሪባቲ",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "ኮሞሮስ",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "ሴንት ኪትስ እና ኔቪስ",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "ሰሜን ኮሪያ",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "ደቡብ ኮሪያ",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "ኵዌት",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "ካይማን ደሴቶች",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "ካዛክስታን",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "ላኦስ",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "ሊባኖስ",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "ሴንት ሉሲያ",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "ለይችቴንስቴይን",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "ስሪ ላንካ",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "ላይቤሪያ",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "ሌሶቶ",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "ሊቱአኒያ",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "ሉክዘምበርግ",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "ላትቪያ",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "ሊቢያ",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "ሞሮኮ",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "ሞናኮ",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "ሞልዶቫs",
+  "@md": {
+    "description": "text"
+  },
+  "me": "ሞንቴኔግሮ",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "ሴንት ማርቲን",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "ማዳጋስካር",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "ማርሻል ደሴቶች",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "ሰሜን መቄዶኒ",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "ማሊ",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "ማያንማር [በርማ]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "ሞንጎሊያ",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "ማካዎ",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "የሰሜን ማሪያና ደሴቶች",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "ማርቲኒክ",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "ሞሪታኒያ",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "ሞንትሴራት",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "ማልታ",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "ሞሪሼስ",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "ማልዲቨስ",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "ማላዊ",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "ሜክስኮ",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "ማሌዥያ።",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "ሞዛምቢክ",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "ናሚቢያ",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "ኒው ካሌዶኒያ",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "ኒጀር",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "ኖርፎልክ ደሴት",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "ናይጄሪያ",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "ኒካራጉአ",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "ኔዘርላንድ",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "ኖርዌይ",
+  "@no": {
+    "description": "text"
+  },
+  "np": "ኔፓል",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "ናኡሩ",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "ኒይኡ",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "ኒውዚላንድ",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "ኦማን",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "ፓናማ",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "ፔሩ",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "የፈረንሳይ ፖሊኔዥያ",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "ፓፓ ኒው ጊኒ",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "ፊሊፕንሲ",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "ፓኪስታን",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "ፖላንድ",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "ሴንት ፒየር እና ሚኬሎን",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "ፒትካርን ደሴቶች",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "ፖርቶ ሪኮ",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "ፍልስጥኤም",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "ፖርቹጋል",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "ፓላኡ",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "ፓራጓይ",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "ኳታር",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "ሪዩኒየን",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "ሮማኒያ",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "ሰርቢያ",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "ራሽያ",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "ሩዋንዳ",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "ሳውዲ አረቢያ",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "ሰሎሞን ደሴቶች",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "ሲሼልስ",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "ሱዳን",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "ስዊድን",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "ሲንጋፖር",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "ሴንት ሄሌና",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "ስሎቬኒያ",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "ስቫልባርድ እና ጃን ማይን",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "ስሎቫኒካ",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "ሴራ ሊዮን",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "ሳን ማሪኖ",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "ሴኔጋል",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "ሶማሊያ",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "ሱሪናሜ",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "ደቡብ ሱዳን",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "ሳኦ ቶሜ እና ፕሪንሲፒ",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "ኤል ሳልቫዶር",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "ሴንት ማርተን",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "ሶሪያ",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "ስዋዚላንድ",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "ቱርክስ እና ካይኮስ ደሴቶች",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "ቻድ",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "የፈረንሳይ ደቡብ",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "ቶጎ",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "ታይላንድ",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "ታጂኪስታን",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "ቶኬላኡ",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "ምስራቅ ቲሞር",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "ቱርክሜኒስታን",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "ቱንሲያ",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "ቶንጋ",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "ቱርክ",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "ትሪኒዳድ እና ቶባጎ",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "ቱቫሉ",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "ታይዋን።",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "ታንዛንኒያ",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "ዩክሬን",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "ኡጋንዳ",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "የአሜሪካ ጥቃቅን ውጭ ደሴቶች",
+  "@um": {
+    "description": "text"
+  },
+  "us": "አሜሪካ",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "ኡራጋይ",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "ኡዝቤክስታን",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "ቫቲካን ከተማ",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "ሴንት ቪንሰንት እና ግሬናዲንስ",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "ቬንዙዌላ",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "የብሪቲሽ ቨርጂን",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "የአሜሪካ ቨርጂን ደሴቶች",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "ቪትናም",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "ቫኑዋቱ።",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "ዋሊስ እና ፉቱና",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "ሳሞአ",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "ኮሶቮ",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "የመን",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "ማዮቴ",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "ደቡብ አፍሪካ",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "ዛምቢያ",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "ዝምባብዌ",
+  "@zw": {
+    "description": "text"
+  }
+}

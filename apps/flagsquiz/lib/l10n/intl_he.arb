@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "בחר אזור",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "הכל",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "אירופה",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "אסיה",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "אפריקה",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "צפון אמריקה",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "דרום אמריקה",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "אוקיאניה",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "הציון שלך",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "אנדורה",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "איחוד האמירויות הערביות",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "אנטיגואה וברבודה",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "אנגווילה",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "אפגניסטן",
+  "@af": {
+    "description": "text"
+  },
+  "al": "אלבניה",
+  "@al": {
+    "description": "text"
+  },
+  "am": "ארמניה",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "אנגולה",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "אנטארקטיקה",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "ארגנטינה",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "סמואה האמריקנית",
+  "@as": {
+    "description": "text"
+  },
+  "at": "אוסטריה",
+  "@at": {
+    "description": "text"
+  },
+  "au": "אוסטרליה",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "ארובה",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "הולנד",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "אזרבייג'אן",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "בוסניה והרצגובינה",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "ברבדוס",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "בנגלדש",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "בלגיה",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "בורקינה פאסו",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "בולגריה",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "בחריין",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "בורונדי",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "בנין",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "סנט ברתלמי",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "ברמודה",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "ברוניי",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "בוליביה",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "בונייר",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "ברזיל",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "איי בהאמה",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "בהוטן",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "האי בובט",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "בוצואנה",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "בלארוס",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "בליז",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "קנדה",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "איי קוקוס [קילינג]",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "הרפובליקה הדמוקרטית של קונגו",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "הרפובליקה המרכז אפריקאית",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "הרפובליקה של קונגו",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "שווייץ",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "חוף השנהב",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "איי קוק",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "צ'ילה",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "קמרון",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "סין",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "קולומביה",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "קוסטה ריקה",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "קובה",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "כף ורדה",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "קוראסאו",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "אי חג המולד",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "דנמרק",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "דומיניקה",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "הרפובליקה הדומיניקנית",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "אלג'יריה",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "אקוודור",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "אסטוניה",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "מצרים",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "סהרה המערבית",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "אריתריאה",
+  "@er": {
+    "description": "text"
+  },
+  "es": "ספרד",
+  "@es": {
+    "description": "text"
+  },
+  "et": "אתיופיה",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "פינלנד",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "פיג'י",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "איי פוקלנד",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "מיקרונזיה",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "איי פארו",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "צרפת",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "גבון",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "הממלכה המאוחדת",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "גרנדה",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "גיאורגיה",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "גיאנה הצרפתית",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "גרנזי",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "גאנה",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "גיברלטר",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "גרינלנד",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "גמביה",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "גינאה",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "גוואדלופ",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "גינאה המשוונית",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "יוון",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "דרום ג'ורג'יה ואיי סנדוויץ' הדרומיים",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "גואטמלה",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "גואם",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "גינאה ביסאו",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "גיאנה",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "הונג קונג",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "האי הרד ואיי מקדונלד",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "הונדורס",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "קרואטיה",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "הרפובליקה הצ'כית",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "ג'יבוטי",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "קפריסין",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "גרמניה",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "האיטי",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "הונגריה",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "אינדונזיה",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "אירלנד",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "ישראל",
+  "@il": {
+    "description": "text"
+  },
+  "im": "האי מאן",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "הודו",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "הטריטוריה הבריטית באוקיינוס ההודי",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "עירק",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "איראן",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "איסלנד",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "איטליה",
+  "@it": {
+    "description": "text"
+  },
+  "je": "ג'רזי",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "ג'מייקה",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "ירדן",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "יפן",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "קניה",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "קירגיזסטן",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "קמבודיה",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "קיריבטי",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "איחוד איי קומורו",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "סנט קיטס ונוויס",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "צפון קוריאה",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "דרום קוריאה",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "כוויית",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "איי קיימן",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "קזחסטן",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "לאוס",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "לבנון",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "סנט לוסיה",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "ליכטנשטיין",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "סרי לנקה",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "ליבריה",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "לסוטו",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "ליטא",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "לוקסמבורג",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "לטביה",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "לוב",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "מרוקו",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "מונקו",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "מולדובה",
+  "@md": {
+    "description": "text"
+  },
+  "me": "מונטנגרו",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "סנט מרטין",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "מדגסקר",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "איי מרשל",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "צפון מקדוניה",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "מאלי",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "מיאנמר [בורמה]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "מונגוליה",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "מקאו",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "איי מריאנה הצפוניים",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "מרטיניק",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "מאוריטניה",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "מונטסראט",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "מלטה",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "מאוריציוס",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "האיים המלדיביים",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "מלאווי",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "מקסיקו",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "מלזיה",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "מוזמביק",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "נמיביה",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "קלדוניה החדשה",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "ניז'ר",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "האי נורפולק",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "ניגריה",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "ניקרגואה",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "הולנד",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "נורבגיה",
+  "@no": {
+    "description": "text"
+  },
+  "np": "נפאל",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "נאורו",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "ניואה",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "ניו זילנד",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "עומן",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "פנמה",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "פרו",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "פולינזיה הצרפתית",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "פפואה גינאה החדשה",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "הפיליפינים",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "פקיסטן",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "פולין",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "סנט פייר ומיקלון",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "איי פיטקרן",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "פורטו ריקו",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "פלסטין",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "פורטוגל",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "פלאו",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "פרגוואי",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "קטאר",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "ראוניון",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "רומניה",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "סרביה",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "רוסיה",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "רואנדה",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "ערב הסעודית",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "איי שלמה",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "סיישל",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "סודאן",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "שבדיה",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "סינגפור",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "סנט הלנה",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "סלובניה",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "סבאלברד ויאן מאיין",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "סלובקיה",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "סיירה לאונה",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "סן מרינו",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "סנגל",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "סומליה",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "סורינאם",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "דרום סודן",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "סאו טומה ופרינסיפה",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "אל סלבדור",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "סנט מרטן",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "סוריה",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "סווזילנד",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "איי טורקס וקאיקוס",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "צ'אד",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "הטריטוריות הדרומיות של צרפת",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "טוגו",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "תאילנד",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "טג'יקיסטן",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "טוקלאו",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "מזרח טימור",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "טורקמניסטן",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "תוניסיה",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "טונגה",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "טורקיה",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "טרינידד וטובגו",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "טובאלו",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "טייוואן",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "טנזניה",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "אוקראינה",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "אוגנדה",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "האיים המרוחקים הקטנים של ארה\"ב",
+  "@um": {
+    "description": "text"
+  },
+  "us": "ארצות הברית",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "אורוגוואי",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "אוזבקיסטן",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "עיר הוותיקן",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "סנט וינסנט והגרנדינים",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "ונצואלה",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "איי הבתולה הבריטיים",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "איי הבתולה האמריקאים",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "וייטנאם",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "ונואטו",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "וואליס ופוטונה",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "סמואה",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "קוסובו",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "תימן",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "מיוט",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "דרום אפריקה",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "זמביה",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "זימבבואה",
+  "@zw": {
+    "description": "text"
+  }
+}

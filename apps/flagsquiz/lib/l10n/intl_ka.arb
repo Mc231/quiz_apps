@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "არჩიეთ რეგიონი",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "ყველა",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "ევროპა",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "აზია",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "აფრიკა",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "ჩრდილოეთ ამერ",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "სამხრეთ ამერიკ",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "ოკეანია",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "შენი ქულა",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "ანდორა",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "არაბთა გაერთიანებული საე",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "ანტიგუა და ბარბუდა",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "ანგილია",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "ავღანეთი",
+  "@af": {
+    "description": "text"
+  },
+  "al": "ალბანეთი",
+  "@al": {
+    "description": "text"
+  },
+  "am": "სომხეთი",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "ანგოლა",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "ანტარქტი",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "არგენტინა",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "ამერიკული სამოა",
+  "@as": {
+    "description": "text"
+  },
+  "at": "ავსტრია",
+  "@at": {
+    "description": "text"
+  },
+  "au": "ავსტრალია",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "არუბა",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "ალანდი",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "აზერბაი",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "ბოსნია და ჰერცე",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "ბარბადოს",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "ბანგლადე",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "ბელგია",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "ბურკინა ფასო",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "ბულგარეთი",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "ბაჰრეინი",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "ბურუნდი",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "ბენინი",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "წმინდა ბართელემი",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "ბერმუდი",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "ბრუნეი",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "ბოლივია",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "ბონაირი",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "ბრაზილია",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "ბაჰამები",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "ბუტანი",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "ბუვეტის კუნძული",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "ბატსვანა",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "ბელორუსია",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "ბელიზი",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "კანადა",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "კოკოსის [კილინგის] კუნძულები",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "კონგოს დემოკრატიული რესპუბ",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "ცენტრალური აფრიკის რეს",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "კონგოს რესპუბლიკა",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "შვეიცარია",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "სპილოს ძვლოვანი",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "კუკის კუნძულ",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "ჩილე",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "კამერუნი",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "ჩინეთი",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "კოლუმბია",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "კოსტა-რიკა",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "კუბა",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "კაბო ვერდე",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "კურაკაო",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "შობის კუნძული",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "დანია",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "დომინიკა",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "დომინიკის რეს",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "ალჟირი",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "ეკვადორი",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "ესტონეთი",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "ეგვიპტის",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "დასავლეთ საჰარა",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "ერიტრეა",
+  "@er": {
+    "description": "text"
+  },
+  "es": "ესპანეთი",
+  "@es": {
+    "description": "text"
+  },
+  "et": "ეთიოპია",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "ფინეთი",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "ფიჯი",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "ფოკლენდის კუნძულები",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "მიკრონეზია",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "ფარერის კუნძულები",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "საფრანგეთი",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "გაბონი",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "დიდი ბრიტანეთი",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "გრენადა",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "საქართველო",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "საფრანგეთის გვიანა",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "გერნსი",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "განა",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "გიბრალტარი",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "გრენლანდ",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "გამბია",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "გვინეა",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "გუადელუპა",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "ეკვატორული გვინეა",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "საბერძნეთი",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "სამხრეთ საქართველო და სამხრეთ სენდვიჩის",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "გვატემალა",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "გუამი",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "გვინეა-ბისაუ",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "გაიანა",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "ჰონგ კონგი",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "ჰერდის კუნძული და მაკდონალ",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "ჰონდურასი",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "ხორვატია",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "ჩეხეთი",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "ჯიბუტი",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "კვიპროსი",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "გერმანია",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "ჰაიტი",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "უნგრეთი",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "ინდონეზი",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "ირლანდია",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "ისრაელი",
+  "@il": {
+    "description": "text"
+  },
+  "im": "მენის კუნძული",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "ინდოეთი",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "ბრიტანეთის ინდოეთის ოკეანის",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "ერაყი",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "ირანი",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "ისლანდია",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "იტალია",
+  "@it": {
+    "description": "text"
+  },
+  "je": "ჯერსი",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "იამაიკა",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "იორდანია",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "იაპონია",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "კენია",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "ყირგიზეთი",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "კამბოდია",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "კირიბატი",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "კომოროსები",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "სენტ კიტსი და ნევისი",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "ჩრდილოეთ კორ",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "სამხრეთ კორე",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "ქუვეითი",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "კაიმანის კუნძ",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "ყაზახეთი",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "ლაოსი",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "ლიბანი",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "წმინდა ლუსია",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "ლიხტენშ",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "შრი-ლანკა",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "ლიბერია",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "ლესოთო",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "ლიტვა",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "ლუქსემბ",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "ლატვია",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "ლიბია",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "მაროკო",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "მონაკო",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "მოლდოვა",
+  "@md": {
+    "description": "text"
+  },
+  "me": "მონტენეგრ",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "წმინდა მარტინი",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "მადაგასაკარი",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "მარშალის კუნძ",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "ჩრდილოეთ მაკ",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "მალი",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "მიანმარი [ბირმა]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "მონღოლეთი",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "მაკაო",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "ჩრდილოეთ მარიანას კუნძ",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "მარტინიკა",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "მავრიტანია",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "მონსერატი",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "მალტა",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "მავრიკი",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "მალდივები",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "მალავი",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "მექსიკა",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "მალაიზია",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "მოზამბიკი",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "ნამიბია",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "ახალი კალედონია",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "ნიგერი",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "ნორფოკის კუნძული",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "ნიგერია",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "ნიკარაგუა",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "ჰოლანდები",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "ნორვეგია",
+  "@no": {
+    "description": "text"
+  },
+  "np": "ნეპალი",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "ნაურუ",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "ნიუე",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "ახალი ზელანდია",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "ომანი",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "პანამა",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "პერუ",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "საფრანგეთის პოლინეზია",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "პაპუა ახალი გვინეა",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "ფილიპინები",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "პაკისტანი",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "პოლონეთი",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "სენ-პიერი და მიკელონი",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "პიტკერნის კუნძულები",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "პუერტო რიკ",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "პალესტინის",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "პორტუმია",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "პალაუ",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "პარაგვაი",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "კატარი",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "რეიუნიონი",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "რუმინეთი",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "სერბეთი",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "რუსეთი",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "რუანდა",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "საუდის არაბეთი",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "სოლომონის კუნძ",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "სეიშელები",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "სუდანი",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "შვედეთი",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "სინგაპური",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "წმინდა ელენა",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "სლოვენია",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "სვალბარდი და იან მაიენი",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "სლოვაკეთი",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "სიერა-ლეონე",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "სან-მარინო",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "სენეგალი",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "სომალი",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "სურინამი",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "სამხრეთ სუდანი",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "სან-ტომე და პრინსიპე",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "ელ სალვადორი",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "სინტ მარტენი",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "სირია",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "სვაზილენდი",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "ტერქსა და კაიკოსის კუნძულები",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "ჩადი",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "საფრანგეთის სამხრეთ",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "ტოგო",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "ტაილანდი",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "ტაჯიკეთი",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "ტოკელაუ",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "აღმოსავლეთ ტიმორი",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "თურქმენეთი",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "ტუნისი",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "ტონგა",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "თურქეთი",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "ტრინიდადი და ტობ",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "ტუვალუ",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "ტაივანი",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "ტანზანია",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "უკრაინა",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "უგანდა",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "აშშ-ს მცირე მოშორებული კუნძულები",
+  "@um": {
+    "description": "text"
+  },
+  "us": "შეერთებული შტატები",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "ურუგვაი",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "უზბეკი",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "ვატიკანი",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "სენტ ვინსენტი და გრენადინები",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "ვენესუელა",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "ბრიტანეთის ვერჯინიის",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "აშშ ვირჯინიის კუნძულები",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "ვიეტნამი",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "ვანუატუ",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "უოლისი და ფუტუნა",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "სამოა",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "კოსოვო",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "იემენი",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "მაიოტი",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "სამხრეთ აფრიკ",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "ზამბია",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "ზიმბაბვე",
+  "@zw": {
+    "description": "text"
+  }
+}

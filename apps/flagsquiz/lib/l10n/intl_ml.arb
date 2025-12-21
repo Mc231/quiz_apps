@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "പ്രദേശം തിരഞ്ഞെടുക്കുക",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "എല്ലാം",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "യൂറോപ്പ്",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "ഏഷ്യ",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "ആഫ്രിക്ക",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "വടക്കേ അമേരിക്ക",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "തെക്കേ അമേരിക്ക",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "ഓഷ്യാനിയ",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "നിങ്ങളുടെ സ്കോർ",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "അൻഡോറ",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "യുനൈറ്റഡ് അറബ് എമിറേറ്റ്",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "ആന്റിഗ്വയും ബാർബുഡയും",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "ആംഗുവിള",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "അഫ്ഗാനിസ്ഥാന്",
+  "@af": {
+    "description": "text"
+  },
+  "al": "അൽബേനിയ",
+  "@al": {
+    "description": "text"
+  },
+  "am": "അർമേനിയ",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "അംഗോള",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "അന്റാർട്ടിക്ക",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "അർജന്റീന",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "അമേരിക്കൻ സമോവ",
+  "@as": {
+    "description": "text"
+  },
+  "at": "ഓസ്ട്രിയ",
+  "@at": {
+    "description": "text"
+  },
+  "au": "ഓസ്ട്രേലിയ",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "അറൂബ",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "ഓലാൻഡ്",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "അസർബൈജാൻ",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "ബോസ്നിയയും ഹെർസഗോവി",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "ബാർബഡോസ്",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "ബംഗ്ലാദേശ്",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "ബെൽജിയം",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "ബുർകിന ഫാസോ",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "ബൾഗേറിയ",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "ബഹ്റൈൻ",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "ബുറുണ്ടി",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "ബെനിൻ",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "സെന്റ് ബാർത്തലെമി",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "ബെർമുഡ",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "ബ്രൂണൈ",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "ബൊളീവിയ",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "ബോണെയർ",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "ബ്രസീൽ",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "ബഹമാസ്",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "ഭൂട്ടാൻ",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "ബൗവെറ്റ് ദ്വീപ്",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "ബോട്സ്വാന",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "ബെലാറസ്",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "ബെലീസ്",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "കാനഡ",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "കോക്കോസ് [കീലിംഗ്] ദ്വീപുകൾ",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "ഡെമോക്രാറ്റിക് റിപ്പബ്ലിക് ഓഫ് കോംഗോ",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "മധ്യ ആഫ്രിക്കൻ റിപ്പബ്ലിക്",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "റിപ്പബ്ലിക് ഓഫ് കോംഗോ",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "സ്വിറ്റ്സർലണ്ട",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "ഐവറി കോസ്റ്റ്",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "കുക്ക് ദ്വീപുകൾ",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "ചിലി",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "കാമറൂൺ",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "ചൈന",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "കൊളംബിയ",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "കോസ്റ്റാറിക്ക",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "ക്യൂബ",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "കേപ് വെർഡെ",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "കുറാക്കാവോ",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "ക്രിസ്മസ് ദ്വീപ്",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "ഡെൻമാർക്ക്",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "ഡൊമിനിക്ക",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "ഡൊമിനിക് റിപ്പബ്ലിക്",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "അൾജീരിയ",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "ഇക്വഡോർ",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "എസ്റ്റോണിയ",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "ഈജിപ്ത്",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "പശ്ചിമ സഹാറ",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "എറിത്രിയ",
+  "@er": {
+    "description": "text"
+  },
+  "es": "സ്പെയിൻ",
+  "@es": {
+    "description": "text"
+  },
+  "et": "എത്യോപ്യ",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "ഫിൻലാൻഡ്",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "ഫിജി",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "ഫാക്ക്ലാൻഡ് ദ്വീപുകൾ",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "മൈക്രോനേഷ്യ",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "ഫറോ ദ്വീപുകൾ",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "ഫ്രാൻസ്",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "ഗാബൺ",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "യുനൈറ്റഡ് കിംഗ്ഡം",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "ഗ്രെനഡ",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "ജോർജിയ",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "ഫ്രഞ്ച് ഗയാന",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "ഗ്വെർൺസി",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "ഘാന",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "ജിബ്രാൾട്ടർ",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "ഗ്രീൻലാൻഡ്",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "ഗാംബിയ",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "ഗിനിയ",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "ഗ്വാഡലൂപ്പ്",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "ഇക്വറ്റോറിയൽ ഗിനി",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "ഗ്രീസ്",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "സൗത്ത് ജോർജിയയും സൗത്ത് സാൻഡ്വിച്ച് ദ്വീപുകളും",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "ഗ്വാട്ടിമാല",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "ഗുവാം",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "ഗിനിയ-ബിസൗ",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "ഗയാന",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "ഹോങ്കോംഗ്",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "ഹേർഡ് ദ്വീപ്, മക്ഡൊണാൾ",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "ഹോണ്ടുറാസ്",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "ക്രൊയേഷ്യ",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "ചെക്ക് റിപ്പബ്ലിക്",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "ജിബൂട്ടി",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "സൈപ്രസ്",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "ജർമനി",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "ഹെയ്തി",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "ഹംഗറി",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "ഇന്തോനേഷ്യ",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "അയർലൻഡ്",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "ഇസ്രായേൽ",
+  "@il": {
+    "description": "text"
+  },
+  "im": "ഐൽ ഓഫ് മാൻ",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "ഇന്ത്യ",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "ബ്രിട്ടീഷ് ഇന്ത്യൻ ഓഷ്യൻ ടെറിട്ടറി",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "ഇറാഖ്",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "ഇറാൻ",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "ഐസ്ലാൻഡ്",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "ഇറ്റലി",
+  "@it": {
+    "description": "text"
+  },
+  "je": "ജേഴ്സി",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "ജമൈക്ക",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "ജോർദാൻ",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "ജപ്പാൻ",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "കെനിയ",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "കിർഗിസ്ഥാൻ",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "കംബോഡിയ",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "കിരിബാതി",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "കൊമോറോസ്",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "സെന്റ് കിറ്റ്സും നെവിസും",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "ഉത്തര കൊറിയ",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "ദക്ഷിണ കൊറിയ",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "കുവൈറ്റ്",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "കേമാൻ ദ്വീപുകൾ",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "കസാക്കിസ്ഥാൻ",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "ലാവോസ്",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "ലെബനൻ",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "സെന്റ് ലൂസിയ",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "ലിച്ചെൻസ്റ്റൈ",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "ശ്രീലങ്ക",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "ലൈബീരിയ",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "ലെസോത്തോ",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "ലിത്വാനിയ",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "ലക്സംബർഗ്",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "ലാറ്റ്വിയ",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "ലിബിയ",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "മൊറോക്കോ",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "മൊണാക്കോ",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "മോൾഡോവ",
+  "@md": {
+    "description": "text"
+  },
+  "me": "മോണ്ടിനെഗ്ര",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "സെന്റ് മാർട്ടിൻ",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "മഡഗാസ്കർ",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "മാർഷൽ ദ്വീപുകൾ",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "ഉത്തര മാസിഡോണിയ",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "മാലി",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "മ്യാൻമർ [ബർമ]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "മംഗോളിയ",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "മക്കാവോ",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "വടക്കൻ മരിയാന ദ്വീപുകൾ",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "മാർട്ടിനിക്",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "മൗറിറ്റാനിയ",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "മോൻസെറാറ്റ്",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "മാൾട്ട",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "മൗറീഷ്യസ്",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "മാലിദ്വീപ്",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "മലാവി",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "മെക്സിക്കോ",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "മലേഷ്യ",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "മൊസാംബിക്",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "നമീബിയ",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "ന്യൂ കാലിഡോണിയ",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "നൈജർ",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "നോർഫോക്ക് ദ്വീപ്",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "നൈജീരിയ",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "നിക്കരാഗ്വ",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "നെതർലാന്റ്",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "നോർവേ",
+  "@no": {
+    "description": "text"
+  },
+  "np": "നേപ്പാൾ",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "നൗരു",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "നിയു",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "ന്യൂസിലാന്റ്",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "ഒമാൻ",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "പനാമ",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "പെറു",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "ഫ്രഞ്ച് പോളിനേഷ്യ",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "പപ്പുവ ന്യൂ ഗിനിയ",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "ഫിലിപ്പീൻസ്",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "പാക്കിസ്ഥാൻ",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "പോളണ്ട്",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "സെന്റ് പിയറിയും മിക്വലോണും",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "പിറ്റ്കെയർൻ ദ്വീപുകൾ",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "പ്യൂർട്ടോ റിക്കോ",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "പലസ്തീൻ",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "പോർച്ചുഗൽ",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "പലാവു",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "പരാഗ്വേ",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "ഖത്തർ",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "റീയൂണിയൻ",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "റൊമാനിയ",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "സെർബിയ",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "റഷ്യ",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "റുവാണ്ട",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "സൗദി അറേബ്യ",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "സോളമൻ ദ്വീപ",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "സീഷെൽസ്",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "സുഡാൻ",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "സ്വീഡൻ",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "സിംഗപ്പൂർ",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "സെന്റ് ഹെലീന",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "സ്ലോവേനിയ",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "സ്വാൽബാർഡും ജാൻ മയനും",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "സ്ലോവാക്യ",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "സിയറ ലിയോൺ",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "സാൻ മറിനോ",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "സെനഗൽ",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "സൊമാലിയ",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "സുരിനാം",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "ദക്ഷിണ സുഡാൻ",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "സാവോ ടോമെയും പ്രിൻസിപിയും",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "എൽ സാൽവഡോർ",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "സെന്റ് മാർട്ടൻ",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "സിറിയ",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "സ്വാസിലാൻഡ്",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "ടർക്സ്, കൈകോസ് ദ്വീപുകൾ",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "ചാഡ്",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "ഫ്രഞ്ച് തെക്കൻ പ്രദേശങ്ങൾ",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "ടോഗോ",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "തായ്ലൻഡ്",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "താജിക്കിസ്ഥാന്",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "ടൊകെലൗ",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "കിഴക്കൻ തിമോർ",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "തുർക്ക്മെനി",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "ടുണീഷ്യ",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "ടോംഗ",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "തുർക്കി",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "ട്രിനിഡാഡ് ആൻഡ് ടുബാഗോ",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "തുവാലു",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "തായ്വാൻ",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "ടാന്സാനിയ",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "ഉക്രെയ്ൻ",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "ഉഗാണ്ട",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "യുഎസ് മൈനർ ഔട്ട്ലൈയിംഗ് ദ്വീപുകൾ",
+  "@um": {
+    "description": "text"
+  },
+  "us": "യുണൈറ്റഡ് സ്റ്റേറ്റ്സ്",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "ഉറുഗ്വേ",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "ഉസ്ബക്കിസ്ഥാന്",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "വത്തിക്കാൻ സിറ്റി",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "സെന്റ് വിൻസെന്റും ഗ്രെനഡൈൻസും",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "വെനിസ്വേല",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "ബ്രിട്ടീഷ് വെർജിൻ ദ്വീപ",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "യുഎസ് വിർജിൻ ദ്വീപുകൾ",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "വിയറ്റ്നാം",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "വാനുവാട്ടു",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "വാലിസും ഫ്യൂട്ടൂനയും",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "സമോവ",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "കൊസോവോ",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "യെമൻ",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "മയോട്ട്",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "ദക്ഷിണാഫ്രിക്ക",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "സാംബിയ",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "സിംബാബ്വേ",
+  "@zw": {
+    "description": "text"
+  }
+}

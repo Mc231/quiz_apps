@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "علاقہ منتخب کریں",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "سب",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "یورپ",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "ایشیا",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "افریقہ",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "شمالی امریکہ",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "جنوبی امریکہ",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "اوشینیا۔",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "آپ کا اسکور",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "انڈورا",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "متحدہ عرب امارات",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "اینٹیگوا اور باربوڈا",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "انگویلا",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "افغانستان۔",
+  "@af": {
+    "description": "text"
+  },
+  "al": "البانیہ",
+  "@al": {
+    "description": "text"
+  },
+  "am": "آرمینیا",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "انگولا",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "انٹارکٹیکا",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "ارجنٹینا",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "امریکی ساموا",
+  "@as": {
+    "description": "text"
+  },
+  "at": "آسٹریا",
+  "@at": {
+    "description": "text"
+  },
+  "au": "آسٹریلیا",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "اروبا",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "آلینڈ",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "آذربائیجان۔",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "بوسنیا اور ہرزیگوینا",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "بارباڈوس",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "بنگلہ دیش",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "بیلجیئم",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "برکینا فاسو",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "بلغاریہ",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "بحرین",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "برونڈی",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "بینن",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "سینٹ بارتھلیمی",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "برموڈا",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "برونائی",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "بولیویا",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "بونائر",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "برازیل",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "بہاماس",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "بھوٹان",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "بوویٹ جزیرہ",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "بوٹسوانا",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "بیلاروس",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "بیلیز",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "کینیڈا",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "کوکوس [کیلنگ] جزائر",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "جمہوریہ کانگو کی جمہوریہ",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "مرکزی افریقی جمہوریہ",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "جمہوریہ کانگو",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "سوئٹزرلینڈ",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "آئیوری کوسٹ",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "کک جزائر",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "چلی",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "کیمرون۔",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "چین",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "کولمبیا",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "کوسٹا ریکا",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "کیوبا",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "کیپ ورڈے",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "کوراکاؤ",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "کرسمس جزیر",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "ڈنمارک",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "ڈومینیکا",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "جمہوریہ ڈومی",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "الجیریا",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "ایکویڈور",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "ایسٹونیا",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "مصر",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "مغربی صحارا",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "ایریٹیریا",
+  "@er": {
+    "description": "text"
+  },
+  "es": "ہسپانیہ",
+  "@es": {
+    "description": "text"
+  },
+  "et": "ایتھوپیا",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "فنلینڈ",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "فجی",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "فاکلینڈ جزائر",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "مائکرونیشیا",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "جزائر فارو",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "فرانس",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "گیبون",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "برطانیہ",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "گریناڈا۔",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "جارجیا",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "فرانسیسی گیانا",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "گرنزی",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "گھانا",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "جبرالٹر",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "گرین لینڈ",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "گیمبیا",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "گنی",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "گواڈیلوپ",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "استوائی گنی",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "یونان",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "جنوبی جارجیا اور جنوبی سینڈوچ جزیر",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "گوئٹے مالا",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "گووام",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "گیانا بساؤ",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "گائیانا",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "ہانگ کانگ",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "ہیرڈ جزیرہ اور میک ڈونل",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "ہونڈوریس",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "کروشیا",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "جمہوریہ چیک",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "جبوتی",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "قبرص",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "جرمنی",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "ہیتی",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "ہنگری",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "انڈونیشیا",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "آئرلینڈ",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "اسرائیل",
+  "@il": {
+    "description": "text"
+  },
+  "im": "آئل آف مین",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "ہندوستان۔",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "برطانوی بحر ہند علاقہ",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "عراق",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "ایران",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "آئس لینڈ",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "اٹلی",
+  "@it": {
+    "description": "text"
+  },
+  "je": "جرسی۔",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "جمائیکا",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "اردن",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "جاپان",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "کینیا",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "کرغزستان",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "کمبوڈیا",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "کیریباتی",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "کوموروس",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "سینٹ کٹس اور نیوس",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "شمالی کوریا",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "جنوبی کوریا",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "کویت",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "جزائر کیمین",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "قازقستان",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "لاؤس",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "لبنان",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "سینٹ لوسیا",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "لیکٹینسٹائن",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "سری لنکا",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "لائبیریا",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "لیسوتھو",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "لتھوانیا",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "لکسمبرگ",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "لٹویا",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "لیبیا",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "مراکش",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "موناکو",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "مالدووا",
+  "@md": {
+    "description": "text"
+  },
+  "me": "مونٹینیگرو",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "سینٹ مارٹن",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "مڈگاسکر",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "جزائر مارشل",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "شمالی مقدونیہ",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "مالی",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "میانمار [برما]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "منگولیا",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "مکاؤ",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "شمالی ماریانا جزائر",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "مارٹنیک۔",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "موریطانیا",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "مونٹسیریٹ",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "مالٹا",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "موریشس",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "مالدیپ",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "ملاوی",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "میکسیکو",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "ملائیشیا",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "موزمبیق",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "نامیبیا",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "نیو کیلیڈونیا",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "نائجر",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "جزیرہ نورفولک",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "نائیجیریا",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "نکاراگووا",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "نیدرلینڈز",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "ناروے",
+  "@no": {
+    "description": "text"
+  },
+  "np": "نیپال",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "نورو۔",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "نیو",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "نیوزی لینڈ",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "عمان",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "پانامہ",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "پیرو",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "فرانسیسی پولینیشیا",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "پاپوا نیو گنی",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "فلپائن",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "پاکستان",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "پولینڈ",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "سینٹ پیئر اور میکویلن",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "جزائر پٹ کیرن",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "پورٹو ریکو",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "فلسطین۔",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "پرتگال",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "پلاؤ",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "پیراگوئے",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "قطر",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "ریونیون",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "رومانیہ",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "سربیا۔",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "روس",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "روانڈا",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "سعودی عرب",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "جزائر سلیمان",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "سیشیلز",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "سوڈان",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "سویڈن",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "سنگاپور",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "سینٹ ہیلینا",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "سلووینیا",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "سوالبارڈ اور جان میئن",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "سلواکیا",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "سیرا لیون",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "سان مارینو",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "سینیگال",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "صومالیہ",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "سورینام",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "جنوبی سوڈان",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "ساؤ ٹومی اور پرنسیپ",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "ایل سلواڈور",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "سینٹ مارٹن",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "شام",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "سوازی لینڈ",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "جزائر ترکس اور کیکوس",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "چاڈ",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "فرانسیسی جنوبی علاقے",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "جانے کے لئے",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "تھائ لینڈ",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "تاجکستان",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "ٹوکیلاؤ",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "مشرقی تیمور",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "ترکمانستان",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "تیونس",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "ٹونگا",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "ترکی",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "ٹرینیڈاڈ اور ٹو",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "ٹووالو",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "تائیوان",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "تنزانیہ",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "یوکرین",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "یوگنڈا",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "امریکی مائنر بیرونی جزائر",
+  "@um": {
+    "description": "text"
+  },
+  "us": "ریاستہائے متحدہ",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "یوراگوئے",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "ازبکستان",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "ویٹیکن سٹی",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "سینٹ ونسنٹ اور گریناڈائنز",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "وینزویلا",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "برٹش ورجن جزائر",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "امریکی ورجن جزائر",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "ویتنام",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "وانوآٹوو",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "والس اور فیوٹونا",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "ساموا",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "کوسووو",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "یمن",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "مےیوٹ",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "جنوبی افریقہ",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "زیمبیا",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "زمبابوے",
+  "@zw": {
+    "description": "text"
+  }
+}

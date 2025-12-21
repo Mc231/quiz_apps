@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "Veldu svæði",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "Allt",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "Evrópa",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "Asíu",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "Afríku",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "Norður-Ameríka",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "Suður-Ameríka",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "Eyjaálfu",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "Skor þín",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "Andorra",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "Sameinuðu arabíska furstadæmin",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "Antígva og Barbúda",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "Anguilla",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "Afganistan",
+  "@af": {
+    "description": "text"
+  },
+  "al": "Albanía",
+  "@al": {
+    "description": "text"
+  },
+  "am": "Armenía",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "Angóla",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "Suðurskautslandið",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "Argentína",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "Bandaríska Samóa",
+  "@as": {
+    "description": "text"
+  },
+  "at": "Austurríki",
+  "@at": {
+    "description": "text"
+  },
+  "au": "Ástralía",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "Arúba",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "Álandseyjar",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "Aserbaídsjan",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "Bosnía og Hersegóvína",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "Barbados",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "Bangladess",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "Belgíu",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "Búrkína Fasó",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "Búlgaría",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "Barein",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "Búrúndí",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "Benín",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "Saint Barthélemy",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "Bermúda",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "Brúnei",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "Bólivía",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "Bonaire",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "Brasilía",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "Bahamaeyjar",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "Bútan",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "Bouvet-eyja",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "Botswana",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "Hvíta-Rússland",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "Belís",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "Kanada",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "Kókóseyjar [Keeling]",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "Lýðveldið Kongó",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "Mið-Afríkulýðveldið",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "Lýðveldið Kongó",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "Sviss",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "Fílabeinsströndin",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "Cook eyjar",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "Síle",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "Kamerún",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "Kína",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "Kólumbíu",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "Kosta Ríka",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "Kúbu",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "Grænhöfðeyjar",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "Curacao",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "Jólaeyja",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "Danmörku",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "Dóminíka",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "Dóminíska lýðvel",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "Alsír",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "Ekvador",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "Eistland",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "Egyptaland",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "Vestur-Sahara",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "Erítreu",
+  "@er": {
+    "description": "text"
+  },
+  "es": "Spánn",
+  "@es": {
+    "description": "text"
+  },
+  "et": "Eþíópía",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "Finnland",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "Fídjieyjar",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "Falklandseyjar",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "Míkrónesíu",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "Færeyjar",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "Frakkland",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "Gabon",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "Bretland",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "ath",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "Georgíu",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "Franska Gvæjana",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "Guernsey",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "Gana",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "Gíbraltar",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "Grænland",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "Gambía",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "Gíneu",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "Gvadelúpeyjar",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "Miðbaugs-Gínea",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "Grikkland",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "Suður-Georgía og Suður-Sandwich-eyjar",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "Gvatemala",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "Guam",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "Gínea-Bissá",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "Gvæjana",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "Hong Kong",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "Heard-eyja og McDonald-eyjar",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "Hondúras",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "Króatía",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "Tékkland",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "Djíbútí",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "Kýpur",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "Þýskaland",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "Haítí",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "Ungverjaland",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "Indónesía",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "Írland",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "Ísrael",
+  "@il": {
+    "description": "text"
+  },
+  "im": "Mön",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "Indland",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "Breska Indlandshafssvæðið",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "Írak",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "Íran",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "Ísland",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "Ítalíu",
+  "@it": {
+    "description": "text"
+  },
+  "je": "Peysa",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "Jamaíka",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "Jórdaníu",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "Japan",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "Kenía",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "Kirgisistan",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "Kambódíu",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "Kiribati",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "Kómoreyjar",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "Saint Kitts og Nevis",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "Norður-Kórea",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "Suður-Kórea",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "Kúveit",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "Cayman Islands",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "Kasakstan",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "Laos",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "Líbanon",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "Sankti Lúsía",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "Liechtenstein",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "Srí Lanka",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "Líbería",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "Lesótó",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "Litháen",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "Lúxemborg",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "Lettland",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "Líbýa",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "Marokkó",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "Mónakó",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "Moldóva",
+  "@md": {
+    "description": "text"
+  },
+  "me": "Svartfjallaland",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "Saint Martin",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "Madagaskar",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "Marshall-eyjar",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "Norður-Makedónía",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "Malí",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "Mjanmar [Burma]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "Mongólía",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "Makaó",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "Norður-Maríaneyjar",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "Martinique",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "Máritanía",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "Montserrat",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "Möltu",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "Máritíus",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "Maldíveyjar",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "Malaví",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "Mexíkó",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "Malasía",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "Mósambík",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "Namibíu",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "Nýja Kaledónía",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "Níger",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "Norfolk-eyja",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "Nígería",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "Níkaragva",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "Hollandi",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "Noregi",
+  "@no": {
+    "description": "text"
+  },
+  "np": "Nepal",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "Naurú",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "Niue",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "Nýja-Sjáland",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "Óman",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "Panama",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "Perú",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "Franska Pólýnesía",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "Papúa Nýja-Gínea",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "Filippseyjar",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "Pakistan",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "Pólland",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "Saint Pierre og Miquelon",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "Pitcairn-eyjar",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "Púertó Ríkó",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "Palestína",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "Portúgal",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "Palau",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "Paragvæ",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "Katar",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "Réunion",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "Rúmenía",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "Serbía",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "Rússland",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "Rúanda",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "Sádi-Arabía",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "Salómonseyjar",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "Seychelles",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "Súdan",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "Svíþjóð",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "Singapore",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "Saint Helena",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "Slóvenía",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "Svalbarði og Jan Mayen",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "Slóvakía",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "Síerra Leone",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "San Marínó",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "Senegal",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "Sómalíu",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "Súrínam",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "Suður-Súdan",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "São Tóme og Príncipe",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "El Salvador",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "Sint Maarten",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "Sýrland",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "Svasíland",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "Turks- og Caicos-eyjar",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "Chad",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "Frönsku suðurlandssvæðin",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "Tógó",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "Tæland",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "Tadsjikistan",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "Tokelau",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "Austur-Tímor",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "Túrkmenistan",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "Túnis",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "Tonga",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "Tyrkland",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "Trínidad og Tóbagó",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "Túvalú",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "Taívan",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "Tansaníu",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "Úkraína",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "Úganda",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "Minniháttar afliggjandi eyjar Bandaríkjanna",
+  "@um": {
+    "description": "text"
+  },
+  "us": "Bandaríkin",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "Úrúgvæ",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "Úsbekistan",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "Vatíkanborg",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "Saint Vincent og Grenadíneyjum",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "Venesúela",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "Bresku Jómfrúareyjar",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "Bandarísku Jómfrúareyjar",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "Víetnam",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "Vanúatú",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "Wallis og Futuna",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "Samóa",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "Kósóvó",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "Jemen",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "Mayotte",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "Suður-Afríka",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "Sambía",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "Simbabve",
+  "@zw": {
+    "description": "text"
+  }
+}

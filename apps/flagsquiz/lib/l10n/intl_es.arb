@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "Seleccione una región",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "Todas",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "Europa",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "Asia",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "África",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "Norteamérica",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "América del Sur",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "Oceanía",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "Tu puntuación",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "Andorra",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "Emiratos Árabes Unidos",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "Antigua y Barbuda",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "Anguila",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "Afganistán",
+  "@af": {
+    "description": "text"
+  },
+  "al": "Albania",
+  "@al": {
+    "description": "text"
+  },
+  "am": "Armenia",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "Angola",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "Antártida",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "Argentina",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "Samoa Americana",
+  "@as": {
+    "description": "text"
+  },
+  "at": "Austria",
+  "@at": {
+    "description": "text"
+  },
+  "au": "Australia",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "Aruba",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "Åland",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "Azerbaiyán",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "Bosnia y Herzegovina",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "Barbados",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "Bangladesh",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "Bélgica",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "Burkina Faso",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "Bulgaria",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "Baréin",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "Burundi",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "Benin",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "San Bartolomé",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "Bermudas",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "Brunei",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "Bolivia",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "Bonaire",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "Brasil",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "Bahamas",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "Bután",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "Isla Bouvet",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "Botsuana",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "Bielorrusia",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "Belice",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "Canadá",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "Islas Cocos [Keeling]",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "República Democrática del Congo",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "República Centroafricana",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "República del Congo",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "Suiza",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "Costa de Marfil",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "Islas Cook",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "Chile",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "Camerún",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "China",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "Colombia",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "Costa Rica",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "Cuba",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "Cabo Verde",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "Curazao",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "Isla de Navidad",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "Dinamarca",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "Dominica",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "República Dominicana",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "Argelia",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "Ecuador",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "Estonia",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "Egipto",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "Sáhara Occidental",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "Eritrea",
+  "@er": {
+    "description": "text"
+  },
+  "es": "España",
+  "@es": {
+    "description": "text"
+  },
+  "et": "Etiopía",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "Finlandia",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "Fiyi",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "Islas Malvinas",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "Micronesia",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "Islas Feroe",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "Francia",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "Gabón",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "Reino Unido",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "Granada",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "Georgia",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "Guayana Francesa",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "Guernsey",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "Ghana",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "Gibraltar",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "Groenlandia",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "Gambia",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "Guinea",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "Guadalupe",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "Guinea Ecuatorial",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "Grecia",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "Islas Georgias del Sur y Sandwich del Sur",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "Guatemala",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "Guam",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "Guinea-Bisáu",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "Guayana",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "Hong Kong",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "Islas Heard e Islas McDonald",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "Honduras",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "Croacia",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "República Checa",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "Yibuti",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "Chipre",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "Alemania",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "Haití",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "Hungría",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "Indonesia",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "Irlanda",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "Israel",
+  "@il": {
+    "description": "text"
+  },
+  "im": "Isla de Man",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "India",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "Territorio Británico del Océano Índico",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "Irak",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "Irán",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "Islandia",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "Italia",
+  "@it": {
+    "description": "text"
+  },
+  "je": "Jersey",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "Jamaica",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "Jordán",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "Japón",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "Kenia",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "Kirguistán",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "Camboya",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "Kiribati",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "Comoras",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "Saint Kitts y Nevis",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "Corea del Norte",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "Corea del Sur",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "Kuwait",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "Islas Caimán",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "Kazajstán",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "Laos",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "Líbano",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "Santa Lucía",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "Liechtenstein",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "Sri Lanka",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "Liberia",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "Lesoto",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "Lituania",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "Luxemburgo",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "Letonia",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "Libia",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "Marruecos",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "Mónaco",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "Moldavia",
+  "@md": {
+    "description": "text"
+  },
+  "me": "Montenegro",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "San Martín",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "Madagascar",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "Islas Marshall",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "Macedonia del Norte",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "Malí",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "Myanmar [Birmania]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "Mongolia",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "Macao",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "Islas Marianas del Norte",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "Martinica",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "Mauritania",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "Montserrat",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "Malta",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "Mauricio",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "Maldivas",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "Malawi",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "Mexico",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "Malasia",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "Mozambique",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "Namibia",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "Nueva Caledonia",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "Níger",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "Isla Norfolk",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "Nigeria",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "Nicaragua",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "Holanda",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "Noruega",
+  "@no": {
+    "description": "text"
+  },
+  "np": "Nepal",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "Nauru",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "Niue",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "Nueva Zelanda",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "Omán",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "Panamá",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "Perú",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "Polinesia Francesa",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "Papúa Nueva Guinea",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "Filipinas",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "Pakistán",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "Polonia",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "San Pedro y Miquelón",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "Islas Pitcairn",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "Puerto Rico",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "Palestina",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "Portugal",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "Palaos",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "Paraguay",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "Qatar",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "Reunión",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "Rumania",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "Serbia",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "Rusia",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "Ruanda",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "Arabia Saudí",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "Islas Salomón",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "Seychelles",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "Sudán",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "Suecia",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "Singapur",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "Santa Helena",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "Eslovenia",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "Svalbard y Jan Mayen",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "Eslovaquia",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "Sierra Leona",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "San Marino",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "Senegal",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "Somalia",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "Surinam",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "Sudán del Sur",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "Santo Tomé y Príncipe",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "El Salvador",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "Sint Maarten",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "Siria",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "Swazilandia",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "Islas Turcas y Caicos",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "Chad",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "Territorios Australes Franceses",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "Togo",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "Tailandia",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "Tayikistán",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "Tokelau",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "Timor Oriental",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "Turkmenistán",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "Túnez",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "Tonga",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "Turquía",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "Trinidad y Tobago",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "Tuvalu",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "Taiwán",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "Tanzania",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "Ucrania",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "Uganda",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "Islas Ultramarinas Menores de los Estados Unidos",
+  "@um": {
+    "description": "text"
+  },
+  "us": "Estados Unidos",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "Uruguay",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "Uzbekistán",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "Ciudad del Vaticano",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "San Vicente y las Granadinas",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "Venezuela",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "Islas Vírgenes Británicas",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "Islas Vírgenes de los Estados Unidos",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "Vietnam",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "Vanuatu",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "Wallis y Futuna",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "Samoa",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "Kósovo",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "Yemen",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "Mayotte",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "Sudáfrica",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "Zambia",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "Zimbabue",
+  "@zw": {
+    "description": "text"
+  }
+}

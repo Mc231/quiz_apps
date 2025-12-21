@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "Επιλέξτε Περιοχή",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "Ολα",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "Ευρώπη",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "Ασία",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "Αφρική",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "Βόρεια Αμερική",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "Νότια Αμερική",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "Ωκεανία",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "Η βαθμολογία σας",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "Ανδόρα",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "Ηνωμένα Αραβικά Εμιράτα",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "Αντίγκουα και Μπαρμπούντα",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "Ανγκουίλα",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "Αφγανιστάν",
+  "@af": {
+    "description": "text"
+  },
+  "al": "Αλβανία",
+  "@al": {
+    "description": "text"
+  },
+  "am": "Αρμενίας",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "Αγκόλα",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "Ανταρκτική",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "Αργεντινή",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "Αμερικάνικη Σαμόα",
+  "@as": {
+    "description": "text"
+  },
+  "at": "Αυστρία",
+  "@at": {
+    "description": "text"
+  },
+  "au": "Αυστραλία",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "Αρούμπα",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "Όλαντ",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "Αζερμπαϊτζάν",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "Βοσνία Ερζεγοβ",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "Μπαρμπάντος",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "Μπαγκλαντές",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "Βέλγιο",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "Μπουρκίνα Φάσο",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "Βουλγαρία",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "Μπαχρέιν",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "Μπουρούντι",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "Μπενίν",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "Άγιος Βαρθολομαίος",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "Βερμούδα",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "Μπρουνέι",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "Βολιβία",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "Μποναίρ",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "Βραζιλία",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "Μπαχάμες",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "Μπουτάν",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "Νησί Μπουβέ",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "Μποτσουάνα",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "Λευκορωσία",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "Μπελίζ",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "Καναδά",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "Νησιά Κόκος [Κίλινγκ]",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "Λαϊκή Δημοκρατία του Κονγκό",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "Κεντροαφρικανική Δημοκρατία",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "Δημοκρατία του Κονγκό",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "Ελβετία",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "Ακτή Ελεφαντοστού",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "Νήσοι Κουκ",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "Χιλή",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "Καμερούν",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "Κίνα",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "Κολομβία",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "Κόστα Ρίκα",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "Κούβα",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "Πράσινο Ακρωτήριο",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "Κουρασάο",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "Νησί Χριστουγέννων",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "Δανίας",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "Ντομίνικα",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "Δομινικανή Δημοκρατία",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "Αλγερία",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "Εκουαδόρ",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "Εσθονία",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "Αίγυπτος",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "Δυτική Σαχάρα",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "Ερυθραία",
+  "@er": {
+    "description": "text"
+  },
+  "es": "Ισπανία",
+  "@es": {
+    "description": "text"
+  },
+  "et": "Αιθιοπίας",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "Φινλανδίας",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "Φίτζι",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "Νήσοι Φώκλαντ",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "Μικρονησία",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "Νήσοι Φερόες",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "Γαλλία",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "Γκαμπόν",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "Ηνωμένο Βασίλειο",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "Γρενάδα",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "Γεωργία",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "Γαλλική Γουιάνα",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "Γκέρνσεϊ",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "Γκάνα",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "Γιβραλτάρ",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "Γροιλανδία",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "Γκάμπια",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "Γουινέα",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "Γουαδελούπη",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "Ισημερινή Γουινέα",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "Ελλάδα",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "Νότια Γεωργία και Νήσοι Νότιο Σάντουιτς",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "Γουατεμάλα",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "Γκουάμ",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "Γουινέα-Μπισάου",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "Γουιάνα",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "Χονγκ Κονγκ",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "Νήσοι Χερντ και ΜακΝτόναλντ",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "Ονδούρα",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "Κροατία",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "Τσεχική Δημοκρατία",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "Τζιμπουτί",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "Κύπρος",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "Γερμανία",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "Αϊτής",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "Ουγγαρία",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "Ινδονησία",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "Ιρλανδία",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "Ισραήλ",
+  "@il": {
+    "description": "text"
+  },
+  "im": "Νήσος του Μαν",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "Ινδία",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "Βρετανικό έδαφος Ινδικού Ωκεανού",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "Ιράκ",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "Ιράν",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "Ισλανδία",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "Ιταλία",
+  "@it": {
+    "description": "text"
+  },
+  "je": "Νιου Τζέρσεϋ",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "Τζαμάικα",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "Ιορδανία",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "Ιαπωνία",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "Κένυα",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "Κιργιζιστάν",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "Καμπότζη",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "Κιριμπάτι",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "Κομόρες",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "Άγιος Χριστόφορος και Νέβις",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "Βόρεια Κορέα",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "Νότια Κορέα",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "Κουβέιτ",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "Νήσοι Κέιμαν",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "Καζακστάν",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "Λάος",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "Λίβανος",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "Αγία Λουκία",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "Λιχτενστάιν",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "Σρι Λάνκα",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "Λιβερία",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "Λεσόθο",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "Λιθουανία",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "Λουξεμβούργο",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "Λεττονία",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "Λιβύη",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "Μαρόκο",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "Μονακό",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "Μολδαβία",
+  "@md": {
+    "description": "text"
+  },
+  "me": "Μαυροβουνίου",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "Άγιος Μαρτίνος",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "Μαδαγασκάρη",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "Νήσοι Μάρσαλ",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "Βόρεια Μακεδονία",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "Μάλι",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "Μιανμάρ [Βιρμανία]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "Μογγολία",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "Μακάο",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "Νήσοι Βόρειας Μαριάνας",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "Μαρτινίκα",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "Μαυριτανίας",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "Montserrat",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "Μάλτας",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "Μαυρίκιος",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "Μαλδίβες",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "Μαλάουι",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "Μεξικό",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "Μαλαισία",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "Μοζαμβίκη",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "Ναμίμπια",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "Νέα Καληδονία",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "Νίγηρας",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "Νησί Νορφολκ",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "Νιγηρία",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "Νικαράγουα",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "Ολλανδία",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "Νορβηγία",
+  "@no": {
+    "description": "text"
+  },
+  "np": "Νεπάλ",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "Nauru",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "Νιούε",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "Νέα Ζηλανδία",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "Ομάν",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "Παναμάς",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "Περού",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "Γαλλική Πολυνησία",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "Παπούα Νέα Γουινέα",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "Φιλιππίνες",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "Πακιστάν",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "Πολωνία",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "Άγιος Πιέρ και Μικελόν",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "Νήσοι Πίτκερν",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "Πουέρτο Ρίκο",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "Παλαιστίνη",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "Πορτογαλία",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "Παλάου",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "Παραγουάη",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "Κατάρ",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "Ρεϋνιόν",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "Ρουμανία",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "Σερβία",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "Ρωσία",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "Ρουάντα",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "Σαουδική Αραβία",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "Νήσοι Σολομών",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "Σεϋχέλλες",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "Σουδάν",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "ΣΟΥΗΔΙΑ",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "Σιγκαπούρη",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "Αγία Ελένη",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "Σλοβενίας",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "Σβάλμπαρντ και Γιαν Μαγιέν",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "Σλοβακία",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "Σιέρα Λεόνε",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "Σαν Μαρίνο",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "Σενεγάλη",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "Σομαλίας",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "Σουρινάμ",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "Νότιο Σουδάν",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "Σάο Τομέ και Πρίνσιπε",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "Σαλβαδόρ",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "Άγιος Μαρτίνος",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "Συρία",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "Σουαζιλάνδη",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "Νήσοι Τερκς και Κάικος",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "Τσαντ",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "Γαλλικά Νότια Εδάφη",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "Τόγκο",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "Ταϊλάνδη",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "Τατζικιστάν",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "Τοκελάου",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "Ανατολικό Τιμόρ",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "Τουρκμενιστάν",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "Τυνησία",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "Τόνγκα",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "Τουρκία",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "Τρινιντάντ και Τομπ",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "Τουβαλού",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "Ταϊβάν",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "Τανζανίας",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "Ουκρανία",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "Ουγκάντα",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "Μικρά απομακρυσμένα νησιά των ΗΠΑ",
+  "@um": {
+    "description": "text"
+  },
+  "us": "Ηνωμένες Πολιτείες",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "Ουρουγουάη",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "Ουζμπεκιστάν",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "Πόλη του Βατικανού",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "Άγιος Βικέντιος και Γρεναδίνες",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "Βενεζουέλα",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "Βρετανικές Παρθένοι Νήσοι",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "Αμερικανικές Παρθένοι Νήσοι",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "Βιετνάμ",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "Βανουάτου",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "Γουόλις και Φουτούνα",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "Σαμόα",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "Κόσοβο",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "Υεμένη",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "Μαγιότ",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "Νότια Αφρική",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "Ζάμπια",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "Ζιμπάμπουε",
+  "@zw": {
+    "description": "text"
+  }
+}

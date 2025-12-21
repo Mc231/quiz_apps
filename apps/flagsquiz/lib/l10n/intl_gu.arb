@@ -1,0 +1,1038 @@
+{
+  "selectRegion": "પ્રદેશ પસંદ કરો",
+  "@selectRegion": {
+    "description": "text"
+  },
+  "all": "બધા",
+  "@all": {
+    "description": "text"
+  },
+  "europe": "યુરોપ",
+  "@europe": {
+    "description": "text"
+  },
+  "asia": "એશિયા",
+  "@asia": {
+    "description": "text"
+  },
+  "africa": "આફ્રિકા",
+  "@africa": {
+    "description": "text"
+  },
+  "northAmerica": "ઉત્તર અમેરિકા",
+  "@northAmerica": {
+    "description": "text"
+  },
+  "southAmerica": "દક્ષિણ અમેરિકા",
+  "@southAmerica": {
+    "description": "text"
+  },
+  "oceania": "ઓશનિયા",
+  "@oceania": {
+    "description": "text"
+  },
+  "yourScore": "તમારો સ્કોર",
+  "@yourScore": {
+    "description": "text"
+  },
+  "ad": "એન્ડોરા",
+  "@ad": {
+    "description": "text"
+  },
+  "ae": "સંયુક્ત આરબ અમીરાત",
+  "@ae": {
+    "description": "text"
+  },
+  "ag": "એન્ટિગુઆ અને બાર્બુડા",
+  "@ag": {
+    "description": "text"
+  },
+  "ai": "એંગુઇલા",
+  "@ai": {
+    "description": "text"
+  },
+  "af": "અફઘાનિસ્તા",
+  "@af": {
+    "description": "text"
+  },
+  "al": "અલ્બેનિયા",
+  "@al": {
+    "description": "text"
+  },
+  "am": "આર્મેનિયા",
+  "@am": {
+    "description": "text"
+  },
+  "ao": "અંગોલા",
+  "@ao": {
+    "description": "text"
+  },
+  "aq": "એન્ટાર્ક્ટિક",
+  "@aq": {
+    "description": "text"
+  },
+  "ar": "આર્જેન્ટિના",
+  "@ar": {
+    "description": "text"
+  },
+  "as": "અમેરિકન સમોઆ",
+  "@as": {
+    "description": "text"
+  },
+  "at": "ઓસ્ટ્રિયા",
+  "@at": {
+    "description": "text"
+  },
+  "au": "ઓસ્ટ્રેલિયા",
+  "@au": {
+    "description": "text"
+  },
+  "aw": "અરુબા",
+  "@aw": {
+    "description": "text"
+  },
+  "ax": "એલેન્ડ",
+  "@ax": {
+    "description": "text"
+  },
+  "az": "અઝરબાય",
+  "@az": {
+    "description": "text"
+  },
+  "ba": "બોસ્નિયા અને હર્ઝેગો",
+  "@ba": {
+    "description": "text"
+  },
+  "bb": "બાર્બાડોસ",
+  "@bb": {
+    "description": "text"
+  },
+  "bd": "બાંગ્લાદેશ",
+  "@bd": {
+    "description": "text"
+  },
+  "be": "બેલ્જિયમ",
+  "@be": {
+    "description": "text"
+  },
+  "bf": "બુર્કિના ફાસો",
+  "@bf": {
+    "description": "text"
+  },
+  "bg": "બલ્ગેરિયા",
+  "@bg": {
+    "description": "text"
+  },
+  "bh": "બહરીન",
+  "@bh": {
+    "description": "text"
+  },
+  "bi": "બુરુન્ડી",
+  "@bi": {
+    "description": "text"
+  },
+  "bj": "બેનિન",
+  "@bj": {
+    "description": "text"
+  },
+  "bl": "સેન્ટ બાર્થેલેમી",
+  "@bl": {
+    "description": "text"
+  },
+  "bm": "બર્મુડા",
+  "@bm": {
+    "description": "text"
+  },
+  "bn": "બ્રુનેઇ",
+  "@bn": {
+    "description": "text"
+  },
+  "bo": "બોલિવિયા",
+  "@bo": {
+    "description": "text"
+  },
+  "bq": "બોનેર",
+  "@bq": {
+    "description": "text"
+  },
+  "br": "બ્રાઝિલ",
+  "@br": {
+    "description": "text"
+  },
+  "bs": "બહામાસ",
+  "@bs": {
+    "description": "text"
+  },
+  "bt": "ભૂટાન",
+  "@bt": {
+    "description": "text"
+  },
+  "bv": "બોવેટ આઇલેન્ડ",
+  "@bv": {
+    "description": "text"
+  },
+  "bw": "બોત્સ્વાના",
+  "@bw": {
+    "description": "text"
+  },
+  "by": "બેલારુસ",
+  "@by": {
+    "description": "text"
+  },
+  "bz": "બેલીઝ",
+  "@bz": {
+    "description": "text"
+  },
+  "ca": "કેનેડા",
+  "@ca": {
+    "description": "text"
+  },
+  "cc": "કોકોસ [કીલિંગ] આઇલેન્ડ્સ",
+  "@cc": {
+    "description": "text"
+  },
+  "cd": "ડેમોક્રેટિક રિપબ્લિક ઓફ કોંગો",
+  "@cd": {
+    "description": "text"
+  },
+  "cf": "મધ્ય આફ્રિકન રિપ",
+  "@cf": {
+    "description": "text"
+  },
+  "cg": "કોંગો રિપબ્લિક",
+  "@cg": {
+    "description": "text"
+  },
+  "ch": "સ્વિટ્ઝર્",
+  "@ch": {
+    "description": "text"
+  },
+  "ci": "આઇવરી કોસ્ટ",
+  "@ci": {
+    "description": "text"
+  },
+  "ck": "કૂક આઇલેન્ડ્સ",
+  "@ck": {
+    "description": "text"
+  },
+  "cl": "ચિલી",
+  "@cl": {
+    "description": "text"
+  },
+  "cm": "કેમરૂન",
+  "@cm": {
+    "description": "text"
+  },
+  "cn": "ચીન",
+  "@cn": {
+    "description": "text"
+  },
+  "co": "કોલમ્બિયા",
+  "@co": {
+    "description": "text"
+  },
+  "cr": "કોસ્ટા રિકા",
+  "@cr": {
+    "description": "text"
+  },
+  "cu": "ક્યુબા",
+  "@cu": {
+    "description": "text"
+  },
+  "cv": "કેપ વર્ડે",
+  "@cv": {
+    "description": "text"
+  },
+  "cw": "કુરાકાઓ",
+  "@cw": {
+    "description": "text"
+  },
+  "cx": "ક્રિસમસ આઇલેન્ડ",
+  "@cx": {
+    "description": "text"
+  },
+  "dk": "ડેનમાર્ક",
+  "@dk": {
+    "description": "text"
+  },
+  "dm": "ડોમિનિકા",
+  "@dm": {
+    "description": "text"
+  },
+  "doZ": "ડોમિનિકન રિપબ્લિક",
+  "@doZ": {
+    "description": "text"
+  },
+  "dz": "અલ્જેરિયા",
+  "@dz": {
+    "description": "text"
+  },
+  "ec": "ઇક્વાડોર",
+  "@ec": {
+    "description": "text"
+  },
+  "ee": "એસ્ટોનિયા",
+  "@ee": {
+    "description": "text"
+  },
+  "eg": "ઇજિપ્ત",
+  "@eg": {
+    "description": "text"
+  },
+  "eh": "પશ્ચિમ સહારા",
+  "@eh": {
+    "description": "text"
+  },
+  "er": "એરિટ્રિયા",
+  "@er": {
+    "description": "text"
+  },
+  "es": "સ્પેન",
+  "@es": {
+    "description": "text"
+  },
+  "et": "ઇથોપિયા",
+  "@et": {
+    "description": "text"
+  },
+  "fi": "ફિનલેન્ડ",
+  "@fi": {
+    "description": "text"
+  },
+  "fj": "ફીજી",
+  "@fj": {
+    "description": "text"
+  },
+  "fk": "ફોકલેન્ડ આઇલેન્ડ્સ",
+  "@fk": {
+    "description": "text"
+  },
+  "fm": "માઇક્રોનેસીયા",
+  "@fm": {
+    "description": "text"
+  },
+  "fo": "ફેરો આઇલેન્ડ્સ",
+  "@fo": {
+    "description": "text"
+  },
+  "fr": "ફ્રાન્સ",
+  "@fr": {
+    "description": "text"
+  },
+  "ga": "ગેબોન",
+  "@ga": {
+    "description": "text"
+  },
+  "gb": "યુનાઇટેડ કિંગડ",
+  "@gb": {
+    "description": "text"
+  },
+  "gd": "ગ્રેનાડા",
+  "@gd": {
+    "description": "text"
+  },
+  "ge": "જ્યોર્જિયા",
+  "@ge": {
+    "description": "text"
+  },
+  "gf": "ફ્રેન્ચ ગુઆના",
+  "@gf": {
+    "description": "text"
+  },
+  "gg": "ગ્યુર્નસી",
+  "@gg": {
+    "description": "text"
+  },
+  "gh": "ઘાના",
+  "@gh": {
+    "description": "text"
+  },
+  "gi": "જીબ્રાલ્ટર",
+  "@gi": {
+    "description": "text"
+  },
+  "gl": "ગ્રીનલેન્ડ",
+  "@gl": {
+    "description": "text"
+  },
+  "gm": "ગામ્બિયા",
+  "@gm": {
+    "description": "text"
+  },
+  "gn": "ગિની",
+  "@gn": {
+    "description": "text"
+  },
+  "gp": "ગ્વાડેલોપ",
+  "@gp": {
+    "description": "text"
+  },
+  "gq": "વિષુવવૃત્તીય ગિની",
+  "@gq": {
+    "description": "text"
+  },
+  "gr": "ગ્રીસ",
+  "@gr": {
+    "description": "text"
+  },
+  "gs": "દક્ષિણ જ્યોર્જિયા અને દક્ષિણ સેન્ડવિચ ટાપુઓ",
+  "@gs": {
+    "description": "text"
+  },
+  "gt": "ગ્વાટેમાલા",
+  "@gt": {
+    "description": "text"
+  },
+  "gu": "ગુઆમ",
+  "@gu": {
+    "description": "text"
+  },
+  "gw": "ગિની-બિસાઉ",
+  "@gw": {
+    "description": "text"
+  },
+  "gy": "ગયાના",
+  "@gy": {
+    "description": "text"
+  },
+  "hk": "હોંગકોંગ",
+  "@hk": {
+    "description": "text"
+  },
+  "hm": "હર્ડ આઇલેન્ડ અને મેકડોનાલ્ડ આઇલેન્ડ",
+  "@hm": {
+    "description": "text"
+  },
+  "hn": "હોન્ડુરાસ",
+  "@hn": {
+    "description": "text"
+  },
+  "hr": "ક્રોએશિયા",
+  "@hr": {
+    "description": "text"
+  },
+  "cz": "ચેક રિપબ્લિક",
+  "@cz": {
+    "description": "text"
+  },
+  "dj": "જીબુટી",
+  "@dj": {
+    "description": "text"
+  },
+  "cy": "સાયપ્રસ",
+  "@cy": {
+    "description": "text"
+  },
+  "de": "જર્મની",
+  "@de": {
+    "description": "text"
+  },
+  "ht": "હૈતી",
+  "@ht": {
+    "description": "text"
+  },
+  "hu": "હંગેરી",
+  "@hu": {
+    "description": "text"
+  },
+  "id": "ઇન્ડોનેશિયા",
+  "@id": {
+    "description": "text"
+  },
+  "ie": "આયર્લેન્ડ",
+  "@ie": {
+    "description": "text"
+  },
+  "il": "ઇઝરાયેલ",
+  "@il": {
+    "description": "text"
+  },
+  "im": "આઇલ ઓફ મેન",
+  "@im": {
+    "description": "text"
+  },
+  "inZ": "ભારત",
+  "@inZ": {
+    "description": "text"
+  },
+  "io": "બ્રિટિશ હિંદ મહાસાગર પ્રદેશ",
+  "@io": {
+    "description": "text"
+  },
+  "iq": "ઇરાક",
+  "@iq": {
+    "description": "text"
+  },
+  "ir": "ઈરાન",
+  "@ir": {
+    "description": "text"
+  },
+  "isZ": "આઇસલેન્ડ",
+  "@isZ": {
+    "description": "text"
+  },
+  "it": "ઇટાલી",
+  "@it": {
+    "description": "text"
+  },
+  "je": "જર્સી",
+  "@je": {
+    "description": "text"
+  },
+  "jm": "જમૈકા",
+  "@jm": {
+    "description": "text"
+  },
+  "jo": "જોર્ડન",
+  "@jo": {
+    "description": "text"
+  },
+  "jp": "જાપાન",
+  "@jp": {
+    "description": "text"
+  },
+  "ke": "કેન્યા",
+  "@ke": {
+    "description": "text"
+  },
+  "kg": "કિર્ગિસ્તાન",
+  "@kg": {
+    "description": "text"
+  },
+  "kh": "કંબોડિયા",
+  "@kh": {
+    "description": "text"
+  },
+  "ki": "કિરીબાતી",
+  "@ki": {
+    "description": "text"
+  },
+  "km": "કોમોરોસ",
+  "@km": {
+    "description": "text"
+  },
+  "kn": "સેન્ટ કિટ્સ અને નેવિસ",
+  "@kn": {
+    "description": "text"
+  },
+  "kp": "ઉત્તર કોરિયા",
+  "@kp": {
+    "description": "text"
+  },
+  "kr": "દક્ષિણ કોરિયા",
+  "@kr": {
+    "description": "text"
+  },
+  "kw": "કુવૈત",
+  "@kw": {
+    "description": "text"
+  },
+  "ky": "કેમેન આઇલેન્ડ્સ",
+  "@ky": {
+    "description": "text"
+  },
+  "kz": "કઝાકિસ્તાન",
+  "@kz": {
+    "description": "text"
+  },
+  "la": "લાઓસ",
+  "@la": {
+    "description": "text"
+  },
+  "lb": "લેબેનોન",
+  "@lb": {
+    "description": "text"
+  },
+  "lc": "સેન્ટ લુસિયા",
+  "@lc": {
+    "description": "text"
+  },
+  "li": "લિક્ટેન્સ્ટે",
+  "@li": {
+    "description": "text"
+  },
+  "lk": "શ્રીલંકા",
+  "@lk": {
+    "description": "text"
+  },
+  "lr": "લાઇબેરિયા",
+  "@lr": {
+    "description": "text"
+  },
+  "ls": "લેસોથો",
+  "@ls": {
+    "description": "text"
+  },
+  "lt": "લિથુનીયા",
+  "@lt": {
+    "description": "text"
+  },
+  "lu": "લક્ઝમબર્",
+  "@lu": {
+    "description": "text"
+  },
+  "lv": "લાતવિયા",
+  "@lv": {
+    "description": "text"
+  },
+  "ly": "લિબિયા",
+  "@ly": {
+    "description": "text"
+  },
+  "ma": "મોરોક્કો",
+  "@ma": {
+    "description": "text"
+  },
+  "mc": "મોનાકો",
+  "@mc": {
+    "description": "text"
+  },
+  "md": "મોલ્ડોવા",
+  "@md": {
+    "description": "text"
+  },
+  "me": "મોટેનેગ્રો",
+  "@me": {
+    "description": "text"
+  },
+  "mf": "સેન્ટ માર્ટિન",
+  "@mf": {
+    "description": "text"
+  },
+  "mg": "મેડાગાસ્કર",
+  "@mg": {
+    "description": "text"
+  },
+  "mh": "માર્શલ આઇલેન્ડ્સ",
+  "@mh": {
+    "description": "text"
+  },
+  "mk": "ઉત્તર મેસેડોનિયા",
+  "@mk": {
+    "description": "text"
+  },
+  "ml": "માલી",
+  "@ml": {
+    "description": "text"
+  },
+  "mm": "મ્યાનમાર [બર્મા]",
+  "@mm": {
+    "description": "text"
+  },
+  "mn": "મંગોલિયા",
+  "@mn": {
+    "description": "text"
+  },
+  "mo": "મકાઓ",
+  "@mo": {
+    "description": "text"
+  },
+  "mp": "ઉત્તરી મારિયાના ટાપુઓ",
+  "@mp": {
+    "description": "text"
+  },
+  "mq": "માર્ટિનિક",
+  "@mq": {
+    "description": "text"
+  },
+  "mr": "મોરિટાનિયા",
+  "@mr": {
+    "description": "text"
+  },
+  "ms": "મોન્ટસેરાટ",
+  "@ms": {
+    "description": "text"
+  },
+  "mt": "માલ્ટા",
+  "@mt": {
+    "description": "text"
+  },
+  "mu": "મોરેશિયસ",
+  "@mu": {
+    "description": "text"
+  },
+  "mv": "માલદીવ",
+  "@mv": {
+    "description": "text"
+  },
+  "mw": "મલાવી",
+  "@mw": {
+    "description": "text"
+  },
+  "mx": "મેક્સિકો",
+  "@mx": {
+    "description": "text"
+  },
+  "my": "મલેશિયા",
+  "@my": {
+    "description": "text"
+  },
+  "mz": "મોઝામ્બિક",
+  "@mz": {
+    "description": "text"
+  },
+  "na": "નામિબિયા",
+  "@na": {
+    "description": "text"
+  },
+  "nc": "ન્યૂ કેલેડોનિયા",
+  "@nc": {
+    "description": "text"
+  },
+  "ne": "નાઇજર",
+  "@ne": {
+    "description": "text"
+  },
+  "nf": "નોર્ફોક આઇલેન્ડ",
+  "@nf": {
+    "description": "text"
+  },
+  "ng": "નાઇજીરીયા",
+  "@ng": {
+    "description": "text"
+  },
+  "ni": "નિકારાગુઆ",
+  "@ni": {
+    "description": "text"
+  },
+  "nl": "નેધરલેન્ડ્સ",
+  "@nl": {
+    "description": "text"
+  },
+  "no": "નૉર્વે",
+  "@no": {
+    "description": "text"
+  },
+  "np": "નેપાળ",
+  "@np": {
+    "description": "text"
+  },
+  "nr": "નાઉરુ",
+  "@nr": {
+    "description": "text"
+  },
+  "nu": "ન્યુ",
+  "@nu": {
+    "description": "text"
+  },
+  "nz": "ન્યુ ઝિલેન્ડ",
+  "@nz": {
+    "description": "text"
+  },
+  "om": "ઓમાન",
+  "@om": {
+    "description": "text"
+  },
+  "pa": "પનામા",
+  "@pa": {
+    "description": "text"
+  },
+  "pe": "પેરુ",
+  "@pe": {
+    "description": "text"
+  },
+  "pf": "ફ્રેન્ચ પોલિનેશિયા",
+  "@pf": {
+    "description": "text"
+  },
+  "pg": "પપુઆ ન્યુ ગિની",
+  "@pg": {
+    "description": "text"
+  },
+  "ph": "ફિલિપાઇન્સ",
+  "@ph": {
+    "description": "text"
+  },
+  "pk": "પાકિસ્તાન",
+  "@pk": {
+    "description": "text"
+  },
+  "pl": "પોલેન્ડ",
+  "@pl": {
+    "description": "text"
+  },
+  "pm": "સેન્ટ પિયર અને મિક્વેલોન",
+  "@pm": {
+    "description": "text"
+  },
+  "pn": "પિટકેર્ન આઇલેન્ડ્સ",
+  "@pn": {
+    "description": "text"
+  },
+  "pr": "પ્યુઅર્ટો રિકો",
+  "@pr": {
+    "description": "text"
+  },
+  "ps": "પેલેસ્ટાઇન",
+  "@ps": {
+    "description": "text"
+  },
+  "pt": "પોર્ટુગલ",
+  "@pt": {
+    "description": "text"
+  },
+  "pw": "પલાઉ",
+  "@pw": {
+    "description": "text"
+  },
+  "py": "પેરાગ્વે",
+  "@py": {
+    "description": "text"
+  },
+  "qa": "કતાર",
+  "@qa": {
+    "description": "text"
+  },
+  "re": "રીયુનિયન",
+  "@re": {
+    "description": "text"
+  },
+  "ro": "રોમાનિયા",
+  "@ro": {
+    "description": "text"
+  },
+  "rs": "સર્બિયા",
+  "@rs": {
+    "description": "text"
+  },
+  "ru": "રશિયા",
+  "@ru": {
+    "description": "text"
+  },
+  "rw": "રવાન્ડા",
+  "@rw": {
+    "description": "text"
+  },
+  "sa": "સાઉદી અરેબિયા",
+  "@sa": {
+    "description": "text"
+  },
+  "sb": "સોલોમન આઇલેન્ડ્સ",
+  "@sb": {
+    "description": "text"
+  },
+  "sc": "સેશેલ્સ",
+  "@sc": {
+    "description": "text"
+  },
+  "sd": "સુદાન",
+  "@sd": {
+    "description": "text"
+  },
+  "se": "સ્વીડન",
+  "@se": {
+    "description": "text"
+  },
+  "sg": "સિંગાપોર",
+  "@sg": {
+    "description": "text"
+  },
+  "sh": "સેન્ટ હેલેના",
+  "@sh": {
+    "description": "text"
+  },
+  "si": "સ્લોવેનિયા",
+  "@si": {
+    "description": "text"
+  },
+  "sj": "સ્વાલબાર્ડ અને જાન માયેન",
+  "@sj": {
+    "description": "text"
+  },
+  "sk": "સ્લોવાકિયા",
+  "@sk": {
+    "description": "text"
+  },
+  "sl": "સીએરા લિયોન",
+  "@sl": {
+    "description": "text"
+  },
+  "sm": "સાન મેરિનો",
+  "@sm": {
+    "description": "text"
+  },
+  "sn": "સેનેગલ",
+  "@sn": {
+    "description": "text"
+  },
+  "so": "સોમાલિયા",
+  "@so": {
+    "description": "text"
+  },
+  "sr": "સુરીનામ",
+  "@sr": {
+    "description": "text"
+  },
+  "ss": "દક્ષિણ સુદાન",
+  "@ss": {
+    "description": "text"
+  },
+  "st": "સાઓ ટોમે અને પ્રિન્સિપી",
+  "@st": {
+    "description": "text"
+  },
+  "sv": "અલ સાલ્વાડોર",
+  "@sv": {
+    "description": "text"
+  },
+  "sx": "સેન્ટ માર્ટેન",
+  "@sx": {
+    "description": "text"
+  },
+  "sy": "સીરિયા",
+  "@sy": {
+    "description": "text"
+  },
+  "sz": "સ્વાઝીલેન્ડ",
+  "@sz": {
+    "description": "text"
+  },
+  "tc": "ટર્ક્સ અને કેકોસ આઇલેન્ડ્સ",
+  "@tc": {
+    "description": "text"
+  },
+  "td": "ચાડ",
+  "@td": {
+    "description": "text"
+  },
+  "tf": "ફ્રેન્ચ દક્ષિણ પ્રદેશો",
+  "@tf": {
+    "description": "text"
+  },
+  "tg": "ટોગો",
+  "@tg": {
+    "description": "text"
+  },
+  "th": "થાઇલેન્ડ",
+  "@th": {
+    "description": "text"
+  },
+  "tj": "તાજિકિસ્તાન",
+  "@tj": {
+    "description": "text"
+  },
+  "tk": "ટોકેલાઉ",
+  "@tk": {
+    "description": "text"
+  },
+  "tl": "પૂર્વ તિમોર",
+  "@tl": {
+    "description": "text"
+  },
+  "tm": "તુર્કમેન",
+  "@tm": {
+    "description": "text"
+  },
+  "tn": "ટ્યુનિશિયા",
+  "@tn": {
+    "description": "text"
+  },
+  "to": "ટોંગા",
+  "@to": {
+    "description": "text"
+  },
+  "tr": "તુર્કી",
+  "@tr": {
+    "description": "text"
+  },
+  "tt": "ત્રિનિદાદ અને ટોબેગો",
+  "@tt": {
+    "description": "text"
+  },
+  "tv": "તુવાલુ",
+  "@tv": {
+    "description": "text"
+  },
+  "tw": "તાઇવાન",
+  "@tw": {
+    "description": "text"
+  },
+  "tz": "તાંઝાનિયા",
+  "@tz": {
+    "description": "text"
+  },
+  "ua": "યુક્રેન",
+  "@ua": {
+    "description": "text"
+  },
+  "ug": "યુગાન્ડા",
+  "@ug": {
+    "description": "text"
+  },
+  "um": "યુએસ માઇનોર આઉટલાઇંગ આઇલેન્ડ્સ",
+  "@um": {
+    "description": "text"
+  },
+  "us": "યુનાઇટેડ સ્ટેટ્સ",
+  "@us": {
+    "description": "text"
+  },
+  "uy": "ઉરુગ્વે",
+  "@uy": {
+    "description": "text"
+  },
+  "uz": "ઉઝબેકિસ્તાન",
+  "@uz": {
+    "description": "text"
+  },
+  "va": "વેટિકન સિટી",
+  "@va": {
+    "description": "text"
+  },
+  "vc": "સેન્ટ વિન્સેન્ટ અને ગ્રેનેડાઇન્સ",
+  "@vc": {
+    "description": "text"
+  },
+  "ve": "વેનેઝુએલા",
+  "@ve": {
+    "description": "text"
+  },
+  "vg": "બ્રિટિશ વર્જિન ટાપુઓ",
+  "@vg": {
+    "description": "text"
+  },
+  "vi": "યુએસ વર્જિન આઇલેન્ડ્સ",
+  "@vi": {
+    "description": "text"
+  },
+  "vn": "વિયેતનામ",
+  "@vn": {
+    "description": "text"
+  },
+  "vu": "વનુઆતુ",
+  "@vu": {
+    "description": "text"
+  },
+  "wf": "વોલિસ અને ફ્યુટુના",
+  "@wf": {
+    "description": "text"
+  },
+  "ws": "સમોઆ",
+  "@ws": {
+    "description": "text"
+  },
+  "xk": "કોસોવો",
+  "@xk": {
+    "description": "text"
+  },
+  "ye": "યમન",
+  "@ye": {
+    "description": "text"
+  },
+  "yt": "માયોટ",
+  "@yt": {
+    "description": "text"
+  },
+  "za": "દક્ષિણ આફ્રિકા",
+  "@za": {
+    "description": "text"
+  },
+  "zm": "ઝામ્બિયા",
+  "@zm": {
+    "description": "text"
+  },
+  "zw": "ઝિમ્બાબ્વે",
+  "@zw": {
+    "description": "text"
+  }
+}
