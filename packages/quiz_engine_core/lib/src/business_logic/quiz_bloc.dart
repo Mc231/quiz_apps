@@ -6,6 +6,9 @@ import '../model/answer.dart';
 import '../model/question.dart';
 import '../model/random_pick_result.dart';
 import '../random_item_picker.dart';
+import '../model/config/quiz_config.dart';
+import 'config_manager/config_manager.dart';
+import 'config_manager/config_source.dart';
 
 /// A business logic component (BLoC) that manages the state of a quiz game.
 ///
@@ -26,6 +29,12 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Callback function to be invoked when the game is over.
   Function(String result)? gameOverCallback;
 
+  /// Configuration manager for loading quiz configuration.
+  final ConfigManager configManager;
+
+  /// The loaded configuration (loaded from configManager).
+  QuizConfig? _config;
+
   /// The list of quiz data items available for the game.
   List<QuestionEntry> _items = [];
 
@@ -42,17 +51,38 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   final List<Answer> _answers = [];
 
   /// Creates a `QuizBloc` with a provided data fetch function.
-  QuizBloc(this.dataProvider, this.randomItemPicker, {this.filter});
+  ///
+  /// [dataProvider] - Function to fetch quiz data
+  /// [randomItemPicker] - Random item picker for selecting questions
+  /// [filter] - Optional filter function for quiz data
+  /// [gameOverCallback] - Optional callback when quiz ends
+  /// [configManager] - Configuration manager with default config
+  QuizBloc(
+    this.dataProvider,
+    this.randomItemPicker, {
+    this.filter,
+    this.gameOverCallback,
+    required this.configManager,
+  });
 
   /// The initial state of the game, set to loading.
   @override
   QuizState get initialState => QuizState.loading();
 
+  /// Getter for the loaded configuration.
+  QuizConfig? get config => _config;
+
   /// Performs the initial data load when the screen is loaded.
   ///
-  /// This method retrieves quiz data using the provided `dataProvider` function,
-  /// applies the optional filter, and initializes the random picker.
+  /// This method loads the configuration, retrieves quiz data using the
+  /// provided `dataProvider` function, applies the optional filter,
+  /// and initializes the random picker.
   Future<void> performInitialLoad() async {
+    // Load configuration first
+    _config = await configManager.getConfig(
+      source: const DefaultSource(),
+    );
+
     var items = await dataProvider();
 
     // Apply filter if provided, otherwise keep all items

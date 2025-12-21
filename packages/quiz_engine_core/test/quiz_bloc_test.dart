@@ -30,7 +30,15 @@ void main() {
     // Mock data provider function
     mockDataProvider = () async => mockItems;
 
-    bloc = QuizBloc(mockDataProvider, randomItemPicker, filter: (entry) => true);
+    const configManager = ConfigManager(
+      defaultConfig: QuizConfig(quizId: 'test_quiz'),
+    );
+    bloc = QuizBloc(
+      mockDataProvider,
+      randomItemPicker,
+      filter: (entry) => true,
+      configManager: configManager,
+    );
   });
 
   tearDown(() {
@@ -49,7 +57,15 @@ void main() {
   });
 
   test('init standard', () {
-    final result = QuizBloc(mockDataProvider, randomItemPicker, filter: (entry) => true);
+    const configManager = ConfigManager(
+      defaultConfig: QuizConfig(quizId: 'test_init'),
+    );
+    final result = QuizBloc(
+      mockDataProvider,
+      randomItemPicker,
+      filter: (entry) => true,
+      configManager: configManager,
+    );
     expect(result, isNotNull);
   });
 
