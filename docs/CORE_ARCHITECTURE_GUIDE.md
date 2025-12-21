@@ -2,7 +2,7 @@
 
 **Purpose:** This document defines how to implement all quiz features at the core package level (quiz_engine_core, quiz_engine, shared_services) to maximize reusability across multiple quiz apps.
 
-**Last Updated:** 2025-12-21
+**Last Updated:** 2025-12-22
 
 ---
 
@@ -1838,20 +1838,30 @@ StatsOverviewCard(
 #### Sprint 1.1: Configuration & Theme System
 - [x] Create `QuizConfig` class
 - [x] Create `QuizModeConfig` class
-- [ ] Create `QuizThemeData` class
+- [x] Create `QuizThemeData` class
 - [x] Create `HintConfig` class
 - [x] Create `ScoringStrategy` classes (SimpleScoring, TimedScoring, StreakScoring)
 - [x] Create `UIBehaviorConfig` class
 - [x] Create `QuestionConfig` class
 - [x] Create `BaseConfig` abstract class with serialization
 - [x] Create `ConfigManager` with MVP DefaultSource
-- [ ] Update `QuizBloc` to accept configuration
-- [ ] Update `QuizWidget` to accept theme data
+- [x] Update `QuizBloc` to accept configuration (via ConfigManager)
+- [x] Update `QuizWidget` to accept theme data
+- [x] Create `QuizTexts` class for text organization
+- [x] Refactor `QuizWidgetEntry` to accept `defaultConfig` and auto-construct `ConfigManager`
+- [x] Update all tests to use new ConfigManager pattern
 - [ ] Extract hard-coded values to theme
 - [ ] Test with flagsquiz app
 
-**Status:** Configuration system implemented (2025-12-21)
-**Remaining:** Theme system and QuizBloc integration
+**Status:** COMPLETED (2025-12-22)
+**Completed Tasks:**
+- Full configuration system with ConfigManager pattern
+- Complete theme system (QuizThemeData) with light/dark themes
+- QuizBloc integration with ConfigManager
+- QuizWidget and QuizWidgetEntry refactoring
+- All tests passing (quiz_engine_core: 56/56, quiz_engine: 39/39)
+
+**Remaining:** Extract remaining hard-coded values, end-to-end testing with flagsquiz
 
 #### Sprint 1.2: Answer Feedback
 - [ ] Add `AnswerFeedbackState` to quiz state
@@ -2027,6 +2037,6 @@ StatsOverviewCard(
 
 ---
 
-**Document Version:** 1.0
-**Last Updated:** 2025-12-21
-**Status:** Ready for Implementation
+**Document Version:** 1.1
+**Last Updated:** 2025-12-22
+**Status:** Phase 1 Sprint 1.1 Completed - Ready for Sprint 1.2
