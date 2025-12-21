@@ -1,0 +1,27 @@
+name: Flagsquiz - Deploy iOS
+
+on:
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: 'Fastlane lane'
+        required: true
+        type: choice
+        options:
+          - beta
+          - release
+        default: 'beta'
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-deploy-ios.yml
+    with:
+      app_name: 'flagsquiz'
+      app_path: 'apps/flagsquiz'
+      lane: ${{ inputs.lane || 'beta' }}
+    secrets:
+      FASTLANE_APPLE_ID: ${{ secrets.FLAGSQUIZ_FASTLANE_APPLE_ID }}
+      FASTLANE_USER: ${{ secrets.FLAGSQUIZ_FASTLANE_USER }}
+      IOS_PACKAGE_NAME: ${{ secrets.FLAGSQUIZ_IOS_PACKAGE_NAME }}
+      IOS_TEAM_ID: ${{ secrets.FLAGSQUIZ_IOS_TEAM_ID }}
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FLAGSQUIZ_FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}

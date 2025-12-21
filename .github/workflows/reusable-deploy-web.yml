@@ -1,0 +1,51 @@
+name: Reusable Web Deploy
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        description: 'Name of the app to deploy'
+        required: true
+        type: string
+      app_path:
+        description: 'Path to the app directory (e.g., apps/flagsquiz)'
+        required: true
+        type: string
+      hosting_target:
+        description: 'Firebase hosting target/site name'
+        required: false
+        type: string
+        default: ''
+    secrets:
+      FIREBASE_TOKEN:
+        required: true
+
+jobs:
+  web_deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Bootstrap monorepo
+        run: |
+          dart pub get
+          dart run melos bootstrap
+
+      - name: Run tests for ${{ inputs.app_name }}
+        working-directory: ${{ inputs.app_path }}
+        run: flutter test --coverage
+
+      - name: Build Web
+        working-directory: ${{ inputs.app_path }}
+        run: flutter build web --release
+
+      - name: Deploy to Firebase Hosting
+        working-directory: ${{ inputs.app_path }}
+        run: |
+          if [ -n "${{ inputs.hosting_target }}" ]; then
+            firebase deploy --only hosting:${{ inputs.hosting_target }} --token ${{ secrets.FIREBASE_TOKEN }}
+          else
+            firebase deploy --only hosting --token ${{ secrets.FIREBASE_TOKEN }}
+          fi

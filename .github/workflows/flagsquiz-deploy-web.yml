@@ -1,0 +1,14 @@
+name: Flagsquiz - Deploy Web
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-deploy-web.yml
+    with:
+      app_name: 'flagsquiz'
+      app_path: 'apps/flagsquiz'
+      hosting_target: 'flagsquiz'
+    secrets:
+      FIREBASE_TOKEN: ${{ secrets.FLAGSQUIZ_FIREBASE_TOKEN }}

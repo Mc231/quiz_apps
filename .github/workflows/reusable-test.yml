@@ -1,0 +1,51 @@
+name: Reusable Test Workflow
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        description: 'Name of the app to test'
+        required: true
+        type: string
+      app_path:
+        description: 'Path to the app directory (e.g., apps/flagsquiz)'
+        required: true
+        type: string
+      flutter_version:
+        description: 'Flutter version to use'
+        required: false
+        type: string
+        default: 'stable'
+
+jobs:
+  test:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        run: echo "Flutter is already installed on the self-hosted runner"
+
+      - name: Bootstrap monorepo
+        run: |
+          dart pub get
+          dart run melos bootstrap
+
+      - name: Run tests for ${{ inputs.app_name }}
+        working-directory: ${{ inputs.app_path }}
+        run: |
+          flutter test --coverage
+
+      - name: Generate coverage report
+        working-directory: ${{ inputs.app_path }}
+        run: genhtml coverage/lcov.info -o coverage/html
+        continue-on-error: true
+
+      - name: Archive test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ inputs.app_name }}
+          path: ${{ inputs.app_path }}/coverage/html
+          retention-days: 5

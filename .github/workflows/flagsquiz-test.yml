@@ -1,0 +1,21 @@
+name: Flagsquiz - Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/flagsquiz/**'
+      - 'packages/**'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'apps/flagsquiz/**'
+      - 'packages/**'
+
+jobs:
+  test:
+    uses: ./.github/workflows/reusable-test.yml
+    with:
+      app_name: 'flagsquiz'
+      app_path: 'apps/flagsquiz'

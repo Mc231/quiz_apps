@@ -1,0 +1,73 @@
+name: Reusable Android Deploy
+
+on:
+  workflow_call:
+    inputs:
+      app_name:
+        description: 'Name of the app to deploy'
+        required: true
+        type: string
+      app_path:
+        description: 'Path to the app directory (e.g., apps/flagsquiz)'
+        required: true
+        type: string
+      track:
+        description: 'Play Store track (internal, alpha, beta, production)'
+        required: false
+        type: string
+        default: 'internal'
+    secrets:
+      ANDROID_PACKAGE_NAME:
+        required: true
+      GOOGLE_PLAY_KEY:
+        required: true
+      ANDROID_BASE_64_KEY_STORE:
+        required: true
+      ANDROID_KEYSTORE_PASSWORD:
+        required: true
+      ANDROID_KEY_ALIAS:
+        required: true
+      ANDROID_KEY_PASSWORD:
+        required: true
+
+env:
+  ANDROID_KEYSTORE_FILE_PATH: ${{ github.workspace }}/release-key.jks
+
+jobs:
+  android_deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Bootstrap monorepo
+        run: |
+          dart pub get
+          dart run melos bootstrap
+
+      - name: Run tests for ${{ inputs.app_name }}
+        working-directory: ${{ inputs.app_path }}
+        run: flutter test --coverage
+
+      - name: Create Android Keystore
+        run: |
+          echo $ANDROID_BASE_64_KEY_STORE | base64 --decode > $ANDROID_KEYSTORE_FILE_PATH
+        env:
+          ANDROID_BASE_64_KEY_STORE: ${{ secrets.ANDROID_BASE_64_KEY_STORE }}
+
+      - name: Build and Deploy Android to ${{ inputs.track }}
+        working-directory: ${{ inputs.app_path }}/android
+        run: |
+          bundle install
+          bundle exec fastlane android test_track track:${{ inputs.track }}
+        env:
+          ANDROID_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
+          GOOGLE_PLAY_JSON: ${{ secrets.GOOGLE_PLAY_KEY }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Remove Android Keystore
+        if: always()
+        run: rm -f $ANDROID_KEYSTORE_FILE_PATH

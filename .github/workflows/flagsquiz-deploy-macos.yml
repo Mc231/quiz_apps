@@ -1,0 +1,18 @@
+name: Flagsquiz - Deploy macOS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-deploy-macos.yml
+    with:
+      app_name: 'flagsquiz'
+      app_path: 'apps/flagsquiz'
+      scheme: 'Runner'
+    secrets:
+      FASTLANE_APPLE_ID: ${{ secrets.FLAGSQUIZ_FASTLANE_APPLE_ID }}
+      FASTLANE_USER: ${{ secrets.FLAGSQUIZ_FASTLANE_USER }}
+      MACOS_PACKAGE_NAME: ${{ secrets.FLAGSQUIZ_MACOS_PACKAGE_NAME }}
+      MACOS_TEAM_ID: ${{ secrets.FLAGSQUIZ_MACOS_TEAM_ID }}
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FLAGSQUIZ_FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}

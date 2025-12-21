@@ -1,0 +1,30 @@
+name: Flagsquiz - Deploy Android
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: 'Play Store track'
+        required: true
+        type: choice
+        options:
+          - internal
+          - alpha
+          - beta
+          - production
+        default: 'internal'
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/reusable-deploy-android.yml
+    with:
+      app_name: 'flagsquiz'
+      app_path: 'apps/flagsquiz'
+      track: ${{ inputs.track || 'internal' }}
+    secrets:
+      ANDROID_PACKAGE_NAME: ${{ secrets.FLAGSQUIZ_ANDROID_PACKAGE_NAME }}
+      GOOGLE_PLAY_KEY: ${{ secrets.FLAGSQUIZ_GOOGLE_PLAY_KEY }}
+      ANDROID_BASE_64_KEY_STORE: ${{ secrets.FLAGSQUIZ_ANDROID_BASE_64_KEY_STORE }}
+      ANDROID_KEYSTORE_PASSWORD: ${{ secrets.FLAGSQUIZ_ANDROID_KEYSTORE_PASSWORD }}
+      ANDROID_KEY_ALIAS: ${{ secrets.FLAGSQUIZ_ANDROID_KEY_ALIAS }}
+      ANDROID_KEY_PASSWORD: ${{ secrets.FLAGSQUIZ_ANDROID_KEY_PASSWORD }}
