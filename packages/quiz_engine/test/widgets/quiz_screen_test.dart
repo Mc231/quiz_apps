@@ -28,7 +28,14 @@ void main() {
 
   setUp(() {
     randomItemPicker = MockRandomItemPicker();
-    bloc = QuizBloc(() => loadCountriesForContinent(), randomItemPicker);
+    const configManager = ConfigManager(
+      defaultConfig: QuizConfig(quizId: 'test_quiz'),
+    );
+    bloc = QuizBloc(
+      () => loadCountriesForContinent(),
+      randomItemPicker,
+      configManager: configManager,
+    );
   });
 
   testWidgets('Question showing', (WidgetTester tester) async {
@@ -74,7 +81,14 @@ void main() {
         otherOptions: {"id": "1223", "name": "Bangladesh"},
       ),
     ];
-    final bloc2 = QuizBloc(() => Future.value(countries), randomItemPicker);
+    const configManager = ConfigManager(
+      defaultConfig: QuizConfig(quizId: 'test_quiz_2'),
+    );
+    final bloc2 = QuizBloc(
+      () => Future.value(countries),
+      randomItemPicker,
+      configManager: configManager,
+    );
     bloc2.currentQuestion = Question(countries.first, countries);
     // When
     when(randomItemPicker.pick()).thenReturn(null);

@@ -15,11 +15,18 @@ void main() {
           QuestionEntry(type: TextQuestion("What is the currency of Japan?"), otherOptions: {"id": "123", "image": "assets/images/AD.png"}),
         ];
 
-        // Create QuizWidgetEntry
-        final quizEntry = QuizWidgetEntry(
+        // Create QuizTexts and config
+        const texts = QuizTexts(
           title: "Test Quiz",
           gameOverText: "Game Over",
+        );
+        const defaultConfig = QuizConfig(quizId: 'test_quiz');
+
+        // Create QuizWidgetEntry
+        final quizEntry = QuizWidgetEntry(
+          texts: texts,
           dataProvider: () => Future.value(mockQuestions),
+          defaultConfig: defaultConfig,
         );
 
         // Pump the widget into the test environment
