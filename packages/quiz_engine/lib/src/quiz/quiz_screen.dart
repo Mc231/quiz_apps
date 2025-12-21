@@ -3,7 +3,6 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../quiz_engine.dart';
 import 'quiz_layout.dart';
-import '../theme/quiz_theme_data.dart';
 
 /// A screen that displays the quiz interface, handling questions and user interaction.
 ///
