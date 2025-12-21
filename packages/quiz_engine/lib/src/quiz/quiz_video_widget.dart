@@ -101,7 +101,7 @@ class _QuizVideoWidgetState extends State<QuizVideoWidget> {
         color: Colors.black,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -274,9 +274,7 @@ class _QuizVideoWidgetState extends State<QuizVideoWidget> {
           SizedBox(width: 8),
           // Time display
           Text(
-            _formatDuration(_controller.value.position) +
-                ' / ' +
-                _formatDuration(_controller.value.duration),
+            '${_formatDuration(_controller.value.position)} / ${_formatDuration(_controller.value.duration)}',
             style: TextStyle(
               color: Colors.white,
               fontSize: _getTimeTextSize(context),

@@ -114,7 +114,7 @@ class _QuizAudioWidgetState extends State<QuizAudioWidget> {
         color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -135,7 +135,7 @@ class _QuizAudioWidgetState extends State<QuizAudioWidget> {
                       : 0,
                   strokeWidth: 4,
                   backgroundColor:
-                      Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                      Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
                 ),
               ),
               // Play/Pause button
@@ -196,7 +196,7 @@ class _QuizAudioWidgetState extends State<QuizAudioWidget> {
           Icon(
             Icons.headphones,
             size: _getIndicatorIconSize(context),
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
           ),
         ],
       ),
