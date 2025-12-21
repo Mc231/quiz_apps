@@ -84,10 +84,12 @@ class ContinentsScreen extends StatelessWidget {
   void _handleItemClick(Continent continent, BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
     final quizEntry = QuizWidgetEntry(
-        title: continent.localizedName(context) ?? "",
-        gameOverText: appLocalizations.yourScore,
+        texts: QuizTexts(
+            title: continent.localizedName(context) ?? "",
+            gameOverText: appLocalizations.yourScore),
         dataProvider: () async =>
-            loadCountriesForContinent(appLocalizations, continent));
+            loadCountriesForContinent(appLocalizations, continent),
+        defaultConfig: QuizConfig(quizId: 'flags_quiz'));
     Navigator.push(
         context,
         MaterialPageRoute(
