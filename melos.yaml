@@ -1,0 +1,65 @@
+name: quiz_apps
+
+packages:
+  - packages/**
+  - apps/**
+
+command:
+  bootstrap:
+    # Run pub get in all packages
+    runPubGetInParallel: true
+
+scripts:
+  # Analyze all packages
+  analyze:
+    description: Run Dart analyzer in all packages
+    run: melos exec -- dart analyze .
+
+  # Format all packages
+  format:
+    description: Format all packages
+    run: melos exec -- dart format .
+
+  # Run tests in all packages
+  test:
+    description: Run tests in all packages
+    run: melos exec -- flutter test --coverage
+    packageFilters:
+      dirExists: test
+
+  # Run tests with coverage
+  test:coverage:
+    description: Run tests with coverage in all packages
+    run: melos exec -- flutter test --coverage
+    packageFilters:
+      dirExists: test
+
+  # Clean all packages
+  clean:
+    description: Clean all packages
+    run: melos exec -- flutter clean
+
+  # Get dependencies for all packages
+  get:
+    description: Get dependencies for all packages
+    run: melos exec -- flutter pub get
+
+  # Build all apps
+  build:
+    description: Build all apps
+    run: melos exec -c 1 -- flutter build apk
+    packageFilters:
+      dirExists: android
+
+  # Run code generation
+  generate:
+    description: Run code generation in all packages
+    run: melos exec -- flutter pub run build_runner build --delete-conflicting-outputs
+    packageFilters:
+      dependsOn: build_runner
+
+  # Version packages
+  version:
+    description: Update package versions
+    hooks:
+      preCommit: melos run analyze
