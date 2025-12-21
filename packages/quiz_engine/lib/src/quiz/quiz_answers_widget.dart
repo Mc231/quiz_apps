@@ -4,6 +4,7 @@ import 'package:quiz_engine/src/extensions/sizing_information_extension.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../components/option_button.dart';
+import '../theme/quiz_theme_data.dart';
 
 /// A widget that displays answer options for a quiz question.
 ///
@@ -27,18 +28,23 @@ class QuizAnswersWidget extends StatelessWidget {
   /// Callback function to be invoked when an option is clicked.
   final Function(QuestionEntry answer) answerClickListener;
 
+  /// Theme data for customizing button appearance (optional).
+  final QuizThemeData? themeData;
+
   /// Creates a `QuizAnswersWidget`.
   ///
   /// [key] is the key for this widget.
   /// [options] is the list of countries to display as answer options.
   /// [sizingInformation] provides screen size and orientation information.
   /// [answerClickListener] is called when an option button is clicked.
-  const QuizAnswersWidget(
-      {required Key key,
-        required this.options,
-        required this.sizingInformation,
-        required this.answerClickListener})
-      : super(key: key);
+  /// [themeData] provides theme customization options.
+  const QuizAnswersWidget({
+    required Key key,
+    required this.options,
+    required this.sizingInformation,
+    required this.answerClickListener,
+    this.themeData,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +84,7 @@ class QuizAnswersWidget extends StatelessWidget {
       child: OptionButton(
         title: title,
         onClickListener: () => answerClickListener(option),
+        themeData: themeData,
         key: Key("button_$code"),
       ),
     );

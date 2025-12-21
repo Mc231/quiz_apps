@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import '../theme/quiz_theme_data.dart';
 
 /// A customizable button widget used for displaying options in the app.
 ///
@@ -19,27 +20,45 @@ class OptionButton extends StatelessWidget {
   /// The callback function invoked when the button is clicked.
   final VoidCallback onClickListener;
 
+  /// Theme data for customizing button appearance (optional).
+  final QuizThemeData? themeData;
+
   /// Creates an `OptionButton` with the specified title and click listener.
   ///
   /// [key] is the unique key for this widget.
   /// [title] is the text displayed on the button.
   /// [onClickListener] is the function called when the button is pressed.
-  const OptionButton(
-      {super.key, required this.title, required this.onClickListener});
+  /// [themeData] provides theme customization options.
+  const OptionButton({
+    super.key,
+    required this.title,
+    required this.onClickListener,
+    this.themeData,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = themeData ?? const QuizThemeData();
+
     return ElevatedButton(
       onPressed: onClickListener,
       style: ElevatedButton.styleFrom(
-        textStyle: TextStyle(color: Colors.white),
-        shape: RoundedRectangleBorder(borderRadius: borderRadius),
-        backgroundColor: Colors.black,
+        textStyle: TextStyle(color: theme.buttonTextColor),
+        shape: RoundedRectangleBorder(
+          borderRadius: theme.buttonBorderRadius,
+          side: BorderSide(
+            color: theme.buttonBorderColor,
+            width: theme.buttonBorderWidth,
+          ),
+        ),
+        backgroundColor: theme.buttonColor,
+        foregroundColor: theme.buttonTextColor,
+        padding: theme.buttonPadding,
       ),
       child: Text(
         title,
         maxLines: maxLines,
-        style: TextStyle(fontSize: getFontSize(context)),
+        style: theme.buttonTextStyle.copyWith(fontSize: getFontSize(context)),
         textAlign: TextAlign.center,
       ),
     );

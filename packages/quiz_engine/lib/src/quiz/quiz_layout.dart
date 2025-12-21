@@ -9,6 +9,7 @@ import 'quiz_image_widget.dart';
 import 'quiz_text_widget.dart';
 import 'quiz_audio_widget.dart';
 import 'quiz_video_widget.dart';
+import '../theme/quiz_theme_data.dart';
 
 /// A widget that displays the layout for a quiz screen, including the question image and answer options.
 ///
@@ -34,17 +35,23 @@ class QuizLayout extends StatelessWidget {
   /// The callback function to process an answer when an option is selected.
   final Function(QuestionEntry) processAnswer;
 
+  /// Theme data for customizing quiz UI (optional).
+  final QuizThemeData? themeData;
+
   /// Creates a `QuizLayout` with the specified question state, sizing information, and answer processor.
   ///
   /// [key] is the unique key for this widget.
   /// [questionState] provides the current question and progress state.
   /// [information] supplies screen size and orientation information.
   /// [processAnswer] is called to process the selected answer.
-  const QuizLayout(
-      {super.key,
-        required this.questionState,
-        required this.information,
-        required this.processAnswer});
+  /// [themeData] provides theme customization options.
+  const QuizLayout({
+    super.key,
+    required this.questionState,
+    required this.information,
+    required this.processAnswer,
+    this.themeData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +102,7 @@ class QuizLayout extends StatelessWidget {
             options: state.question.options,
             sizingInformation: information,
             answerClickListener: processAnswer,
+            themeData: themeData,
             key: Key(state.total.toString()),
           ))
     ];

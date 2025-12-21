@@ -3,6 +3,7 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../quiz_engine.dart';
 import 'quiz_layout.dart';
+import '../theme/quiz_theme_data.dart';
 
 /// A screen that displays the quiz interface, handling questions and user interaction.
 ///
@@ -24,8 +25,14 @@ class QuizScreen extends StatefulWidget {
 
   final String title;
   final String gameOverTitle;
+  final QuizThemeData? themeData;
 
-  const QuizScreen({super.key, required this.title, required this.gameOverTitle});
+  const QuizScreen({
+    super.key,
+    required this.title,
+    required this.gameOverTitle,
+    this.themeData,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -72,7 +79,8 @@ class QuizScreenState extends State<QuizScreen> {
                   return QuizLayout(
                       questionState: questionState,
                       information: information,
-                      processAnswer: _bloc.processAnswer);
+                      processAnswer: _bloc.processAnswer,
+                      themeData: widget.themeData);
                 });
               },
             )),
