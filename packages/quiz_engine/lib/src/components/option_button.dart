@@ -40,26 +40,29 @@ class OptionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = themeData ?? const QuizThemeData();
 
-    return ElevatedButton(
-      onPressed: onClickListener,
-      style: ElevatedButton.styleFrom(
-        textStyle: TextStyle(color: theme.buttonTextColor),
-        shape: RoundedRectangleBorder(
-          borderRadius: theme.buttonBorderRadius,
-          side: BorderSide(
-            color: theme.buttonBorderColor,
-            width: theme.buttonBorderWidth,
+    return SizedBox.expand(
+      child: ElevatedButton(
+        onPressed: onClickListener,
+        style: ElevatedButton.styleFrom(
+          textStyle: TextStyle(color: theme.buttonTextColor),
+          shape: RoundedRectangleBorder(
+            borderRadius: theme.buttonBorderRadius,
+            side: BorderSide(
+              color: theme.buttonBorderColor,
+              width: theme.buttonBorderWidth,
+            ),
           ),
+          backgroundColor: theme.buttonColor,
+          foregroundColor: theme.buttonTextColor,
+          padding: theme.buttonPadding,
         ),
-        backgroundColor: theme.buttonColor,
-        foregroundColor: theme.buttonTextColor,
-        padding: theme.buttonPadding,
-      ),
-      child: Text(
-        title,
-        maxLines: maxLines,
-        style: theme.buttonTextStyle.copyWith(fontSize: getFontSize(context)),
-        textAlign: TextAlign.center,
+        child: Text(
+          title,
+          maxLines: maxLines,
+          overflow: TextOverflow.ellipsis,
+          style: theme.buttonTextStyle.copyWith(fontSize: getFontSize(context)),
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }

@@ -12,7 +12,7 @@ void main() {
       expect(theme.buttonBorderColor, Colors.transparent);
       expect(theme.buttonBorderWidth, 0);
       expect(theme.buttonBorderRadius, const BorderRadius.all(Radius.circular(8)));
-      expect(theme.buttonPadding, const EdgeInsets.all(16));
+      expect(theme.buttonPadding, const EdgeInsets.symmetric(horizontal: 16, vertical: 8));
       expect(theme.correctAnswerColor, Colors.green);
       expect(theme.incorrectAnswerColor, Colors.red);
       expect(theme.selectedAnswerColor, Colors.blue);

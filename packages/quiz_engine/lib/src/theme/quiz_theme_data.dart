@@ -84,7 +84,7 @@ class QuizThemeData {
     this.buttonBorderColor = Colors.transparent,
     this.buttonBorderWidth = 0,
     this.buttonBorderRadius = const BorderRadius.all(Radius.circular(8)),
-    this.buttonPadding = const EdgeInsets.all(16),
+    this.buttonPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     this.buttonTextStyle = const TextStyle(fontSize: 18),
     this.correctAnswerColor = Colors.green,
     this.incorrectAnswerColor = Colors.red,
