@@ -2,13 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:quiz_engine_core/src/business_logic/cached_remote_quiz_data_provider.dart';
-import 'package:quiz_engine_core/src/business_logic/remote_quiz_data_provider.dart';
+import 'package:shared_services/src/data_providers/cached_http_quiz_data_provider.dart';
+import 'package:shared_services/src/data_providers/http_quiz_data_provider.dart';
 
 @GenerateNiceMocks([
   MockSpec<http.Client>(),
 ])
-import 'cached_remote_quiz_data_provider_test.mocks.dart';
+import 'cached_http_quiz_data_provider_test.mocks.dart';
 
 class MockModel {
   final String name;
@@ -33,7 +33,7 @@ void main() {
     mockClient = MockClient();
   });
 
-  group('CachedRemoteQuizDataProvider Tests', () {
+  group('CachedHttpQuizDataProvider Tests', () {
     test('should fetch and cache data on first request', () async {
       // Given
       const url = 'https://api.example.com/quiz/data';
@@ -42,7 +42,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -64,7 +64,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -88,7 +88,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -112,7 +112,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -140,7 +140,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -173,7 +173,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse1, 200));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -204,14 +204,14 @@ void main() {
       const cacheDuration = Duration(hours: 2);
 
       // When
-      final provider = CachedRemoteQuizDataProvider.standard(
+      final provider = CachedHttpQuizDataProvider.standard(
         url,
         MockModel.fromJson,
         cacheDuration: cacheDuration,
       );
 
       // Then
-      expect(provider, isA<CachedRemoteQuizDataProvider<MockModel>>());
+      expect(provider, isA<CachedHttpQuizDataProvider<MockModel>>());
       expect(provider.url, equals(url));
       expect(provider.cacheDuration, equals(cacheDuration));
     });
@@ -223,7 +223,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenThrow(http.ClientException('Network error'));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -244,7 +244,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -264,14 +264,14 @@ void main() {
       expect(result, equals([MockModel('Cached')])); // Returns cached data
     });
 
-    test('should rethrow RemoteDataException when no cache available', () async {
+    test('should rethrow HttpDataException when no cache available', () async {
       // Given
       const url = 'https://api.example.com/quiz/data';
 
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response('Bad Request', 400));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -281,7 +281,7 @@ void main() {
       final call = provider.provide();
 
       // Then
-      expect(call, throwsA(isA<RemoteDataException>()));
+      expect(call, throwsA(isA<HttpDataException>()));
     });
 
     test('should handle timeout and return cached data if available', () async {
@@ -292,7 +292,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -321,14 +321,14 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
 
       // When
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         // No client parameter
       );
 
       // Then
-      expect(provider, isA<CachedRemoteQuizDataProvider<MockModel>>());
+      expect(provider, isA<CachedHttpQuizDataProvider<MockModel>>());
       expect(provider.client, isNull);
     });
 
@@ -340,7 +340,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = CachedRemoteQuizDataProvider<MockModel>(
+      final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,

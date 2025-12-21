@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import '../asset_provider.dart';
-import '../resource_provider.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart';
+import 'package:shared_services/src/infrastructure/asset_provider.dart';
 
 /// A generic provider that loads quiz-related data from an asset file.
 ///

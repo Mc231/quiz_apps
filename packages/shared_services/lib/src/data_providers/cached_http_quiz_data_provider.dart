@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../resource_provider.dart';
-import 'remote_quiz_data_provider.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart';
+import 'http_quiz_data_provider.dart';
 
 /// A provider that fetches quiz data from a remote URL with caching support.
 ///
@@ -11,7 +11,7 @@ import 'remote_quiz_data_provider.dart';
 ///
 /// Example usage:
 /// ```dart
-/// final provider = CachedRemoteQuizDataProvider<QuestionEntry>(
+/// final provider = CachedHttpQuizDataProvider<QuestionEntry>(
 ///   url: 'https://api.example.com/quiz/data',
 ///   fromJson: QuestionEntry.fromJson,
 ///   cacheDuration: Duration(hours: 1),
@@ -19,7 +19,7 @@ import 'remote_quiz_data_provider.dart';
 /// final data = await provider.provide(); // Fetches from network
 /// final data2 = await provider.provide(); // Returns cached data
 /// ```
-class CachedRemoteQuizDataProvider<T> extends ResourceProvider<List<T>> {
+class CachedHttpQuizDataProvider<T> extends ResourceProvider<List<T>> {
   /// The URL to fetch quiz data from.
   final String url;
 
@@ -41,14 +41,14 @@ class CachedRemoteQuizDataProvider<T> extends ResourceProvider<List<T>> {
   /// Time when data was cached.
   DateTime? _cacheTime;
 
-  /// Creates a [CachedRemoteQuizDataProvider] with the given parameters.
+  /// Creates a [CachedHttpQuizDataProvider] with the given parameters.
   ///
   /// - [url]: The remote URL to fetch data from
   /// - [fromJson]: Function to convert JSON map to type [T]
   /// - [client]: Optional HTTP client (defaults to http.Client())
   /// - [timeout]: Request timeout (defaults to 10 seconds)
   /// - [cacheDuration]: How long to cache data (defaults to 1 hour)
-  CachedRemoteQuizDataProvider({
+  CachedHttpQuizDataProvider({
     required this.url,
     required this.fromJson,
     this.client,
@@ -57,12 +57,12 @@ class CachedRemoteQuizDataProvider<T> extends ResourceProvider<List<T>> {
   });
 
   /// Factory constructor for standard usage with default settings.
-  factory CachedRemoteQuizDataProvider.standard(
+  factory CachedHttpQuizDataProvider.standard(
     String url,
     T Function(Map<String, dynamic>) fromJson, {
     Duration cacheDuration = const Duration(hours: 1),
   }) {
-    return CachedRemoteQuizDataProvider(
+    return CachedHttpQuizDataProvider(
       url: url,
       fromJson: fromJson,
       cacheDuration: cacheDuration,
@@ -110,7 +110,7 @@ class CachedRemoteQuizDataProvider<T> extends ResourceProvider<List<T>> {
           return _cachedData!;
         }
 
-        throw RemoteDataException(
+        throw HttpDataException(
           'Failed to load quiz data. Status code: ${response.statusCode}',
           statusCode: response.statusCode,
         );
@@ -120,14 +120,14 @@ class CachedRemoteQuizDataProvider<T> extends ResourceProvider<List<T>> {
       if (_cachedData != null) {
         return _cachedData!;
       }
-      throw RemoteDataException('Network error: ${e.message}');
+      throw HttpDataException('Network error: ${e.message}');
     } catch (e) {
       // Return cached data if available, even if expired
-      if (_cachedData != null && e is! RemoteDataException) {
+      if (_cachedData != null && e is! HttpDataException) {
         return _cachedData!;
       }
-      if (e is RemoteDataException) rethrow;
-      throw RemoteDataException('Error fetching quiz data: $e');
+      if (e is HttpDataException) rethrow;
+      throw HttpDataException('Error fetching quiz data: $e');
     }
   }
 }

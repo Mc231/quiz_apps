@@ -2,12 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:quiz_engine_core/src/business_logic/remote_quiz_data_provider.dart';
+import 'package:shared_services/src/data_providers/http_quiz_data_provider.dart';
 
 @GenerateNiceMocks([
   MockSpec<http.Client>(),
 ])
-import 'remote_quiz_data_provider_test.mocks.dart';
+import 'http_quiz_data_provider_test.mocks.dart';
 
 class MockModel {
   final String name;
@@ -32,7 +32,7 @@ void main() {
     mockClient = MockClient();
   });
 
-  group('RemoteQuizDataProvider Tests', () {
+  group('HttpQuizDataProvider Tests', () {
     test('should fetch and parse JSON correctly from remote URL', () async {
       // Given
       const url = 'https://api.example.com/quiz/data';
@@ -41,7 +41,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = RemoteQuizDataProvider<MockModel>(
+      final provider = HttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -64,7 +64,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = RemoteQuizDataProvider<MockModel>(
+      final provider = HttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -77,14 +77,14 @@ void main() {
       expect(result, isEmpty);
     });
 
-    test('should throw RemoteDataException when status code is not 200', () async {
+    test('should throw HttpDataException when status code is not 200', () async {
       // Given
       const url = 'https://api.example.com/quiz/data';
 
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response('Not Found', 404));
 
-      final provider = RemoteQuizDataProvider<MockModel>(
+      final provider = HttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -94,17 +94,17 @@ void main() {
       final call = provider.provide();
 
       // Then
-      expect(call, throwsA(isA<RemoteDataException>()));
+      expect(call, throwsA(isA<HttpDataException>()));
     });
 
-    test('should throw RemoteDataException when network error occurs', () async {
+    test('should throw HttpDataException when network error occurs', () async {
       // Given
       const url = 'https://api.example.com/quiz/data';
 
       when(mockClient.get(Uri.parse(url)))
           .thenThrow(http.ClientException('Network error'));
 
-      final provider = RemoteQuizDataProvider<MockModel>(
+      final provider = HttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -114,10 +114,10 @@ void main() {
       final call = provider.provide();
 
       // Then
-      expect(call, throwsA(isA<RemoteDataException>()));
+      expect(call, throwsA(isA<HttpDataException>()));
     });
 
-    test('should throw RemoteDataException when JSON parsing fails', () async {
+    test('should throw HttpDataException when JSON parsing fails', () async {
       // Given
       const url = 'https://api.example.com/quiz/data';
       const invalidJson = '{invalid_json}';
@@ -125,7 +125,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(invalidJson, 200));
 
-      final provider = RemoteQuizDataProvider<MockModel>(
+      final provider = HttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -135,7 +135,7 @@ void main() {
       final call = provider.provide();
 
       // Then
-      expect(call, throwsA(isA<RemoteDataException>()));
+      expect(call, throwsA(isA<HttpDataException>()));
     });
 
     test('should create standard provider with correct URL', () {
@@ -143,13 +143,13 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
 
       // When
-      final provider = RemoteQuizDataProvider.standard(
+      final provider = HttpQuizDataProvider.standard(
         url,
         MockModel.fromJson,
       );
 
       // Then
-      expect(provider, isA<RemoteQuizDataProvider<MockModel>>());
+      expect(provider, isA<HttpQuizDataProvider<MockModel>>());
       expect(provider.url, equals(url));
     });
 
@@ -161,7 +161,7 @@ void main() {
       when(mockClient.get(Uri.parse(url)))
           .thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = RemoteQuizDataProvider<MockModel>(
+      final provider = HttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -176,7 +176,7 @@ void main() {
       expect(provider.timeout, equals(const Duration(seconds: 5)));
     });
 
-    test('should throw RemoteDataException when timeout occurs', () async {
+    test('should throw HttpDataException when timeout occurs', () async {
       // Given
       const url = 'https://api.example.com/quiz/data';
 
@@ -186,7 +186,7 @@ void main() {
                 () => http.Response('[{"name": "Test1"}]', 200),
               ));
 
-      final provider = RemoteQuizDataProvider<MockModel>(
+      final provider = HttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         client: mockClient,
@@ -197,7 +197,7 @@ void main() {
       final call = provider.provide();
 
       // Then
-      expect(call, throwsA(isA<RemoteDataException>()));
+      expect(call, throwsA(isA<HttpDataException>()));
     });
 
     test('should work without client parameter (uses top-level http.get)', () {
@@ -205,25 +205,25 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
 
       // When
-      final provider = RemoteQuizDataProvider<MockModel>(
+      final provider = HttpQuizDataProvider<MockModel>(
         url: url,
         fromJson: MockModel.fromJson,
         // No client parameter - uses top-level http.get
       );
 
       // Then
-      expect(provider, isA<RemoteQuizDataProvider<MockModel>>());
+      expect(provider, isA<HttpQuizDataProvider<MockModel>>());
       expect(provider.client, isNull);
     });
   });
 
-  group('RemoteDataException Tests', () {
+  group('HttpDataException Tests', () {
     test('should create exception with message only', () {
       // Given
       const message = 'Test error message';
 
       // When
-      final exception = RemoteDataException(message);
+      final exception = HttpDataException(message);
 
       // Then
       expect(exception.message, equals(message));
@@ -237,7 +237,7 @@ void main() {
       const statusCode = 404;
 
       // When
-      final exception = RemoteDataException(message, statusCode: statusCode);
+      final exception = HttpDataException(message, statusCode: statusCode);
 
       // Then
       expect(exception.message, equals(message));
