@@ -23,12 +23,19 @@ class QuizWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bloc = QuizBloc(quizEntry.dataProvider, RandomItemPicker([]));
+    final bloc = QuizBloc(
+      quizEntry.dataProvider,
+      RandomItemPicker([]),
+      configManager: quizEntry.configManager,
+    );
 
     return BlocProvider(
       bloc: bloc,
       child: QuizScreen(
-          title: quizEntry.title, gameOverTitle: quizEntry.gameOverText),
+        title: quizEntry.texts.title,
+        gameOverTitle: quizEntry.texts.gameOverText,
+        themeData: quizEntry.themeData,
+      ),
     );
   }
 }
