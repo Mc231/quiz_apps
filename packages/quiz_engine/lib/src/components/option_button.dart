@@ -70,10 +70,6 @@ class OptionButton extends StatelessWidget {
 
 /// Extension on `OptionButton` to provide styling utilities.
 extension on OptionButton {
-  /// Returns the border radius for the button.
-  ///
-  /// This property defines the button's corner radius to create a rounded appearance.
-  BorderRadius get borderRadius => BorderRadius.circular(8);
 
   /// The maximum number of lines allowed for the button's title text.
   ///
