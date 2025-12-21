@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
-import 'package:quiz_engine_core/src/bloc/bloc.dart';
 
 /// A simple mock BLoC for testing.
 class MockBloc extends Bloc {

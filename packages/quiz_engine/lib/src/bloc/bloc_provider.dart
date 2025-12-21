@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'bloc.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart';
 
 /// A Flutter widget that provides a BLoC to its descendants.
 ///

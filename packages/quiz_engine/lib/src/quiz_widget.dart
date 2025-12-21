@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine/src/quiz/quiz_screen.dart';
 import 'package:quiz_engine/src/quiz_widget_entry.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
+import 'bloc/bloc_provider.dart';
 
 /// A reusable widget that encapsulates the quiz logic.
 ///
