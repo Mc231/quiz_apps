@@ -136,6 +136,17 @@ app.post('/api/quizzes/:id/submit', (req, res) => {
     return res.status(400).json({ error: 'Invalid answers format' });
   }
   
+  if (userAnswers.length !== quiz.questions.length) {
+    return res.status(400).json({ error: 'Answer count does not match question count' });
+  }
+  
+  for (let i = 0; i < userAnswers.length; i++) {
+    const answer = userAnswers[i];
+    if (typeof answer !== 'number' || answer < 0 || answer >= quiz.questions[i].options.length) {
+      return res.status(400).json({ error: `Invalid answer value at index ${i}` });
+    }
+  }
+  
   let correctCount = 0;
   const results = quiz.questions.map((question, index) => {
     const userAnswer = userAnswers[index];
