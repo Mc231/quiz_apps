@@ -58,6 +58,9 @@ class RandomItemPicker {
   ///
   /// Returns a `RandomPickResult` containing the answer and options, or `null`
   /// if there are no items available for picking.
+  ///
+  /// For endless mode, call [replenishFromAnswered] before picking to ensure
+  /// infinite questions.
   RandomPickResult? pick() {
     if (items.isEmpty) {
       return null;
@@ -98,5 +101,19 @@ class RandomItemPicker {
     items.remove(answer);
     _answeredItems.add(answer);
     return RandomPickResult(answer, options);
+  }
+
+  /// Replenishes the items list from answered items for endless mode.
+  ///
+  /// This method moves all answered items back to the items list and clears
+  /// the answered items. This allows for infinite question picking in endless
+  /// mode where questions can repeat.
+  ///
+  /// Should be called before [pick] when items are exhausted in endless mode.
+  void replenishFromAnswered() {
+    if (_answeredItems.isNotEmpty) {
+      items.addAll(_answeredItems);
+      _answeredItems.clear();
+    }
   }
 }

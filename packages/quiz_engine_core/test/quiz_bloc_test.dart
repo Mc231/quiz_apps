@@ -148,4 +148,122 @@ void main() {
 
     await bloc.processAnswer(mockItems.first);
   });
+
+  group('Endless Mode Tests', () {
+    late QuizBloc endlessBloc;
+    late RandomItemPicker endlessItemPicker;
+    late List<QuestionEntry> endlessItems;
+
+    setUp(() {
+      // Create test items
+      endlessItems = [
+        QuestionEntry(
+          type: TextQuestion("Question 1"),
+          otherOptions: {"id": "q1"},
+        ),
+        QuestionEntry(
+          type: TextQuestion("Question 2"),
+          otherOptions: {"id": "q2"},
+        ),
+        QuestionEntry(
+          type: TextQuestion("Question 3"),
+          otherOptions: {"id": "q3"},
+        ),
+      ];
+
+      // Use real RandomItemPicker for endless mode tests
+      endlessItemPicker = RandomItemPicker([], 4);
+
+      const configManager = ConfigManager(
+        defaultConfig: QuizConfig(
+          quizId: 'endless_test',
+          modeConfig: EndlessMode(),
+          uiBehaviorConfig: UIBehaviorConfig.noFeedback(),
+        ),
+      );
+
+      endlessBloc = QuizBloc(
+        () async => endlessItems,
+        endlessItemPicker,
+        configManager: configManager,
+      );
+    });
+
+    tearDown(() {
+      endlessBloc.dispose();
+    });
+
+    test('should replenish questions when exhausted in endless mode', () async {
+      // Initialize the quiz
+      await endlessBloc.performInitialLoad();
+
+      // Track initial items count
+      final initialItemsCount = endlessItemPicker.items.length;
+
+      // Answer all questions correctly to exhaust the pool
+      while (endlessItemPicker.items.isNotEmpty) {
+        final currentAnswer = endlessBloc.currentQuestion.answer;
+        await endlessBloc.processAnswer(currentAnswer);
+      }
+
+      // Items should be empty now
+      expect(endlessItemPicker.items.isEmpty, true);
+
+      // Answer one more question - this should trigger replenishment
+      final currentAnswer = endlessBloc.currentQuestion.answer;
+      await endlessBloc.processAnswer(currentAnswer);
+
+      // After replenishment, we should have questions again
+      // (The items list might be smaller because we just picked one)
+      expect(endlessBloc.currentQuestion, isNotNull);
+    });
+
+    test('should end game on first wrong answer in endless mode', () async {
+      // Initialize the quiz
+      await endlessBloc.performInitialLoad();
+
+      bool gameOverCalled = false;
+      endlessBloc.gameOverCallback = (result) {
+        gameOverCalled = true;
+      };
+
+      // Get the correct answer
+      final correctAnswer = endlessBloc.currentQuestion.answer;
+
+      // Find a wrong answer (any option that isn't the correct answer)
+      final wrongAnswer = endlessBloc.currentQuestion.options.firstWhere(
+        (option) => option != correctAnswer,
+      );
+
+      // Answer with wrong answer
+      await endlessBloc.processAnswer(wrongAnswer);
+
+      // Game should be over
+      expect(gameOverCalled, true);
+    });
+
+    test('should continue infinitely with correct answers in endless mode',
+        () async {
+      // Initialize the quiz
+      await endlessBloc.performInitialLoad();
+
+      bool gameOverCalled = false;
+      endlessBloc.gameOverCallback = (result) {
+        gameOverCalled = true;
+      };
+
+      // Answer correctly many times (more than the initial question count)
+      final timesToAnswer = endlessItems.length * 3;
+      for (int i = 0; i < timesToAnswer; i++) {
+        final correctAnswer = endlessBloc.currentQuestion.answer;
+        await endlessBloc.processAnswer(correctAnswer);
+
+        // Game should never be over when answering correctly
+        expect(gameOverCalled, false);
+      }
+
+      // Should still have a valid question after many rounds
+      expect(endlessBloc.currentQuestion, isNotNull);
+    });
+  });
 }

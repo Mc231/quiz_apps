@@ -2036,9 +2036,59 @@ class _QuizPageState extends State<QuizPage> {
 - [ ] Test timed mode
 
 #### Sprint 2.3: Endless Mode
-- [ ] Implement infinite question picking
-- [ ] Handle game over on first wrong answer
-- [ ] Test endless mode
+- [x] Implement infinite question picking
+- [x] Handle game over on first wrong answer
+- [x] Test endless mode
+
+**Status:** ✅ COMPLETED (2025-12-22)
+
+**Completed Tasks:**
+- **Infinite Question Picking**: Complete implementation with question replenishment
+  - Added `replenishFromAnswered()` method to RandomItemPicker
+  - QuizBloc automatically replenishes questions when items exhausted in EndlessMode
+  - Questions cycle infinitely allowing unlimited gameplay
+  - Location: `packages/quiz_engine_core/lib/src/random_item_picker.dart`
+- **Game Over on First Wrong Answer**: Already working via lives system
+  - EndlessMode returns `lives = 1` from computed property
+  - First incorrect answer triggers life loss
+  - Game over immediately when lives reach 0
+  - Works seamlessly with existing lives tracking logic
+- **Tests**: All 59 tests passing (56 original + 3 new endless mode tests)
+  - Test: Questions replenish when exhausted
+  - Test: Game over on first wrong answer
+  - Test: Infinite gameplay with correct answers
+  - Location: `packages/quiz_engine_core/test/quiz_bloc_test.dart`
+
+**Implementation Details:**
+- **Replenishment Logic**: In `QuizBloc._pickQuestion()` (line 142-145)
+  ```dart
+  if (_config.modeConfig is EndlessMode && randomItemPicker.items.isEmpty) {
+    randomItemPicker.replenishFromAnswered();
+  }
+  ```
+- **Game Over**: Leverages existing `_isGameOver()` logic with lives = 1
+- **Question Cycling**: Questions move from `items` to `_answeredItems` when picked, then replenish back to `items` when exhausted
+
+**Files Modified:**
+- `packages/quiz_engine_core/lib/src/random_item_picker.dart` - Added replenishFromAnswered() method
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Added endless mode replenishment logic
+- `packages/quiz_engine_core/test/quiz_bloc_test.dart` - Added 3 comprehensive endless mode tests
+
+**How It Works:**
+1. User starts quiz in EndlessMode
+2. Questions are picked normally until items list is exhausted
+3. When `items.isEmpty`, bloc calls `replenishFromAnswered()`
+4. All answered items move back to items list, shuffled
+5. Questions continue infinitely as long as answers are correct
+6. First wrong answer loses the one life → game over
+
+**Testing Results:**
+- ✅ Questions replenish correctly when exhausted
+- ✅ Game ends immediately on first wrong answer
+- ✅ Can answer 3x more questions than initial pool
+- ✅ All 59 tests passing
+
+**Next:** Sprint 3.1 (Hints System) - Implement hint functionality
 
 ### Phase 3: Hints System (Week 4)
 

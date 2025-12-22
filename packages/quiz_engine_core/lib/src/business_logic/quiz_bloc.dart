@@ -139,6 +139,11 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
   /// Picks the next question or ends the game if no more items are available.
   void _pickQuestion() {
+    // For endless mode, replenish questions from answered items when exhausted
+    if (_config.modeConfig is EndlessMode && randomItemPicker.items.isEmpty) {
+      randomItemPicker.replenishFromAnswered();
+    }
+
     var randomResult = randomItemPicker.pick();
     if (_isGameOver(randomResult)) {
       var state = QuizState.question(
