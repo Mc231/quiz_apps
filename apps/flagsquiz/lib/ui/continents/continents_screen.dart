@@ -89,7 +89,7 @@ class ContinentsScreen extends StatelessWidget {
             gameOverText: appLocalizations.yourScore),
         dataProvider: () async =>
             loadCountriesForContinent(appLocalizations, continent),
-        defaultConfig: QuizConfig(quizId: 'flags_quiz', modeConfig: QuizModeConfig.endless()));
+        defaultConfig: QuizConfig(quizId: 'flags_quiz', modeConfig: QuizModeConfig.standard()));
     Navigator.push(
         context,
         MaterialPageRoute(
