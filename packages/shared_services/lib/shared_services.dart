@@ -9,3 +9,10 @@ export 'src/data_providers/data_providers_exports.dart';
 
 // Infrastructure (Asset loading, platform services)
 export 'src/infrastructure/asset_provider.dart';
+
+// Audio (Sound effects)
+export 'src/audio/audio_service.dart';
+export 'src/audio/quiz_sound_effect.dart';
+
+// Haptic (Haptic feedback)
+export 'src/haptic/haptic_service.dart';
