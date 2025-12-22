@@ -1,4 +1,5 @@
 import '../../model/question.dart';
+import '../../model/question_entry.dart';
 
 /// An abstract class representing the state of a quiz.
 ///
@@ -7,6 +8,13 @@ import '../../model/question.dart';
 sealed class QuizState {
   factory QuizState.loading() = LoadingState;
   factory QuizState.question(Question question, int progress, int total) = QuestionState;
+  factory QuizState.answerFeedback(
+    Question question,
+    QuestionEntry selectedAnswer,
+    bool isCorrect,
+    int progress,
+    int total,
+  ) = AnswerFeedbackState;
   const QuizState();
 }
 
@@ -30,4 +38,37 @@ class QuestionState extends QuizState {
 
   /// Creates a new `QuestionState` with the given question, progress, and total.
   QuestionState(this.question, this.progress, this.total);
+}
+
+/// A state representing the answer feedback phase after the player has answered a question.
+///
+/// This state shows visual feedback (correct/incorrect) before moving to the next question.
+/// The duration of this state is controlled by `UIBehaviorConfig.answerFeedbackDuration`.
+class AnswerFeedbackState extends QuizState {
+  /// The question that was answered.
+  final Question question;
+
+  /// The answer option selected by the player.
+  final QuestionEntry selectedAnswer;
+
+  /// Whether the selected answer was correct.
+  final bool isCorrect;
+
+  /// The number of questions the player has answered so far.
+  final int progress;
+
+  /// The total number of questions in the game.
+  final int total;
+
+  /// Computes the percentage of progress made through the quiz.
+  double get percentageProgress => total == 0 ? 0 : (progress / total).toDouble();
+
+  /// Creates a new `AnswerFeedbackState` with the given data.
+  AnswerFeedbackState(
+    this.question,
+    this.selectedAnswer,
+    this.isCorrect,
+    this.progress,
+    this.total,
+  );
 }

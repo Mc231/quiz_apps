@@ -32,8 +32,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Configuration manager for loading quiz configuration.
   final ConfigManager configManager;
 
-  /// The loaded configuration (loaded from configManager).
-  QuizConfig? _config;
+  /// The loaded configuration (initialized with default, can be updated from configManager).
+  late final QuizConfig _config;
 
   /// The list of quiz data items available for the game.
   List<QuestionEntry> _items = [];
@@ -70,7 +70,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   QuizState get initialState => QuizState.loading();
 
   /// Getter for the loaded configuration.
-  QuizConfig? get config => _config;
+  QuizConfig get config => _config;
 
   /// Performs the initial data load when the screen is loaded.
   ///
@@ -94,8 +94,33 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   }
 
   /// Processes the player's answer to the current question.
-  void processAnswer(QuestionEntry selectedItem) {
+  ///
+  /// If answer feedback is enabled in configuration, this will emit an
+  /// [AnswerFeedbackState] showing whether the answer was correct/incorrect
+  /// before moving to the next question.
+  Future<void> processAnswer(QuestionEntry selectedItem) async {
     var answer = Answer(selectedItem, currentQuestion);
+    final isCorrect = answer.isCorrect;
+
+    // Show feedback if enabled in configuration
+    if (_config.uiBehaviorConfig.showAnswerFeedback) {
+      // Emit feedback state
+      var feedbackState = QuizState.answerFeedback(
+        currentQuestion,
+        selectedItem,
+        isCorrect,
+        _currentProgress,
+        _totalCount,
+      );
+      dispatchState(feedbackState);
+
+      // Wait for feedback duration before proceeding
+      await Future.delayed(
+        Duration(milliseconds: _config.uiBehaviorConfig.answerFeedbackDuration),
+      );
+    }
+
+    // Record the answer and move to next question
     _answers.add(answer);
     _currentProgress++;
     _pickQuestion();

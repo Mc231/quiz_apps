@@ -68,11 +68,30 @@ class QuizScreenState extends State<QuizScreen> {
               stream: _bloc.stream,
               builder: (context, snapshot) {
                 var state = snapshot.data;
+
                 if (state is LoadingState) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 }
+
+                if (state is AnswerFeedbackState) {
+                  // Show feedback with the answered question
+                  // For now, we'll just show the quiz layout (no special feedback UI yet)
+                  // TODO: Create AnswerFeedbackWidget for visual feedback
+                  return ResponsiveBuilder(builder: (context, information) {
+                    return QuizLayout(
+                        questionState: QuestionState(
+                          state.question,
+                          state.progress,
+                          state.total,
+                        ),
+                        information: information,
+                        processAnswer: _bloc.processAnswer,
+                        themeData: widget.themeData);
+                  });
+                }
+
                 final questionState = state as QuestionState;
                 return ResponsiveBuilder(builder: (context, information) {
                   return QuizLayout(

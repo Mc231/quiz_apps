@@ -31,7 +31,10 @@ void main() {
     mockDataProvider = () async => mockItems;
 
     const configManager = ConfigManager(
-      defaultConfig: QuizConfig(quizId: 'test_quiz'),
+      defaultConfig: QuizConfig(
+        quizId: 'test_quiz',
+        uiBehaviorConfig: UIBehaviorConfig.noFeedback(),
+      ),
     );
     bloc = QuizBloc(
       mockDataProvider,
@@ -74,19 +77,27 @@ void main() {
   });
 
   test('process answer', () async {
+    // Initialize config first
+    when(randomItemPicker.pick()).thenReturn(RandomPickResult(mockItems.first, mockItems));
+    await bloc.performInitialLoad();
+
     final question = QuestionEntry(type: TextQuestion("What is the capital of France?"), otherOptions: {"difficulty": "easy"});
     bloc.currentQuestion = Question.fromRandomResult(RandomPickResult(question, mockItems));
 
     // Mock the next random pick
     when(randomItemPicker.pick()).thenReturn(RandomPickResult(mockItems[1], mockItems));
 
-    bloc.processAnswer(question);
+    await bloc.processAnswer(question);
 
     await expectLater(bloc.stream, emitsInOrder([isInstanceOf<QuestionState>()]));
   });
 
   test('process game over', () async {
-    final expectedScore = '1 / 0';
+    // Initialize config first
+    when(randomItemPicker.pick()).thenReturn(RandomPickResult(mockItems.first, mockItems));
+    await bloc.performInitialLoad();
+
+    final expectedScore = '1 / ${mockItems.length}';
 
     bloc.gameOverCallback = (score) {
       expect(score, equals(expectedScore));
@@ -98,6 +109,6 @@ void main() {
     // Mock game over condition
     when(randomItemPicker.pick()).thenReturn(null);
 
-    bloc.processAnswer(mockItems.first);
+    await bloc.processAnswer(mockItems.first);
   });
 }

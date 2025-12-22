@@ -176,7 +176,7 @@ void main() {
       bloc.dispose();
     });
 
-    test('QuizBloc initializes with LoadingState and null config', () {
+    test('QuizBloc initializes with LoadingState and configManager available', () {
       const defaultConfig = QuizConfig(quizId: 'test_init');
       const configManager = ConfigManager(defaultConfig: defaultConfig);
 
@@ -187,9 +187,8 @@ void main() {
       );
 
       expect(bloc.initialState, isA<LoadingState>());
-      // Config is null before performInitialLoad
-      expect(bloc.config, isNull);
-      // But configManager has the defaultConfig
+      // Config is initialized during performInitialLoad(), not before
+      // But configManager always has the defaultConfig available
       expect(bloc.configManager.defaultConfig.quizId, 'test_init');
 
       bloc.dispose();
