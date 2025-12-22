@@ -32,19 +32,19 @@ class QuizWidgetEntry {
   /// Configuration manager for loading quiz configuration.
   final ConfigManager configManager;
 
-  /// Theme data for quiz UI customization (optional).
-  final QuizThemeData? themeData;
+  /// Theme data for quiz UI customization.
+  final QuizThemeData themeData;
 
   /// Creates a `QuizWidgetEntry` with the specified configuration.
   ///
   /// [texts] - Text strings for quiz UI
   /// [dataProvider] - Function to fetch quiz data
   /// [defaultConfig] - Default quiz configuration (used to construct ConfigManager)
-  /// [themeData] - Optional theme customization
+  /// [themeData] - Theme customization (defaults to QuizThemeData())
   QuizWidgetEntry({
     required this.texts,
     required this.dataProvider,
     required QuizConfig defaultConfig,
-    this.themeData,
+    this.themeData = const QuizThemeData(),
   }) : configManager = ConfigManager(defaultConfig: defaultConfig);
 }

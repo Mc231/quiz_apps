@@ -20,8 +20,8 @@ class OptionButton extends StatelessWidget {
   /// The callback function invoked when the button is clicked.
   final VoidCallback onClickListener;
 
-  /// Theme data for customizing button appearance (optional).
-  final QuizThemeData? themeData;
+  /// Theme data for customizing button appearance.
+  final QuizThemeData themeData;
 
   /// Creates an `OptionButton` with the specified title and click listener.
   ///
@@ -33,12 +33,12 @@ class OptionButton extends StatelessWidget {
     super.key,
     required this.title,
     required this.onClickListener,
-    this.themeData,
+    this.themeData = const QuizThemeData(),
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = themeData ?? const QuizThemeData();
+    final theme = themeData;
 
     return SizedBox.expand(
       child: ElevatedButton(
@@ -58,34 +58,31 @@ class OptionButton extends StatelessWidget {
         ),
         child: Text(
           title,
-          maxLines: maxLines,
+          maxLines: theme.buttonMaxLines,
           overflow: TextOverflow.ellipsis,
-          style: theme.buttonTextStyle.copyWith(fontSize: getFontSize(context)),
+          style: theme.buttonTextStyle.copyWith(fontSize: _getFontSize(context, theme)),
           textAlign: TextAlign.center,
         ),
       ),
     );
   }
-}
 
-/// Extension on `OptionButton` to provide styling utilities.
-extension on OptionButton {
-
-  /// The maximum number of lines allowed for the button's title text.
-  ///
-  /// This property limits the title to two lines, ensuring proper layout.
-  int get maxLines => 2;
-
-  /// Returns the font size for the button's title text based on screen size.
+  /// Returns the font size for the button's title text based on screen size and theme.
   ///
   /// This method uses `getValueForScreenType` to adjust the font size
-  /// for different device types, providing a responsive design.
+  /// for different device types, pulling values from the theme configuration.
   ///
   /// [context] is the `BuildContext` used to determine the screen size.
+  /// [theme] is the theme data containing font size values.
   ///
   /// Returns the font size for the button's title text.
-  double getFontSize(BuildContext context) {
+  double _getFontSize(BuildContext context, QuizThemeData theme) {
     return getValueForScreenType(
-        context: context, mobile: 16, tablet: 24, desktop: 24, watch: 12);
+      context: context,
+      mobile: theme.buttonFontSizeMobile,
+      tablet: theme.buttonFontSizeTablet,
+      desktop: theme.buttonFontSizeDesktop,
+      watch: theme.buttonFontSizeWatch,
+    );
   }
 }

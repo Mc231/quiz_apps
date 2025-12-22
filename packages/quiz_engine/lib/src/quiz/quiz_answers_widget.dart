@@ -28,8 +28,8 @@ class QuizAnswersWidget extends StatelessWidget {
   /// Callback function to be invoked when an option is clicked.
   final Function(QuestionEntry answer) answerClickListener;
 
-  /// Theme data for customizing button appearance (optional).
-  final QuizThemeData? themeData;
+  /// Theme data for customizing button appearance.
+  final QuizThemeData themeData;
 
   /// Creates a `QuizAnswersWidget`.
   ///
@@ -43,7 +43,7 @@ class QuizAnswersWidget extends StatelessWidget {
     required this.options,
     required this.sizingInformation,
     required this.answerClickListener,
-    this.themeData,
+    this.themeData = const QuizThemeData(),
   }) : super(key: key);
 
   @override
@@ -93,21 +93,22 @@ class QuizAnswersWidget extends StatelessWidget {
 
 /// Extension on `QuizAnswersWidget` to provide responsive layout utilities.
 extension on QuizAnswersWidget {
-  static const _defaultButtonMargin = EdgeInsets.only(bottom: 8);
-  static const _verySmallScreen = 300;
-
-  /// Returns the axis spacing for the grid based on screen size.
+  /// Returns the axis spacing for the grid based on screen size and theme.
   ///
   /// This method calculates the spacing between grid items using
-  /// `getValueForScreenType`, providing different spacing for mobile,
-  /// tablet, desktop, and watch screen sizes.
+  /// `getValueForScreenType`, pulling values from the theme configuration.
   ///
   /// [context] is the `BuildContext` used to determine the screen size.
   ///
   /// Returns the spacing between grid items.
   double getAxisSpacing(BuildContext context) {
     return getValueForScreenType(
-        context: context, mobile: 8, tablet: 16, desktop: 16, watch: 0);
+      context: context,
+      mobile: themeData.gridAxisSpacingMobile,
+      tablet: themeData.gridAxisSpacingTablet,
+      desktop: themeData.gridAxisSpacingDesktop,
+      watch: themeData.gridAxisSpacingWatch,
+    );
   }
 
   /// Returns the number of columns in the grid based on screen size and orientation.
@@ -124,7 +125,7 @@ extension on QuizAnswersWidget {
     final orientation = information.orientation;
     final mobileAxisCount = orientation == Orientation.landscape
         ? 1
-        : information.localWidgetSize.shortestSide > _verySmallScreen
+        : information.localWidgetSize.shortestSide > themeData.verySmallScreenThreshold
         ? 1
         : 2;
     return getValueForScreenType(
@@ -135,11 +136,10 @@ extension on QuizAnswersWidget {
         watch: 1);
   }
 
-  /// Returns the aspect ratio for grid children based on screen size.
+  /// Returns the aspect ratio for grid children based on screen size and theme.
   ///
   /// This method calculates the child aspect ratio for the grid layout
-  /// using `getValueForScreenType`, providing different values for mobile,
-  /// tablet, desktop, and watch screen sizes.
+  /// using `getValueForScreenType`, pulling button height values from the theme configuration.
   ///
   /// [context] is the `BuildContext` used to determine the screen size.
   /// [information] provides additional sizing information for the widget.
@@ -148,29 +148,31 @@ extension on QuizAnswersWidget {
   double getGridChildAspectRatio(
       BuildContext context, SizingInformation information) {
     final height = getValueForScreenType(
-        context: context,
-        mobile: 56.0,
-        tablet: 92.0,
-        desktop: 92.0,
-        watch: 36.0);
+      context: context,
+      mobile: themeData.buttonHeightMobile,
+      tablet: themeData.buttonHeightTablet,
+      desktop: themeData.buttonHeightDesktop,
+      watch: themeData.buttonHeightWatch,
+    );
     final width = information.localWidgetSize.width;
     return width / height;
   }
 
-  /// Returns the button margin based on the screen size.
+  /// Returns the button margin based on the screen size and theme.
   ///
   /// This method calculates the margin for buttons using `getValueForScreenType`,
-  /// providing different margins for mobile, tablet, desktop, and watch screen sizes.
+  /// pulling margin values from the theme configuration.
   ///
   /// [context] is the `BuildContext` used to determine the screen size.
   ///
   /// Returns the `EdgeInsets` for button margin.
   EdgeInsets getButtonMargin(BuildContext context) {
     return getValueForScreenType(
-        context: context,
-        mobile: _defaultButtonMargin,
-        tablet: _defaultButtonMargin,
-        desktop: _defaultButtonMargin,
-        watch: EdgeInsets.only(bottom: 4));
+      context: context,
+      mobile: themeData.buttonBottomMargin,
+      tablet: themeData.buttonBottomMargin,
+      desktop: themeData.buttonBottomMargin,
+      watch: themeData.buttonBottomMarginWatch,
+    );
   }
 }

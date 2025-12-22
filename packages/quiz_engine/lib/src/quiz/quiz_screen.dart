@@ -24,13 +24,13 @@ class QuizScreen extends StatefulWidget {
 
   final String title;
   final String gameOverTitle;
-  final QuizThemeData? themeData;
+  final QuizThemeData themeData;
 
   const QuizScreen({
     super.key,
     required this.title,
     required this.gameOverTitle,
-    this.themeData,
+    this.themeData = const QuizThemeData(),
   });
 
   @override
@@ -126,17 +126,22 @@ class QuizScreenState extends State<QuizScreen> {
 
 /// Extension on `QuizScreenState` to provide responsive layout utilities.
 extension QuizScreenSizes on QuizScreenState {
-  /// Returns the container padding based on the screen size.
+  /// Returns the container padding based on the screen size and theme.
   ///
   /// This method calculates padding for the quiz screen using `getValueForScreenType`,
-  /// adjusting the padding for mobile, tablet, desktop, and watch screen sizes.
+  /// pulling padding values from the theme configuration.
   ///
   /// [context] is the `BuildContext` used to determine the screen size.
   ///
   /// Returns the `EdgeInsets` for the container padding.
   EdgeInsets getContainerPadding(BuildContext context) {
     var padding = getValueForScreenType<double>(
-        context: context, mobile: 16, tablet: 16, desktop: 16, watch: 8);
+      context: context,
+      mobile: widget.themeData.screenPaddingMobile,
+      tablet: widget.themeData.screenPaddingTablet,
+      desktop: widget.themeData.screenPaddingDesktop,
+      watch: widget.themeData.screenPaddingWatch,
+    );
     return EdgeInsets.all(padding);
   }
 }

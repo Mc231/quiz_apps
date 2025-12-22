@@ -35,8 +35,8 @@ class QuizLayout extends StatelessWidget {
   /// The callback function to process an answer when an option is selected.
   final Function(QuestionEntry) processAnswer;
 
-  /// Theme data for customizing quiz UI (optional).
-  final QuizThemeData? themeData;
+  /// Theme data for customizing quiz UI.
+  final QuizThemeData themeData;
 
   /// Creates a `QuizLayout` with the specified question state, sizing information, and answer processor.
   ///
@@ -50,7 +50,7 @@ class QuizLayout extends StatelessWidget {
     required this.questionState,
     required this.information,
     required this.processAnswer,
-    this.themeData,
+    this.themeData = const QuizThemeData(),
   });
 
   @override
@@ -95,7 +95,7 @@ class QuizLayout extends StatelessWidget {
         )
       else
         _buildQuestionWidget(answer, code, questionSize),
-      SizedBox(width: 16),
+      SizedBox(width: themeData.questionAnswerSpacing),
       Expanded(
           flex: isLandscape ? 2 : 1,
           child: QuizAnswersWidget(
@@ -174,13 +174,11 @@ class QuizLayout extends StatelessWidget {
 
 /// Extension on `QuizLayout` to provide responsive layout utilities.
 extension QuizLayoutSized on QuizLayout {
-  static const _imageWatchCof = 0.7;
-  static const _imageNormalCof = 0.62;
-
-  /// Returns the size for the question image based on the screen size.
+  /// Returns the size for the question image based on the screen size and theme.
   ///
-  /// This method calculates the image size using a coefficient based on whether the
-  /// device is a watch or not, adjusting the size to fit the screen dimensions.
+  /// This method calculates the image size using a coefficient from the theme
+  /// based on whether the device is a watch or not, adjusting the size to fit
+  /// the screen dimensions.
   ///
   /// [information] provides sizing details for the screen.
   ///
@@ -189,23 +187,32 @@ extension QuizLayoutSized on QuizLayout {
     final width = information.localWidgetSize.width;
     final height = information.localWidgetSize.height;
     final minSize = min(width, height);
-    final cof = information.isWatch ? _imageWatchCof : _imageNormalCof;
+    final cof = information.isWatch
+        ? themeData.imageSizeCoefficientWatch
+        : themeData.imageSizeCoefficientNormal;
     return minSize * cof;
   }
 
-  /// Returns the font size for the progress text based on the screen size.
+  /// Returns the font size for the progress text based on the screen size and theme.
   ///
   /// This method uses `getValueForScreenType` to adjust the font size for different
-  /// device types, ensuring readability on all screens.
+  /// device types, pulling values from the theme configuration.
   ///
   /// [context] is the `BuildContext` used to determine the screen size.
   ///
   /// Returns the font size for the progress text.
   double progressFontSize(BuildContext context) {
     return getValueForScreenType(
-        context: context, mobile: 12, tablet: 24, desktop: 24, watch: 8);
+      context: context,
+      mobile: themeData.progressFontSizeMobile,
+      tablet: themeData.progressFontSizeTablet,
+      desktop: themeData.progressFontSizeDesktop,
+      watch: themeData.progressFontSizeWatch,
+    );
   }
 
   /// The margin used between the progress text and the progress indicator.
-  double get progressMargin => 8;
+  double get progressMargin {
+    return themeData.progressIndicatorSpacing;
+  }
 }
