@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'lives_display.dart';
+import 'timer_display.dart';
 
 /// A flexible widget for displaying action items in the quiz app bar.
 ///
@@ -28,12 +29,24 @@ class QuizAppBarActions extends StatelessWidget {
   /// Color for empty/lost lives
   final Color lostLivesColor;
 
+  /// Color for the timer when time is normal
+  final Color timerNormalColor;
+
+  /// Color for the timer when time is running low
+  final Color timerWarningColor;
+
+  /// Color for the timer when time is critical
+  final Color timerCriticalColor;
+
   const QuizAppBarActions({
     super.key,
     this.state,
     this.config,
     this.livesColor = Colors.red,
     this.lostLivesColor = Colors.grey,
+    this.timerNormalColor = Colors.blue,
+    this.timerWarningColor = Colors.orange,
+    this.timerCriticalColor = Colors.red,
   });
 
   @override
@@ -51,10 +64,9 @@ class QuizAppBarActions extends StatelessWidget {
       actions.add(livesWidget);
     }
 
-    // Future: Add timer display
-    // if (config?.modeConfig is TimedMode || config?.modeConfig is SurvivalMode) {
-    //   actions.add(_buildTimerDisplay());
-    // }
+    // Add timer displays if applicable
+    final timerWidgets = _buildTimerDisplays();
+    actions.addAll(timerWidgets);
 
     // Future: Add hints counter
     // if (config?.hintConfig.initialHints.isNotEmpty == true) {
@@ -99,6 +111,55 @@ class QuizAppBarActions extends StatelessWidget {
       filledColor: livesColor,
       emptyColor: lostLivesColor,
     );
+  }
+
+  /// Builds timer display widgets if timer tracking is enabled
+  List<Widget> _buildTimerDisplays() {
+    final widgets = <Widget>[];
+    int? questionTimeRemaining;
+    int? totalTimeRemaining;
+
+    // Extract timer values from state
+    if (state is QuestionState) {
+      final questionState = state as QuestionState;
+      questionTimeRemaining = questionState.questionTimeRemaining;
+      totalTimeRemaining = questionState.totalTimeRemaining;
+    } else if (state is AnswerFeedbackState) {
+      final feedbackState = state as AnswerFeedbackState;
+      questionTimeRemaining = feedbackState.questionTimeRemaining;
+      totalTimeRemaining = feedbackState.totalTimeRemaining;
+    }
+
+    // Add question timer if active
+    if (questionTimeRemaining != null) {
+      widgets.add(
+        TimerDisplay(
+          questionTimeRemaining: questionTimeRemaining,
+          showQuestionTimer: true,
+          showTotalTimer: false,
+          normalColor: timerNormalColor,
+          warningColor: timerWarningColor,
+          criticalColor: timerCriticalColor,
+        ),
+      );
+    }
+
+    // Add total timer if active
+    if (totalTimeRemaining != null) {
+      widgets.add(
+        TimerDisplay(
+          totalTimeRemaining: totalTimeRemaining,
+          showQuestionTimer: false,
+          showTotalTimer: true,
+          normalColor: timerNormalColor,
+          warningColor: timerWarningColor,
+          criticalColor: timerCriticalColor,
+          timerIcon: Icons.hourglass_bottom, // Different icon for total timer
+        ),
+      );
+    }
+
+    return widgets;
   }
 
   /// Helper method to intersperse widgets with a separator

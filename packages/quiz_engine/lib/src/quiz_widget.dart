@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/src/quiz/quiz_screen.dart';
 import 'package:quiz_engine/src/quiz_widget_entry.dart';
+import 'package:quiz_engine/src/widgets/quiz_lifecycle_handler.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'bloc/bloc_provider.dart';
 
@@ -8,6 +9,9 @@ import 'bloc/bloc_provider.dart';
 ///
 /// This widget initializes the `QuizBloc` and provides a quiz interface
 /// for any dataset that matches the `QuestionEntry` model.
+///
+/// Automatically handles app lifecycle to pause/resume timers when
+/// the app goes to background or returns to foreground.
 ///
 /// Usage:
 /// ```dart
@@ -31,10 +35,12 @@ class QuizWidget extends StatelessWidget {
 
     return BlocProvider(
       bloc: bloc,
-      child: QuizScreen(
-        title: quizEntry.texts.title,
-        gameOverTitle: quizEntry.texts.gameOverText,
-        themeData: quizEntry.themeData,
+      child: QuizLifecycleHandler(
+        child: QuizScreen(
+          title: quizEntry.texts.title,
+          gameOverTitle: quizEntry.texts.gameOverText,
+          themeData: quizEntry.themeData,
+        ),
       ),
     );
   }
