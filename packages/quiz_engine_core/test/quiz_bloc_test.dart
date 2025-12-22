@@ -198,7 +198,7 @@ void main() {
       await endlessBloc.performInitialLoad();
 
       // Track initial items count
-      final initialItemsCount = endlessItemPicker.items.length;
+      final _ = endlessItemPicker.items.length;
 
       // Answer all questions correctly to exhaust the pool
       while (endlessItemPicker.items.isNotEmpty) {

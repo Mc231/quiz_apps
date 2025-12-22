@@ -60,7 +60,7 @@ sealed class QuizModeConfig extends BaseConfig {
   /// Deserialize from map
   factory QuizModeConfig.fromMap(Map<String, dynamic> map) {
     final type = map['type'] as String;
-    final version = map['version'] as int? ?? 1;
+    final _ = map['version'] as int? ?? 1;
 
     return switch (type) {
       'standard' => StandardMode.fromMap(map),
@@ -155,6 +155,7 @@ class TimedMode extends QuizModeConfig {
 /// Lives mode - lose lives on wrong answers, game over at 0
 class LivesMode extends QuizModeConfig {
   /// Number of lives available
+  @override
   final int lives;
 
   final bool allowSkip;
@@ -209,6 +210,7 @@ class EndlessMode extends QuizModeConfig {
 /// Survival mode - timed + lives combined
 class SurvivalMode extends QuizModeConfig {
   /// Number of lives available
+  @override
   final int lives;
 
   /// Time limit per question in seconds

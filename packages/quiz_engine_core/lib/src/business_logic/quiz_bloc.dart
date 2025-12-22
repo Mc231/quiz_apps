@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:quiz_engine_core/src/business_logic/quiz_state/quiz_state.dart';
 import 'package:quiz_engine_core/src/model/question_entry.dart';
 
@@ -54,6 +56,21 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// The number of remaining lives (only used in lives/survival modes).
   int? _remainingLives;
 
+  /// Timer for tracking question time limit.
+  Timer? _questionTimer;
+
+  /// Timer for tracking total quiz time limit.
+  Timer? _totalTimer;
+
+  /// Remaining time for the current question in seconds.
+  int? _questionTimeRemaining;
+
+  /// Remaining total time for the entire quiz in seconds.
+  int? _totalTimeRemaining;
+
+  /// Whether the timers are currently paused.
+  bool _timersPaused = false;
+
   /// Creates a `QuizBloc` with a provided data fetch function.
   ///
   /// [dataProvider] - Function to fetch quiz data
@@ -88,6 +105,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Initialize lives from mode config
     _remainingLives = _config.modeConfig.lives;
 
+    // Initialize timers from mode config
+    _initializeTimers();
+
     var items = await dataProvider();
 
     // Apply filter if provided, otherwise keep all items
@@ -104,6 +124,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// [AnswerFeedbackState] showing whether the answer was correct/incorrect
   /// before moving to the next question.
   Future<void> processAnswer(QuestionEntry selectedItem) async {
+    // Cancel question timer when answer is submitted
+    _cancelQuestionTimer();
+
     var answer = Answer(selectedItem, currentQuestion);
     final isCorrect = answer.isCorrect;
 
@@ -114,7 +137,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
     // Show feedback if enabled in configuration
     if (_config.uiBehaviorConfig.showAnswerFeedback) {
-      // Emit feedback state with updated lives
+      // Emit feedback state with updated lives and timer info
       var feedbackState = QuizState.answerFeedback(
         currentQuestion,
         selectedItem,
@@ -122,6 +145,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         _currentProgress,
         _totalCount,
         remainingLives: _remainingLives,
+        questionTimeRemaining: _questionTimeRemaining,
+        totalTimeRemaining: _totalTimeRemaining,
       );
       dispatchState(feedbackState);
 
@@ -146,28 +171,43 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
     var randomResult = randomItemPicker.pick();
     if (_isGameOver(randomResult)) {
+      _cancelQuestionTimer();
+      _cancelTotalTimer();
       var state = QuizState.question(
         currentQuestion,
         _currentProgress,
         _totalCount,
         remainingLives: _remainingLives,
+        questionTimeRemaining: _questionTimeRemaining,
+        totalTimeRemaining: _totalTimeRemaining,
       );
       dispatchState(state);
       _notifyGameOver();
     } else {
       var question = Question.fromRandomResult(randomResult!);
       currentQuestion = question;
+
+      // Reset question timer for new question (unless paused)
+      if (!_timersPaused) {
+        _questionTimeRemaining = null;
+      }
+
+      // Start question timer for new question
+      _startQuestionTimer();
+
       var state = QuizState.question(
         question,
         _currentProgress,
         _totalCount,
         remainingLives: _remainingLives,
+        questionTimeRemaining: _questionTimeRemaining,
+        totalTimeRemaining: _totalTimeRemaining,
       );
       dispatchState(state);
     }
   }
 
-  /// Determines if the game is over based on the random picker result or lives.
+  /// Determines if the game is over based on the random picker result, lives, or time.
   bool _isGameOver(RandomPickResult? result) {
     // Game over if no more questions
     if (result == null) return true;
@@ -175,13 +215,190 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Game over if lives reach 0
     if (_remainingLives != null && _remainingLives! <= 0) return true;
 
+    // Game over if total time has expired
+    if (_totalTimeRemaining != null && _totalTimeRemaining! <= 0) return true;
+
     return false;
   }
 
   /// Notifies the game-over state and invokes the callback with the final result.
   void _notifyGameOver() {
+    _cancelQuestionTimer();
+    _cancelTotalTimer();
     var correctAnswers = _answers.where((answer) => answer.isCorrect).length;
     var result = '$correctAnswers / $_totalCount';
     gameOverCallback?.call(result);
+  }
+
+  /// Initializes timer settings from mode configuration.
+  void _initializeTimers() {
+    final mode = _config.modeConfig;
+
+    // Initialize total timer if the mode has a total time limit
+    if (mode is TimedMode && mode.totalTimeLimit != null) {
+      _totalTimeRemaining = mode.totalTimeLimit;
+      _startTotalTimer();
+    } else if (mode is SurvivalMode && mode.totalTimeLimit != null) {
+      _totalTimeRemaining = mode.totalTimeLimit;
+      _startTotalTimer();
+    }
+  }
+
+  /// Starts the question timer based on mode configuration.
+  void _startQuestionTimer() {
+    // Don't start timer if paused
+    if (_timersPaused) return;
+
+    final mode = _config.modeConfig;
+    int? timePerQuestion;
+
+    // Get time per question from mode config
+    if (mode is TimedMode) {
+      timePerQuestion = mode.timePerQuestion;
+    } else if (mode is SurvivalMode) {
+      timePerQuestion = mode.timePerQuestion;
+    }
+
+    if (timePerQuestion == null) return;
+
+    // Only reset time if this is a fresh question (not a resume)
+    if (_questionTimeRemaining == null || _questionTimeRemaining! <= 0) {
+      _questionTimeRemaining = timePerQuestion;
+    }
+
+    _questionTimer?.cancel();
+    _questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_questionTimeRemaining != null && _questionTimeRemaining! > 0) {
+        _questionTimeRemaining = _questionTimeRemaining! - 1;
+
+        // Emit updated state with new timer value
+        var state = QuizState.question(
+          currentQuestion,
+          _currentProgress,
+          _totalCount,
+          remainingLives: _remainingLives,
+          questionTimeRemaining: _questionTimeRemaining,
+          totalTimeRemaining: _totalTimeRemaining,
+        );
+        dispatchState(state);
+      } else {
+        _handleQuestionTimeExpired();
+      }
+    });
+  }
+
+  /// Starts the total quiz timer.
+  void _startTotalTimer() {
+    // Don't start timer if paused
+    if (_timersPaused) return;
+
+    if (_totalTimeRemaining == null) return;
+
+    _totalTimer?.cancel();
+    _totalTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_totalTimeRemaining != null && _totalTimeRemaining! > 0) {
+        _totalTimeRemaining = _totalTimeRemaining! - 1;
+
+        // Total timer updates are reflected in the next question state emission
+        // We don't need to emit state here as the question timer will handle it
+      } else {
+        _handleTotalTimeExpired();
+      }
+    });
+  }
+
+  /// Pauses both question and total timers.
+  ///
+  /// Call this when the app goes to background or becomes inactive.
+  /// Timers will stop counting down but preserve their current values.
+  void pauseTimers() {
+    if (_timersPaused) return;
+
+    _timersPaused = true;
+    _questionTimer?.cancel();
+    _totalTimer?.cancel();
+  }
+
+  /// Resumes both question and total timers.
+  ///
+  /// Call this when the app returns to foreground.
+  /// Timers will continue from where they were paused.
+  void resumeTimers() {
+    if (!_timersPaused) return;
+
+    _timersPaused = false;
+
+    // Restart question timer if there's remaining time
+    if (_questionTimeRemaining != null && _questionTimeRemaining! > 0) {
+      _startQuestionTimer();
+    }
+
+    // Restart total timer if there's remaining time
+    if (_totalTimeRemaining != null && _totalTimeRemaining! > 0) {
+      _startTotalTimer();
+    }
+  }
+
+  /// Cancels the question timer.
+  void _cancelQuestionTimer() {
+    _questionTimer?.cancel();
+    _questionTimer = null;
+  }
+
+  /// Cancels the total timer.
+  void _cancelTotalTimer() {
+    _totalTimer?.cancel();
+    _totalTimer = null;
+  }
+
+  /// Handles when the question time expires.
+  void _handleQuestionTimeExpired() {
+    _cancelQuestionTimer();
+
+    // Treat time expiration as a wrong answer
+    final mode = _config.modeConfig;
+    if (mode is TimedMode || mode is SurvivalMode) {
+      // For timed modes, time expiration means wrong answer
+      if (_remainingLives != null) {
+        _remainingLives = _remainingLives! - 1;
+      }
+
+      // Create a dummy wrong answer
+      final dummyAnswer = Answer(
+        currentQuestion.answer,
+        currentQuestion,
+        isTimeout: true,
+      );
+      _answers.add(dummyAnswer);
+      _currentProgress++;
+      _pickQuestion();
+    }
+  }
+
+  /// Handles when the total quiz time expires.
+  void _handleTotalTimeExpired() {
+    _cancelQuestionTimer();
+    _cancelTotalTimer();
+    _totalTimeRemaining = 0;
+
+    // End the game
+    var state = QuizState.question(
+      currentQuestion,
+      _currentProgress,
+      _totalCount,
+      remainingLives: _remainingLives,
+      questionTimeRemaining: _questionTimeRemaining,
+      totalTimeRemaining: _totalTimeRemaining,
+    );
+    dispatchState(state);
+    _notifyGameOver();
+  }
+
+  @override
+  void dispose() {
+    _timersPaused = false;
+    _cancelQuestionTimer();
+    _cancelTotalTimer();
+    super.dispose();
   }
 }
