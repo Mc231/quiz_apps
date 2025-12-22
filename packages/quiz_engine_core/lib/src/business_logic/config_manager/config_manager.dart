@@ -33,9 +33,7 @@ class ConfigManager {
   ///   source: const DefaultSource(),
   /// );
   /// ```
-  Future<QuizConfig> getConfig({
-    required ConfigSource source,
-  }) async {
+  Future<QuizConfig> getConfig({required ConfigSource source}) async {
     return switch (source) {
       DefaultSource() => defaultConfig,
     };

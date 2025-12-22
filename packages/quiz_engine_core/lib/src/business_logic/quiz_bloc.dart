@@ -79,9 +79,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// and initializes the random picker.
   Future<void> performInitialLoad() async {
     // Load configuration first
-    _config = await configManager.getConfig(
-      source: const DefaultSource(),
-    );
+    _config = await configManager.getConfig(source: const DefaultSource());
 
     var items = await dataProvider();
 
@@ -130,7 +128,11 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   void _pickQuestion() {
     var randomResult = randomItemPicker.pick();
     if (_isGameOver(randomResult)) {
-      var state = QuizState.question(currentQuestion, _currentProgress, _totalCount);
+      var state = QuizState.question(
+        currentQuestion,
+        _currentProgress,
+        _totalCount,
+      );
       dispatchState(state);
       _notifyGameOver();
     } else {

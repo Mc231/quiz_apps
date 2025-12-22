@@ -171,7 +171,10 @@ class QuizThemeData {
     this.buttonBorderColor = Colors.transparent,
     this.buttonBorderWidth = 0,
     this.buttonBorderRadius = const BorderRadius.all(Radius.circular(8)),
-    this.buttonPadding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    this.buttonPadding = const EdgeInsets.symmetric(
+      horizontal: 16,
+      vertical: 8,
+    ),
     this.buttonTextStyle = const TextStyle(fontSize: 18),
     this.buttonMaxLines = 2,
     this.correctAnswerColor = Colors.green,
@@ -222,11 +225,11 @@ class QuizThemeData {
 
   /// Creates a dark theme variant
   factory QuizThemeData.dark() => const QuizThemeData(
-        buttonColor: Colors.white,
-        buttonTextColor: Colors.black,
-        progressBackgroundColor: Color(0xFF424242),
-        progressForegroundColor: Colors.lightBlueAccent,
-      );
+    buttonColor: Colors.white,
+    buttonTextColor: Colors.black,
+    progressBackgroundColor: Color(0xFF424242),
+    progressForegroundColor: Colors.lightBlueAccent,
+  );
 
   /// Creates a copy of this theme with the specified fields replaced
   QuizThemeData copyWith({

@@ -32,7 +32,7 @@ void main() {
     await tester.pumpAndSettle();
     // Then
     final scoreFinder = find.byWidgetPredicate((widget) =>
-    widget is Text &&
+        widget is Text &&
         widget.data != null &&
         widget.data!.contains(RegExp(r'^\d+ / \d+$')));
 

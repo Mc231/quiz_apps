@@ -15,7 +15,9 @@ class MockBloc extends Bloc {
 
 void main() {
   group('BlocProvider Tests', () {
-    testWidgets('provides the correct bloc instance', (WidgetTester tester) async {
+    testWidgets('provides the correct bloc instance', (
+      WidgetTester tester,
+    ) async {
       // Given
       final mockBloc = MockBloc();
 
@@ -34,15 +36,14 @@ void main() {
       );
     });
 
-    testWidgets('disposes the bloc when the provider is removed', (WidgetTester tester) async {
+    testWidgets('disposes the bloc when the provider is removed', (
+      WidgetTester tester,
+    ) async {
       // Given
       final mockBloc = MockBloc();
 
       await tester.pumpWidget(
-        BlocProvider<MockBloc>(
-          bloc: mockBloc,
-          child: const SizedBox(),
-        ),
+        BlocProvider<MockBloc>(bloc: mockBloc, child: const SizedBox()),
       );
 
       // When
@@ -52,7 +53,9 @@ void main() {
       expect(mockBloc.disposed, isTrue);
     });
 
-    testWidgets('allows nested BlocProviders with different types', (WidgetTester tester) async {
+    testWidgets('allows nested BlocProviders with different types', (
+      WidgetTester tester,
+    ) async {
       // Given
       final outerBloc = MockBloc();
       final innerBloc = MockBloc();

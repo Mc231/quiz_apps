@@ -17,5 +17,3 @@ import 'package:flutter/material.dart';
 /// instance of `FlagsQuizApp`.
 ///
 void main() => runApp(FlagsQuizApp(homeWidget: ContinentsScreen()));
-
-

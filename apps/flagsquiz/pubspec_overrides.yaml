@@ -1,6 +1,8 @@
-# melos_managed_dependency_overrides: quiz_engine,quiz_engine_core
+# melos_managed_dependency_overrides: quiz_engine,quiz_engine_core,shared_services
 dependency_overrides:
   quiz_engine:
     path: ../../packages/quiz_engine
   quiz_engine_core:
     path: ../../packages/quiz_engine_core
+  shared_services:
+    path: ../../packages/shared_services

@@ -30,7 +30,9 @@ void main() {
       expect(find.byType(QuizVideoWidget), findsOneWidget);
     });
 
-    testWidgets('should display with correct dimensions', (WidgetTester tester) async {
+    testWidgets('should display with correct dimensions', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: VideoQuestion('https://example.com/video.mp4'),
@@ -54,14 +56,14 @@ void main() {
       );
 
       // Then
-      final container = tester.widget<Container>(
-        find.byType(Container).first,
-      );
+      final container = tester.widget<Container>(find.byType(Container).first);
       expect(container.constraints?.maxWidth, width);
       expect(container.constraints?.maxHeight, height);
     });
 
-    testWidgets('should have loading indicator initially', (WidgetTester tester) async {
+    testWidgets('should have loading indicator initially', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: VideoQuestion('https://example.com/video.mp4'),
@@ -86,7 +88,9 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('should display thumbnail if provided during loading', (WidgetTester tester) async {
+    testWidgets('should display thumbnail if provided during loading', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: VideoQuestion(
@@ -137,15 +141,15 @@ void main() {
       );
 
       // Then
-      final container = tester.widget<Container>(
-        find.byType(Container).first,
-      );
+      final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.borderRadius, BorderRadius.circular(16));
       expect(decoration.color, Colors.black);
     });
 
-    testWidgets('should have ClipRRect for rounded corners', (WidgetTester tester) async {
+    testWidgets('should have ClipRRect for rounded corners', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: VideoQuestion('https://example.com/video.mp4'),

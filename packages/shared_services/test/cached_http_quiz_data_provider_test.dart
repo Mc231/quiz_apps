@@ -5,9 +5,7 @@ import 'package:mockito/mockito.dart';
 import 'package:shared_services/src/data_providers/cached_http_quiz_data_provider.dart';
 import 'package:shared_services/src/data_providers/http_quiz_data_provider.dart';
 
-@GenerateNiceMocks([
-  MockSpec<http.Client>(),
-])
+@GenerateNiceMocks([MockSpec<http.Client>()])
 import 'cached_http_quiz_data_provider_test.mocks.dart';
 
 class MockModel {
@@ -39,8 +37,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[{"name": "Test1"}, {"name": "Test2"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
@@ -56,37 +55,42 @@ void main() {
       verify(mockClient.get(Uri.parse(url))).called(1);
     });
 
-    test('should return cached data on second request without fetching', () async {
-      // Given
-      const url = 'https://api.example.com/quiz/data';
-      const jsonResponse = '[{"name": "Test1"}, {"name": "Test2"}]';
+    test(
+      'should return cached data on second request without fetching',
+      () async {
+        // Given
+        const url = 'https://api.example.com/quiz/data';
+        const jsonResponse = '[{"name": "Test1"}, {"name": "Test2"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+        when(
+          mockClient.get(Uri.parse(url)),
+        ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
-      final provider = CachedHttpQuizDataProvider<MockModel>(
-        url: url,
-        fromJson: MockModel.fromJson,
-        client: mockClient,
-        cacheDuration: const Duration(hours: 1),
-      );
+        final provider = CachedHttpQuizDataProvider<MockModel>(
+          url: url,
+          fromJson: MockModel.fromJson,
+          client: mockClient,
+          cacheDuration: const Duration(hours: 1),
+        );
 
-      // When
-      final result1 = await provider.provide();
-      final result2 = await provider.provide();
+        // When
+        final result1 = await provider.provide();
+        final result2 = await provider.provide();
 
-      // Then
-      expect(result1, equals(result2));
-      verify(mockClient.get(Uri.parse(url))).called(1); // Only called once
-    });
+        // Then
+        expect(result1, equals(result2));
+        verify(mockClient.get(Uri.parse(url))).called(1); // Only called once
+      },
+    );
 
     test('should refetch data after cache expires', () async {
       // Given
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[{"name": "Test1"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
@@ -97,7 +101,9 @@ void main() {
 
       // When
       await provider.provide();
-      await Future.delayed(const Duration(milliseconds: 150)); // Wait for cache to expire
+      await Future.delayed(
+        const Duration(milliseconds: 150),
+      ); // Wait for cache to expire
       await provider.provide();
 
       // Then
@@ -109,8 +115,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[{"name": "Cached"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
@@ -122,8 +129,9 @@ void main() {
       await provider.provide();
 
       // Second request - network fails
-      when(mockClient.get(Uri.parse(url)))
-          .thenThrow(http.ClientException('Network error'));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenThrow(http.ClientException('Network error'));
 
       // When
       final result = await provider.provide();
@@ -137,8 +145,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[{"name": "Cached"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
@@ -154,14 +163,18 @@ void main() {
       await Future.delayed(const Duration(milliseconds: 150));
 
       // Second request - server error
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response('Server Error', 500));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response('Server Error', 500));
 
       // When
       final result = await provider.provide();
 
       // Then
-      expect(result, equals([MockModel('Cached')])); // Returns expired cached data
+      expect(
+        result,
+        equals([MockModel('Cached')]),
+      ); // Returns expired cached data
     });
 
     test('should clear cache when clearCache is called', () async {
@@ -170,8 +183,9 @@ void main() {
       const jsonResponse1 = '[{"name": "First"}]';
       const jsonResponse2 = '[{"name": "Second"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse1, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse1, 200));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
@@ -187,8 +201,9 @@ void main() {
       provider.clearCache();
 
       // Change mock response
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse2, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse2, 200));
 
       // Second request after clearing cache
       final result2 = await provider.provide();
@@ -220,8 +235,9 @@ void main() {
       // Given
       const url = 'https://api.example.com/quiz/data';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenThrow(http.ClientException('Network error'));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenThrow(http.ClientException('Network error'));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
@@ -241,8 +257,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[{"name": "Cached"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
@@ -254,8 +271,9 @@ void main() {
       await provider.provide();
 
       // Second request - generic exception
-      when(mockClient.get(Uri.parse(url)))
-          .thenThrow(Exception('Generic error'));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenThrow(Exception('Generic error'));
 
       // When
       final result = await provider.provide();
@@ -268,8 +286,9 @@ void main() {
       // Given
       const url = 'https://api.example.com/quiz/data';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response('Bad Request', 400));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response('Bad Request', 400));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
@@ -289,8 +308,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[{"name": "Cached"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,
@@ -303,11 +323,12 @@ void main() {
       await provider.provide();
 
       // Second request - timeout
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => Future.delayed(
-                const Duration(seconds: 2),
-                () => http.Response('[{"name": "New"}]', 200),
-              ));
+      when(mockClient.get(Uri.parse(url))).thenAnswer(
+        (_) async => Future.delayed(
+          const Duration(seconds: 2),
+          () => http.Response('[{"name": "New"}]', 200),
+        ),
+      );
 
       // When
       final result = await provider.provide();
@@ -337,8 +358,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[{"name": "Test1"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = CachedHttpQuizDataProvider<MockModel>(
         url: url,

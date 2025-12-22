@@ -30,7 +30,10 @@ class FlagsQuizApp extends StatelessWidget {
   /// [locale] specifies the initial locale for the application.
   /// [navigationObservers] are observers used to monitor navigation changes.
   const FlagsQuizApp(
-      {super.key, required this.homeWidget, this.locale, this.navigationObservers = const []});
+      {super.key,
+      required this.homeWidget,
+      this.locale,
+      this.navigationObservers = const []});
 
   // Builds the MaterialApp for the application.
   @override

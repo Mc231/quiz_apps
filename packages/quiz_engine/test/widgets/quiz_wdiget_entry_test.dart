@@ -4,10 +4,7 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 
 void main() {
   test('QuizWidgetEntry initializes correctly', () {
-    const texts = QuizTexts(
-      title: "Science Quiz",
-      gameOverText: "Well Done!",
-    );
+    const texts = QuizTexts(title: "Science Quiz", gameOverText: "Well Done!");
     const defaultConfig = QuizConfig(quizId: 'science_quiz');
 
     final quizEntry = QuizWidgetEntry(

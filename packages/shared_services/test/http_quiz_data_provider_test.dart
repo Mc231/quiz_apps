@@ -4,9 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_services/src/data_providers/http_quiz_data_provider.dart';
 
-@GenerateNiceMocks([
-  MockSpec<http.Client>(),
-])
+@GenerateNiceMocks([MockSpec<http.Client>()])
 import 'http_quiz_data_provider_test.mocks.dart';
 
 class MockModel {
@@ -38,8 +36,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[{"name": "Test1"}, {"name": "Test2"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = HttpQuizDataProvider<MockModel>(
         url: url,
@@ -61,8 +60,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = HttpQuizDataProvider<MockModel>(
         url: url,
@@ -77,32 +77,37 @@ void main() {
       expect(result, isEmpty);
     });
 
-    test('should throw HttpDataException when status code is not 200', () async {
-      // Given
-      const url = 'https://api.example.com/quiz/data';
+    test(
+      'should throw HttpDataException when status code is not 200',
+      () async {
+        // Given
+        const url = 'https://api.example.com/quiz/data';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response('Not Found', 404));
+        when(
+          mockClient.get(Uri.parse(url)),
+        ).thenAnswer((_) async => http.Response('Not Found', 404));
 
-      final provider = HttpQuizDataProvider<MockModel>(
-        url: url,
-        fromJson: MockModel.fromJson,
-        client: mockClient,
-      );
+        final provider = HttpQuizDataProvider<MockModel>(
+          url: url,
+          fromJson: MockModel.fromJson,
+          client: mockClient,
+        );
 
-      // When
-      final call = provider.provide();
+        // When
+        final call = provider.provide();
 
-      // Then
-      expect(call, throwsA(isA<HttpDataException>()));
-    });
+        // Then
+        expect(call, throwsA(isA<HttpDataException>()));
+      },
+    );
 
     test('should throw HttpDataException when network error occurs', () async {
       // Given
       const url = 'https://api.example.com/quiz/data';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenThrow(http.ClientException('Network error'));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenThrow(http.ClientException('Network error'));
 
       final provider = HttpQuizDataProvider<MockModel>(
         url: url,
@@ -122,8 +127,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const invalidJson = '{invalid_json}';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(invalidJson, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(invalidJson, 200));
 
       final provider = HttpQuizDataProvider<MockModel>(
         url: url,
@@ -143,10 +149,7 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
 
       // When
-      final provider = HttpQuizDataProvider.standard(
-        url,
-        MockModel.fromJson,
-      );
+      final provider = HttpQuizDataProvider.standard(url, MockModel.fromJson);
 
       // Then
       expect(provider, isA<HttpQuizDataProvider<MockModel>>());
@@ -158,8 +161,9 @@ void main() {
       const url = 'https://api.example.com/quiz/data';
       const jsonResponse = '[{"name": "Test1"}]';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => http.Response(jsonResponse, 200));
+      when(
+        mockClient.get(Uri.parse(url)),
+      ).thenAnswer((_) async => http.Response(jsonResponse, 200));
 
       final provider = HttpQuizDataProvider<MockModel>(
         url: url,
@@ -180,11 +184,12 @@ void main() {
       // Given
       const url = 'https://api.example.com/quiz/data';
 
-      when(mockClient.get(Uri.parse(url)))
-          .thenAnswer((_) async => Future.delayed(
-                const Duration(seconds: 2),
-                () => http.Response('[{"name": "Test1"}]', 200),
-              ));
+      when(mockClient.get(Uri.parse(url))).thenAnswer(
+        (_) async => Future.delayed(
+          const Duration(seconds: 2),
+          () => http.Response('[{"name": "Test1"}]', 200),
+        ),
+      );
 
       final provider = HttpQuizDataProvider<MockModel>(
         url: url,

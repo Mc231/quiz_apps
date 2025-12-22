@@ -60,7 +60,9 @@ class OptionButton extends StatelessWidget {
           title,
           maxLines: theme.buttonMaxLines,
           overflow: TextOverflow.ellipsis,
-          style: theme.buttonTextStyle.copyWith(fontSize: _getFontSize(context, theme)),
+          style: theme.buttonTextStyle.copyWith(
+            fontSize: _getFontSize(context, theme),
+          ),
           textAlign: TextAlign.center,
         ),
       ),

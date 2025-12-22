@@ -34,7 +34,9 @@ class QuizDataProvider<T> extends ResourceProvider<List<T>> {
   /// This constructor allows easy creation of quiz data providers by specifying
   /// the asset file path and the `fromJson` factory function.
   factory QuizDataProvider.standard(
-      String path, T Function(Map<String, dynamic>) fromJson) {
+    String path,
+    T Function(Map<String, dynamic>) fromJson,
+  ) {
     final dataProvider = AssetProvider.mainBundleAssetProvider(path);
     return QuizDataProvider(dataProvider, fromJson);
   }

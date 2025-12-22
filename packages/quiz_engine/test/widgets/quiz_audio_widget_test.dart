@@ -5,7 +5,9 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 
 void main() {
   group('QuizAudioWidget Tests', () {
-    testWidgets('should display audio player controls', (WidgetTester tester) async {
+    testWidgets('should display audio player controls', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: AudioQuestion('assets/audio/test.mp3'),
@@ -32,7 +34,9 @@ void main() {
       expect(find.byIcon(Icons.headphones), findsOneWidget);
     });
 
-    testWidgets('should display with correct dimensions', (WidgetTester tester) async {
+    testWidgets('should display with correct dimensions', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: AudioQuestion('assets/audio/test.mp3'),
@@ -57,14 +61,14 @@ void main() {
       await tester.pump();
 
       // Then
-      final container = tester.widget<Container>(
-        find.byType(Container).first,
-      );
+      final container = tester.widget<Container>(find.byType(Container).first);
       expect(container.constraints?.maxWidth, width);
       expect(container.constraints?.maxHeight, height);
     });
 
-    testWidgets('should have play button initially', (WidgetTester tester) async {
+    testWidgets('should have play button initially', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: AudioQuestion('assets/audio/test.mp3'),
@@ -92,7 +96,9 @@ void main() {
       expect(icon.icon, Icons.play_arrow);
     });
 
-    testWidgets('should have circular progress indicator', (WidgetTester tester) async {
+    testWidgets('should have circular progress indicator', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: AudioQuestion('assets/audio/test.mp3'),
@@ -168,9 +174,7 @@ void main() {
       await tester.pump();
 
       // Then
-      final container = tester.widget<Container>(
-        find.byType(Container).first,
-      );
+      final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.borderRadius, BorderRadius.circular(16));
       expect(decoration.border, isNotNull);

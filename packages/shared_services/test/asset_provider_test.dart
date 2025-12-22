@@ -15,8 +15,9 @@ void main() {
     final assetBundle = MockAssetBundle();
     final assetProvider = AssetProvider(path, assetBundle);
     // When
-    when(assetBundle.loadString(path))
-        .thenAnswer((_) => Future.value(expectedString));
+    when(
+      assetBundle.loadString(path),
+    ).thenAnswer((_) => Future.value(expectedString));
     var result = await assetProvider.provide();
     // Then
     expect(result, equals(expectedString));

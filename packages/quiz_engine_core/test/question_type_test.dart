@@ -26,7 +26,10 @@ void main() {
       final reconstructed = QuestionType.fromJson(parsedJson);
 
       expect(reconstructed, isA<ImageQuestion>());
-      expect((reconstructed as ImageQuestion).imagePath, "assets/images/question.png");
+      expect(
+        (reconstructed as ImageQuestion).imagePath,
+        "assets/images/question.png",
+      );
     });
 
     test('Invalid QuestionType should throw ArgumentError', () {
@@ -35,19 +38,28 @@ void main() {
       expect(() => QuestionType.fromJson(invalidJson), throwsArgumentError);
     });
 
-    test('toJson should correctly output a JSON representation for TextQuestion', () {
-      final textQuestion = TextQuestion("Example Question");
-      final expectedJson = {'type': 'text', 'text': "Example Question"};
+    test(
+      'toJson should correctly output a JSON representation for TextQuestion',
+      () {
+        final textQuestion = TextQuestion("Example Question");
+        final expectedJson = {'type': 'text', 'text': "Example Question"};
 
-      expect(textQuestion.toJson(), expectedJson);
-    });
+        expect(textQuestion.toJson(), expectedJson);
+      },
+    );
 
-    test('toJson should correctly output a JSON representation for ImageQuestion', () {
-      final imageQuestion = ImageQuestion("assets/example.png");
-      final expectedJson = {'type': 'image', 'imagePath': "assets/example.png"};
+    test(
+      'toJson should correctly output a JSON representation for ImageQuestion',
+      () {
+        final imageQuestion = ImageQuestion("assets/example.png");
+        final expectedJson = {
+          'type': 'image',
+          'imagePath': "assets/example.png",
+        };
 
-      expect(imageQuestion.toJson(), expectedJson);
-    });
+        expect(imageQuestion.toJson(), expectedJson);
+      },
+    );
 
     test('asJson should return correct JSON string for TextQuestion', () {
       final textQuestion = TextQuestion("What is 2 + 2?");
@@ -58,7 +70,8 @@ void main() {
 
     test('asJson should return correct JSON string for ImageQuestion', () {
       final imageQuestion = ImageQuestion("assets/images/sample.png");
-      final expectedJson = '{"type":"image","imagePath":"assets/images/sample.png"}';
+      final expectedJson =
+          '{"type":"image","imagePath":"assets/images/sample.png"}';
 
       expect(imageQuestion.asJson, expectedJson);
     });
@@ -72,25 +85,38 @@ void main() {
       final reconstructed = QuestionType.fromJson(parsedJson);
 
       expect(reconstructed, isA<AudioQuestion>());
-      expect((reconstructed as AudioQuestion).audioPath, "assets/audio/question.mp3");
+      expect(
+        (reconstructed as AudioQuestion).audioPath,
+        "assets/audio/question.mp3",
+      );
     });
 
-    test('toJson should correctly output a JSON representation for AudioQuestion', () {
-      final audioQuestion = AudioQuestion("assets/sounds/example.mp3");
-      final expectedJson = {'type': 'audio', 'audioPath': "assets/sounds/example.mp3"};
+    test(
+      'toJson should correctly output a JSON representation for AudioQuestion',
+      () {
+        final audioQuestion = AudioQuestion("assets/sounds/example.mp3");
+        final expectedJson = {
+          'type': 'audio',
+          'audioPath': "assets/sounds/example.mp3",
+        };
 
-      expect(audioQuestion.toJson(), expectedJson);
-    });
+        expect(audioQuestion.toJson(), expectedJson);
+      },
+    );
 
     test('asJson should return correct JSON string for AudioQuestion', () {
       final audioQuestion = AudioQuestion("assets/audio/sample.mp3");
-      final expectedJson = '{"type":"audio","audioPath":"assets/audio/sample.mp3"}';
+      final expectedJson =
+          '{"type":"audio","audioPath":"assets/audio/sample.mp3"}';
 
       expect(audioQuestion.asJson, expectedJson);
     });
 
     test('VideoQuestion should serialize and deserialize correctly', () {
-      final videoQuestion = VideoQuestion("https://example.com/video.mp4", thumbnailPath: "assets/thumb.jpg");
+      final videoQuestion = VideoQuestion(
+        "https://example.com/video.mp4",
+        thumbnailPath: "assets/thumb.jpg",
+      );
       final jsonMap = videoQuestion.toJson();
       final jsonString = jsonEncode(jsonMap);
       final parsedJson = jsonDecode(jsonString);
@@ -98,79 +124,128 @@ void main() {
       final reconstructed = QuestionType.fromJson(parsedJson);
 
       expect(reconstructed, isA<VideoQuestion>());
-      expect((reconstructed as VideoQuestion).videoUrl, "https://example.com/video.mp4");
+      expect(
+        (reconstructed as VideoQuestion).videoUrl,
+        "https://example.com/video.mp4",
+      );
       expect(reconstructed.thumbnailPath, "assets/thumb.jpg");
     });
 
-    test('VideoQuestion without thumbnail should serialize and deserialize correctly', () {
-      final videoQuestion = VideoQuestion("https://example.com/video.mp4");
-      final jsonMap = videoQuestion.toJson();
-      final jsonString = jsonEncode(jsonMap);
-      final parsedJson = jsonDecode(jsonString);
+    test(
+      'VideoQuestion without thumbnail should serialize and deserialize correctly',
+      () {
+        final videoQuestion = VideoQuestion("https://example.com/video.mp4");
+        final jsonMap = videoQuestion.toJson();
+        final jsonString = jsonEncode(jsonMap);
+        final parsedJson = jsonDecode(jsonString);
 
-      final reconstructed = QuestionType.fromJson(parsedJson);
+        final reconstructed = QuestionType.fromJson(parsedJson);
 
-      expect(reconstructed, isA<VideoQuestion>());
-      expect((reconstructed as VideoQuestion).videoUrl, "https://example.com/video.mp4");
-      expect(reconstructed.thumbnailPath, isNull);
-    });
+        expect(reconstructed, isA<VideoQuestion>());
+        expect(
+          (reconstructed as VideoQuestion).videoUrl,
+          "https://example.com/video.mp4",
+        );
+        expect(reconstructed.thumbnailPath, isNull);
+      },
+    );
 
-    test('toJson should correctly output a JSON representation for VideoQuestion with thumbnail', () {
-      final videoQuestion = VideoQuestion("https://example.com/quiz.mp4", thumbnailPath: "assets/thumbnail.png");
-      final expectedJson = {
-        'type': 'video',
-        'videoUrl': "https://example.com/quiz.mp4",
-        'thumbnailPath': "assets/thumbnail.png",
-      };
+    test(
+      'toJson should correctly output a JSON representation for VideoQuestion with thumbnail',
+      () {
+        final videoQuestion = VideoQuestion(
+          "https://example.com/quiz.mp4",
+          thumbnailPath: "assets/thumbnail.png",
+        );
+        final expectedJson = {
+          'type': 'video',
+          'videoUrl': "https://example.com/quiz.mp4",
+          'thumbnailPath': "assets/thumbnail.png",
+        };
 
-      expect(videoQuestion.toJson(), expectedJson);
-    });
+        expect(videoQuestion.toJson(), expectedJson);
+      },
+    );
 
-    test('toJson should correctly output a JSON representation for VideoQuestion without thumbnail', () {
-      final videoQuestion = VideoQuestion("https://example.com/quiz.mp4");
-      final expectedJson = {
-        'type': 'video',
-        'videoUrl': "https://example.com/quiz.mp4",
-      };
+    test(
+      'toJson should correctly output a JSON representation for VideoQuestion without thumbnail',
+      () {
+        final videoQuestion = VideoQuestion("https://example.com/quiz.mp4");
+        final expectedJson = {
+          'type': 'video',
+          'videoUrl': "https://example.com/quiz.mp4",
+        };
 
-      expect(videoQuestion.toJson(), expectedJson);
-    });
+        expect(videoQuestion.toJson(), expectedJson);
+      },
+    );
 
-    test('asJson should return correct JSON string for VideoQuestion with thumbnail', () {
-      final videoQuestion = VideoQuestion("https://example.com/video.mp4", thumbnailPath: "thumb.jpg");
-      final expectedJson = '{"type":"video","videoUrl":"https://example.com/video.mp4","thumbnailPath":"thumb.jpg"}';
+    test(
+      'asJson should return correct JSON string for VideoQuestion with thumbnail',
+      () {
+        final videoQuestion = VideoQuestion(
+          "https://example.com/video.mp4",
+          thumbnailPath: "thumb.jpg",
+        );
+        final expectedJson =
+            '{"type":"video","videoUrl":"https://example.com/video.mp4","thumbnailPath":"thumb.jpg"}';
 
-      expect(videoQuestion.asJson, expectedJson);
-    });
+        expect(videoQuestion.asJson, expectedJson);
+      },
+    );
 
-    test('asJson should return correct JSON string for VideoQuestion without thumbnail', () {
-      final videoQuestion = VideoQuestion("https://example.com/video.mp4");
-      final expectedJson = '{"type":"video","videoUrl":"https://example.com/video.mp4"}';
+    test(
+      'asJson should return correct JSON string for VideoQuestion without thumbnail',
+      () {
+        final videoQuestion = VideoQuestion("https://example.com/video.mp4");
+        final expectedJson =
+            '{"type":"video","videoUrl":"https://example.com/video.mp4"}';
 
-      expect(videoQuestion.asJson, expectedJson);
-    });
+        expect(videoQuestion.asJson, expectedJson);
+      },
+    );
 
     test('Factory constructor for audio should work correctly', () {
       final audioQuestion = QuestionType.audio("assets/audio/test.mp3");
 
       expect(audioQuestion, isA<AudioQuestion>());
-      expect((audioQuestion as AudioQuestion).audioPath, "assets/audio/test.mp3");
+      expect(
+        (audioQuestion as AudioQuestion).audioPath,
+        "assets/audio/test.mp3",
+      );
     });
 
-    test('Factory constructor for video should work correctly with thumbnail', () {
-      final videoQuestion = QuestionType.video("https://example.com/video.mp4", thumbnailPath: "thumb.jpg");
+    test(
+      'Factory constructor for video should work correctly with thumbnail',
+      () {
+        final videoQuestion = QuestionType.video(
+          "https://example.com/video.mp4",
+          thumbnailPath: "thumb.jpg",
+        );
 
-      expect(videoQuestion, isA<VideoQuestion>());
-      expect((videoQuestion as VideoQuestion).videoUrl, "https://example.com/video.mp4");
-      expect(videoQuestion.thumbnailPath, "thumb.jpg");
-    });
+        expect(videoQuestion, isA<VideoQuestion>());
+        expect(
+          (videoQuestion as VideoQuestion).videoUrl,
+          "https://example.com/video.mp4",
+        );
+        expect(videoQuestion.thumbnailPath, "thumb.jpg");
+      },
+    );
 
-    test('Factory constructor for video should work correctly without thumbnail', () {
-      final videoQuestion = QuestionType.video("https://example.com/video.mp4");
+    test(
+      'Factory constructor for video should work correctly without thumbnail',
+      () {
+        final videoQuestion = QuestionType.video(
+          "https://example.com/video.mp4",
+        );
 
-      expect(videoQuestion, isA<VideoQuestion>());
-      expect((videoQuestion as VideoQuestion).videoUrl, "https://example.com/video.mp4");
-      expect(videoQuestion.thumbnailPath, isNull);
-    });
+        expect(videoQuestion, isA<VideoQuestion>());
+        expect(
+          (videoQuestion as VideoQuestion).videoUrl,
+          "https://example.com/video.mp4",
+        );
+        expect(videoQuestion.thumbnailPath, isNull);
+      },
+    );
   });
 }

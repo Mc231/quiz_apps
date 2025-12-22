@@ -5,7 +5,9 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 
 void main() {
   group('QuizTextWidget Tests', () {
-    testWidgets('should display text question content', (WidgetTester tester) async {
+    testWidgets('should display text question content', (
+      WidgetTester tester,
+    ) async {
       // Given
       const testText = 'What is the capital of France?';
       final entry = QuestionEntry(
@@ -32,7 +34,9 @@ void main() {
       expect(find.byKey(Key('text_test1')), findsOneWidget);
     });
 
-    testWidgets('should display with correct dimensions', (WidgetTester tester) async {
+    testWidgets('should display with correct dimensions', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: TextQuestion('Test question'),
@@ -56,14 +60,14 @@ void main() {
       );
 
       // Then
-      final container = tester.widget<Container>(
-        find.byType(Container).first,
-      );
+      final container = tester.widget<Container>(find.byType(Container).first);
       expect(container.constraints?.maxWidth, width);
       expect(container.constraints?.maxHeight, height);
     });
 
-    testWidgets('should have rounded corners and border', (WidgetTester tester) async {
+    testWidgets('should have rounded corners and border', (
+      WidgetTester tester,
+    ) async {
       // Given
       final entry = QuestionEntry(
         type: TextQuestion('Test'),
@@ -85,9 +89,7 @@ void main() {
       );
 
       // Then
-      final container = tester.widget<Container>(
-        find.byType(Container).first,
-      );
+      final container = tester.widget<Container>(find.byType(Container).first);
       final decoration = container.decoration as BoxDecoration;
       expect(decoration.borderRadius, BorderRadius.circular(16));
       expect(decoration.border, isNotNull);
@@ -119,7 +121,9 @@ void main() {
       expect(text.textAlign, TextAlign.center);
     });
 
-    testWidgets('should handle long text with scrolling', (WidgetTester tester) async {
+    testWidgets('should handle long text with scrolling', (
+      WidgetTester tester,
+    ) async {
       // Given
       final longText = 'This is a very long question ' * 20;
       final entry = QuestionEntry(

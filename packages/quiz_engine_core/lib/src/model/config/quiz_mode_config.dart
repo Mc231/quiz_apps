@@ -52,53 +52,51 @@ class QuizModeConfig extends BaseConfig {
 
   /// Standard mode: no time limits, no lives
   const QuizModeConfig.standard()
-      : mode = QuizMode.standard,
-        timePerQuestion = null,
-        totalTimeLimit = null,
-        lives = null,
-        allowSkip = false,
-        infinite = false,
-        version = 1;
+    : mode = QuizMode.standard,
+      timePerQuestion = null,
+      totalTimeLimit = null,
+      lives = null,
+      allowSkip = false,
+      infinite = false,
+      version = 1;
 
   /// Timed mode: answer within time limit
   const QuizModeConfig.timed({
     this.timePerQuestion = 30,
     this.totalTimeLimit,
     this.allowSkip = false,
-  })  : mode = QuizMode.timed,
-        lives = null,
-        infinite = false,
-        version = 1;
+  }) : mode = QuizMode.timed,
+       lives = null,
+       infinite = false,
+       version = 1;
 
   /// Lives mode: lose lives on mistakes
-  const QuizModeConfig.lives({
-    this.lives = 3,
-    this.allowSkip = false,
-  })  : mode = QuizMode.lives,
-        timePerQuestion = null,
-        totalTimeLimit = null,
-        infinite = false,
-        version = 1;
+  const QuizModeConfig.lives({this.lives = 3, this.allowSkip = false})
+    : mode = QuizMode.lives,
+      timePerQuestion = null,
+      totalTimeLimit = null,
+      infinite = false,
+      version = 1;
 
   /// Endless mode: keep going until first mistake
   const QuizModeConfig.endless()
-      : mode = QuizMode.endless,
-        timePerQuestion = null,
-        totalTimeLimit = null,
-        lives = 1, // One mistake ends the game
-        allowSkip = false,
-        infinite = true,
-        version = 1;
+    : mode = QuizMode.endless,
+      timePerQuestion = null,
+      totalTimeLimit = null,
+      lives = 1, // One mistake ends the game
+      allowSkip = false,
+      infinite = true,
+      version = 1;
 
   /// Survival mode: timed + lives combined
   const QuizModeConfig.survival({
     this.lives = 3,
     this.timePerQuestion = 30,
     this.totalTimeLimit,
-  })  : mode = QuizMode.survival,
-        allowSkip = false,
-        infinite = false,
-        version = 1;
+  }) : mode = QuizMode.survival,
+       allowSkip = false,
+       infinite = false,
+       version = 1;
 
   @override
   Map<String, dynamic> toMap() {

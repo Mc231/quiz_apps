@@ -4,7 +4,6 @@ import 'package:quiz_engine_core/src/model/question_entry.dart';
 
 import 'model/random_pick_result.dart';
 
-
 /// A utility class for randomly selecting items from a list.
 ///
 /// The `RandomItemPicker` class provides functionality to pick random items
@@ -92,7 +91,10 @@ class RandomItemPicker {
   ///
   /// [answer] is the correct answer among the options.
   /// [options] is the list of options presented, including the answer.
-  RandomPickResult _createResult(QuestionEntry answer, List<QuestionEntry> options) {
+  RandomPickResult _createResult(
+    QuestionEntry answer,
+    List<QuestionEntry> options,
+  ) {
     items.remove(answer);
     _answeredItems.add(answer);
     return RandomPickResult(answer, options);

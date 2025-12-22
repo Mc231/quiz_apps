@@ -30,16 +30,11 @@ class SimpleScoring extends ScoringStrategy {
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      'type': 'simple',
-      'version': version,
-    };
+    return {'type': 'simple', 'version': version};
   }
 
   factory SimpleScoring.fromMap(Map<String, dynamic> map) {
-    return SimpleScoring(
-      version: map['version'] as int? ?? 1,
-    );
+    return SimpleScoring(version: map['version'] as int? ?? 1);
   }
 
   // int calculateScore(QuizResults results) {
@@ -89,7 +84,8 @@ class TimedScoring extends ScoringStrategy {
     int? timeThresholdSeconds,
   }) {
     return TimedScoring(
-      basePointsPerQuestion: basePointsPerQuestion ?? this.basePointsPerQuestion,
+      basePointsPerQuestion:
+          basePointsPerQuestion ?? this.basePointsPerQuestion,
       bonusPerSecondSaved: bonusPerSecondSaved ?? this.bonusPerSecondSaved,
       timeThresholdSeconds: timeThresholdSeconds ?? this.timeThresholdSeconds,
       version: version,
@@ -154,7 +150,8 @@ class StreakScoring extends ScoringStrategy {
     double? streakMultiplier,
   }) {
     return StreakScoring(
-      basePointsPerQuestion: basePointsPerQuestion ?? this.basePointsPerQuestion,
+      basePointsPerQuestion:
+          basePointsPerQuestion ?? this.basePointsPerQuestion,
       streakMultiplier: streakMultiplier ?? this.streakMultiplier,
       version: version,
     );

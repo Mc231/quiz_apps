@@ -3,7 +3,6 @@ import 'dart:convert';
 /// Base configuration class for all config types
 /// Provides serialization/deserialization for local storage and remote updates
 abstract class BaseConfig {
-
   const BaseConfig();
 
   /// Convert config to Map for serialization

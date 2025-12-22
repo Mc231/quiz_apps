@@ -117,9 +117,7 @@ void main() {
         type: QuestionType.text("A"),
         otherOptions: {},
       );
-      final options = [
-        answer,
-      ];
+      final options = [answer];
 
       // When
       final question = Question(answer, options);

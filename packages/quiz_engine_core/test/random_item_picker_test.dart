@@ -14,10 +14,7 @@ void main() {
     test('replace items', () {
       // Given
       final expectedItems = [
-        QuestionEntry(
-          type: QuestionType.text("A"),
-          otherOptions: {},
-        ),
+        QuestionEntry(type: QuestionType.text("A"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("C"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("D"), otherOptions: {}),
@@ -46,10 +43,7 @@ void main() {
     test('pick when count == items.length', () {
       // Given
       final expectedItems = [
-        QuestionEntry(
-          type: QuestionType.text("A"),
-          otherOptions: {},
-        ),
+        QuestionEntry(type: QuestionType.text("A"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("C"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("D"), otherOptions: {}),
@@ -62,17 +56,17 @@ void main() {
 
       // Then
       expect(result, isNotNull);
-      expect(result!.options.length, equals(4)); // Should pick all items as options
+      expect(
+        result!.options.length,
+        equals(4),
+      ); // Should pick all items as options
       expect(result.options.contains(result.answer), isTrue);
     });
 
     test('pick when items < count', () {
       // Given
       final expectedItems = [
-        QuestionEntry(
-          type: QuestionType.text("A"),
-          otherOptions: {},
-        ),
+        QuestionEntry(type: QuestionType.text("A"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B"), otherOptions: {}),
       ];
       sut.replaceItems(expectedItems);
@@ -82,16 +76,16 @@ void main() {
 
       // Then
       expect(result, isNotNull);
-      expect(result!.options.length, equals(2)); // Only available items can be options
+      expect(
+        result!.options.length,
+        equals(2),
+      ); // Only available items can be options
     });
 
     test('pick random item', () {
       // Given
       final expectedItems = [
-        QuestionEntry(
-          type: QuestionType.text("A"),
-          otherOptions: {},
-        ),
+        QuestionEntry(type: QuestionType.text("A"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("C"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("D"), otherOptions: {}),
@@ -109,17 +103,17 @@ void main() {
 
       // Then
       expect(result, isNotNull);
-      expect(result!.options.length, lessThanOrEqualTo(4)); // Max options should be count (4)
+      expect(
+        result!.options.length,
+        lessThanOrEqualTo(4),
+      ); // Max options should be count (4)
       expect(result.options.contains(result.answer), isTrue);
     });
 
     test('ensure picked items are added to answered list', () {
       // Given
       final expectedItems = [
-        QuestionEntry(
-          type: QuestionType.text("A"),
-          otherOptions: {},
-        ),
+        QuestionEntry(type: QuestionType.text("A"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("C"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("CA"), otherOptions: {}),
@@ -138,10 +132,7 @@ void main() {
     test('pick all items until empty', () {
       // Given
       final expectedItems = [
-        QuestionEntry(
-          type: QuestionType.text("A"),
-          otherOptions: {},
-        ),
+        QuestionEntry(type: QuestionType.text("A"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("C"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("D"), otherOptions: {}),
@@ -156,7 +147,10 @@ void main() {
 
       // Then
       final lastResult = sut.pick();
-      expect(lastResult, isNull); // Should return null after all items are picked
+      expect(
+        lastResult,
+        isNull,
+      ); // Should return null after all items are picked
     });
 
     test('pick when count > available items and answered items exist', () {
@@ -174,10 +168,7 @@ void main() {
     test('ensure options list contains only unique values', () {
       // Given
       final expectedItems = [
-        QuestionEntry(
-          type: QuestionType.text("A"),
-          otherOptions: {},
-        ),
+        QuestionEntry(type: QuestionType.text("A"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("C"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("1"), otherOptions: {}),
@@ -196,10 +187,7 @@ void main() {
     test('ensure answer is always part of options', () {
       // Given
       final expectedItems = [
-        QuestionEntry(
-          type: QuestionType.text("A"),
-          otherOptions: {},
-        ),
+        QuestionEntry(type: QuestionType.text("A"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("C"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("C1"), otherOptions: {}),
@@ -218,10 +206,7 @@ void main() {
     test('pick shuffles options', () {
       // Given
       final expectedItems = [
-        QuestionEntry(
-          type: QuestionType.text("A"),
-          otherOptions: {},
-        ),
+        QuestionEntry(type: QuestionType.text("A"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("B1"), otherOptions: {}),
         QuestionEntry(type: QuestionType.text("C"), otherOptions: {}),
@@ -236,7 +221,10 @@ void main() {
       // Then
       expect(result1, isNotNull);
       expect(result2, isNotNull);
-      expect(result1!.options, isNot(equals(result2!.options))); // Expect shuffle
+      expect(
+        result1!.options,
+        isNot(equals(result2!.options)),
+      ); // Expect shuffle
     });
   });
 }

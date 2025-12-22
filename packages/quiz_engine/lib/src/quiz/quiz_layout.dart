@@ -62,11 +62,9 @@ class QuizLayout extends StatelessWidget {
           ..._imageAndButtons(questionState, information),
         if (orientation == Orientation.landscape)
           Expanded(
-            child: Row(
-              children: _imageAndButtons(questionState, information),
-            ),
+            child: Row(children: _imageAndButtons(questionState, information)),
           ),
-        _progressColumn(context, information, questionState)
+        _progressColumn(context, information, questionState),
       ],
     );
   }
@@ -81,7 +79,9 @@ class QuizLayout extends StatelessWidget {
   ///
   /// Returns a list of `Widget` representing the question content and answer buttons.
   List<Widget> _imageAndButtons(
-      QuestionState state, SizingInformation information) {
+    QuestionState state,
+    SizingInformation information,
+  ) {
     var answer = state.question.answer;
     final code = answer.otherOptions["id"] as String;
     final questionSize = getImageSize(information);
@@ -97,14 +97,15 @@ class QuizLayout extends StatelessWidget {
         _buildQuestionWidget(answer, code, questionSize),
       SizedBox(width: themeData.questionAnswerSpacing),
       Expanded(
-          flex: isLandscape ? 2 : 1,
-          child: QuizAnswersWidget(
-            options: state.question.options,
-            sizingInformation: information,
-            answerClickListener: processAnswer,
-            themeData: themeData,
-            key: Key(state.total.toString()),
-          ))
+        flex: isLandscape ? 2 : 1,
+        child: QuizAnswersWidget(
+          options: state.question.options,
+          sizingInformation: information,
+          answerClickListener: processAnswer,
+          themeData: themeData,
+          key: Key(state.total.toString()),
+        ),
+      ),
     ];
   }
 
@@ -121,29 +122,29 @@ class QuizLayout extends StatelessWidget {
   Widget _buildQuestionWidget(QuestionEntry entry, String code, double size) {
     return switch (entry.type) {
       TextQuestion() => QuizTextWidget(
-          key: Key(code),
-          entry: entry,
-          width: size,
-          height: size,
-        ),
+        key: Key(code),
+        entry: entry,
+        width: size,
+        height: size,
+      ),
       ImageQuestion() => QuizImageWidget(
-          key: Key(code),
-          entry: entry,
-          width: size,
-          height: size,
-        ),
+        key: Key(code),
+        entry: entry,
+        width: size,
+        height: size,
+      ),
       AudioQuestion() => QuizAudioWidget(
-          key: Key(code),
-          entry: entry,
-          width: size,
-          height: size,
-        ),
+        key: Key(code),
+        entry: entry,
+        width: size,
+        height: size,
+      ),
       VideoQuestion() => QuizVideoWidget(
-          key: Key(code),
-          entry: entry,
-          width: size,
-          height: size,
-        ),
+        key: Key(code),
+        entry: entry,
+        width: size,
+        height: size,
+      ),
     };
   }
 
@@ -157,8 +158,11 @@ class QuizLayout extends StatelessWidget {
   /// [state] is the current question state.
   ///
   /// Returns a `Widget` representing the progress display.
-  Widget _progressColumn(BuildContext context, SizingInformation information,
-      QuestionState state) {
+  Widget _progressColumn(
+    BuildContext context,
+    SizingInformation information,
+    QuestionState state,
+  ) {
     return Column(
       children: [
         Text(
@@ -166,7 +170,7 @@ class QuizLayout extends StatelessWidget {
           style: TextStyle(fontSize: progressFontSize(context)),
         ),
         SizedBox(height: progressMargin),
-        LinearProgressIndicator(value: state.percentageProgress)
+        LinearProgressIndicator(value: state.percentageProgress),
       ],
     );
   }
@@ -187,9 +191,10 @@ extension QuizLayoutSized on QuizLayout {
     final width = information.localWidgetSize.width;
     final height = information.localWidgetSize.height;
     final minSize = min(width, height);
-    final cof = information.isWatch
-        ? themeData.imageSizeCoefficientWatch
-        : themeData.imageSizeCoefficientNormal;
+    final cof =
+        information.isWatch
+            ? themeData.imageSizeCoefficientWatch
+            : themeData.imageSizeCoefficientNormal;
     return minSize * cof;
   }
 

@@ -82,7 +82,9 @@ class _QuizAudioWidgetState extends State<QuizAudioWidget> {
     } catch (e) {
       // Asset loading failed (common in tests) - widget will still render
       if (mounted) {
-        setState(() => _duration = Duration(seconds: 30)); // Default duration for display
+        setState(
+          () => _duration = Duration(seconds: 30),
+        ); // Default duration for display
       }
     }
   }
@@ -130,12 +132,14 @@ class _QuizAudioWidgetState extends State<QuizAudioWidget> {
                 width: _getButtonSize(context) + 16,
                 height: _getButtonSize(context) + 16,
                 child: CircularProgressIndicator(
-                  value: _duration.inMilliseconds > 0
-                      ? _position.inMilliseconds / _duration.inMilliseconds
-                      : 0,
+                  value:
+                      _duration.inMilliseconds > 0
+                          ? _position.inMilliseconds / _duration.inMilliseconds
+                          : 0,
                   strokeWidth: 4,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.outline.withValues(alpha: 0.2),
                 ),
               ),
               // Play/Pause button
@@ -149,9 +153,7 @@ class _QuizAudioWidgetState extends State<QuizAudioWidget> {
                   child: Container(
                     width: _getButtonSize(context),
                     height: _getButtonSize(context),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                    ),
+                    decoration: BoxDecoration(shape: BoxShape.circle),
                     child: Icon(
                       _isPlaying ? Icons.pause : Icons.play_arrow,
                       key: Key("audio_button_$code"),

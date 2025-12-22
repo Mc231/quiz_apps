@@ -113,7 +113,10 @@ class _QuizVideoWidgetState extends State<QuizVideoWidget> {
   }
 
   Widget _buildContent(
-      BuildContext context, String code, VideoQuestion videoQuestion) {
+    BuildContext context,
+    String code,
+    VideoQuestion videoQuestion,
+  ) {
     if (_hasError) {
       return _buildErrorState(context);
     }
@@ -137,8 +140,7 @@ class _QuizVideoWidgetState extends State<QuizVideoWidget> {
           ),
         ),
         // Play/Pause overlay
-        if (!_controller.value.isPlaying)
-          _buildPlayPauseOverlay(context, code),
+        if (!_controller.value.isPlaying) _buildPlayPauseOverlay(context, code),
         // Bottom controls
         Positioned(
           bottom: 0,
@@ -204,7 +206,9 @@ class _QuizVideoWidgetState extends State<QuizVideoWidget> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _controller.value.isPlaying ? _controller.pause() : _controller.play();
+          _controller.value.isPlaying
+              ? _controller.pause()
+              : _controller.play();
         });
       },
       child: Container(
@@ -235,11 +239,7 @@ class _QuizVideoWidgetState extends State<QuizVideoWidget> {
         gradient: LinearGradient(
           begin: Alignment.bottomCenter,
           end: Alignment.topCenter,
-          colors: [
-            Colors.black87,
-            Colors.black54,
-            Colors.transparent,
-          ],
+          colors: [Colors.black87, Colors.black54, Colors.transparent],
         ),
       ),
       child: Row(

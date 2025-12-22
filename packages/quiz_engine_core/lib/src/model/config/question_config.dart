@@ -22,18 +22,16 @@ class QuestionConfig extends BaseConfig {
   });
 
   /// Fixed order configuration (no shuffling)
-  const QuestionConfig.fixedOrder({
-    this.optionCount = 4,
-  })  : shuffleQuestions = false,
-        shuffleOptions = false,
-        version = 1;
+  const QuestionConfig.fixedOrder({this.optionCount = 4})
+    : shuffleQuestions = false,
+      shuffleOptions = false,
+      version = 1;
 
   /// True/False questions (2 options)
-  const QuestionConfig.trueFalse({
-    this.shuffleQuestions = true,
-  })  : optionCount = 2,
-        shuffleOptions = true,
-        version = 1;
+  const QuestionConfig.trueFalse({this.shuffleQuestions = true})
+    : optionCount = 2,
+      shuffleOptions = true,
+      version = 1;
 
   /// Multiple choice with custom option count
   const QuestionConfig.multipleChoice({

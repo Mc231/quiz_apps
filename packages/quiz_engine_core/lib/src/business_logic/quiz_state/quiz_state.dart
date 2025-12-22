@@ -7,7 +7,8 @@ import '../../model/question_entry.dart';
 /// It serves as a base type for managing different states within the quiz.
 sealed class QuizState {
   factory QuizState.loading() = LoadingState;
-  factory QuizState.question(Question question, int progress, int total) = QuestionState;
+  factory QuizState.question(Question question, int progress, int total) =
+      QuestionState;
   factory QuizState.answerFeedback(
     Question question,
     QuestionEntry selectedAnswer,
@@ -34,7 +35,8 @@ class QuestionState extends QuizState {
   final int total;
 
   /// Computes the percentage of progress made through the quiz.
-  double get percentageProgress => total == 0 ? 0 : (progress / total).toDouble();
+  double get percentageProgress =>
+      total == 0 ? 0 : (progress / total).toDouble();
 
   /// Creates a new `QuestionState` with the given question, progress, and total.
   QuestionState(this.question, this.progress, this.total);
@@ -61,7 +63,8 @@ class AnswerFeedbackState extends QuizState {
   final int total;
 
   /// Computes the percentage of progress made through the quiz.
-  double get percentageProgress => total == 0 ? 0 : (progress / total).toDouble();
+  double get percentageProgress =>
+      total == 0 ? 0 : (progress / total).toDouble();
 
   /// Creates a new `AnswerFeedbackState` with the given data.
   AnswerFeedbackState(

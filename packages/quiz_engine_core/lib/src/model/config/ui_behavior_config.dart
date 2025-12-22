@@ -27,19 +27,19 @@ class UIBehaviorConfig extends BaseConfig {
 
   /// No feedback configuration (instant progression)
   const UIBehaviorConfig.noFeedback()
-      : showAnswerFeedback = false,
-        answerFeedbackDuration = 0,
-        playSounds = false,
-        hapticFeedback = false,
-        version = 1;
+    : showAnswerFeedback = false,
+      answerFeedbackDuration = 0,
+      playSounds = false,
+      hapticFeedback = false,
+      version = 1;
 
   /// Silent configuration (feedback but no sound/haptics)
   const UIBehaviorConfig.silent({
     this.showAnswerFeedback = true,
     this.answerFeedbackDuration = 1500,
-  })  : playSounds = false,
-        hapticFeedback = false,
-        version = 1;
+  }) : playSounds = false,
+       hapticFeedback = false,
+       version = 1;
 
   @override
   Map<String, dynamic> toMap() {

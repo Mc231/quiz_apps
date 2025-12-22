@@ -27,20 +27,22 @@ class QuizImageWidget extends StatelessWidget {
   /// [entry] is the `Country` object containing information about the country.
   /// [width] is the width of the image to be displayed.
   /// [height] is the height of the image to be displayed.
-  const QuizImageWidget(
-      {required Key key,
-        required this.entry,
-        required this.width,
-        required this.height})
-      : super(key: key);
+  const QuizImageWidget({
+    required Key key,
+    required this.entry,
+    required this.width,
+    required this.height,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final imageQuestion = entry.type as ImageQuestion;
     final code = (entry.otherOptions["id"] as String).toLowerCase();
-    return Image.asset(imageQuestion.imagePath,
-        key: Key("image_$code"),
-        width: width,
-        height: height);
+    return Image.asset(
+      imageQuestion.imagePath,
+      key: Key("image_$code"),
+      width: width,
+      height: height,
+    );
   }
 }

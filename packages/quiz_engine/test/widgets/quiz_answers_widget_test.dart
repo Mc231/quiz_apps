@@ -8,22 +8,29 @@ import 'package:responsive_builder/responsive_builder.dart';
 void main() {
   testWidgets('Quiz answers widget handle tap', (WidgetTester tester) async {
     // Given
-    final expectedAnswer =  QuestionEntry(type: TextQuestion("Test"), otherOptions: {"id": "123", "image": "231"});
+    final expectedAnswer = QuestionEntry(
+      type: TextQuestion("Test"),
+      otherOptions: {"id": "123", "image": "231"},
+    );
     final options = [expectedAnswer];
     final sizingInformation = SizingInformation(
-        deviceScreenType: DeviceScreenType.mobile,
-        screenSize: Size.square(200),
-        localWidgetSize: Size.square(200),
-        refinedSize: RefinedSize.small);
+      deviceScreenType: DeviceScreenType.mobile,
+      screenSize: Size.square(200),
+      localWidgetSize: Size.square(200),
+      refinedSize: RefinedSize.small,
+    );
     QuestionEntry? tappedAnswer;
     await tester.pumpWidget(
       MaterialApp(
-          home: QuizAnswersWidget(
-              options: options,
-              sizingInformation: sizingInformation,
-              answerClickListener: (answer) {
-                tappedAnswer = answer;
-              }, key: Key("Test"),)),
+        home: QuizAnswersWidget(
+          options: options,
+          sizingInformation: sizingInformation,
+          answerClickListener: (answer) {
+            tappedAnswer = answer;
+          },
+          key: Key("Test"),
+        ),
+      ),
     );
     await tester.pump();
     final buttonFinder = find.byType(OptionButton);

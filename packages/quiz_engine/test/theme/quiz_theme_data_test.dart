@@ -11,8 +11,14 @@ void main() {
       expect(theme.buttonTextColor, Colors.white);
       expect(theme.buttonBorderColor, Colors.transparent);
       expect(theme.buttonBorderWidth, 0);
-      expect(theme.buttonBorderRadius, const BorderRadius.all(Radius.circular(8)));
-      expect(theme.buttonPadding, const EdgeInsets.symmetric(horizontal: 16, vertical: 8));
+      expect(
+        theme.buttonBorderRadius,
+        const BorderRadius.all(Radius.circular(8)),
+      );
+      expect(
+        theme.buttonPadding,
+        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      );
       expect(theme.correctAnswerColor, Colors.green);
       expect(theme.incorrectAnswerColor, Colors.red);
       expect(theme.selectedAnswerColor, Colors.blue);
@@ -103,8 +109,14 @@ void main() {
       expect(customTheme.buttonTextColor, Colors.white);
       expect(customTheme.buttonBorderColor, Colors.purpleAccent);
       expect(customTheme.buttonBorderWidth, 2);
-      expect(customTheme.buttonBorderRadius, const BorderRadius.all(Radius.circular(12)));
-      expect(customTheme.buttonPadding, const EdgeInsets.symmetric(horizontal: 24, vertical: 12));
+      expect(
+        customTheme.buttonBorderRadius,
+        const BorderRadius.all(Radius.circular(12)),
+      );
+      expect(
+        customTheme.buttonPadding,
+        const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+      );
       expect(customTheme.correctAnswerColor, const Color(0xFF00FF00));
       expect(customTheme.incorrectAnswerColor, const Color(0xFFFF0000));
     });

@@ -96,8 +96,12 @@ void main() {
         configManager: configManager,
       );
 
-      expect(bloc.configManager.defaultConfig.scoringStrategy, isA<TimedScoring>());
-      final strategy = bloc.configManager.defaultConfig.scoringStrategy as TimedScoring;
+      expect(
+        bloc.configManager.defaultConfig.scoringStrategy,
+        isA<TimedScoring>(),
+      );
+      final strategy =
+          bloc.configManager.defaultConfig.scoringStrategy as TimedScoring;
       expect(strategy.basePointsPerQuestion, 200);
       expect(strategy.bonusPerSecondSaved, 10);
       bloc.dispose();
@@ -121,10 +125,26 @@ void main() {
         configManager: configManager,
       );
 
-      expect(bloc.configManager.defaultConfig.uiBehaviorConfig.showAnswerFeedback, false);
-      expect(bloc.configManager.defaultConfig.uiBehaviorConfig.answerFeedbackDuration, 2000);
-      expect(bloc.configManager.defaultConfig.uiBehaviorConfig.playSounds, false);
-      expect(bloc.configManager.defaultConfig.uiBehaviorConfig.hapticFeedback, false);
+      expect(
+        bloc.configManager.defaultConfig.uiBehaviorConfig.showAnswerFeedback,
+        false,
+      );
+      expect(
+        bloc
+            .configManager
+            .defaultConfig
+            .uiBehaviorConfig
+            .answerFeedbackDuration,
+        2000,
+      );
+      expect(
+        bloc.configManager.defaultConfig.uiBehaviorConfig.playSounds,
+        false,
+      );
+      expect(
+        bloc.configManager.defaultConfig.uiBehaviorConfig.hapticFeedback,
+        false,
+      );
       bloc.dispose();
     });
 
@@ -132,10 +152,7 @@ void main() {
       const defaultConfig = QuizConfig(
         quizId: 'hint_quiz',
         hintConfig: HintConfig(
-          initialHints: {
-            HintType.fiftyFifty: 5,
-            HintType.skip: 3,
-          },
+          initialHints: {HintType.fiftyFifty: 5, HintType.skip: 3},
           canEarnHints: false,
         ),
       );
@@ -147,8 +164,15 @@ void main() {
         configManager: configManager,
       );
 
-      expect(bloc.configManager.defaultConfig.hintConfig.initialHints[HintType.fiftyFifty], 5);
-      expect(bloc.configManager.defaultConfig.hintConfig.initialHints[HintType.skip], 3);
+      expect(
+        bloc.configManager.defaultConfig.hintConfig.initialHints[HintType
+            .fiftyFifty],
+        5,
+      );
+      expect(
+        bloc.configManager.defaultConfig.hintConfig.initialHints[HintType.skip],
+        3,
+      );
       expect(bloc.configManager.defaultConfig.hintConfig.canEarnHints, false);
       bloc.dispose();
     });
@@ -171,27 +195,36 @@ void main() {
       );
 
       expect(bloc.configManager.defaultConfig.questionConfig.optionCount, 6);
-      expect(bloc.configManager.defaultConfig.questionConfig.shuffleQuestions, false);
-      expect(bloc.configManager.defaultConfig.questionConfig.shuffleOptions, false);
-      bloc.dispose();
-    });
-
-    test('QuizBloc initializes with LoadingState and configManager available', () {
-      const defaultConfig = QuizConfig(quizId: 'test_init');
-      const configManager = ConfigManager(defaultConfig: defaultConfig);
-
-      final bloc = QuizBloc(
-        () async => testData,
-        RandomItemPicker(testData),
-        configManager: configManager,
+      expect(
+        bloc.configManager.defaultConfig.questionConfig.shuffleQuestions,
+        false,
       );
-
-      expect(bloc.initialState, isA<LoadingState>());
-      // Config is initialized during performInitialLoad(), not before
-      // But configManager always has the defaultConfig available
-      expect(bloc.configManager.defaultConfig.quizId, 'test_init');
-
+      expect(
+        bloc.configManager.defaultConfig.questionConfig.shuffleOptions,
+        false,
+      );
       bloc.dispose();
     });
+
+    test(
+      'QuizBloc initializes with LoadingState and configManager available',
+      () {
+        const defaultConfig = QuizConfig(quizId: 'test_init');
+        const configManager = ConfigManager(defaultConfig: defaultConfig);
+
+        final bloc = QuizBloc(
+          () async => testData,
+          RandomItemPicker(testData),
+          configManager: configManager,
+        );
+
+        expect(bloc.initialState, isA<LoadingState>());
+        // Config is initialized during performInitialLoad(), not before
+        // But configManager always has the defaultConfig available
+        expect(bloc.configManager.defaultConfig.quizId, 'test_init');
+
+        bloc.dispose();
+      },
+    );
   });
 }

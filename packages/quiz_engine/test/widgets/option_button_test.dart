@@ -8,8 +8,7 @@ void main() {
     final title = 'Title';
     // When
     await tester.pumpWidget(
-      MaterialApp(
-          home: OptionButton(title: title, onClickListener: () {})),
+      MaterialApp(home: OptionButton(title: title, onClickListener: () {})),
     );
     await tester.pump();
     // Then
@@ -20,12 +19,16 @@ void main() {
   testWidgets('Option button click works', (WidgetTester tester) async {
     // Given
     var buttonClicked = false;
-    await tester.pumpWidget(MaterialApp(
+    await tester.pumpWidget(
+      MaterialApp(
         home: OptionButton(
-            title: '',
-            onClickListener: () {
-              buttonClicked = true;
-            })));
+          title: '',
+          onClickListener: () {
+            buttonClicked = true;
+          },
+        ),
+      ),
+    );
     await tester.pump();
     // When
     await tester.tap(find.byType(OptionButton));

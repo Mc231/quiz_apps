@@ -15,7 +15,7 @@ void main() {
       expect(selectReginFinder, findsOneWidget);
 
       final continentButtonFinder =
-      find.byKey(Key('continent_${continent.index}'));
+          find.byKey(Key('continent_${continent.index}'));
       print(continentButtonFinder);
       await tester.ensureVisible(continentButtonFinder);
       expect(continentButtonFinder, findsOneWidget);
@@ -25,7 +25,7 @@ void main() {
 
       // Get the total number of iterations from the text "0 / 14"
       final scoreFinder = find.byWidgetPredicate((widget) =>
-      widget is Text &&
+          widget is Text &&
           widget.data != null &&
           widget.data!.contains(RegExp(r'^\d+ / \d+$')));
 
@@ -38,7 +38,7 @@ void main() {
       for (int i = 0; i < totalIterations; i++) {
         // Find all the image widgets by their key prefix.
         final imageFinder = find.byWidgetPredicate((widget) =>
-        widget is Image &&
+            widget is Image &&
             widget.key != null &&
             widget.key.toString().startsWith('[<\'image_'));
 
@@ -64,7 +64,7 @@ void main() {
         // Find the corresponding button by constructing its key
         final buttonKey = Key('button_$countryCode');
         final buttonFinder = find.byWidgetPredicate((widget) =>
-        widget.key != null &&
+            widget.key != null &&
             widget.key.toString().startsWith('[<\'button_$countryCode'));
 
         // Verify that the button is found
@@ -94,9 +94,11 @@ void main() {
       expect(selectReginFinder, findsOneWidget);
     }
 
-    testWidgets('Test all modes in all localizations', (WidgetTester tester) async {
+    testWidgets('Test all modes in all localizations',
+        (WidgetTester tester) async {
       for (Locale locale in AppLocalizations.supportedLocales) {
-        final widget = FlagsQuizApp(homeWidget: ContinentsScreen(), locale: locale);
+        final widget =
+            FlagsQuizApp(homeWidget: ContinentsScreen(), locale: locale);
         await tester.pumpWidget(widget);
         for (var continent in Continent.values) {
           await verifySuccessFlow(continent, tester);

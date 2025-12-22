@@ -9,10 +9,7 @@ class QuizTexts {
   /// Game over text displayed when quiz ends.
   final String gameOverText;
 
-  const QuizTexts({
-    required this.title,
-    required this.gameOverText,
-  });
+  const QuizTexts({required this.title, required this.gameOverText});
 }
 
 /// Configuration entry for initializing a quiz widget.

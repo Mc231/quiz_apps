@@ -43,10 +43,10 @@ class HintConfig extends BaseConfig {
 
   /// No hints configuration
   const HintConfig.noHints()
-      : initialHints = const {},
-        canEarnHints = false,
-        allowAdForHint = false,
-        version = 1;
+    : initialHints = const {},
+      canEarnHints = false,
+      allowAdForHint = false,
+      version = 1;
 
   @override
   Map<String, dynamic> toMap() {
@@ -99,7 +99,7 @@ class HintState {
   HintState(this.remainingHints);
 
   HintState.fromConfig(HintConfig config)
-      : remainingHints = Map.from(config.initialHints);
+    : remainingHints = Map.from(config.initialHints);
 
   /// Check if hint type is available
   bool canUseHint(HintType type) {

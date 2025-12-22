@@ -11,7 +11,8 @@ sealed class QuestionType {
 
   factory QuestionType.audio(String audioPath) = AudioQuestion;
 
-  factory QuestionType.video(String videoUrl, {String? thumbnailPath}) = VideoQuestion;
+  factory QuestionType.video(String videoUrl, {String? thumbnailPath}) =
+      VideoQuestion;
 
   const QuestionType();
 
@@ -86,15 +87,15 @@ class VideoQuestion extends QuestionType {
 
   @override
   String get asJson => jsonEncode({
-        'type': 'video',
-        'videoUrl': videoUrl,
-        if (thumbnailPath != null) 'thumbnailPath': thumbnailPath,
-      });
+    'type': 'video',
+    'videoUrl': videoUrl,
+    if (thumbnailPath != null) 'thumbnailPath': thumbnailPath,
+  });
 
   @override
   Map<String, dynamic> toJson() => {
-        'type': 'video',
-        'videoUrl': videoUrl,
-        if (thumbnailPath != null) 'thumbnailPath': thumbnailPath,
-      };
+    'type': 'video',
+    'videoUrl': videoUrl,
+    if (thumbnailPath != null) 'thumbnailPath': thumbnailPath,
+  };
 }

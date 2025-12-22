@@ -46,10 +46,7 @@ class HttpQuizDataProvider<T> extends ResourceProvider<List<T>> {
     String url,
     T Function(Map<String, dynamic>) fromJson,
   ) {
-    return HttpQuizDataProvider(
-      url: url,
-      fromJson: fromJson,
-    );
+    return HttpQuizDataProvider(url: url, fromJson: fromJson);
   }
 
   @override

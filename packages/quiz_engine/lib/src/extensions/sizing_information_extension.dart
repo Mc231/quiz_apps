@@ -23,6 +23,8 @@ extension SizingInformationExtension on SizingInformation {
   /// or `Orientation.portrait` otherwise.
   Orientation get orientation {
     final size = localWidgetSize;
-    return size.width > size.height ? Orientation.landscape : Orientation.portrait;
+    return size.width > size.height
+        ? Orientation.landscape
+        : Orientation.portrait;
   }
 }

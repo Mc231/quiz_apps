@@ -7,7 +7,6 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 void main() {
-
   group('QuizLayout', () {
     QuestionEntry mockCountry = QuestionEntry(
       type: ImageQuestion("assets/images/AD.png"),

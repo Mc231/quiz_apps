@@ -49,14 +49,16 @@ class QuizAnswersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.count(
-        shrinkWrap: true,
-        mainAxisSpacing: getAxisSpacing(context),
-        crossAxisSpacing: getAxisSpacing(context),
-        childAspectRatio: getGridChildAspectRatio(context, sizingInformation),
-        crossAxisCount: getGridAxisCount(context, sizingInformation),
-        children: options
-            .map((option) => _createOptionButton(option, context))
-            .toList());
+      shrinkWrap: true,
+      mainAxisSpacing: getAxisSpacing(context),
+      crossAxisSpacing: getAxisSpacing(context),
+      childAspectRatio: getGridChildAspectRatio(context, sizingInformation),
+      crossAxisCount: getGridAxisCount(context, sizingInformation),
+      children:
+          options
+              .map((option) => _createOptionButton(option, context))
+              .toList(),
+    );
   }
 
   /// Creates an option button for a given country.
@@ -123,17 +125,20 @@ extension on QuizAnswersWidget {
   /// Returns the number of columns for the grid.
   int getGridAxisCount(BuildContext context, SizingInformation information) {
     final orientation = information.orientation;
-    final mobileAxisCount = orientation == Orientation.landscape
-        ? 1
-        : information.localWidgetSize.shortestSide > themeData.verySmallScreenThreshold
-        ? 1
-        : 2;
+    final mobileAxisCount =
+        orientation == Orientation.landscape
+            ? 1
+            : information.localWidgetSize.shortestSide >
+                themeData.verySmallScreenThreshold
+            ? 1
+            : 2;
     return getValueForScreenType(
-        context: context,
-        mobile: mobileAxisCount,
-        tablet: 1,
-        desktop: 1,
-        watch: 1);
+      context: context,
+      mobile: mobileAxisCount,
+      tablet: 1,
+      desktop: 1,
+      watch: 1,
+    );
   }
 
   /// Returns the aspect ratio for grid children based on screen size and theme.
@@ -146,7 +151,9 @@ extension on QuizAnswersWidget {
   ///
   /// Returns the aspect ratio for grid children.
   double getGridChildAspectRatio(
-      BuildContext context, SizingInformation information) {
+    BuildContext context,
+    SizingInformation information,
+  ) {
     final height = getValueForScreenType(
       context: context,
       mobile: themeData.buttonHeightMobile,

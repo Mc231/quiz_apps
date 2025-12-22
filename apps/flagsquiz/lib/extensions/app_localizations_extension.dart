@@ -12,7 +12,6 @@ import 'package:flags_quiz/l10n/app_localizations.dart';
 /// at runtime. This is particularly useful when localization keys are determined
 /// programmatically or stored as string identifiers.
 extension AppLocalizationsExtension on AppLocalizations {
-
   /// A map of string keys to functions that retrieve localization strings.
   ///
   /// The map associates string keys with functions that extract the corresponding
@@ -307,4 +306,3 @@ extension AppLocalizationsExtension on AppLocalizations {
     }
   }
 }
-
