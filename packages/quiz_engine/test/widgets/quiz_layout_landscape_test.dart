@@ -7,6 +7,8 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:mockito/mockito.dart';
 
+import '../test_helpers.dart';
+
 class MockQuizBloc extends Mock implements QuizBloc {}
 
 void main() {
@@ -40,6 +42,7 @@ void main() {
             information: sizingInformation,
             processAnswer: (_) {},
             quizBloc: mockBloc,
+            texts: testQuizTexts,
           ),
         ),
       );

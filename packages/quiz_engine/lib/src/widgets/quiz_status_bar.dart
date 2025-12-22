@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import '../quiz_widget_entry.dart';
 import 'lives_display.dart';
 import 'timer_display.dart';
 
@@ -40,6 +41,9 @@ class QuizStatusBar extends StatelessWidget {
   /// Background color for the status bar
   final Color? backgroundColor;
 
+  /// Text strings for the quiz UI
+  final QuizTexts texts;
+
   const QuizStatusBar({
     super.key,
     this.state,
@@ -50,6 +54,7 @@ class QuizStatusBar extends StatelessWidget {
     this.timerWarningColor = Colors.orange,
     this.timerCriticalColor = Colors.red,
     this.backgroundColor,
+    required this.texts,
   });
 
   @override
@@ -171,6 +176,7 @@ class QuizStatusBar extends StatelessWidget {
           normalColor: timerNormalColor,
           warningColor: timerWarningColor,
           criticalColor: timerCriticalColor,
+          texts: texts,
         ),
       );
     }
@@ -186,6 +192,7 @@ class QuizStatusBar extends StatelessWidget {
           warningColor: timerWarningColor,
           criticalColor: timerCriticalColor,
           timerIcon: Icons.hourglass_bottom, // Different icon for total timer
+          texts: texts,
         ),
       );
     }

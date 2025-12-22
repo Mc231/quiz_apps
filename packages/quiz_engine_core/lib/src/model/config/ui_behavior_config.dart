@@ -14,6 +14,9 @@ class UIBehaviorConfig extends BaseConfig {
   /// Enable haptic feedback on answer
   final bool hapticFeedback;
 
+  /// Show exit confirmation dialog when user tries to leave quiz
+  final bool showExitConfirmation;
+
   @override
   final int version;
 
@@ -22,6 +25,7 @@ class UIBehaviorConfig extends BaseConfig {
     this.answerFeedbackDuration = 1500,
     this.playSounds = true,
     this.hapticFeedback = true,
+    this.showExitConfirmation = true,
     this.version = 1,
   });
 
@@ -31,6 +35,7 @@ class UIBehaviorConfig extends BaseConfig {
       answerFeedbackDuration = 0,
       playSounds = false,
       hapticFeedback = false,
+      showExitConfirmation = true,
       version = 1;
 
   /// Silent configuration (feedback but no sound/haptics)
@@ -39,6 +44,7 @@ class UIBehaviorConfig extends BaseConfig {
     this.answerFeedbackDuration = 1500,
   }) : playSounds = false,
        hapticFeedback = false,
+       showExitConfirmation = true,
        version = 1;
 
   @override
@@ -49,6 +55,7 @@ class UIBehaviorConfig extends BaseConfig {
       'answerFeedbackDuration': answerFeedbackDuration,
       'playSounds': playSounds,
       'hapticFeedback': hapticFeedback,
+      'showExitConfirmation': showExitConfirmation,
     };
   }
 
@@ -59,6 +66,7 @@ class UIBehaviorConfig extends BaseConfig {
       answerFeedbackDuration: map['answerFeedbackDuration'] as int? ?? 1500,
       playSounds: map['playSounds'] as bool? ?? true,
       hapticFeedback: map['hapticFeedback'] as bool? ?? true,
+      showExitConfirmation: map['showExitConfirmation'] as bool? ?? true,
     );
   }
 
@@ -67,6 +75,7 @@ class UIBehaviorConfig extends BaseConfig {
     int? answerFeedbackDuration,
     bool? playSounds,
     bool? hapticFeedback,
+    bool? showExitConfirmation,
   }) {
     return UIBehaviorConfig(
       showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
@@ -74,6 +83,7 @@ class UIBehaviorConfig extends BaseConfig {
           answerFeedbackDuration ?? this.answerFeedbackDuration,
       playSounds: playSounds ?? this.playSounds,
       hapticFeedback: hapticFeedback ?? this.hapticFeedback,
+      showExitConfirmation: showExitConfirmation ?? this.showExitConfirmation,
       version: version,
     );
   }

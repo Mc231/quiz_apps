@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'lives_display.dart';
 import 'timer_display.dart';
+import '../quiz_widget_entry.dart';
 
 /// A flexible widget for displaying action items in the quiz app bar.
 ///
@@ -38,6 +39,9 @@ class QuizAppBarActions extends StatelessWidget {
   /// Color for the timer when time is critical
   final Color timerCriticalColor;
 
+  /// Text strings for the quiz UI
+  final QuizTexts? texts;
+
   const QuizAppBarActions({
     super.key,
     this.state,
@@ -47,6 +51,7 @@ class QuizAppBarActions extends StatelessWidget {
     this.timerNormalColor = Colors.blue,
     this.timerWarningColor = Colors.orange,
     this.timerCriticalColor = Colors.red,
+    this.texts,
   });
 
   @override
@@ -115,6 +120,11 @@ class QuizAppBarActions extends StatelessWidget {
 
   /// Builds timer display widgets if timer tracking is enabled
   List<Widget> _buildTimerDisplays() {
+    // Don't show timer if texts is not available
+    if (texts == null) {
+      return [];
+    }
+
     final widgets = <Widget>[];
     int? questionTimeRemaining;
     int? totalTimeRemaining;
@@ -140,6 +150,7 @@ class QuizAppBarActions extends StatelessWidget {
           normalColor: timerNormalColor,
           warningColor: timerWarningColor,
           criticalColor: timerCriticalColor,
+          texts: texts!,
         ),
       );
     }
@@ -155,6 +166,7 @@ class QuizAppBarActions extends StatelessWidget {
           warningColor: timerWarningColor,
           criticalColor: timerCriticalColor,
           timerIcon: Icons.hourglass_bottom, // Different icon for total timer
+          texts: texts!,
         ),
       );
     }

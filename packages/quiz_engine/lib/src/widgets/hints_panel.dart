@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import '../quiz_widget_entry.dart';
 
 /// A widget that displays available hint buttons for the quiz.
 ///
@@ -30,6 +31,9 @@ class HintsPanel extends StatelessWidget {
   /// Icon for skip hint button
   final IconData skipIcon;
 
+  /// Text strings for the quiz UI
+  final QuizTexts texts;
+
   const HintsPanel({
     super.key,
     required this.hintState,
@@ -39,6 +43,7 @@ class HintsPanel extends StatelessWidget {
     this.disabledColor = Colors.grey,
     this.fiftyFiftyIcon = Icons.filter_2,
     this.skipIcon = Icons.skip_next,
+    required this.texts,
   });
 
   @override
@@ -90,7 +95,7 @@ class HintsPanel extends StatelessWidget {
           if (hintState!.getRemainingCount(HintType.fiftyFifty) > 0)
             _buildHintButton(
               context: context,
-              label: '50/50',
+              label: texts.hint5050Label,
               icon: fiftyFiftyIcon,
               count: hintState!.getRemainingCount(HintType.fiftyFifty),
               isEnabled: hasFiftyFifty,
@@ -108,7 +113,7 @@ class HintsPanel extends StatelessWidget {
           if (hintState!.getRemainingCount(HintType.skip) > 0)
             _buildHintButton(
               context: context,
-              label: 'Skip',
+              label: texts.hintSkipLabel,
               icon: skipIcon,
               count: hintState!.getRemainingCount(HintType.skip),
               isEnabled: hasSkip,

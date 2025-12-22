@@ -85,8 +85,19 @@ class ContinentsScreen extends StatelessWidget {
     final appLocalizations = AppLocalizations.of(context)!;
     final quizEntry = QuizWidgetEntry(
         texts: QuizTexts(
-            title: continent.localizedName(context) ?? "",
-            gameOverText: appLocalizations.yourScore),
+          title: continent.localizedName(context) ?? "",
+          gameOverText: appLocalizations.yourScore,
+          exitDialogTitle: appLocalizations.exitDialogTitle,
+          exitDialogMessage: appLocalizations.exitDialogMessage,
+          exitDialogConfirm: appLocalizations.exitDialogConfirm,
+          exitDialogCancel: appLocalizations.exitDialogCancel,
+          correctFeedback: appLocalizations.correctFeedback,
+          incorrectFeedback: appLocalizations.incorrectFeedback,
+          hint5050Label: appLocalizations.hint5050Label,
+          hintSkipLabel: appLocalizations.hintSkipLabel,
+          timerSecondsSuffix: appLocalizations.timerSecondsSuffix,
+          videoLoadError: appLocalizations.videoLoadError,
+        ),
         dataProvider: () async =>
             loadCountriesForContinent(appLocalizations, continent),
         defaultConfig: QuizConfig(

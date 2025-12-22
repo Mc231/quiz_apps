@@ -2277,9 +2277,487 @@ QuizConfig(
 - `packages/quiz_engine/lib/quiz_engine.dart` - Export HintsPanel
 - Tests updated to pass bloc reference to layouts
 
-**Next:** Sprint 4.1 (Results Screen) - Enhanced results screen with review functionality
+**Next:** Phase 4 (User Experience & Settings) - HIGH PRIORITY
 
-### Phase 4: Results & Statistics (Week 5)
+---
+
+### Phase 4: User Experience & Settings (HIGH PRIORITY - Week 5)
+
+#### Sprint 4.1: Exit Confirmation Dialog ✅
+- [x] Create `ExitConfirmationDialog` widget in quiz_engine
+- [x] Add `PopScope` wrapper to QuizScreen
+- [x] Implement "Are you sure?" dialog with Yes/No buttons
+- [x] Configurable via UIBehaviorConfig (allow disabling confirmation)
+
+**Configuration:**
+```dart
+class QuizConfig {
+  /// Show confirmation dialog before exiting quiz
+  final bool showExitConfirmation;
+
+  /// Save progress when user exits (for resume later feature)
+  final bool saveProgressOnExit;
+
+  const QuizConfig({
+    this.showExitConfirmation = true,
+    this.saveProgressOnExit = false,
+  });
+}
+```
+
+**Implementation:**
+- Location: `packages/quiz_engine/lib/src/dialogs/exit_confirmation_dialog.dart`
+- Reusable dialog widget with customizable text and theme
+- QuizScreen wraps content with `WillPopScope`
+- Returns `false` to prevent navigation until user confirms
+
+#### Sprint 4.2: Localization System ✅
+- [x] Enhance `QuizTexts` class with all UI strings
+- [x] Make all hard-coded strings in quiz_engine localizable
+- [x] Add all quiz UI strings to English ARB file (intl_en.arb)
+
+**Text Organization:**
+```dart
+// packages/quiz_engine/lib/src/l10n/quiz_texts.dart
+
+class QuizTexts {
+  // Answer feedback
+  final String correctAnswer;
+  final String incorrectAnswer;
+
+  // Hints
+  final String fiftyFiftyHint;
+  final String skipHint;
+  final String fiftyFiftyTooltip;
+  final String skipTooltip;
+
+  // Exit confirmation
+  final String exitConfirmationTitle;
+  final String exitConfirmationMessage;
+  final String exitYes;
+  final String exitNo;
+
+  // Timer
+  final String timeRemaining;
+  final String timeUp;
+
+  // Lives
+  final String livesRemaining;
+
+  // Quiz status
+  final String questionProgress; // "Question {current} of {total}"
+
+  // Results
+  final String quizComplete;
+  final String yourScore;
+  final String accuracy;
+  final String reviewMistakes;
+  final String playAgain;
+  final String backToMenu;
+
+  const QuizTexts({
+    this.correctAnswer = 'Correct!',
+    this.incorrectAnswer = 'Incorrect!',
+    this.fiftyFiftyHint = '50/50',
+    this.skipHint = 'Skip',
+    this.fiftyFiftyTooltip = 'Remove 2 wrong answers',
+    this.skipTooltip = 'Skip this question',
+    this.exitConfirmationTitle = 'Exit Quiz?',
+    this.exitConfirmationMessage = 'Your progress will be lost. Are you sure?',
+    this.exitYes = 'Yes, Exit',
+    this.exitNo = 'No, Continue',
+    this.timeRemaining = 'Time Remaining',
+    this.timeUp = 'Time\'s Up!',
+    this.livesRemaining = 'Lives Remaining',
+    this.questionProgress = 'Question {current} of {total}',
+    this.quizComplete = 'Quiz Complete!',
+    this.yourScore = 'Your Score',
+    this.accuracy = 'Accuracy',
+    this.reviewMistakes = 'Review Mistakes',
+    this.playAgain = 'Play Again',
+    this.backToMenu = 'Back to Menu',
+  });
+
+  // Parameterized text helpers
+  String questionProgressText(int current, int total) {
+    return questionProgress
+        .replaceAll('{current}', current.toString())
+        .replaceAll('{total}', total.toString());
+  }
+}
+```
+
+#### Sprint 4.3: Settings Screen & Preferences
+- [ ] Create `SettingsService` in shared_services for preferences storage
+- [ ] Implement SharedPreferences-based storage
+- [ ] Create `QuizSettings` model to hold all settings
+- [ ] Create `SettingsScreen` widget in quiz_engine
+- [ ] Settings features:
+  - [ ] Sound effects toggle (on/off)
+  - [ ] Music toggle (on/off, if background music added)
+  - [ ] Haptic feedback toggle (on/off)
+  - [ ] Show answer feedback toggle (on/off)
+  - [ ] Language selection dropdown (60+ languages)
+  - [ ] Theme selection (Light/Dark/System)
+  - [ ] About section:
+    - [ ] App version display
+    - [ ] Credits/Attributions
+    - [ ] Privacy Policy link
+    - [ ] Terms of Service link
+    - [ ] Open source licenses
+- [ ] Settings persistence across app restarts
+- [ ] Apply settings in real-time (no restart required)
+- [ ] Export settings screen from quiz_engine
+- [ ] Test on all platforms
+
+**Settings Model:**
+```dart
+// packages/shared_services/lib/src/settings/quiz_settings.dart
+
+enum ThemeMode { light, dark, system }
+
+class QuizSettings {
+  final bool soundEffectsEnabled;
+  final bool musicEnabled;
+  final bool hapticFeedbackEnabled;
+  final bool showAnswerFeedback;
+  final String languageCode; // 'en', 'es', 'fr', etc.
+  final ThemeMode themeMode;
+
+  const QuizSettings({
+    this.soundEffectsEnabled = true,
+    this.musicEnabled = true,
+    this.hapticFeedbackEnabled = true,
+    this.showAnswerFeedback = true,
+    this.languageCode = 'en',
+    this.themeMode = ThemeMode.system,
+  });
+
+  // Serialization for SharedPreferences
+  Map<String, dynamic> toJson() => {
+    'soundEffectsEnabled': soundEffectsEnabled,
+    'musicEnabled': musicEnabled,
+    'hapticFeedbackEnabled': hapticFeedbackEnabled,
+    'showAnswerFeedback': showAnswerFeedback,
+    'languageCode': languageCode,
+    'themeMode': themeMode.name,
+  };
+
+  factory QuizSettings.fromJson(Map<String, dynamic> json) => QuizSettings(
+    soundEffectsEnabled: json['soundEffectsEnabled'] ?? true,
+    musicEnabled: json['musicEnabled'] ?? true,
+    hapticFeedbackEnabled: json['hapticFeedbackEnabled'] ?? true,
+    showAnswerFeedback: json['showAnswerFeedback'] ?? true,
+    languageCode: json['languageCode'] ?? 'en',
+    themeMode: ThemeMode.values.firstWhere(
+      (e) => e.name == json['themeMode'],
+      orElse: () => ThemeMode.system,
+    ),
+  );
+
+  QuizSettings copyWith({
+    bool? soundEffectsEnabled,
+    bool? musicEnabled,
+    bool? hapticFeedbackEnabled,
+    bool? showAnswerFeedback,
+    String? languageCode,
+    ThemeMode? themeMode,
+  }) => QuizSettings(
+    soundEffectsEnabled: soundEffectsEnabled ?? this.soundEffectsEnabled,
+    musicEnabled: musicEnabled ?? this.musicEnabled,
+    hapticFeedbackEnabled: hapticFeedbackEnabled ?? this.hapticFeedbackEnabled,
+    showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
+    languageCode: languageCode ?? this.languageCode,
+    themeMode: themeMode ?? this.themeMode,
+  );
+}
+```
+
+**Settings Service:**
+```dart
+// packages/shared_services/lib/src/settings/settings_service.dart
+
+abstract class SettingsService {
+  /// Load settings from persistent storage
+  Future<QuizSettings> loadSettings();
+
+  /// Save settings to persistent storage
+  Future<void> saveSettings(QuizSettings settings);
+
+  /// Stream of settings changes
+  Stream<QuizSettings> get settingsStream;
+
+  /// Clear all settings (reset to defaults)
+  Future<void> clearSettings();
+}
+
+// packages/shared_services/lib/src/settings/shared_prefs_settings_service.dart
+
+class SharedPrefsSettingsService implements SettingsService {
+  final SharedPreferences _prefs;
+  final _controller = StreamController<QuizSettings>.broadcast();
+
+  static const _key = 'quiz_settings';
+
+  SharedPrefsSettingsService(this._prefs);
+
+  @override
+  Future<QuizSettings> loadSettings() async {
+    final json = _prefs.getString(_key);
+    if (json == null) return const QuizSettings();
+
+    return QuizSettings.fromJson(jsonDecode(json));
+  }
+
+  @override
+  Future<void> saveSettings(QuizSettings settings) async {
+    await _prefs.setString(_key, jsonEncode(settings.toJson()));
+    _controller.add(settings);
+  }
+
+  @override
+  Stream<QuizSettings> get settingsStream => _controller.stream;
+
+  @override
+  Future<void> clearSettings() async {
+    await _prefs.remove(_key);
+    _controller.add(const QuizSettings());
+  }
+}
+```
+
+**Settings Screen:**
+```dart
+// packages/quiz_engine/lib/src/screens/settings_screen.dart
+
+class SettingsScreen extends StatefulWidget {
+  final QuizSettings currentSettings;
+  final Function(QuizSettings) onSettingsChanged;
+  final String appVersion;
+  final String privacyPolicyUrl;
+  final String termsOfServiceUrl;
+
+  const SettingsScreen({
+    required this.currentSettings,
+    required this.onSettingsChanged,
+    required this.appVersion,
+    this.privacyPolicyUrl = '',
+    this.termsOfServiceUrl = '',
+  });
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  late QuizSettings _settings;
+
+  @override
+  void initState() {
+    super.initState();
+    _settings = widget.currentSettings;
+  }
+
+  void _updateSetting(QuizSettings newSettings) {
+    setState(() => _settings = newSettings);
+    widget.onSettingsChanged(newSettings);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Settings')),
+      body: ListView(
+        children: [
+          // Audio Section
+          _buildSectionHeader('Audio'),
+          SwitchListTile(
+            title: const Text('Sound Effects'),
+            subtitle: const Text('Play sounds for correct/incorrect answers'),
+            value: _settings.soundEffectsEnabled,
+            onChanged: (value) => _updateSetting(
+              _settings.copyWith(soundEffectsEnabled: value),
+            ),
+          ),
+          SwitchListTile(
+            title: const Text('Background Music'),
+            subtitle: const Text('Play music during quiz'),
+            value: _settings.musicEnabled,
+            onChanged: (value) => _updateSetting(
+              _settings.copyWith(musicEnabled: value),
+            ),
+          ),
+
+          // Haptics Section
+          _buildSectionHeader('Haptics'),
+          SwitchListTile(
+            title: const Text('Haptic Feedback'),
+            subtitle: const Text('Vibration feedback on interactions'),
+            value: _settings.hapticFeedbackEnabled,
+            onChanged: (value) => _updateSetting(
+              _settings.copyWith(hapticFeedbackEnabled: value),
+            ),
+          ),
+
+          // UI Section
+          _buildSectionHeader('User Interface'),
+          SwitchListTile(
+            title: const Text('Show Answer Feedback'),
+            subtitle: const Text('Display correct/incorrect animation'),
+            value: _settings.showAnswerFeedback,
+            onChanged: (value) => _updateSetting(
+              _settings.copyWith(showAnswerFeedback: value),
+            ),
+          ),
+          ListTile(
+            title: const Text('Theme'),
+            subtitle: Text(_getThemeLabel(_settings.themeMode)),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => _showThemePicker(),
+          ),
+          ListTile(
+            title: const Text('Language'),
+            subtitle: Text(_getLanguageLabel(_settings.languageCode)),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => _showLanguagePicker(),
+          ),
+
+          // About Section
+          _buildSectionHeader('About'),
+          ListTile(
+            title: const Text('Version'),
+            subtitle: Text(widget.appVersion),
+          ),
+          ListTile(
+            title: const Text('Privacy Policy'),
+            trailing: const Icon(Icons.open_in_new),
+            onTap: () => _openUrl(widget.privacyPolicyUrl),
+          ),
+          ListTile(
+            title: const Text('Terms of Service'),
+            trailing: const Icon(Icons.open_in_new),
+            onTap: () => _openUrl(widget.termsOfServiceUrl),
+          ),
+          ListTile(
+            title: const Text('Open Source Licenses'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => showLicensePage(context: context),
+          ),
+          ListTile(
+            title: const Text('Credits'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => _showCredits(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  // ... helper methods
+}
+```
+
+**Integration with QuizConfig:**
+```dart
+// App reads settings and applies to quiz config
+final settings = await settingsService.loadSettings();
+
+final config = QuizConfig(
+  uiBehaviorConfig: UIBehaviorConfig(
+    showAnswerFeedback: settings.showAnswerFeedback,
+    playSounds: settings.soundEffectsEnabled,
+    hapticFeedback: settings.hapticFeedbackEnabled,
+  ),
+  // ... other config
+);
+```
+
+#### Sprint 4.4: UI Testing & Polish
+- [ ] Test on all device types:
+  - [ ] Mobile phones (small screens 4.7")
+  - [ ] Large phones (6.5"+)
+  - [ ] Tablets (7", 10", 12")
+  - [ ] Desktop (various resolutions)
+  - [ ] Watch (if supporting)
+- [ ] Test all orientations:
+  - [ ] Portrait mode
+  - [ ] Landscape mode
+  - [ ] Split screen (tablets)
+- [ ] Test all platforms:
+  - [ ] iOS (multiple versions)
+  - [ ] Android (multiple versions)
+  - [ ] Web (Chrome, Firefox, Safari)
+  - [ ] macOS
+  - [ ] Windows (if supporting)
+- [ ] Performance testing:
+  - [ ] Smooth animations (60 FPS)
+  - [ ] No jank during state transitions
+  - [ ] Fast app startup
+  - [ ] Memory usage optimization
+- [ ] Accessibility testing:
+  - [ ] Screen reader support
+  - [ ] Semantic labels on all interactive elements
+  - [ ] Sufficient color contrast
+  - [ ] Font scaling support
+  - [ ] Keyboard navigation (desktop/web)
+- [ ] Edge cases:
+  - [ ] Very long question text
+  - [ ] Very long option text
+  - [ ] Special characters (emojis, Unicode)
+  - [ ] RTL languages
+  - [ ] Small font sizes
+  - [ ] Large font sizes (accessibility)
+- [ ] Polish:
+  - [ ] Smooth transitions between screens
+  - [ ] Loading states for all async operations
+  - [ ] Error states with retry options
+  - [ ] Empty states with helpful messages
+  - [ ] Consistent spacing and padding
+  - [ ] Proper elevation and shadows
+  - [ ] Responsive tap targets (minimum 44x44 points)
+
+**Testing Checklist:**
+- [ ] QuizScreen displays correctly on all devices
+- [ ] HintsPanel buttons are properly sized and tappable
+- [ ] TimerDisplay is readable and updates smoothly
+- [ ] LivesDisplay hearts are clearly visible
+- [ ] AnswerFeedbackWidget animation is smooth
+- [ ] ExitConfirmationDialog is centered and readable
+- [ ] SettingsScreen adapts to screen size
+- [ ] All text is properly localized
+- [ ] Theme changes apply immediately
+- [ ] Settings persist across app restarts
+- [ ] No crashes or errors in production builds
+
+**Files to Create/Modify:**
+- `packages/quiz_engine/lib/src/dialogs/exit_confirmation_dialog.dart` - NEW
+- `packages/quiz_engine/lib/src/l10n/quiz_texts.dart` - NEW
+- `packages/quiz_engine/lib/src/screens/settings_screen.dart` - NEW
+- `packages/shared_services/lib/src/settings/quiz_settings.dart` - NEW
+- `packages/shared_services/lib/src/settings/settings_service.dart` - NEW
+- `packages/shared_services/lib/src/settings/shared_prefs_settings_service.dart` - NEW
+- All existing quiz_engine widgets - UPDATE to use QuizTexts
+- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - ADD WillPopScope
+- App-level configuration - INTEGRATE SettingsService
+
+**Next:** Phase 5 (Results & Statistics) - Enhanced results screen with review functionality
+
+---
+
+### Phase 5: Results & Statistics (Week 6)
 
 #### Sprint 4.1: Results Screen
 - [ ] Create `QuizResults` model

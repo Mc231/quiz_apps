@@ -25,6 +25,7 @@ export 'src/widgets/timer_display.dart';
 export 'src/widgets/quiz_app_bar_actions.dart';
 export 'src/widgets/quiz_lifecycle_handler.dart';
 export 'src/widgets/hints_panel.dart';
+export 'src/widgets/exit_confirmation_dialog.dart';
 
 // Theme
 export 'src/theme/quiz_theme_data.dart';

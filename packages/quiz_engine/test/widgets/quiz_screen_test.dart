@@ -6,6 +6,8 @@ import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine/src/quiz/quiz_screen.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 
+import '../test_helpers.dart';
+
 @GenerateNiceMocks([MockSpec<RandomItemPicker>()])
 import 'quiz_screen_test.mocks.dart';
 
@@ -56,7 +58,11 @@ void main() {
       MaterialApp(
         home: BlocProvider(
           bloc: bloc,
-          child: QuizScreen(title: "Test", gameOverTitle: "Game Over"),
+          child: QuizScreen(
+            title: "Test",
+            gameOverTitle: "Game Over",
+            texts: testQuizTexts,
+          ),
         ),
       ),
     );
@@ -96,7 +102,11 @@ void main() {
       MaterialApp(
         home: BlocProvider(
           bloc: bloc2,
-          child: QuizScreen(title: "Test", gameOverTitle: "Game Over"),
+          child: QuizScreen(
+            title: "Test",
+            gameOverTitle: "Game Over",
+            texts: testQuizTexts,
+          ),
         ),
       ),
     );

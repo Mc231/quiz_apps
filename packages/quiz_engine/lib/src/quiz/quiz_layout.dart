@@ -11,6 +11,7 @@ import 'quiz_audio_widget.dart';
 import 'quiz_video_widget.dart';
 import '../theme/quiz_theme_data.dart';
 import '../widgets/hints_panel.dart';
+import '../quiz_widget_entry.dart';
 
 /// A widget that displays the layout for a quiz screen, including the question image and answer options.
 ///
@@ -43,6 +44,9 @@ class QuizLayout extends StatelessWidget {
   /// Theme data for customizing quiz UI.
   final QuizThemeData themeData;
 
+  /// Text strings for the quiz UI.
+  final QuizTexts texts;
+
   /// Creates a `QuizLayout` with the specified question state, sizing information, and answer processor.
   ///
   /// [key] is the unique key for this widget.
@@ -51,6 +55,7 @@ class QuizLayout extends StatelessWidget {
   /// [processAnswer] is called to process the selected answer.
   /// [quizBloc] provides access to quiz operations including hints.
   /// [themeData] provides theme customization options.
+  /// [texts] provides text strings for the UI.
   const QuizLayout({
     super.key,
     required this.questionState,
@@ -58,6 +63,7 @@ class QuizLayout extends StatelessWidget {
     required this.processAnswer,
     required this.quizBloc,
     this.themeData = const QuizThemeData(),
+    required this.texts,
   });
 
   @override
@@ -71,6 +77,7 @@ class QuizLayout extends StatelessWidget {
           onUse50_50: () => quizBloc.use50_50Hint(),
           onUseSkip: () => quizBloc.skipQuestion(),
           primaryColor: themeData.buttonColor,
+          texts: texts,
         ),
         if (orientation == Orientation.portrait)
           ..._imageAndButtons(questionState, information),
@@ -159,6 +166,7 @@ class QuizLayout extends StatelessWidget {
         entry: entry,
         width: size,
         height: size,
+        texts: texts,
       ),
     };
   }

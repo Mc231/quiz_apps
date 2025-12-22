@@ -4,6 +4,8 @@ import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine/src/quiz/quiz_screen.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 
+import '../test_helpers.dart';
+
 void main() {
   testWidgets('QuizWidget initializes correctly and displays QuizScreen', (
     WidgetTester tester,
@@ -20,13 +22,12 @@ void main() {
       ),
     ];
 
-    // Create QuizTexts and config
-    const texts = QuizTexts(title: "Test Quiz", gameOverText: "Game Over");
+    // Create config
     const defaultConfig = QuizConfig(quizId: 'test_quiz');
 
     // Create QuizWidgetEntry
     final quizEntry = QuizWidgetEntry(
-      texts: texts,
+      texts: testQuizTexts,
       dataProvider: () => Future.value(mockQuestions),
       defaultConfig: defaultConfig,
     );

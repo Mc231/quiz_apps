@@ -784,4 +784,35 @@ class AppLocalizationsAm extends AppLocalizations {
 
   @override
   String get zw => 'ዝምባብዌ';
+
+  @override
+  String get exitDialogTitle => 'Exit Quiz?';
+
+  @override
+  String get exitDialogMessage =>
+      'Are you sure you want to exit? Your progress will be lost.';
+
+  @override
+  String get exitDialogConfirm => 'Yes';
+
+  @override
+  String get exitDialogCancel => 'No';
+
+  @override
+  String get correctFeedback => 'Correct!';
+
+  @override
+  String get incorrectFeedback => 'Incorrect!';
+
+  @override
+  String get hint5050Label => '50/50';
+
+  @override
+  String get hintSkipLabel => 'Skip';
+
+  @override
+  String get timerSecondsSuffix => 's';
+
+  @override
+  String get videoLoadError => 'Failed to load video';
 }

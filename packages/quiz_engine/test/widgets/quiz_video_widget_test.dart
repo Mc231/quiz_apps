@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/src/quiz/quiz_video_widget.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 
+import '../test_helpers.dart';
+
 void main() {
   group('QuizVideoWidget Tests', () {
     testWidgets('should display video widget', (WidgetTester tester) async {
@@ -21,6 +23,7 @@ void main() {
               entry: entry,
               width: 300,
               height: 300,
+              texts: testQuizTexts,
             ),
           ),
         ),
@@ -50,6 +53,7 @@ void main() {
               entry: entry,
               width: width,
               height: height,
+              texts: testQuizTexts,
             ),
           ),
         ),
@@ -79,6 +83,7 @@ void main() {
               entry: entry,
               width: 300,
               height: 300,
+              texts: testQuizTexts,
             ),
           ),
         ),
@@ -109,6 +114,7 @@ void main() {
               entry: entry,
               width: 300,
               height: 300,
+              texts: testQuizTexts,
             ),
           ),
         ),
@@ -135,6 +141,7 @@ void main() {
               entry: entry,
               width: 300,
               height: 300,
+              texts: testQuizTexts,
             ),
           ),
         ),
@@ -165,6 +172,7 @@ void main() {
               entry: entry,
               width: 300,
               height: 300,
+              texts: testQuizTexts,
             ),
           ),
         ),
@@ -191,6 +199,7 @@ void main() {
               entry: entry,
               width: 300,
               height: 300,
+              texts: testQuizTexts,
             ),
           ),
         ),
@@ -216,6 +225,7 @@ void main() {
               entry: entry,
               width: 300,
               height: 300,
+              texts: testQuizTexts,
             ),
           ),
         ),

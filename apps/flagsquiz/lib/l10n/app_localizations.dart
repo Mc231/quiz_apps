@@ -1767,6 +1767,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Zimbabwe'**
   String get zw;
+
+  /// Title of the exit confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Exit Quiz?'**
+  String get exitDialogTitle;
+
+  /// Message shown in the exit confirmation dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to exit? Your progress will be lost.'**
+  String get exitDialogMessage;
+
+  /// Text for the confirm/yes button in exit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get exitDialogConfirm;
+
+  /// Text for the cancel/no button in exit dialog
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get exitDialogCancel;
+
+  /// Text shown when answer is correct
+  ///
+  /// In en, this message translates to:
+  /// **'Correct!'**
+  String get correctFeedback;
+
+  /// Text shown when answer is incorrect
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect!'**
+  String get incorrectFeedback;
+
+  /// Label for the 50/50 hint button
+  ///
+  /// In en, this message translates to:
+  /// **'50/50'**
+  String get hint5050Label;
+
+  /// Label for the skip hint button
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get hintSkipLabel;
+
+  /// Suffix for seconds in timer display
+  ///
+  /// In en, this message translates to:
+  /// **'s'**
+  String get timerSecondsSuffix;
+
+  /// Error message shown when video fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load video'**
+  String get videoLoadError;
 }
 
 class _AppLocalizationsDelegate

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import '../quiz_widget_entry.dart';
 
 /// A widget that displays the remaining time in a quiz game.
 ///
@@ -39,6 +40,9 @@ class TimerDisplay extends StatelessWidget {
   /// The threshold (in seconds) below which to show critical color
   final int criticalThreshold;
 
+  /// Text strings for the quiz UI
+  final QuizTexts texts;
+
   const TimerDisplay({
     super.key,
     this.questionTimeRemaining,
@@ -51,6 +55,7 @@ class TimerDisplay extends StatelessWidget {
     this.criticalColor = Colors.red,
     this.warningThreshold = 10,
     this.criticalThreshold = 5,
+    required this.texts,
   });
 
   @override
@@ -135,7 +140,7 @@ class TimerDisplay extends StatelessWidget {
   /// Formats time in seconds to MM:SS format if >= 60, otherwise just seconds
   String _formatTime(int seconds) {
     if (seconds < 60) {
-      return '${seconds}s';
+      return '$seconds${texts.timerSecondsSuffix}';
     }
 
     final minutes = seconds ~/ 60;

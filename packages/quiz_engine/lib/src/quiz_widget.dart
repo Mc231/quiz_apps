@@ -39,6 +39,7 @@ class QuizWidget extends StatelessWidget {
         child: QuizScreen(
           title: quizEntry.texts.title,
           gameOverTitle: quizEntry.texts.gameOverText,
+          texts: quizEntry.texts,
           themeData: quizEntry.themeData,
         ),
       ),

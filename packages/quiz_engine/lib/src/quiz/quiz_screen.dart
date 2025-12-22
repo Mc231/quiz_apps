@@ -25,12 +25,14 @@ class QuizScreen extends StatefulWidget {
 
   final String title;
   final String gameOverTitle;
+  final QuizTexts texts;
   final QuizThemeData themeData;
 
   const QuizScreen({
     super.key,
     required this.title,
     required this.gameOverTitle,
+    required this.texts,
     this.themeData = const QuizThemeData(),
   });
 
@@ -51,6 +53,9 @@ class QuizScreenState extends State<QuizScreen> {
   /// Haptic service for providing haptic feedback
   final HapticService _hapticService = HapticService();
 
+  /// Flag to track if the quiz is over
+  bool _isQuizOver = false;
+
   @override
   void initState() {
     super.initState();
@@ -58,8 +63,19 @@ class QuizScreenState extends State<QuizScreen> {
     _initializeServices();
     _bloc.performInitialLoad();
     _bloc.gameOverCallback = (String result) {
+      _isQuizOver = true;
       _showQuizOverDialog(result);
     };
+  }
+
+  /// Get whether exit confirmation should be shown
+  bool get _showExitConfirmation {
+    try {
+      return _bloc.config.uiBehaviorConfig.showExitConfirmation;
+    } catch (_) {
+      // Default to true if config is not yet initialized
+      return true;
+    }
   }
 
   /// Initialize audio and haptic services and set up feedback listeners
@@ -126,22 +142,46 @@ class QuizScreenState extends State<QuizScreen> {
       builder: (context, snapshot) {
         var state = snapshot.data;
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(widget.title),
-            actions: [
-              // Only show actions if not loading
-              if (state is! LoadingState)
-                QuizAppBarActions(
-                  state: state,
-                  config: _bloc.config,
-                ),
-            ],
-          ),
-          body: Container(
-            padding: getContainerPadding(context),
-            child: SafeArea(
-              child: _buildBody(state),
+        return PopScope(
+          canPop: _isQuizOver || !_showExitConfirmation,
+          onPopInvokedWithResult: (bool didPop, dynamic result) async {
+            if (didPop) return;
+
+            // Don't show exit confirmation if quiz is over
+            if (_isQuizOver) return;
+
+            // Show exit confirmation dialog if enabled
+            if (_showExitConfirmation) {
+              final shouldExit = await ExitConfirmationDialog.show(
+                context,
+                title: widget.texts.exitDialogTitle,
+                message: widget.texts.exitDialogMessage,
+                confirmButtonText: widget.texts.exitDialogConfirm,
+                cancelButtonText: widget.texts.exitDialogCancel,
+              );
+              if (shouldExit && context.mounted) {
+                Navigator.of(context).pop();
+              }
+            }
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(widget.title),
+              actions: [
+                // Only show actions if not loading
+                if (state is! LoadingState)
+                  QuizAppBarActions(
+                    state: state,
+                    config: _bloc.config,
+                    texts: widget.texts,
+                  ),
+              ],
+            ),
+            body: Container(
+              padding: getContainerPadding(context),
+              child: SafeArea(
+                child: _buildBody(state),
+              ),
             ),
           ),
         );
@@ -162,6 +202,7 @@ class QuizScreenState extends State<QuizScreen> {
             feedbackState: state,
             processAnswer: _bloc.processAnswer,
             quizBloc: _bloc,
+            texts: widget.texts,
             themeData: widget.themeData,
             information: information,
           );
@@ -177,6 +218,7 @@ class QuizScreenState extends State<QuizScreen> {
           information: information,
           processAnswer: _bloc.processAnswer,
           quizBloc: _bloc,
+          texts: widget.texts,
           themeData: widget.themeData,
         );
       },
