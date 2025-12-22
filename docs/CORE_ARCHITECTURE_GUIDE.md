@@ -1968,10 +1968,65 @@ class _QuizPageState extends State<QuizPage> {
 ### Phase 2: Quiz Modes (Week 3)
 
 #### Sprint 2.1: Lives Mode
-- [ ] Implement lives tracking in `QuizBloc`
-- [ ] Create `LivesDisplay` widget
-- [ ] Handle game over on no lives
-- [ ] Test lives mode
+- [x] Implement lives tracking in `QuizBloc`
+- [x] Create `LivesDisplay` widget
+- [x] Handle game over on no lives
+- [x] Test lives mode
+
+**Status:** ✅ COMPLETED (2025-12-22)
+
+**Completed Tasks:**
+- **QuizModeConfig Refactoring**: Converted from class with nullable fields to sealed class hierarchy
+  - `StandardMode` - No lives, no timer
+  - `TimedMode` - Timer only (timer logic not yet implemented)
+  - `LivesMode` - Lives tracking only
+  - `EndlessMode` - One life (one mistake ends game)
+  - `SurvivalMode` - Lives + timer (timer logic not yet implemented)
+  - Added computed `lives` getter to base class for clean access
+  - Full type safety with pattern matching
+  - Factory methods on base class for convenient instantiation
+- **Lives Tracking in QuizBloc**: Complete implementation
+  - `_remainingLives` field initialized from `modeConfig.lives`
+  - Life deduction on wrong answers (line 111-113)
+  - Game over logic when lives reach 0 (line 170-171)
+  - Lives state propagated to all QuizStates (QuestionState, AnswerFeedbackState)
+- **LivesDisplay Widget**: Responsive hearts display
+  - Shows filled hearts for remaining lives, empty hearts for lost lives
+  - Automatically hides when lives are not tracked
+  - Responsive sizing for mobile/tablet/desktop/watch
+  - Customizable icons and colors
+  - Location: `packages/quiz_engine/lib/src/widgets/lives_display.dart`
+- **QuizAppBarActions Widget**: Flexible app bar actions container
+  - Displays LivesDisplay in quiz screen app bar
+  - Ready for future additions (timer, hints, score, pause button)
+  - Automatically hides when no actions are needed
+  - Proper spacing between multiple action items
+  - Location: `packages/quiz_engine/lib/src/widgets/quiz_app_bar_actions.dart`
+- **App Bar Integration**: Lives display visible in quiz screen
+  - QuizScreen refactored to use StreamBuilder for entire Scaffold
+  - QuizAppBarActions in app bar actions list
+  - Only shows when not in LoadingState
+  - Lives update in real-time as user answers
+- **Tests**: All 56 tests passing in quiz_engine_core
+
+**Working Modes:**
+- ✅ **StandardMode** - Normal quiz, no lives
+- ✅ **LivesMode** - Start with N lives, lose one on wrong answer, game over at 0
+- ✅ **EndlessMode** - One life, game over on first mistake
+- ⚠️ **SurvivalMode** - Lives work, timer NOT implemented (acts as LivesMode currently)
+- ⚠️ **TimedMode** - Timer logic NOT yet implemented
+
+**Files Modified:**
+- `packages/quiz_engine_core/lib/src/model/config/quiz_mode_config.dart` - Sealed class refactoring
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Lives tracking logic
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_state/quiz_state.dart` - Added remainingLives to states
+- `packages/quiz_engine/lib/src/widgets/lives_display.dart` - New widget
+- `packages/quiz_engine/lib/src/widgets/quiz_app_bar_actions.dart` - New widget
+- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - App bar integration
+- `packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart` - Pass lives to feedback state
+- `packages/quiz_engine/lib/quiz_engine.dart` - Export new widgets
+
+**Next:** Sprint 2.2 (Timed Mode) - Implement timer logic for TimedMode and SurvivalMode
 
 #### Sprint 2.2: Timed Mode
 - [ ] Implement question timer in `QuizBloc`

@@ -120,50 +120,64 @@ class QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: Container(
-        padding: getContainerPadding(context),
-        child: SafeArea(
-          child: StreamBuilder<QuizState>(
-            initialData: _bloc.initialState,
-            stream: _bloc.stream,
-            builder: (context, snapshot) {
-              var state = snapshot.data;
+    return StreamBuilder<QuizState>(
+      initialData: _bloc.initialState,
+      stream: _bloc.stream,
+      builder: (context, snapshot) {
+        var state = snapshot.data;
 
-              if (state is LoadingState) {
-                return Center(child: CircularProgressIndicator());
-              }
-
-              if (state is AnswerFeedbackState) {
-                // Show feedback with the answered question
-                return ResponsiveBuilder(
-                  builder: (context, information) {
-                    return AnswerFeedbackWidget(
-                      feedbackState: state,
-                      processAnswer: _bloc.processAnswer,
-                      themeData: widget.themeData,
-                      information: information,
-                    );
-                  },
-                );
-              }
-
-              final questionState = state as QuestionState;
-              return ResponsiveBuilder(
-                builder: (context, information) {
-                  return QuizLayout(
-                    questionState: questionState,
-                    information: information,
-                    processAnswer: _bloc.processAnswer,
-                    themeData: widget.themeData,
-                  );
-                },
-              );
-            },
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(widget.title),
+            actions: [
+              // Only show actions if not loading
+              if (state is! LoadingState)
+                QuizAppBarActions(
+                  state: state,
+                  config: _bloc.config,
+                ),
+            ],
           ),
-        ),
-      ),
+          body: Container(
+            padding: getContainerPadding(context),
+            child: SafeArea(
+              child: _buildBody(state),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildBody(QuizState? state) {
+    if (state is LoadingState) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    if (state is AnswerFeedbackState) {
+      // Show feedback with the answered question
+      return ResponsiveBuilder(
+        builder: (context, information) {
+          return AnswerFeedbackWidget(
+            feedbackState: state,
+            processAnswer: _bloc.processAnswer,
+            themeData: widget.themeData,
+            information: information,
+          );
+        },
+      );
+    }
+
+    final questionState = state as QuestionState;
+    return ResponsiveBuilder(
+      builder: (context, information) {
+        return QuizLayout(
+          questionState: questionState,
+          information: information,
+          processAnswer: _bloc.processAnswer,
+          themeData: widget.themeData,
+        );
+      },
     );
   }
 

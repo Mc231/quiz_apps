@@ -83,6 +83,7 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
                 widget.feedbackState.question,
                 widget.feedbackState.progress,
                 widget.feedbackState.total,
+                remainingLives: widget.feedbackState.remainingLives,
               ),
               information: widget.information,
               processAnswer: widget.processAnswer,

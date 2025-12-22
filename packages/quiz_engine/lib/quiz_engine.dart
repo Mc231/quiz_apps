@@ -20,6 +20,8 @@ export 'src/quiz/quiz_video_widget.dart';
 
 // Feedback Widgets
 export 'src/widgets/answer_feedback_widget.dart';
+export 'src/widgets/lives_display.dart';
+export 'src/widgets/quiz_app_bar_actions.dart';
 
 // Theme
 export 'src/theme/quiz_theme_data.dart';

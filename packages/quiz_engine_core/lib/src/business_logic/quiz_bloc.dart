@@ -7,6 +7,7 @@ import '../model/question.dart';
 import '../model/random_pick_result.dart';
 import '../random_item_picker.dart';
 import '../model/config/quiz_config.dart';
+import '../model/config/quiz_mode_config.dart';
 import 'config_manager/config_manager.dart';
 import 'config_manager/config_source.dart';
 
@@ -50,6 +51,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// The list of answers provided by the player.
   final List<Answer> _answers = [];
 
+  /// The number of remaining lives (only used in lives/survival modes).
+  int? _remainingLives;
+
   /// Creates a `QuizBloc` with a provided data fetch function.
   ///
   /// [dataProvider] - Function to fetch quiz data
@@ -81,6 +85,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Load configuration first
     _config = await configManager.getConfig(source: const DefaultSource());
 
+    // Initialize lives from mode config
+    _remainingLives = _config.modeConfig.lives;
+
     var items = await dataProvider();
 
     // Apply filter if provided, otherwise keep all items
@@ -100,15 +107,21 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     var answer = Answer(selectedItem, currentQuestion);
     final isCorrect = answer.isCorrect;
 
+    // Deduct life if answer is wrong and lives are tracked
+    if (!isCorrect && _remainingLives != null) {
+      _remainingLives = _remainingLives! - 1;
+    }
+
     // Show feedback if enabled in configuration
     if (_config.uiBehaviorConfig.showAnswerFeedback) {
-      // Emit feedback state
+      // Emit feedback state with updated lives
       var feedbackState = QuizState.answerFeedback(
         currentQuestion,
         selectedItem,
         isCorrect,
         _currentProgress,
         _totalCount,
+        remainingLives: _remainingLives,
       );
       dispatchState(feedbackState);
 
@@ -132,19 +145,33 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         currentQuestion,
         _currentProgress,
         _totalCount,
+        remainingLives: _remainingLives,
       );
       dispatchState(state);
       _notifyGameOver();
     } else {
       var question = Question.fromRandomResult(randomResult!);
       currentQuestion = question;
-      var state = QuizState.question(question, _currentProgress, _totalCount);
+      var state = QuizState.question(
+        question,
+        _currentProgress,
+        _totalCount,
+        remainingLives: _remainingLives,
+      );
       dispatchState(state);
     }
   }
 
-  /// Determines if the game is over based on the random picker result.
-  bool _isGameOver(RandomPickResult? result) => result == null;
+  /// Determines if the game is over based on the random picker result or lives.
+  bool _isGameOver(RandomPickResult? result) {
+    // Game over if no more questions
+    if (result == null) return true;
+
+    // Game over if lives reach 0
+    if (_remainingLives != null && _remainingLives! <= 0) return true;
+
+    return false;
+  }
 
   /// Notifies the game-over state and invokes the callback with the final result.
   void _notifyGameOver() {

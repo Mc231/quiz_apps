@@ -7,15 +7,20 @@ import '../../model/question_entry.dart';
 /// It serves as a base type for managing different states within the quiz.
 sealed class QuizState {
   factory QuizState.loading() = LoadingState;
-  factory QuizState.question(Question question, int progress, int total) =
-      QuestionState;
+  factory QuizState.question(
+    Question question,
+    int progress,
+    int total, {
+    int? remainingLives,
+  }) = QuestionState;
   factory QuizState.answerFeedback(
     Question question,
     QuestionEntry selectedAnswer,
     bool isCorrect,
     int progress,
-    int total,
-  ) = AnswerFeedbackState;
+    int total, {
+    int? remainingLives,
+  }) = AnswerFeedbackState;
   const QuizState();
 }
 
@@ -34,12 +39,20 @@ class QuestionState extends QuizState {
   /// The total number of questions in the game.
   final int total;
 
+  /// The number of remaining lives (null if lives mode is not enabled).
+  final int? remainingLives;
+
   /// Computes the percentage of progress made through the quiz.
   double get percentageProgress =>
       total == 0 ? 0 : (progress / total).toDouble();
 
   /// Creates a new `QuestionState` with the given question, progress, and total.
-  QuestionState(this.question, this.progress, this.total);
+  QuestionState(
+    this.question,
+    this.progress,
+    this.total, {
+    this.remainingLives,
+  });
 }
 
 /// A state representing the answer feedback phase after the player has answered a question.
@@ -62,6 +75,9 @@ class AnswerFeedbackState extends QuizState {
   /// The total number of questions in the game.
   final int total;
 
+  /// The number of remaining lives (null if lives mode is not enabled).
+  final int? remainingLives;
+
   /// Computes the percentage of progress made through the quiz.
   double get percentageProgress =>
       total == 0 ? 0 : (progress / total).toDouble();
@@ -72,6 +88,7 @@ class AnswerFeedbackState extends QuizState {
     this.selectedAnswer,
     this.isCorrect,
     this.progress,
-    this.total,
-  );
+    this.total, {
+    this.remainingLives,
+  });
 }

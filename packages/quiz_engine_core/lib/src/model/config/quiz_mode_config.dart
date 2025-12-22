@@ -1,148 +1,256 @@
 import 'base_config.dart';
 
-/// Defines different quiz game modes
-enum QuizMode {
-  /// Standard mode - answer all questions, no time limit, no lives
-  standard,
+/// Base sealed class for quiz mode configurations
+/// Each mode has its own subclass with type-safe fields
+sealed class QuizModeConfig extends BaseConfig {
+  const QuizModeConfig();
 
-  /// Timed mode - answer questions within time limit
-  timed,
+  /// Returns the number of lives for this mode, or null if lives are not tracked
+  int? get lives => switch (this) {
+        LivesMode(:final lives) => lives,
+        SurvivalMode(:final lives) => lives,
+        EndlessMode() => 1, // One mistake ends the game
+        _ => null, // No lives tracking
+      };
 
-  /// Lives mode - lose lives on wrong answers, game over at 0
-  lives,
+  /// Factory method for standard mode: no time limits, no lives
+  factory QuizModeConfig.standard({bool allowSkip = false}) {
+    return StandardMode(allowSkip: allowSkip);
+  }
 
-  /// Endless mode - keep answering until wrong answer
-  endless,
+  /// Factory method for timed mode: answer within time limit
+  factory QuizModeConfig.timed({
+    int timePerQuestion = 30,
+    int? totalTimeLimit,
+    bool allowSkip = false,
+  }) {
+    return TimedMode(
+      timePerQuestion: timePerQuestion,
+      totalTimeLimit: totalTimeLimit,
+      allowSkip: allowSkip,
+    );
+  }
 
-  /// Survival mode - timed + lives combined
-  survival,
-}
+  /// Factory method for lives mode: lose lives on mistakes
+  factory QuizModeConfig.lives({
+    int lives = 3,
+    bool allowSkip = false,
+  }) {
+    return LivesMode(lives: lives, allowSkip: allowSkip);
+  }
 
-/// Configuration for quiz mode behavior
-class QuizModeConfig extends BaseConfig {
-  final QuizMode mode;
+  /// Factory method for endless mode: keep going until first mistake
+  factory QuizModeConfig.endless() {
+    return const EndlessMode();
+  }
 
-  /// Time limit per question in seconds (for timed/survival modes)
-  final int? timePerQuestion;
+  /// Factory method for survival mode: timed + lives combined
+  factory QuizModeConfig.survival({
+    int lives = 3,
+    int timePerQuestion = 30,
+    int? totalTimeLimit,
+  }) {
+    return SurvivalMode(
+      lives: lives,
+      timePerQuestion: timePerQuestion,
+      totalTimeLimit: totalTimeLimit,
+    );
+  }
 
-  /// Total time limit for entire quiz in seconds (for timed/survival modes)
-  final int? totalTimeLimit;
+  /// Deserialize from map
+  factory QuizModeConfig.fromMap(Map<String, dynamic> map) {
+    final type = map['type'] as String;
+    final version = map['version'] as int? ?? 1;
 
-  /// Number of lives (for lives/survival modes)
-  final int? lives;
-
-  /// Allow skipping questions
-  final bool allowSkip;
-
-  /// Infinite questions (for endless mode)
-  final bool infinite;
+    return switch (type) {
+      'standard' => StandardMode.fromMap(map),
+      'timed' => TimedMode.fromMap(map),
+      'lives' => LivesMode.fromMap(map),
+      'endless' => EndlessMode.fromMap(map),
+      'survival' => SurvivalMode.fromMap(map),
+      _ => throw ArgumentError('Unknown mode type: $type'),
+    };
+  }
 
   @override
-  final int version;
+  int get version => 1;
+}
 
-  const QuizModeConfig._({
-    required this.mode,
-    this.timePerQuestion,
-    this.totalTimeLimit,
-    this.lives,
-    required this.allowSkip,
-    required this.infinite,
-    this.version = 1,
-  });
+/// Standard mode - answer all questions, no time limit, no lives
+class StandardMode extends QuizModeConfig {
+  final bool allowSkip;
 
-  /// Standard mode: no time limits, no lives
-  const QuizModeConfig.standard()
-    : mode = QuizMode.standard,
-      timePerQuestion = null,
-      totalTimeLimit = null,
-      lives = null,
-      allowSkip = false,
-      infinite = false,
-      version = 1;
-
-  /// Timed mode: answer within time limit
-  const QuizModeConfig.timed({
-    this.timePerQuestion = 30,
-    this.totalTimeLimit,
-    this.allowSkip = false,
-  }) : mode = QuizMode.timed,
-       lives = null,
-       infinite = false,
-       version = 1;
-
-  /// Lives mode: lose lives on mistakes
-  const QuizModeConfig.lives({this.lives = 3, this.allowSkip = false})
-    : mode = QuizMode.lives,
-      timePerQuestion = null,
-      totalTimeLimit = null,
-      infinite = false,
-      version = 1;
-
-  /// Endless mode: keep going until first mistake
-  const QuizModeConfig.endless()
-    : mode = QuizMode.endless,
-      timePerQuestion = null,
-      totalTimeLimit = null,
-      lives = 1, // One mistake ends the game
-      allowSkip = false,
-      infinite = true,
-      version = 1;
-
-  /// Survival mode: timed + lives combined
-  const QuizModeConfig.survival({
-    this.lives = 3,
-    this.timePerQuestion = 30,
-    this.totalTimeLimit,
-  }) : mode = QuizMode.survival,
-       allowSkip = false,
-       infinite = false,
-       version = 1;
+  const StandardMode({this.allowSkip = false});
 
   @override
   Map<String, dynamic> toMap() {
     return {
+      'type': 'standard',
       'version': version,
-      'mode': mode.name,
-      'timePerQuestion': timePerQuestion,
-      'totalTimeLimit': totalTimeLimit,
-      'lives': lives,
       'allowSkip': allowSkip,
-      'infinite': infinite,
     };
   }
 
-  factory QuizModeConfig.fromMap(Map<String, dynamic> map) {
-    final version = map['version'] as int? ?? 1;
-    final modeName = map['mode'] as String;
-    final mode = QuizMode.values.firstWhere((e) => e.name == modeName);
-
-    return QuizModeConfig._(
-      mode: mode,
-      timePerQuestion: map['timePerQuestion'] as int?,
-      totalTimeLimit: map['totalTimeLimit'] as int?,
-      lives: map['lives'] as int?,
+  factory StandardMode.fromMap(Map<String, dynamic> map) {
+    return StandardMode(
       allowSkip: map['allowSkip'] as bool? ?? false,
-      infinite: map['infinite'] as bool? ?? false,
-      version: version,
     );
   }
 
-  QuizModeConfig copyWith({
-    QuizMode? mode,
+  StandardMode copyWith({bool? allowSkip}) {
+    return StandardMode(
+      allowSkip: allowSkip ?? this.allowSkip,
+    );
+  }
+}
+
+/// Timed mode - answer questions within time limit
+class TimedMode extends QuizModeConfig {
+  /// Time limit per question in seconds
+  final int timePerQuestion;
+
+  /// Total time limit for entire quiz in seconds (optional)
+  final int? totalTimeLimit;
+
+  final bool allowSkip;
+
+  const TimedMode({
+    this.timePerQuestion = 30,
+    this.totalTimeLimit,
+    this.allowSkip = false,
+  });
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'timed',
+      'version': version,
+      'timePerQuestion': timePerQuestion,
+      'totalTimeLimit': totalTimeLimit,
+      'allowSkip': allowSkip,
+    };
+  }
+
+  factory TimedMode.fromMap(Map<String, dynamic> map) {
+    return TimedMode(
+      timePerQuestion: map['timePerQuestion'] as int? ?? 30,
+      totalTimeLimit: map['totalTimeLimit'] as int?,
+      allowSkip: map['allowSkip'] as bool? ?? false,
+    );
+  }
+
+  TimedMode copyWith({
     int? timePerQuestion,
     int? totalTimeLimit,
-    int? lives,
     bool? allowSkip,
-    bool? infinite,
   }) {
-    return QuizModeConfig._(
-      mode: mode ?? this.mode,
+    return TimedMode(
       timePerQuestion: timePerQuestion ?? this.timePerQuestion,
       totalTimeLimit: totalTimeLimit ?? this.totalTimeLimit,
+      allowSkip: allowSkip ?? this.allowSkip,
+    );
+  }
+}
+
+/// Lives mode - lose lives on wrong answers, game over at 0
+class LivesMode extends QuizModeConfig {
+  /// Number of lives available
+  final int lives;
+
+  final bool allowSkip;
+
+  const LivesMode({
+    this.lives = 3,
+    this.allowSkip = false,
+  });
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'lives',
+      'version': version,
+      'lives': lives,
+      'allowSkip': allowSkip,
+    };
+  }
+
+  factory LivesMode.fromMap(Map<String, dynamic> map) {
+    return LivesMode(
+      lives: map['lives'] as int? ?? 3,
+      allowSkip: map['allowSkip'] as bool? ?? false,
+    );
+  }
+
+  LivesMode copyWith({int? lives, bool? allowSkip}) {
+    return LivesMode(
       lives: lives ?? this.lives,
       allowSkip: allowSkip ?? this.allowSkip,
-      infinite: infinite ?? this.infinite,
-      version: version,
+    );
+  }
+}
+
+/// Endless mode - keep answering until wrong answer
+class EndlessMode extends QuizModeConfig {
+  const EndlessMode();
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'endless',
+      'version': version,
+    };
+  }
+
+  factory EndlessMode.fromMap(Map<String, dynamic> map) {
+    return const EndlessMode();
+  }
+}
+
+/// Survival mode - timed + lives combined
+class SurvivalMode extends QuizModeConfig {
+  /// Number of lives available
+  final int lives;
+
+  /// Time limit per question in seconds
+  final int timePerQuestion;
+
+  /// Total time limit for entire quiz in seconds (optional)
+  final int? totalTimeLimit;
+
+  const SurvivalMode({
+    this.lives = 3,
+    this.timePerQuestion = 30,
+    this.totalTimeLimit,
+  });
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'type': 'survival',
+      'version': version,
+      'lives': lives,
+      'timePerQuestion': timePerQuestion,
+      'totalTimeLimit': totalTimeLimit,
+    };
+  }
+
+  factory SurvivalMode.fromMap(Map<String, dynamic> map) {
+    return SurvivalMode(
+      lives: map['lives'] as int? ?? 3,
+      timePerQuestion: map['timePerQuestion'] as int? ?? 30,
+      totalTimeLimit: map['totalTimeLimit'] as int?,
+    );
+  }
+
+  SurvivalMode copyWith({
+    int? lives,
+    int? timePerQuestion,
+    int? totalTimeLimit,
+  }) {
+    return SurvivalMode(
+      lives: lives ?? this.lives,
+      timePerQuestion: timePerQuestion ?? this.timePerQuestion,
+      totalTimeLimit: totalTimeLimit ?? this.totalTimeLimit,
     );
   }
 }

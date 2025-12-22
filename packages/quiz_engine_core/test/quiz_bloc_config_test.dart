@@ -62,11 +62,11 @@ void main() {
     });
 
     test('ConfigManager holds QuizConfig with custom mode', () {
-      const defaultConfig = QuizConfig(
+      final defaultConfig = QuizConfig(
         quizId: 'timed_quiz',
         modeConfig: QuizModeConfig.timed(timePerQuestion: 30),
       );
-      const configManager = ConfigManager(defaultConfig: defaultConfig);
+      final configManager = ConfigManager(defaultConfig: defaultConfig);
 
       final bloc = QuizBloc(
         () async => testData,
@@ -75,8 +75,10 @@ void main() {
       );
 
       expect(bloc.configManager.defaultConfig.quizId, 'timed_quiz');
-      expect(bloc.configManager.defaultConfig.modeConfig.mode, QuizMode.timed);
-      expect(bloc.configManager.defaultConfig.modeConfig.timePerQuestion, 30);
+      expect(bloc.configManager.defaultConfig.modeConfig, isA<TimedMode>());
+      final timedMode =
+          bloc.configManager.defaultConfig.modeConfig as TimedMode;
+      expect(timedMode.timePerQuestion, 30);
       bloc.dispose();
     });
 
