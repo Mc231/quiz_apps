@@ -33,12 +33,12 @@ import 'bloc.dart';
 /// ```
 abstract class SingleSubscriptionBloc<S> extends Bloc {
   /// A stream controller for managing state changes.
-  final StreamController<S> _controller = StreamController<S>();
+  final StreamController<S> _controller = StreamController<S>.broadcast();
 
   /// A stream that emits state changes to subscribers.
   ///
-  /// The stream is a single-subscription stream, meaning that only one
-  /// listener can subscribe to it at a time. This stream provides a mechanism
+  /// The stream is a broadcast stream, meaning that multiple
+  /// listeners can subscribe to it at the same time. This stream provides a mechanism
   /// to react to state changes within the BLoC.
   Stream<S> get stream => _controller.stream;
 
