@@ -33,6 +33,8 @@ dependencies:
   video_player: ^2.9.2
   quiz_engine_core:
     path: ../quiz_engine_core
+  shared_services:
+    path: ../shared_services
 
 dev_dependencies:
   test: ^1.21.6
@@ -56,6 +58,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/sounds/
 
   # To add Flutter specific assets to your application, add an assets section,
   # like this:

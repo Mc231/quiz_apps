@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:shared_services/shared_services.dart';
 import '../../quiz_engine.dart';
 import 'quiz_layout.dart';
 
@@ -44,64 +45,124 @@ class QuizScreenState extends State<QuizScreen> {
   /// The BLoC managing the quiz logic and state transitions.
   late QuizBloc _bloc;
 
+  /// Audio service for playing sound effects
+  final AudioService _audioService = AudioService();
+
+  /// Haptic service for providing haptic feedback
+  final HapticService _hapticService = HapticService();
+
   @override
   void initState() {
+    super.initState();
     _bloc = BlocProvider.of<QuizBloc>(context);
+    _initializeServices();
     _bloc.performInitialLoad();
     _bloc.gameOverCallback = (String result) {
       _showQuizOverDialog(result);
     };
-    super.initState();
+  }
+
+  /// Initialize audio and haptic services and set up feedback listeners
+  Future<void> _initializeServices() async {
+    // Initialize audio service
+    await _audioService.initialize();
+
+    // Configure services based on quiz config
+    final config = _bloc.config.uiBehaviorConfig;
+    _audioService.setMuted(!config.playSounds);
+    _hapticService.setEnabled(config.hapticFeedback);
+
+    // Preload frequently used sounds
+    if (config.playSounds) {
+      await _audioService.preloadMultiple([
+        QuizSoundEffect.correctAnswer,
+        QuizSoundEffect.incorrectAnswer,
+      ]);
+    }
+
+    // Listen to quiz states and provide feedback
+    _bloc.stream.listen((state) {
+      if (state is AnswerFeedbackState) {
+        _provideFeedback(state);
+      }
+    });
+  }
+
+  /// Provide audio and haptic feedback based on answer correctness
+  Future<void> _provideFeedback(AnswerFeedbackState state) async {
+    if (!mounted) return;
+
+    final config = _bloc.config.uiBehaviorConfig;
+
+    // Play sound effect
+    if (config.playSounds) {
+      final sound = state.isCorrect
+          ? QuizSoundEffect.correctAnswer
+          : QuizSoundEffect.incorrectAnswer;
+      await _audioService.playSoundEffect(sound);
+    }
+
+    // Trigger haptic feedback
+    if (config.hapticFeedback) {
+      if (state.isCorrect) {
+        await _hapticService.correctAnswer();
+      } else {
+        await _hapticService.incorrectAnswer();
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _audioService.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: Container(
         padding: getContainerPadding(context),
         child: SafeArea(
-            child: StreamBuilder<QuizState>(
-              initialData: _bloc.initialState,
-              stream: _bloc.stream,
-              builder: (context, snapshot) {
-                var state = snapshot.data;
+          child: StreamBuilder<QuizState>(
+            initialData: _bloc.initialState,
+            stream: _bloc.stream,
+            builder: (context, snapshot) {
+              var state = snapshot.data;
 
-                if (state is LoadingState) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
+              if (state is LoadingState) {
+                return Center(child: CircularProgressIndicator());
+              }
 
-                if (state is AnswerFeedbackState) {
-                  // Show feedback with the answered question
-                  // For now, we'll just show the quiz layout (no special feedback UI yet)
-                  // TODO: Create AnswerFeedbackWidget for visual feedback
-                  return ResponsiveBuilder(builder: (context, information) {
-                    return QuizLayout(
-                        questionState: QuestionState(
-                          state.question,
-                          state.progress,
-                          state.total,
-                        ),
-                        information: information,
-                        processAnswer: _bloc.processAnswer,
-                        themeData: widget.themeData);
-                  });
-                }
-
-                final questionState = state as QuestionState;
-                return ResponsiveBuilder(builder: (context, information) {
-                  return QuizLayout(
-                      questionState: questionState,
-                      information: information,
+              if (state is AnswerFeedbackState) {
+                // Show feedback with the answered question
+                return ResponsiveBuilder(
+                  builder: (context, information) {
+                    return AnswerFeedbackWidget(
+                      feedbackState: state,
                       processAnswer: _bloc.processAnswer,
-                      themeData: widget.themeData);
-                });
-              },
-            )),
+                      themeData: widget.themeData,
+                      information: information,
+                    );
+                  },
+                );
+              }
+
+              final questionState = state as QuestionState;
+              return ResponsiveBuilder(
+                builder: (context, information) {
+                  return QuizLayout(
+                    questionState: questionState,
+                    information: information,
+                    processAnswer: _bloc.processAnswer,
+                    themeData: widget.themeData,
+                  );
+                },
+              );
+            },
+          ),
+        ),
       ),
     );
   }
@@ -121,16 +182,14 @@ class QuizScreenState extends State<QuizScreen> {
         return AlertDialog(
           title: Text(widget.gameOverTitle),
           content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text(message),
-              ],
-            ),
+            child: ListBody(children: <Widget>[Text(message)]),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text(MaterialLocalizations.of(context).okButtonLabel,
-                  key: QuizScreen.okButtonKey),
+              child: Text(
+                MaterialLocalizations.of(context).okButtonLabel,
+                key: QuizScreen.okButtonKey,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
