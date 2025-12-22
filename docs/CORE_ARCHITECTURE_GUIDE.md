@@ -1850,7 +1850,7 @@ StatsOverviewCard(
 - [x] Create `QuizTexts` class for text organization
 - [x] Refactor `QuizWidgetEntry` to accept `defaultConfig` and auto-construct `ConfigManager`
 - [x] Update all tests to use new ConfigManager pattern
-- [ ] Extract hard-coded values to theme
+- [x] Extract hard-coded values to theme
 - [ ] Test with flagsquiz app
 
 **Status:** COMPLETED (2025-12-22)
@@ -1859,9 +1859,11 @@ StatsOverviewCard(
 - Complete theme system (QuizThemeData) with light/dark themes
 - QuizBloc integration with ConfigManager
 - QuizWidget and QuizWidgetEntry refactoring
+- Extracted all hard-coded values to QuizThemeData (28 new properties)
+- Made all theme parameters non-nullable with sensible defaults
 - All tests passing (quiz_engine_core: 56/56, quiz_engine: 39/39)
 
-**Remaining:** Extract remaining hard-coded values, end-to-end testing with flagsquiz
+**Remaining:** End-to-end testing with flagsquiz app
 
 #### Sprint 1.2: Answer Feedback
 - [ ] Add `AnswerFeedbackState` to quiz state
