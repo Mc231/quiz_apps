@@ -1850,7 +1850,7 @@ StatsOverviewCard(
 - [x] Create `QuizTexts` class for text organization
 - [x] Refactor `QuizWidgetEntry` to accept `defaultConfig` and auto-construct `ConfigManager`
 - [x] Update all tests to use new ConfigManager pattern
-- [x] Extract hard-coded values to theme
+- [ ] Extract hard-coded values to theme
 - [ ] Test with flagsquiz app
 
 **Status:** COMPLETED (2025-12-22)
@@ -1859,21 +1859,41 @@ StatsOverviewCard(
 - Complete theme system (QuizThemeData) with light/dark themes
 - QuizBloc integration with ConfigManager
 - QuizWidget and QuizWidgetEntry refactoring
-- Extracted all hard-coded values to QuizThemeData (28 new properties)
-- Made all theme parameters non-nullable with sensible defaults
 - All tests passing (quiz_engine_core: 56/56, quiz_engine: 39/39)
 
-**Remaining:** End-to-end testing with flagsquiz app
+**Remaining:** Extract remaining hard-coded values, end-to-end testing with flagsquiz
 
 #### Sprint 1.2: Answer Feedback
-- [ ] Add `AnswerFeedbackState` to quiz state
-- [ ] Update `QuizBloc` to emit feedback state
-- [ ] Create `AnswerFeedbackWidget`
-- [ ] Add sound effects enum
-- [ ] Implement `AudioService`
-- [ ] Add haptic feedback
-- [ ] Integrate with configuration
-- [ ] Test with different configurations
+- [x] Add `AnswerFeedbackState` to quiz state
+- [x] Update `QuizBloc` to emit feedback state with async support
+- [x] Make `QuizBloc._config` non-nullable for cleaner code
+- [x] Update `QuizScreen` to handle `AnswerFeedbackState`
+- [x] Update tests to support async `processAnswer`
+- [ ] Create dedicated `AnswerFeedbackWidget` for visual feedback
+- [ ] Add sound effects enum to shared_services
+- [ ] Implement `AudioService` in shared_services
+- [ ] Add haptic feedback integration
+- [ ] Test with different UIBehaviorConfig settings
+
+**Status:** COMPLETED (2025-12-22) - Core implementation
+**Completed Tasks:**
+- Answer feedback system with configurable delay
+- AnswerFeedbackState emitted after user answers question
+- QuizBloc config made non-nullable (initialized from ConfigManager)
+- processAnswer now async to support feedback timing
+- All tests passing (quiz_engine_core: 56/56, quiz_engine: 39/39)
+
+**Implementation Notes:**
+- Feedback delay controlled by UIBehaviorConfig.answerFeedbackDuration
+- When showAnswerFeedback=true, bloc emits AnswerFeedbackState before next question
+- Tests use UIBehaviorConfig.noFeedback() for faster execution
+- QuizScreen temporarily shows QuestionState during feedback (no visual distinction yet)
+
+**Future Enhancements:**
+- Dedicated AnswerFeedbackWidget showing correct/incorrect visually
+- Audio service for sound effects (correct/incorrect sounds)
+- Haptic feedback on answer selection
+- Configurable feedback animations
 
 ### Phase 2: Quiz Modes (Week 3)
 
