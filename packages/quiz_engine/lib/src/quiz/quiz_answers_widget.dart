@@ -154,6 +154,7 @@ extension on QuizAnswersWidget {
   ///
   /// This method calculates the child aspect ratio for the grid layout
   /// using `getValueForScreenType`, pulling button height values from the theme configuration.
+  /// The calculation includes button margin to ensure proper spacing.
   ///
   /// [context] is the `BuildContext` used to determine the screen size.
   /// [information] provides additional sizing information for the widget.
@@ -170,8 +171,11 @@ extension on QuizAnswersWidget {
       desktop: themeData.buttonHeightDesktop,
       watch: themeData.buttonHeightWatch,
     );
+    // Account for button margin to ensure buttons have enough space
+    final margin = getButtonMargin(context);
+    final totalHeight = height + margin.bottom;
     final width = information.localWidgetSize.width;
-    return width / height;
+    return width / totalHeight;
   }
 
   /// Returns the button margin based on the screen size and theme.

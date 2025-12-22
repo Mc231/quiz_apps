@@ -80,7 +80,11 @@ class QuizLayout extends StatelessWidget {
           texts: texts,
         ),
         if (orientation == Orientation.portrait)
-          ..._imageAndButtons(questionState, information),
+          Expanded(
+            child: Column(
+              children: _imageAndButtons(questionState, information),
+            ),
+          ),
         if (orientation == Orientation.landscape)
           Expanded(
             child: Row(children: _imageAndButtons(questionState, information)),
