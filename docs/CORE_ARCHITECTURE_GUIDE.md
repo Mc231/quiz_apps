@@ -2026,14 +2026,102 @@ class _QuizPageState extends State<QuizPage> {
 - `packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart` - Pass lives to feedback state
 - `packages/quiz_engine/lib/quiz_engine.dart` - Export new widgets
 
-**Next:** Sprint 2.2 (Timed Mode) - Implement timer logic for TimedMode and SurvivalMode
+**Next:** Sprint 3.1 (Hints System) - Implement hint functionality
 
 #### Sprint 2.2: Timed Mode
-- [ ] Implement question timer in `QuizBloc`
-- [ ] Implement total timer in `QuizBloc`
-- [ ] Create `TimerDisplay` widget
-- [ ] Handle time expiration
-- [ ] Test timed mode
+- [x] Implement question timer in `QuizBloc`
+- [x] Implement total timer in `QuizBloc`
+- [x] Create `TimerDisplay` widget
+- [x] Handle time expiration
+- [x] Add app lifecycle handling (pause/resume)
+- [x] Test timed mode
+
+**Status:** ✅ COMPLETED (2025-12-22)
+
+**Completed Tasks:**
+- **Timer State Management**: Added timer fields to QuizState
+  - `questionTimeRemaining` - Per-question countdown timer
+  - `totalTimeRemaining` - Total quiz time limit
+  - Both fields added to QuestionState and AnswerFeedbackState
+  - Location: `packages/quiz_engine_core/lib/src/business_logic/quiz_state/quiz_state.dart`
+- **QuizBloc Timer Logic**: Complete timer implementation
+  - Question timer starts when new question appears, counts down every second
+  - Total timer tracks overall quiz time limit
+  - Timer cancellation when answer is submitted
+  - Time expiration handling - treats timeouts as incorrect answers
+  - Timer pause/resume support for app lifecycle changes
+  - Proper cleanup in dispose method
+  - Location: `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart`
+- **Answer Timeout Tracking**: Enhanced Answer model
+  - Added `isTimeout` field to distinguish timeout from user-submitted answers
+  - Timeout answers always counted as incorrect (prevents bug where correct answer shown on timeout)
+  - Location: `packages/quiz_engine_core/lib/src/model/answer.dart`
+- **TimerDisplay Widget**: Responsive timer UI component
+  - Shows remaining time in "30s" format (< 60s) or "1:30" format (≥ 60s)
+  - Color-coded: blue (normal) → orange (warning < 10s) → red (critical < 5s)
+  - Rounded border design with timer icon
+  - Supports both question and total timers
+  - Different icon for total timer (hourglass)
+  - Configurable thresholds and colors
+  - Location: `packages/quiz_engine/lib/src/widgets/timer_display.dart`
+- **App Lifecycle Handling**: Pause/resume timers when app goes to background
+  - `QuizLifecycleHandler` widget observes app lifecycle changes
+  - Automatically pauses timers when app becomes inactive/paused (calls, notifications, app switch)
+  - Resumes timers when app returns to foreground
+  - Gets QuizBloc from BlocProvider automatically
+  - Integrated into QuizWidget for all quizzes
+  - Location: `packages/quiz_engine/lib/src/widgets/quiz_lifecycle_handler.dart`
+- **QuizAppBarActions Integration**: Shows both timers when configured
+  - Displays question timer with clock icon
+  - Displays total timer with hourglass icon
+  - Side-by-side layout with proper spacing
+  - Auto-hides when no timers active
+  - Location: `packages/quiz_engine/lib/src/widgets/quiz_app_bar_actions.dart`
+- **Tests**: All 59 tests passing
+
+**Implementation Details:**
+- **Timer Initialization**: In `performInitialLoad()`, reads `TimedMode.totalTimeLimit` and starts total timer if configured
+- **Question Timer**: Starts in `_pickQuestion()` for each new question, reads `TimedMode.timePerQuestion` or `SurvivalMode.timePerQuestion`
+- **State Updates**: Emits new QuizState every second with updated timer values for reactive UI
+- **Timeout Handling**: When question timer expires:
+  - Creates Answer with `isTimeout: true`
+  - Deducts life if in Lives/Survival mode
+  - Auto-advances to next question
+  - Timeout answers counted as incorrect
+- **Total Timer Expiration**: Ends quiz immediately when total time runs out
+- **Lifecycle Handling**:
+  - `pauseTimers()` - Cancels both timers but preserves remaining time values
+  - `resumeTimers()` - Restarts timers from preserved values
+  - Handles: incoming calls, app switching, screen lock, notifications
+- **UI Integration**: QuizWidget automatically wraps quiz screen with QuizLifecycleHandler
+
+**Files Modified:**
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_state/quiz_state.dart` - Added timer fields to states
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Timer logic and lifecycle methods
+- `packages/quiz_engine_core/lib/src/model/answer.dart` - Added isTimeout field
+- `packages/quiz_engine/lib/src/widgets/timer_display.dart` - NEW: Timer display widget
+- `packages/quiz_engine/lib/src/widgets/quiz_lifecycle_handler.dart` - NEW: Lifecycle observer
+- `packages/quiz_engine/lib/src/widgets/quiz_app_bar_actions.dart` - Dual timer display support
+- `packages/quiz_engine/lib/src/quiz_widget.dart` - Lifecycle handler integration
+- `packages/quiz_engine/lib/quiz_engine.dart` - Export new widgets
+
+**Usage Example:**
+```dart
+// Timed mode with 10 seconds per question, 100 seconds total
+QuizConfig(
+  modeConfig: QuizModeConfig.timed(
+    timePerQuestion: 10,
+    totalTimeLimit: 100,
+  ),
+)
+
+// Result: Two timers shown in app bar
+// - Question timer: 10s, 9s, 8s... (clock icon)
+// - Total timer: 1:40, 1:39, 1:38... (hourglass icon)
+// Both pause when app goes to background
+```
+
+**Next:** Sprint 3.1 (Hints System) - Implement hint functionality
 
 #### Sprint 2.3: Endless Mode
 - [x] Implement infinite question picking
