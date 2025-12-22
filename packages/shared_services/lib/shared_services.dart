@@ -16,3 +16,7 @@ export 'src/audio/quiz_sound_effect.dart';
 
 // Haptic (Haptic feedback)
 export 'src/haptic/haptic_service.dart';
+
+// Settings (User preferences and configuration)
+export 'src/settings/quiz_settings.dart';
+export 'src/settings/settings_service.dart';

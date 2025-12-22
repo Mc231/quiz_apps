@@ -112,9 +112,10 @@ class QuizScreenState extends State<QuizScreen> {
 
     // Play sound effect
     if (config.playSounds) {
-      final sound = state.isCorrect
-          ? QuizSoundEffect.correctAnswer
-          : QuizSoundEffect.incorrectAnswer;
+      final sound =
+          state.isCorrect
+              ? QuizSoundEffect.correctAnswer
+              : QuizSoundEffect.incorrectAnswer;
       await _audioService.playSoundEffect(sound);
     }
 
@@ -179,9 +180,7 @@ class QuizScreenState extends State<QuizScreen> {
             ),
             body: Container(
               padding: getContainerPadding(context),
-              child: SafeArea(
-                child: _buildBody(state),
-              ),
+              child: SafeArea(child: _buildBody(state)),
             ),
           ),
         );

@@ -183,15 +183,9 @@ class HintsPanel extends StatelessWidget {
             decoration: BoxDecoration(
               color: isEnabled ? Colors.green : Colors.grey[400],
               shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.white,
-                width: 2,
-              ),
+              border: Border.all(color: Colors.white, width: 2),
             ),
-            constraints: const BoxConstraints(
-              minWidth: 20,
-              minHeight: 20,
-            ),
+            constraints: const BoxConstraints(minWidth: 20, minHeight: 20),
             child: Center(
               child: Text(
                 count.toString(),

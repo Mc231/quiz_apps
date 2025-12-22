@@ -5,9 +5,24 @@ import 'package:flags_quiz/ui/flags_quiz_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_services/shared_services.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  late SettingsService settingsService;
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    settingsService = SettingsService();
+    await settingsService.initialize();
+  });
+
+  tearDown(() {
+    settingsService.dispose();
+  });
+
   group('Success Flow Test', () {
     Future<Null> verifySuccessFlow(
         Continent continent, WidgetTester tester) async {
@@ -97,8 +112,11 @@ void main() {
     testWidgets('Test all modes in all localizations',
         (WidgetTester tester) async {
       for (Locale locale in AppLocalizations.supportedLocales) {
-        final widget =
-            FlagsQuizApp(homeWidget: ContinentsScreen(), locale: locale);
+        final widget = FlagsQuizApp(
+          homeWidget: ContinentsScreen(settingsService: settingsService),
+          settingsService: settingsService,
+          locale: locale,
+        );
         await tester.pumpWidget(widget);
         for (var continent in Continent.values) {
           await verifySuccessFlow(continent, tester);

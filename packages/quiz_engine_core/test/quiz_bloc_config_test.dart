@@ -229,4 +229,141 @@ void main() {
       },
     );
   });
+
+  group('ConfigManager Settings Integration', () {
+    test('ConfigManager without settings returns default config', () async {
+      const defaultConfig = QuizConfig(quizId: 'test_quiz');
+      const configManager = ConfigManager(defaultConfig: defaultConfig);
+
+      final config = await configManager.getConfig(source: const DefaultSource());
+
+      expect(config.quizId, 'test_quiz');
+      expect(config.uiBehaviorConfig.playSounds, true);
+      expect(config.uiBehaviorConfig.hapticFeedback, true);
+      expect(config.uiBehaviorConfig.showAnswerFeedback, true);
+    });
+
+    test('ConfigManager with settings applies settings to config', () async {
+      const defaultConfig = QuizConfig(quizId: 'test_quiz');
+      final configManager = ConfigManager(
+        defaultConfig: defaultConfig,
+        getSettings: () => {
+          'soundEnabled': false,
+          'hapticEnabled': false,
+          'showAnswerFeedback': false,
+        },
+      );
+
+      final config = await configManager.getConfig(source: const DefaultSource());
+
+      expect(config.quizId, 'test_quiz');
+      expect(config.uiBehaviorConfig.playSounds, false);
+      expect(config.uiBehaviorConfig.hapticFeedback, false);
+      expect(config.uiBehaviorConfig.showAnswerFeedback, false);
+    });
+
+    test('ConfigManager preserves non-settings UI behavior fields', () async {
+      const defaultConfig = QuizConfig(
+        quizId: 'test_quiz',
+        uiBehaviorConfig: UIBehaviorConfig(
+          answerFeedbackDuration: 2500,
+          showExitConfirmation: false,
+        ),
+      );
+      final configManager = ConfigManager(
+        defaultConfig: defaultConfig,
+        getSettings: () => {
+          'soundEnabled': false,
+          'hapticEnabled': true,
+          'showAnswerFeedback': false,
+        },
+      );
+
+      final config = await configManager.getConfig(source: const DefaultSource());
+
+      // Settings applied
+      expect(config.uiBehaviorConfig.playSounds, false);
+      expect(config.uiBehaviorConfig.hapticFeedback, true);
+      expect(config.uiBehaviorConfig.showAnswerFeedback, false);
+
+      // Preserved from defaultConfig
+      expect(config.uiBehaviorConfig.answerFeedbackDuration, 2500);
+      expect(config.uiBehaviorConfig.showExitConfirmation, false);
+    });
+
+    test('ConfigManager preserves all non-UI config fields', () async {
+      final defaultConfig = QuizConfig(
+        quizId: 'test_quiz',
+        modeConfig: QuizModeConfig.timed(timePerQuestion: 15),
+        hintConfig: HintConfig.noHints(),
+        scoringStrategy: const TimedScoring(
+          basePointsPerQuestion: 100,
+          bonusPerSecondSaved: 5,
+        ),
+      );
+      final configManager = ConfigManager(
+        defaultConfig: defaultConfig,
+        getSettings: () => {
+          'soundEnabled': false,
+          'hapticEnabled': false,
+          'showAnswerFeedback': true,
+        },
+      );
+
+      final config = await configManager.getConfig(source: const DefaultSource());
+
+      // Mode config preserved
+      expect(config.modeConfig, isA<TimedMode>());
+      expect((config.modeConfig as TimedMode).timePerQuestion, 15);
+
+      // Hint config preserved
+      expect(config.hintConfig.initialHints.isEmpty, true);
+
+      // Scoring strategy preserved
+      expect(config.scoringStrategy, isA<TimedScoring>());
+      expect((config.scoringStrategy as TimedScoring).basePointsPerQuestion, 100);
+    });
+
+    test('ConfigManager handles missing settings gracefully', () async {
+      const defaultConfig = QuizConfig(quizId: 'test_quiz');
+      final configManager = ConfigManager(
+        defaultConfig: defaultConfig,
+        getSettings: () => {
+          'soundEnabled': false,
+          // Missing hapticEnabled and showAnswerFeedback
+        },
+      );
+
+      final config = await configManager.getConfig(source: const DefaultSource());
+
+      expect(config.uiBehaviorConfig.playSounds, false);
+      expect(config.uiBehaviorConfig.hapticFeedback, true); // Default
+      expect(config.uiBehaviorConfig.showAnswerFeedback, true); // Default
+    });
+
+    test('ConfigManager settings reflect real-time changes', () async {
+      const defaultConfig = QuizConfig(quizId: 'test_quiz');
+      var soundEnabled = true;
+
+      final configManager = ConfigManager(
+        defaultConfig: defaultConfig,
+        getSettings: () => {
+          'soundEnabled': soundEnabled,
+          'hapticEnabled': true,
+          'showAnswerFeedback': true,
+        },
+      );
+
+      // First call
+      var config = await configManager.getConfig(source: const DefaultSource());
+      expect(config.uiBehaviorConfig.playSounds, true);
+
+      // Change setting
+      soundEnabled = false;
+
+      // Second call reflects change
+      config = await configManager.getConfig(source: const DefaultSource());
+      expect(config.uiBehaviorConfig.playSounds, false);
+    });
+  });
 }

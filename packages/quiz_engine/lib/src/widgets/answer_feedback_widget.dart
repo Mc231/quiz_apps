@@ -130,7 +130,10 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
             : widget.themeData.incorrectAnswerColor;
 
     final icon = isCorrect ? Icons.check_circle : Icons.cancel;
-    final message = isCorrect ? widget.texts.correctFeedback : widget.texts.incorrectFeedback;
+    final message =
+        isCorrect
+            ? widget.texts.correctFeedback
+            : widget.texts.incorrectFeedback;
 
     return Card(
       elevation: 8,

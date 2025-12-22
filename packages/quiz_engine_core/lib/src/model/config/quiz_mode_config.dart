@@ -7,11 +7,11 @@ sealed class QuizModeConfig extends BaseConfig {
 
   /// Returns the number of lives for this mode, or null if lives are not tracked
   int? get lives => switch (this) {
-        LivesMode(:final lives) => lives,
-        SurvivalMode(:final lives) => lives,
-        EndlessMode() => 1, // One mistake ends the game
-        _ => null, // No lives tracking
-      };
+    LivesMode(:final lives) => lives,
+    SurvivalMode(:final lives) => lives,
+    EndlessMode() => 1, // One mistake ends the game
+    _ => null, // No lives tracking
+  };
 
   /// Factory method for standard mode: no time limits, no lives
   factory QuizModeConfig.standard({bool allowSkip = false}) {
@@ -32,10 +32,7 @@ sealed class QuizModeConfig extends BaseConfig {
   }
 
   /// Factory method for lives mode: lose lives on mistakes
-  factory QuizModeConfig.lives({
-    int lives = 3,
-    bool allowSkip = false,
-  }) {
+  factory QuizModeConfig.lives({int lives = 3, bool allowSkip = false}) {
     return LivesMode(lives: lives, allowSkip: allowSkip);
   }
 
@@ -84,23 +81,15 @@ class StandardMode extends QuizModeConfig {
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      'type': 'standard',
-      'version': version,
-      'allowSkip': allowSkip,
-    };
+    return {'type': 'standard', 'version': version, 'allowSkip': allowSkip};
   }
 
   factory StandardMode.fromMap(Map<String, dynamic> map) {
-    return StandardMode(
-      allowSkip: map['allowSkip'] as bool? ?? false,
-    );
+    return StandardMode(allowSkip: map['allowSkip'] as bool? ?? false);
   }
 
   StandardMode copyWith({bool? allowSkip}) {
-    return StandardMode(
-      allowSkip: allowSkip ?? this.allowSkip,
-    );
+    return StandardMode(allowSkip: allowSkip ?? this.allowSkip);
   }
 }
 
@@ -160,10 +149,7 @@ class LivesMode extends QuizModeConfig {
 
   final bool allowSkip;
 
-  const LivesMode({
-    this.lives = 3,
-    this.allowSkip = false,
-  });
+  const LivesMode({this.lives = 3, this.allowSkip = false});
 
   @override
   Map<String, dynamic> toMap() {
@@ -196,10 +182,7 @@ class EndlessMode extends QuizModeConfig {
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      'type': 'endless',
-      'version': version,
-    };
+    return {'type': 'endless', 'version': version};
   }
 
   factory EndlessMode.fromMap(Map<String, dynamic> map) {

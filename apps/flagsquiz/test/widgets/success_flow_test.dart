@@ -3,8 +3,22 @@ import 'package:flags_quiz/ui/continents/continents_screen.dart';
 import 'package:flags_quiz/ui/flags_quiz_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_services/shared_services.dart';
 
 void main() {
+  late SettingsService settingsService;
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues({});
+    settingsService = SettingsService();
+    await settingsService.initialize();
+  });
+
+  tearDown(() {
+    settingsService.dispose();
+  });
+
   group('Success Flow Test', () {
     Future<Null> verifySuccessFlow(
         Continent continent, WidgetTester tester) async {
@@ -88,7 +102,8 @@ void main() {
 
     testWidgets('Test all app flow', (WidgetTester tester) async {
       final widget = FlagsQuizApp(
-        homeWidget: ContinentsScreen(),
+        homeWidget: ContinentsScreen(settingsService: settingsService),
+        settingsService: settingsService,
       );
       await tester.pumpWidget(widget);
       for (var continent in Continent.values) {

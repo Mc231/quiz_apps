@@ -1074,5 +1074,154 @@
   "videoLoadError": "Failed to load video",
   "@videoLoadError": {
     "description": "Error message shown when video fails to load"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings screen title"
+  },
+  "audioAndHaptics": "Audio & Haptics",
+  "@audioAndHaptics": {
+    "description": "Section header for audio and haptic settings"
+  },
+  "soundEffects": "Sound Effects",
+  "@soundEffects": {
+    "description": "Sound effects toggle title"
+  },
+  "soundEffectsDescription": "Play sounds for answers and interactions",
+  "@soundEffectsDescription": {
+    "description": "Sound effects toggle subtitle"
+  },
+  "backgroundMusic": "Background Music",
+  "@backgroundMusic": {
+    "description": "Background music toggle title"
+  },
+  "backgroundMusicDescription": "Play background music during quiz",
+  "@backgroundMusicDescription": {
+    "description": "Background music toggle subtitle"
+  },
+  "hapticFeedback": "Haptic Feedback",
+  "@hapticFeedback": {
+    "description": "Haptic feedback toggle title"
+  },
+  "hapticFeedbackDescription": "Vibrate on button presses and answers",
+  "@hapticFeedbackDescription": {
+    "description": "Haptic feedback toggle subtitle"
+  },
+  "quizBehavior": "Quiz Behavior",
+  "@quizBehavior": {
+    "description": "Section header for quiz behavior settings"
+  },
+  "showAnswerFeedback": "Show Answer Feedback",
+  "@showAnswerFeedback": {
+    "description": "Answer feedback toggle title"
+  },
+  "showAnswerFeedbackDescription": "Display animations when answering",
+  "@showAnswerFeedbackDescription": {
+    "description": "Answer feedback toggle subtitle"
+  },
+  "appearance": "Appearance",
+  "@appearance": {
+    "description": "Section header for appearance settings"
+  },
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme setting title"
+  },
+  "themeLight": "Light",
+  "@themeLight": {
+    "description": "Light theme option"
+  },
+  "themeDark": "Dark",
+  "@themeDark": {
+    "description": "Dark theme option"
+  },
+  "themeSystem": "System default",
+  "@themeSystem": {
+    "description": "System theme option"
+  },
+  "selectTheme": "Select Theme",
+  "@selectTheme": {
+    "description": "Theme selection dialog title"
+  },
+  "about": "About",
+  "@about": {
+    "description": "About section header and dialog title"
+  },
+  "version": "Version",
+  "@version": {
+    "description": "Version display title"
+  },
+  "aboutThisApp": "About This App",
+  "@aboutThisApp": {
+    "description": "About this app menu item"
+  },
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy policy menu item"
+  },
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Terms of service menu item"
+  },
+  "openSourceLicenses": "Open Source Licenses",
+  "@openSourceLicenses": {
+    "description": "Open source licenses menu item"
+  },
+  "advanced": "Advanced",
+  "@advanced": {
+    "description": "Advanced section header"
+  },
+  "resetToDefaults": "Reset to Defaults",
+  "@resetToDefaults": {
+    "description": "Reset to defaults menu item"
+  },
+  "resetToDefaultsDescription": "Restore all settings to default values",
+  "@resetToDefaultsDescription": {
+    "description": "Reset to defaults subtitle"
+  },
+  "resetSettings": "Reset Settings",
+  "@resetSettings": {
+    "description": "Reset settings dialog title"
+  },
+  "resetSettingsMessage": "Are you sure you want to reset all settings to their default values? This cannot be undone.",
+  "@resetSettingsMessage": {
+    "description": "Reset settings dialog message"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button text"
+  },
+  "reset": "Reset",
+  "@reset": {
+    "description": "Reset button text"
+  },
+  "close": "Close",
+  "@close": {
+    "description": "Close button text"
+  },
+  "settingsResetToDefaults": "Settings reset to defaults",
+  "@settingsResetToDefaults": {
+    "description": "Snackbar message after resetting settings"
+  },
+  "couldNotOpenUrl": "Could not open {url}",
+  "@couldNotOpenUrl": {
+    "description": "Error message when URL cannot be opened",
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "credits": "Credits",
+  "@credits": {
+    "description": "Credits section title in about dialog"
+  },
+  "attributions": "Attributions",
+  "@attributions": {
+    "description": "Attributions section title in about dialog"
+  },
+  "build": "Build",
+  "@build": {
+    "description": "Build number label"
   }
 }

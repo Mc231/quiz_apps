@@ -58,7 +58,8 @@ class OptionButton extends StatelessWidget {
             ),
           ),
           backgroundColor: isDisabled ? Colors.grey[300] : theme.buttonColor,
-          foregroundColor: isDisabled ? Colors.grey[600] : theme.buttonTextColor,
+          foregroundColor:
+              isDisabled ? Colors.grey[600] : theme.buttonTextColor,
           padding: theme.buttonPadding,
           disabledBackgroundColor: Colors.grey[300],
           disabledForegroundColor: Colors.grey[600],

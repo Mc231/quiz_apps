@@ -1,6 +1,7 @@
 import 'package:flags_quiz/extensions/app_localizations_extension.dart';
 import 'package:flags_quiz/l10n/app_localizations.dart';
 import 'package:flags_quiz/models/continent.dart';
+import 'package:flags_quiz/ui/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flags_quiz/extensions/continent_additions.dart';
 import 'package:quiz_engine/quiz_engine.dart';
@@ -26,12 +27,30 @@ class ContinentsScreen extends StatelessWidget {
   /// A key used for identifying the main screen title widget.
   static const mainScreenTitleKey = Key("main_screen_title");
 
+  /// Settings service for managing app preferences
+  final SettingsService settingsService;
+
+  const ContinentsScreen({super.key, required this.settingsService});
+
   @override
   Widget build(BuildContext context) {
     final title = AppLocalizations.of(context)?.selectRegion ?? "";
     return Scaffold(
       appBar: AppBar(
         title: Text(title, key: mainScreenTitleKey),
+        actions: [IconButton(
+          icon: const Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SettingsScreen(
+                  settingsService: settingsService,
+                ),
+              ),
+            );
+          },
+        )],
       ),
       body: Column(
         children: [
@@ -83,6 +102,23 @@ class ContinentsScreen extends StatelessWidget {
   /// [context] is the `BuildContext` used for navigation.
   void _handleItemClick(Continent continent, BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
+
+    // Create base config with quiz-specific settings
+    final baseConfig = QuizConfig(
+      quizId: 'flags_quiz',
+      hintConfig: HintConfig.noHints(),
+    );
+
+    // Create config manager that applies user settings
+    final configManager = ConfigManager(
+      defaultConfig: baseConfig,
+      getSettings: () => {
+        'soundEnabled': settingsService.currentSettings.soundEnabled,
+        'hapticEnabled': settingsService.currentSettings.hapticEnabled,
+        'showAnswerFeedback': settingsService.currentSettings.showAnswerFeedback,
+      },
+    );
+
     final quizEntry = QuizWidgetEntry(
         texts: QuizTexts(
           title: continent.localizedName(context) ?? "",
@@ -100,12 +136,7 @@ class ContinentsScreen extends StatelessWidget {
         ),
         dataProvider: () async =>
             loadCountriesForContinent(appLocalizations, continent),
-        defaultConfig: QuizConfig(
-            quizId: 'flags_quiz',
-            hintConfig: HintConfig(initialHints: {
-              HintType.fiftyFifty: 3, // 3 uses
-              HintType.skip: 2,
-            })));
+        configManager: configManager);
     Navigator.push(
         context,
         MaterialPageRoute(

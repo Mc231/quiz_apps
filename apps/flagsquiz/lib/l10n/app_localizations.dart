@@ -1827,6 +1827,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load video'**
   String get videoLoadError;
+
+  /// Settings screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// Section header for audio and haptic settings
+  ///
+  /// In en, this message translates to:
+  /// **'Audio & Haptics'**
+  String get audioAndHaptics;
+
+  /// Sound effects toggle title
+  ///
+  /// In en, this message translates to:
+  /// **'Sound Effects'**
+  String get soundEffects;
+
+  /// Sound effects toggle subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Play sounds for answers and interactions'**
+  String get soundEffectsDescription;
+
+  /// Background music toggle title
+  ///
+  /// In en, this message translates to:
+  /// **'Background Music'**
+  String get backgroundMusic;
+
+  /// Background music toggle subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Play background music during quiz'**
+  String get backgroundMusicDescription;
+
+  /// Haptic feedback toggle title
+  ///
+  /// In en, this message translates to:
+  /// **'Haptic Feedback'**
+  String get hapticFeedback;
+
+  /// Haptic feedback toggle subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Vibrate on button presses and answers'**
+  String get hapticFeedbackDescription;
+
+  /// Section header for quiz behavior settings
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Behavior'**
+  String get quizBehavior;
+
+  /// Answer feedback toggle title
+  ///
+  /// In en, this message translates to:
+  /// **'Show Answer Feedback'**
+  String get showAnswerFeedback;
+
+  /// Answer feedback toggle subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Display animations when answering'**
+  String get showAnswerFeedbackDescription;
+
+  /// Section header for appearance settings
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get appearance;
+
+  /// Theme setting title
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// Light theme option
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get themeLight;
+
+  /// Dark theme option
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get themeDark;
+
+  /// System theme option
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get themeSystem;
+
+  /// Theme selection dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Select Theme'**
+  String get selectTheme;
+
+  /// About section header and dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get about;
+
+  /// Version display title
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get version;
+
+  /// About this app menu item
+  ///
+  /// In en, this message translates to:
+  /// **'About This App'**
+  String get aboutThisApp;
+
+  /// Privacy policy menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// Terms of service menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// Open source licenses menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Open Source Licenses'**
+  String get openSourceLicenses;
+
+  /// Advanced section header
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get advanced;
+
+  /// Reset to defaults menu item
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to Defaults'**
+  String get resetToDefaults;
+
+  /// Reset to defaults subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Restore all settings to default values'**
+  String get resetToDefaultsDescription;
+
+  /// Reset settings dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Settings'**
+  String get resetSettings;
+
+  /// Reset settings dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to reset all settings to their default values? This cannot be undone.'**
+  String get resetSettingsMessage;
+
+  /// Cancel button text
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Reset button text
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// Close button text
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// Snackbar message after resetting settings
+  ///
+  /// In en, this message translates to:
+  /// **'Settings reset to defaults'**
+  String get settingsResetToDefaults;
+
+  /// Error message when URL cannot be opened
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open {url}'**
+  String couldNotOpenUrl(String url);
+
+  /// Credits section title in about dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Credits'**
+  String get credits;
+
+  /// Attributions section title in about dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Attributions'**
+  String get attributions;
+
+  /// Build number label
+  ///
+  /// In en, this message translates to:
+  /// **'Build'**
+  String get build;
 }
 
 class _AppLocalizationsDelegate

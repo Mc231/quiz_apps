@@ -1,0 +1,159 @@
+import 'package:flutter/material.dart';
+
+/// Theme mode options for the quiz app
+enum AppThemeMode {
+  /// Use system theme setting
+  system,
+
+  /// Always use light theme
+  light,
+
+  /// Always use dark theme
+  dark,
+}
+
+/// Immutable model holding all quiz application settings
+///
+/// This model represents all user preferences that can be configured
+/// in the settings screen. It's designed to be immutable, with copyWith
+/// for creating modified copies.
+///
+/// Example:
+/// ```dart
+/// final settings = QuizSettings.defaultSettings();
+/// final mutedSettings = settings.copyWith(soundEnabled: false);
+/// ```
+class QuizSettings {
+  /// Whether sound effects are enabled
+  final bool soundEnabled;
+
+  /// Whether background music is enabled (if implemented)
+  final bool musicEnabled;
+
+  /// Whether haptic feedback is enabled
+  final bool hapticEnabled;
+
+  /// Whether answer feedback animation/display is shown
+  final bool showAnswerFeedback;
+
+  /// Selected theme mode (light/dark/system)
+  final AppThemeMode themeMode;
+
+  /// Creates a new QuizSettings instance
+  const QuizSettings({
+    required this.soundEnabled,
+    required this.musicEnabled,
+    required this.hapticEnabled,
+    required this.showAnswerFeedback,
+    required this.themeMode,
+  });
+
+  /// Returns default settings with all features enabled
+  factory QuizSettings.defaultSettings() {
+    return const QuizSettings(
+      soundEnabled: true,
+      musicEnabled: true,
+      hapticEnabled: true,
+      showAnswerFeedback: true,
+      themeMode: AppThemeMode.system,
+    );
+  }
+
+  /// Creates a copy of this settings with the specified fields replaced
+  QuizSettings copyWith({
+    bool? soundEnabled,
+    bool? musicEnabled,
+    bool? hapticEnabled,
+    bool? showAnswerFeedback,
+    AppThemeMode? themeMode,
+  }) {
+    return QuizSettings(
+      soundEnabled: soundEnabled ?? this.soundEnabled,
+      musicEnabled: musicEnabled ?? this.musicEnabled,
+      hapticEnabled: hapticEnabled ?? this.hapticEnabled,
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
+      themeMode: themeMode ?? this.themeMode,
+    );
+  }
+
+  /// Converts settings to a Map for storage
+  Map<String, dynamic> toJson() {
+    return {
+      'soundEnabled': soundEnabled,
+      'musicEnabled': musicEnabled,
+      'hapticEnabled': hapticEnabled,
+      'showAnswerFeedback': showAnswerFeedback,
+      'themeMode': themeMode.name,
+    };
+  }
+
+  /// Creates settings from a Map (from storage)
+  factory QuizSettings.fromJson(Map<String, dynamic> json) {
+    return QuizSettings(
+      soundEnabled: json['soundEnabled'] as bool? ?? true,
+      musicEnabled: json['musicEnabled'] as bool? ?? true,
+      hapticEnabled: json['hapticEnabled'] as bool? ?? true,
+      showAnswerFeedback: json['showAnswerFeedback'] as bool? ?? true,
+      themeMode: _parseThemeMode(json['themeMode'] as String?),
+    );
+  }
+
+  /// Parses theme mode string to enum
+  static AppThemeMode _parseThemeMode(String? value) {
+    switch (value) {
+      case 'light':
+        return AppThemeMode.light;
+      case 'dark':
+        return AppThemeMode.dark;
+      case 'system':
+      default:
+        return AppThemeMode.system;
+    }
+  }
+
+  /// Converts AppThemeMode to Flutter ThemeMode
+  ThemeMode get flutterThemeMode {
+    switch (themeMode) {
+      case AppThemeMode.light:
+        return ThemeMode.light;
+      case AppThemeMode.dark:
+        return ThemeMode.dark;
+      case AppThemeMode.system:
+        return ThemeMode.system;
+    }
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is QuizSettings &&
+        other.soundEnabled == soundEnabled &&
+        other.musicEnabled == musicEnabled &&
+        other.hapticEnabled == hapticEnabled &&
+        other.showAnswerFeedback == showAnswerFeedback &&
+        other.themeMode == themeMode;
+  }
+
+  @override
+  int get hashCode {
+    return Object.hash(
+      soundEnabled,
+      musicEnabled,
+      hapticEnabled,
+      showAnswerFeedback,
+      themeMode,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'QuizSettings('
+        'soundEnabled: $soundEnabled, '
+        'musicEnabled: $musicEnabled, '
+        'hapticEnabled: $hapticEnabled, '
+        'showAnswerFeedback: $showAnswerFeedback, '
+        'themeMode: $themeMode'
+        ')';
+  }
+}

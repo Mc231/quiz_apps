@@ -8,7 +8,7 @@ void main() {
   test('QuizWidgetEntry initializes correctly', () {
     const defaultConfig = QuizConfig(quizId: 'science_quiz');
 
-    final quizEntry = QuizWidgetEntry(
+    final quizEntry = QuizWidgetEntry.withDefaultConfig(
       texts: testQuizTexts,
       dataProvider: () async => [],
       defaultConfig: defaultConfig,

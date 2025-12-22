@@ -12,6 +12,8 @@ dependencies:
     sdk: flutter
   http: ^1.2.0
   audioplayers: ^6.1.0
+  shared_preferences: ^2.3.3
+  package_info_plus: ^8.1.2
   quiz_engine_core:
     path: ../quiz_engine_core
 

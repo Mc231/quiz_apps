@@ -50,5 +50,6 @@ class Answer {
   /// in the [question]. It returns `true` if the selected option matches
   /// the correct answer and the answer was not caused by a timeout or skip.
   /// Timeouts and skips are always counted as incorrect, regardless of the selected option.
-  bool get isCorrect => !isTimeout && !isSkipped && question.answer == selectedOption;
+  bool get isCorrect =>
+      !isTimeout && !isSkipped && question.answer == selectedOption;
 }

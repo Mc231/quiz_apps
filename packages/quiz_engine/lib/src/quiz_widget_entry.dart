@@ -68,7 +68,7 @@ class QuizTexts {
 /// This class organizes all necessary data and configuration for a quiz:
 /// - UI texts (title, game over message)
 /// - Data provider function
-/// - Quiz configuration (auto-constructs ConfigManager)
+/// - Quiz configuration (via ConfigManager or defaultConfig)
 /// - Optional theme customization
 class QuizWidgetEntry {
   /// Text strings for the quiz UI.
@@ -83,13 +83,29 @@ class QuizWidgetEntry {
   /// Theme data for quiz UI customization.
   final QuizThemeData themeData;
 
-  /// Creates a `QuizWidgetEntry` with the specified configuration.
+  /// Creates a `QuizWidgetEntry` with a ConfigManager.
   ///
   /// [texts] - Text strings for quiz UI
   /// [dataProvider] - Function to fetch quiz data
-  /// [defaultConfig] - Default quiz configuration (used to construct ConfigManager)
+  /// [configManager] - Configuration manager with settings integration
   /// [themeData] - Theme customization (defaults to QuizThemeData())
   QuizWidgetEntry({
+    required this.texts,
+    required this.dataProvider,
+    required this.configManager,
+    this.themeData = const QuizThemeData(),
+  });
+
+  /// Creates a `QuizWidgetEntry` with a default configuration.
+  ///
+  /// This is a convenience constructor that creates a ConfigManager
+  /// without settings integration.
+  ///
+  /// [texts] - Text strings for quiz UI
+  /// [dataProvider] - Function to fetch quiz data
+  /// [defaultConfig] - Default quiz configuration
+  /// [themeData] - Theme customization (defaults to QuizThemeData())
+  QuizWidgetEntry.withDefaultConfig({
     required this.texts,
     required this.dataProvider,
     required QuizConfig defaultConfig,

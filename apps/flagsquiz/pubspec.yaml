@@ -30,6 +30,8 @@ dependencies:
   async: ^2.13.0
   path_provider: ^2.1.5
   responsive_builder: ^0.7.0
+  url_launcher: ^6.3.1
+  package_info_plus: ^8.1.2
   quiz_engine:
     path: ../../packages/quiz_engine
   quiz_engine_core:
@@ -51,6 +53,7 @@ dev_dependencies:
     sdk: flutter
   lints: ^6.0.0
   coverage: ^1.6.0
+  shared_preferences: ^2.3.3
 
 flutter_icons:
   android: "launcher_icon"

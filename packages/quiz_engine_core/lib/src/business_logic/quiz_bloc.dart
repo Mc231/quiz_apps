@@ -428,9 +428,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _hintState.useHint(HintType.fiftyFifty);
 
     // Find all incorrect options
-    final incorrectOptions = currentQuestion.options
-        .where((option) => option != currentQuestion.answer)
-        .toList();
+    final incorrectOptions =
+        currentQuestion.options
+            .where((option) => option != currentQuestion.answer)
+            .toList();
 
     // If there are less than 2 incorrect options, can't use this hint
     if (incorrectOptions.length < 2) return;

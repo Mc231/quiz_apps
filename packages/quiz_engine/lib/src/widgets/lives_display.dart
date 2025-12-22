@@ -54,20 +54,17 @@ class LivesDisplay extends StatelessWidget {
 
     return Row(
       mainAxisSize: MainAxisSize.min,
-      children: List.generate(
-        totalLives!,
-        (index) {
-          final isAlive = index < remainingLives!;
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: Icon(
-              isAlive ? filledIcon : emptyIcon,
-              color: isAlive ? filledColor : emptyColor,
-              size: iconSize,
-            ),
-          );
-        },
-      ),
+      children: List.generate(totalLives!, (index) {
+        final isAlive = index < remainingLives!;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: Icon(
+            isAlive ? filledIcon : emptyIcon,
+            color: isAlive ? filledColor : emptyColor,
+            size: iconSize,
+          ),
+        );
+      }),
     );
   }
 }

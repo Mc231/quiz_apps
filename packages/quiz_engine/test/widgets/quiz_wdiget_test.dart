@@ -26,7 +26,7 @@ void main() {
     const defaultConfig = QuizConfig(quizId: 'test_quiz');
 
     // Create QuizWidgetEntry
-    final quizEntry = QuizWidgetEntry(
+    final quizEntry = QuizWidgetEntry.withDefaultConfig(
       texts: testQuizTexts,
       dataProvider: () => Future.value(mockQuestions),
       defaultConfig: defaultConfig,

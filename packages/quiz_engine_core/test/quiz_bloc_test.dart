@@ -242,28 +242,30 @@ void main() {
       expect(gameOverCalled, true);
     });
 
-    test('should continue infinitely with correct answers in endless mode',
-        () async {
-      // Initialize the quiz
-      await endlessBloc.performInitialLoad();
+    test(
+      'should continue infinitely with correct answers in endless mode',
+      () async {
+        // Initialize the quiz
+        await endlessBloc.performInitialLoad();
 
-      bool gameOverCalled = false;
-      endlessBloc.gameOverCallback = (result) {
-        gameOverCalled = true;
-      };
+        bool gameOverCalled = false;
+        endlessBloc.gameOverCallback = (result) {
+          gameOverCalled = true;
+        };
 
-      // Answer correctly many times (more than the initial question count)
-      final timesToAnswer = endlessItems.length * 3;
-      for (int i = 0; i < timesToAnswer; i++) {
-        final correctAnswer = endlessBloc.currentQuestion.answer;
-        await endlessBloc.processAnswer(correctAnswer);
+        // Answer correctly many times (more than the initial question count)
+        final timesToAnswer = endlessItems.length * 3;
+        for (int i = 0; i < timesToAnswer; i++) {
+          final correctAnswer = endlessBloc.currentQuestion.answer;
+          await endlessBloc.processAnswer(correctAnswer);
 
-        // Game should never be over when answering correctly
-        expect(gameOverCalled, false);
-      }
+          // Game should never be over when answering correctly
+          expect(gameOverCalled, false);
+        }
 
-      // Should still have a valid question after many rounds
-      expect(endlessBloc.currentQuestion, isNotNull);
-    });
+        // Should still have a valid question after many rounds
+        expect(endlessBloc.currentQuestion, isNotNull);
+      },
+    );
   });
 }

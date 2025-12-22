@@ -21,10 +21,7 @@ class QuizLifecycleHandler extends StatefulWidget {
   /// The child widget (typically the quiz screen)
   final Widget child;
 
-  const QuizLifecycleHandler({
-    super.key,
-    required this.child,
-  });
+  const QuizLifecycleHandler({super.key, required this.child});
 
   @override
   State<QuizLifecycleHandler> createState() => _QuizLifecycleHandlerState();

@@ -815,4 +815,119 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get videoLoadError => 'Failed to load video';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get audioAndHaptics => 'Audio & Haptics';
+
+  @override
+  String get soundEffects => 'Sound Effects';
+
+  @override
+  String get soundEffectsDescription =>
+      'Play sounds for answers and interactions';
+
+  @override
+  String get backgroundMusic => 'Background Music';
+
+  @override
+  String get backgroundMusicDescription => 'Play background music during quiz';
+
+  @override
+  String get hapticFeedback => 'Haptic Feedback';
+
+  @override
+  String get hapticFeedbackDescription =>
+      'Vibrate on button presses and answers';
+
+  @override
+  String get quizBehavior => 'Quiz Behavior';
+
+  @override
+  String get showAnswerFeedback => 'Show Answer Feedback';
+
+  @override
+  String get showAnswerFeedbackDescription =>
+      'Display animations when answering';
+
+  @override
+  String get appearance => 'Appearance';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get themeLight => 'Light';
+
+  @override
+  String get themeDark => 'Dark';
+
+  @override
+  String get themeSystem => 'System default';
+
+  @override
+  String get selectTheme => 'Select Theme';
+
+  @override
+  String get about => 'About';
+
+  @override
+  String get version => 'Version';
+
+  @override
+  String get aboutThisApp => 'About This App';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get openSourceLicenses => 'Open Source Licenses';
+
+  @override
+  String get advanced => 'Advanced';
+
+  @override
+  String get resetToDefaults => 'Reset to Defaults';
+
+  @override
+  String get resetToDefaultsDescription =>
+      'Restore all settings to default values';
+
+  @override
+  String get resetSettings => 'Reset Settings';
+
+  @override
+  String get resetSettingsMessage =>
+      'Are you sure you want to reset all settings to their default values? This cannot be undone.';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get settingsResetToDefaults => 'Settings reset to defaults';
+
+  @override
+  String couldNotOpenUrl(String url) {
+    return 'Could not open $url';
+  }
+
+  @override
+  String get credits => 'Credits';
+
+  @override
+  String get attributions => 'Attributions';
+
+  @override
+  String get build => 'Build';
 }

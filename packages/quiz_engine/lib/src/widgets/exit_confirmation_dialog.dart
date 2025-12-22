@@ -36,18 +36,14 @@ class ExitConfirmationDialog extends StatelessWidget {
             // Return false - don't exit
             Navigator.of(context).pop(false);
           },
-          child: Text(
-            cancelButtonText ?? 'No',
-          ),
+          child: Text(cancelButtonText ?? 'No'),
         ),
         TextButton(
           onPressed: () {
             // Return true - exit
             Navigator.of(context).pop(true);
           },
-          child: Text(
-            confirmButtonText ?? 'Yes',
-          ),
+          child: Text(confirmButtonText ?? 'Yes'),
         ),
       ],
     );
@@ -69,7 +65,9 @@ class ExitConfirmationDialog extends StatelessWidget {
       builder: (BuildContext context) {
         return ExitConfirmationDialog(
           title: title ?? 'Exit Quiz?',
-          message: message ?? 'Are you sure you want to exit? Your progress will be lost.',
+          message:
+              message ??
+              'Are you sure you want to exit? Your progress will be lost.',
           confirmButtonText: confirmButtonText,
           cancelButtonText: cancelButtonText,
         );

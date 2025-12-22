@@ -5,7 +5,8 @@ const testQuizTexts = QuizTexts(
   title: 'Test Quiz',
   gameOverText: 'Game Over',
   exitDialogTitle: 'Exit Quiz?',
-  exitDialogMessage: 'Are you sure you want to exit? Your progress will be lost.',
+  exitDialogMessage:
+      'Are you sure you want to exit? Your progress will be lost.',
   exitDialogConfirm: 'Yes',
   exitDialogCancel: 'No',
   correctFeedback: 'Correct!',

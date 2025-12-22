@@ -1,6 +1,7 @@
 import 'package:flags_quiz/ui/continents/continents_screen.dart';
 import 'package:flags_quiz/ui/flags_quiz_app.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 /// The entry point of the Flags Quiz application.
 ///
@@ -16,4 +17,17 @@ import 'package:flutter/material.dart';
 /// To start the application, this function calls `runApp`, passing an
 /// instance of `FlagsQuizApp`.
 ///
-void main() => runApp(FlagsQuizApp(homeWidget: ContinentsScreen()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize settings service
+  final settingsService = SettingsService();
+  await settingsService.initialize();
+
+  runApp(
+    FlagsQuizApp(
+      settingsService: settingsService,
+      homeWidget: ContinentsScreen(settingsService: settingsService),
+    ),
+  );
+}
