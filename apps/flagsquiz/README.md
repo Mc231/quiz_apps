@@ -5,6 +5,7 @@ Welcome to FlagsQuiz, an engaging app designed to test and enhance your knowledg
 - Cross-Platform: Built with Flutter, ensuring smooth performance across all devices and platforms.
 - Extensive Test Coverage: 100% unit test coverage, guaranteeing a reliable and bug-free experience.
 - Educational and Fun: Perfect for geography enthusiasts and learners who want to challenge themselves and improve their knowledge of world flags.
+- Endless Mode: Test your knowledge with unlimited questions - keep playing as long as you answer correctly! One wrong answer ends the game.
 
 ## App Links
 - https://play.google.com/store/apps/details?id=com.quasarius.flagsquiz
