@@ -2753,31 +2753,542 @@ final config = QuizConfig(
 - `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - ADD WillPopScope
 - App-level configuration - INTEGRATE SettingsService
 
-**Next:** Phase 5 (Results & Statistics) - Enhanced results screen with review functionality
+**Next:** Phase 5 (Data Persistence & Storage) - Implement sqflite database with Repository Pattern
 
 ---
 
-### Phase 5: Results & Statistics (Week 6)
+## Phase 5: Data Persistence & Storage (Week 5-6)
 
-#### Sprint 4.1: Results Screen
-- [ ] Create `QuizResults` model
-- [ ] Create enhanced `QuizResultsScreen`
+**Goal**: Implement comprehensive local storage using sqflite with Repository Pattern to persist quiz sessions, questions/answers, and advanced statistics for review and analytics.
+
+**Reference**: See [STORAGE_REQUIREMENTS.md](./STORAGE_REQUIREMENTS.md) for detailed schema and requirements.
+
+### Architecture
+
+**Repository Pattern Structure:**
+```
+packages/shared_services/lib/src/storage/
+├── database/
+│   ├── app_database.dart              # Main database class
+│   ├── database_config.dart           # Database configuration
+│   ├── migrations/                    # Schema migrations
+│   │   ├── migration_v1.dart         # Initial schema
+│   │   └── migration_v2.dart         # Future migrations
+│   └── tables/                        # SQL table definitions
+│       ├── quiz_sessions_table.dart
+│       ├── question_answers_table.dart
+│       ├── statistics_tables.dart
+│       └── settings_table.dart
+├── models/                            # Data models (PODOs)
+│   ├── quiz_session.dart
+│   ├── question_answer.dart
+│   ├── global_statistics.dart
+│   ├── quiz_type_statistics.dart
+│   ├── daily_statistics.dart         # ✅ For fast charts/trends
+│   └── user_settings_model.dart
+├── data_sources/                      # sqflite implementations
+│   ├── quiz_session_data_source.dart
+│   ├── question_answer_data_source.dart
+│   ├── statistics_data_source.dart
+│   └── settings_data_source.dart
+├── repositories/                      # Repository layer
+│   ├── quiz_session_repository.dart  # Interface + Implementation
+│   ├── statistics_repository.dart    # Interface + Implementation
+│   └── settings_repository.dart      # Interface + Implementation
+└── storage_service.dart               # Main service facade
+```
+
+### Sprint 5.1: Database Foundation & Core Models
+
+**Tasks:**
+- [ ] Add sqflite dependencies to shared_services
+- [ ] Create database configuration and setup
+- [ ] Define SQL schema for all tables (see STORAGE_REQUIREMENTS.md)
+- [ ] Implement database migrations system
+- [ ] Create data models (PODOs) for all entities
+- [ ] Write model serialization (toMap/fromMap)
+- [ ] Create database indexes for performance
+- [ ] Test database initialization and migrations
+
+**Core Models to Create:**
+```dart
+// QuizSession model
+class QuizSession {
+  final String id;
+  final String quizName;
+  final String quizId;
+  final String quizType;
+  final String? quizCategory;
+  final int totalQuestions;
+  final int totalAnswered;
+  final int totalCorrect;
+  final int totalFailed;
+  final int totalSkipped;
+  final double scorePercentage;
+  final DateTime startTime;
+  final DateTime? endTime;
+  final int? durationSeconds;
+  final CompletionStatus completionStatus;
+  final QuizMode mode;
+  final int? timeLimitSeconds;
+  final int hints5050Used;
+  final int hintsSkipUsed;
+
+  // Methods: toMap, fromMap, copyWith
+}
+
+enum CompletionStatus { completed, cancelled, timeout, failed }
+enum QuizMode { normal, timed, endless, survival }
+```
+
+**Database Tables:**
+- quiz_sessions (primary session tracking)
+- question_answers (detailed Q&A for review - stores all 4 options + order + explanations)
+- global_statistics (aggregate stats)
+- quiz_type_statistics (stats per quiz type/category)
+- daily_statistics (✅ pre-aggregated daily stats for fast charts/trends)
+- user_settings (app preferences)
+
+**Files to Create:**
+- `packages/shared_services/lib/src/storage/database/app_database.dart`
+- `packages/shared_services/lib/src/storage/database/database_config.dart`
+- `packages/shared_services/lib/src/storage/database/tables/quiz_sessions_table.dart`
+- `packages/shared_services/lib/src/storage/database/tables/question_answers_table.dart`
+- `packages/shared_services/lib/src/storage/database/tables/statistics_tables.dart`
+- `packages/shared_services/lib/src/storage/database/tables/daily_statistics_table.dart`
+- `packages/shared_services/lib/src/storage/database/tables/settings_table.dart`
+- `packages/shared_services/lib/src/storage/models/*.dart` (6 models)
+- `packages/shared_services/test/storage/database_test.dart`
+- `packages/shared_services/test/storage/models_test.dart`
+
+### Sprint 5.2: Data Sources Implementation
+
+**Tasks:**
+- [ ] Implement QuizSessionDataSource (CRUD operations)
+- [ ] Implement QuestionAnswerDataSource (CRUD + queries)
+- [ ] Implement StatisticsDataSource (aggregations & updates)
+- [ ] Implement SettingsDataSource (read/write preferences)
+- [ ] Add error handling and transactions
+- [ ] Implement batch operations for performance
+- [ ] Add query helpers and filters
+- [ ] Write unit tests for all data sources
+
+**QuizSessionDataSource Interface:**
+```dart
+abstract class QuizSessionDataSource {
+  // Create
+  Future<void> insertSession(QuizSession session);
+  Future<void> insertSessionWithAnswers({
+    required QuizSession session,
+    required List<QuestionAnswer> answers,
+  });
+
+  // Read
+  Future<QuizSession?> getSessionById(String id);
+  Future<List<QuizSession>> getAllSessions({
+    int? limit,
+    int? offset,
+    QuizSessionFilter? filter,
+  });
+  Future<List<QuizSession>> getRecentSessions(int limit);
+  Future<List<QuizSession>> getSessionsByType(String quizType);
+  Future<QuizSession?> getBestSession(String quizType);
+
+  // Update
+  Future<void> updateSession(QuizSession session);
+  Future<void> completeSession(String sessionId, CompletionStatus status);
+
+  // Delete
+  Future<void> deleteSession(String id);
+  Future<void> deleteAllSessions();
+  Future<void> deleteOldSessions(DateTime before);
+
+  // Statistics
+  Future<int> getTotalSessionsCount();
+  Future<int> getCompletedSessionsCount();
+  Future<double> getAverageScore();
+}
+```
+
+**Files to Create:**
+- `packages/shared_services/lib/src/storage/data_sources/quiz_session_data_source.dart`
+- `packages/shared_services/lib/src/storage/data_sources/question_answer_data_source.dart`
+- `packages/shared_services/lib/src/storage/data_sources/statistics_data_source.dart`
+- `packages/shared_services/lib/src/storage/data_sources/settings_data_source.dart`
+- `packages/shared_services/test/storage/data_sources/*_test.dart`
+
+### Sprint 5.3: Repository Layer Implementation
+
+**Tasks:**
+- [ ] Create repository interfaces (abstract classes)
+- [ ] Implement QuizSessionRepository
+- [ ] Implement StatisticsRepository with aggregations
+- [ ] Implement SettingsRepository (migrate from SharedPreferences)
+- [ ] Add caching layer for performance
+- [ ] Implement real-time statistics updates
+- [ ] Add Stream support for reactive updates
+- [ ] Write integration tests for repositories
+
+**Repository Pattern:**
+```dart
+// Interface
+abstract class QuizSessionRepository {
+  // Session Management
+  Future<String> saveSession(QuizSession session);
+  Future<void> saveSessionWithAnswers({
+    required QuizSession session,
+    required List<QuestionAnswer> answers,
+  });
+  Future<QuizSession?> getSession(String id);
+  Future<List<QuizSession>> getSessions({
+    QuizSessionFilter? filter,
+    int? limit,
+  });
+
+  // Session with Answers
+  Future<SessionWithAnswers?> getSessionWithAnswers(String sessionId);
+  Future<List<QuestionAnswer>> getWrongAnswers(String sessionId);
+
+  // Review & Replay
+  Future<List<QuizSession>> getSessionsForReview();
+  Future<Map<String, List<QuestionAnswer>>> getFrequentlyMissedQuestions(int limit);
+
+  // Cleanup
+  Future<void> deleteSession(String id);
+  Future<void> archiveOldSessions(int daysOld);
+
+  // Streams for reactive updates
+  Stream<List<QuizSession>> watchRecentSessions(int limit);
+  Stream<QuizSession?> watchSession(String id);
+}
+
+// Implementation
+class QuizSessionRepositoryImpl implements QuizSessionRepository {
+  final QuizSessionDataSource _sessionDataSource;
+  final QuestionAnswerDataSource _answerDataSource;
+  final StatisticsDataSource _statsDataSource;
+
+  QuizSessionRepositoryImpl({
+    required QuizSessionDataSource sessionDataSource,
+    required QuestionAnswerDataSource answerDataSource,
+    required StatisticsDataSource statsDataSource,
+  }) : _sessionDataSource = sessionDataSource,
+       _answerDataSource = answerDataSource,
+       _statsDataSource = statsDataSource;
+
+  @override
+  Future<String> saveSession(QuizSession session) async {
+    // Save session
+    await _sessionDataSource.insertSession(session);
+    // Update statistics
+    await _statsDataSource.updateStatistics(session);
+    return session.id;
+  }
+
+  // ... other methods
+}
+```
+
+**StatisticsRepository Features:**
+- Calculate aggregate statistics (total games, avg score, etc.)
+- Track daily/weekly/monthly trends
+- Identify improvement patterns
+- Generate reports and insights
+- Real-time statistics updates via Streams
+
+**Files to Create:**
+- `packages/shared_services/lib/src/storage/repositories/quiz_session_repository.dart`
+- `packages/shared_services/lib/src/storage/repositories/statistics_repository.dart`
+- `packages/shared_services/lib/src/storage/repositories/settings_repository.dart`
+- `packages/shared_services/test/storage/repositories/*_test.dart`
+
+### Sprint 5.4: Integration with Quiz Engine
+
+**Tasks:**
+- [ ] Create StorageService facade in shared_services
+- [ ] Integrate QuizSessionRepository with QuizBloc
+- [ ] Save quiz sessions on completion
+- [ ] Save individual Q&A during quiz
+- [ ] Update statistics in real-time
+- [ ] Implement session recovery (resume interrupted quiz)
+- [ ] Add error handling and retry logic
+- [ ] Update QuizConfig to include storage settings
+- [ ] Test end-to-end storage flow
+
+**QuizBloc Integration:**
+```dart
+class QuizBloc {
+  final QuizSessionRepository _sessionRepository;
+  final StatisticsRepository _statsRepository;
+
+  String? _currentSessionId;
+
+  Future<void> startQuiz() async {
+    // Create new session
+    final session = QuizSession.create(
+      quizId: config.quizId,
+      quizName: config.quizName,
+      quizType: config.quizType,
+      mode: config.mode,
+    );
+
+    _currentSessionId = await _sessionRepository.saveSession(session);
+    // Continue with quiz...
+  }
+
+  Future<void> processAnswer(QuestionEntry selected) async {
+    // Process answer
+    final isCorrect = selected == _currentQuestion.answer;
+
+    // Save Q&A to database
+    final questionAnswer = QuestionAnswer.create(
+      sessionId: _currentSessionId!,
+      questionNumber: _currentProgress,
+      questionId: _currentQuestion.answer.otherOptions['id'],
+      questionType: _currentQuestion.answer.type.toString(),
+      correctAnswerId: _currentQuestion.answer.otherOptions['id'],
+      userAnswerId: selected.otherOptions['id'],
+      isCorrect: isCorrect,
+      timeSpent: _questionTimer.elapsed,
+    );
+
+    await _sessionRepository.saveQuestionAnswer(questionAnswer);
+
+    // Update UI state
+    // ...
+  }
+
+  Future<void> _endQuiz() async {
+    // Complete session
+    await _sessionRepository.completeSession(
+      _currentSessionId!,
+      CompletionStatus.completed,
+    );
+
+    // Statistics are auto-updated via triggers
+    // Show game over dialog
+  }
+}
+```
+
+**Files to Update:**
+- `packages/quiz_engine_core/lib/src/quiz/quiz_bloc.dart` - ADD storage integration
+- `packages/quiz_engine_core/lib/src/quiz/quiz_config.dart` - ADD storage settings
+- `packages/shared_services/lib/src/storage/storage_service.dart` - CREATE facade
+- `packages/quiz_engine/test/bloc/quiz_bloc_storage_test.dart` - NEW
+
+### Sprint 5.5: Review & Statistics UI
+
+**Tasks:**
+- [ ] Create SessionHistoryScreen (list of past sessions)
+- [ ] Create SessionDetailScreen (review single session)
+- [ ] Create QuestionReviewWidget (show Q&A with explanations)
+- [ ] Create StatisticsScreen with charts
+- [ ] Create TrendsScreen (daily/weekly performance)
+- [ ] Add "Practice Wrong Answers" mode
+- [ ] Add export functionality (CSV/JSON)
+- [ ] Test all UI screens
+
+**Session History Screen:**
+```dart
+class SessionHistoryScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<List<QuizSession>>(
+      stream: _repository.watchRecentSessions(50),
+      builder: (context, snapshot) {
+        final sessions = snapshot.data ?? [];
+        return ListView.builder(
+          itemCount: sessions.length,
+          itemBuilder: (context, index) {
+            final session = sessions[index];
+            return SessionCard(
+              session: session,
+              onTap: () => _navigateToDetail(session.id),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+```
+
+**Statistics Dashboard:**
+- Total games played
+- Total time played
+- Average score
+- Best score
+- Current streak
+- Improvement trend graph
+- Category breakdown
+- Question success rate
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/screens/history_screen.dart` - NEW
+- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart` - NEW
+- `packages/quiz_engine/lib/src/screens/statistics_screen.dart` - NEW
+- `packages/quiz_engine/lib/src/widgets/session_card.dart` - NEW
+- `packages/quiz_engine/lib/src/widgets/statistics_chart.dart` - NEW
+- `packages/quiz_engine/test/screens/*_test.dart`
+
+### Sprint 5.6: Advanced Features & Optimization
+
+**Tasks:**
+- [ ] Implement data archiving (auto-archive old sessions)
+- [ ] Add database vacuum/cleanup scheduled task
+- [ ] Implement pagination for large datasets
+- [ ] Add search/filter functionality
+- [ ] Implement data export (GDPR compliance)
+- [ ] Add data import (restore from backup)
+- [ ] Optimize queries with proper indexes
+- [ ] Add database performance monitoring
+- [ ] Write performance tests
+
+**Advanced Features:**
+- Smart recommendations (practice weak areas)
+- Learning curve analysis
+- Spaced repetition integration
+- Custom study plans based on stats
+- Comparison with past performance
+
+**Files to Create:**
+- `packages/shared_services/lib/src/storage/utils/database_optimizer.dart`
+- `packages/shared_services/lib/src/storage/utils/data_export.dart`
+- `packages/shared_services/lib/src/storage/utils/data_import.dart`
+- `packages/shared_services/test/storage/performance_test.dart`
+
+### Testing Strategy
+
+**Unit Tests:**
+- Test all model serialization (toMap/fromMap)
+- Test data source CRUD operations
+- Test repository logic
+- Test statistics calculations
+
+**Integration Tests:**
+- Test database migrations
+- Test complete session save flow
+- Test statistics updates
+- Test concurrent operations
+
+**Performance Tests:**
+- Test with 1000+ sessions
+- Test query performance
+- Test batch operations
+- Test memory usage
+
+**Files:**
+- `packages/shared_services/test/storage/database_test.dart`
+- `packages/shared_services/test/storage/models_test.dart`
+- `packages/shared_services/test/storage/data_sources/*_test.dart`
+- `packages/shared_services/test/storage/repositories/*_test.dart`
+- `packages/shared_services/test/storage/integration_test.dart`
+- `packages/shared_services/test/storage/performance_test.dart`
+
+### Migration from SharedPreferences
+
+**Tasks:**
+- [ ] Migrate user settings to database
+- [ ] Keep SharedPreferences as fallback
+- [ ] Implement one-time migration on app update
+- [ ] Test migration flow
+- [ ] Update SettingsService to use new repository
+
+**Migration Strategy:**
+```dart
+class SettingsMigration {
+  Future<void> migrateFromSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Read old settings
+    final soundEnabled = prefs.getBool('sound_enabled') ?? true;
+    final hapticEnabled = prefs.getBool('haptic_enabled') ?? true;
+    // ... other settings
+
+    // Save to database
+    await _settingsRepository.saveSettings(UserSettings(
+      soundEnabled: soundEnabled,
+      hapticEnabled: hapticEnabled,
+      // ...
+    ));
+
+    // Mark migration complete
+    await prefs.setBool('migrated_to_db', true);
+  }
+}
+```
+
+### Documentation
+
+**Tasks:**
+- [ ] Update STORAGE_REQUIREMENTS.md with final schema
+- [ ] Document repository pattern usage
+- [ ] Create database schema diagram
+- [ ] Write migration guide
+- [ ] Add code examples to docs
+- [ ] Update CLAUDE.md with storage architecture
+
+**Files to Create/Update:**
+- `docs/STORAGE_REQUIREMENTS.md` - UPDATE with final decisions
+- `docs/STORAGE_ARCHITECTURE.md` - NEW detailed architecture doc
+- `docs/DATABASE_SCHEMA.md` - NEW schema documentation
+- `docs/MIGRATION_GUIDE.md` - NEW migration instructions
+- `CLAUDE.md` - UPDATE with storage patterns
+
+### Success Criteria
+
+- [ ] All quiz sessions are persisted to database
+- [ ] All question/answer pairs are saved for review (with all options + explanations)
+- [ ] Statistics update in real-time (global, quiz type, and daily)
+- [ ] Daily statistics are pre-aggregated for fast charts
+- [ ] Users can review past quiz sessions with full replay capability
+- [ ] Users can see detailed statistics and trends (instant loading)
+- [ ] Charts load instantly from daily_statistics table
+- [ ] Database performance is acceptable (< 50ms for queries)
+- [ ] No data loss on app crash/kill
+- [ ] Database migrations work correctly
+- [ ] All tests pass (100+ tests for storage layer)
+- [ ] Memory usage is acceptable (< 50MB for 1000 sessions)
+
+### Dependencies
+
+**Add to `packages/shared_services/pubspec.yaml`:**
+```yaml
+dependencies:
+  sqflite: ^2.3.0
+  path: ^1.8.3
+  uuid: ^4.1.0
+
+dev_dependencies:
+  sqflite_common_ffi: ^2.3.0  # For desktop/testing
+```
+
+---
+
+## Phase 6: Results & Statistics UI (Week 7)
+
+### Sprint 6.1: Enhanced Results Screen
+- [ ] Create `QuizResults` model (enhanced from Phase 5 data)
+- [ ] Create enhanced `QuizResultsScreen` with historical data
 - [ ] Add star rating display
 - [ ] Add percentage display
-- [ ] Add "Review Mistakes" button
-- [ ] Create `WrongAnswersReview` screen
+- [ ] Add "Review This Session" button
+- [ ] Add "Review All Wrong Answers" button
 - [ ] Test results screens
 
-#### Sprint 4.2: Statistics
-- [ ] Create `StatisticsRepository` interface
-- [ ] Create `QuizStatistics` model
-- [ ] Create `OverallStatistics` model
-- [ ] Implement Hive-based repository in app
-- [ ] Create `StatisticsScreen` UI
-- [ ] Integrate with `QuizBloc`
-- [ ] Test statistics tracking
+### Sprint 6.2: Advanced Statistics UI
+- [ ] Create Statistics Dashboard UI
+- [ ] Add charts/graphs for trends
+- [ ] Display aggregate statistics
+- [ ] Show improvement over time
+- [ ] Add category breakdown views
+- [ ] Create leaderboards (local)
+- [ ] Test statistics screens
 
-### Phase 5: Achievements (Week 6)
+---
+
+## Phase 7: Achievements (Week 8)
 
 - [ ] Create `Achievement` model
 - [ ] Create `AchievementTrigger` hierarchy
@@ -2789,16 +3300,18 @@ final config = QuizConfig(
 - [ ] Define default achievements
 - [ ] Test achievement system
 
-### Phase 6: Shared Services (Week 7-8)
+---
 
-#### Sprint 6.1: Analytics
+## Phase 8: Shared Services (Week 9-10)
+
+### Sprint 8.1: Analytics
 - [ ] Create `AnalyticsService` interface
 - [ ] Implement `FirebaseAnalyticsService`
 - [ ] Implement `ConsoleAnalyticsService`
 - [ ] Add analytics calls to `QuizBloc`
 - [ ] Test analytics integration
 
-#### Sprint 6.2: Ads
+### Sprint 8.2: Ads
 - [ ] Create `AdsService` interface
 - [ ] Implement `AdMobService`
 - [ ] Implement `NoAdsService`
@@ -2807,7 +3320,7 @@ final config = QuizConfig(
 - [ ] Add rewarded ad for hints
 - [ ] Test ads integration
 
-#### Sprint 6.3: IAP
+### Sprint 8.3: IAP
 - [ ] Create `IAPService` interface
 - [ ] Implement `StoreIAPService`
 - [ ] Add "Remove Ads" product
@@ -2815,7 +3328,9 @@ final config = QuizConfig(
 - [ ] Implement restore purchases
 - [ ] Test IAP flow
 
-### Phase 7: Polish & Integration (Week 9)
+---
+
+## Phase 9: Polish & Integration (Week 11)
 
 - [ ] Review all animations
 - [ ] Optimize performance
@@ -2826,7 +3341,9 @@ final config = QuizConfig(
 - [ ] Create migration guide for flagsquiz
 - [ ] Test complete flow end-to-end
 
-### Phase 8: Second App Validation (Week 10)
+---
+
+## Phase 10: Second App Validation (Week 12)
 
 - [ ] Create second quiz app (e.g., capitals_quiz)
 - [ ] Validate reusability of all components
@@ -2890,6 +3407,6 @@ final config = QuizConfig(
 
 ---
 
-**Document Version:** 1.1
+**Document Version:** 1.2
 **Last Updated:** 2025-12-22
-**Status:** Phase 1 Sprint 1.1 Completed - Ready for Sprint 1.2
+**Status:** Phase 4 Completed - Ready for Phase 5 (Data Persistence & Storage)
