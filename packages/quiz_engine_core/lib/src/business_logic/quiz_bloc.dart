@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:quiz_engine_core/src/business_logic/quiz_state/quiz_state.dart';
 import 'package:quiz_engine_core/src/model/question_entry.dart';
@@ -10,6 +11,7 @@ import '../model/random_pick_result.dart';
 import '../random_item_picker.dart';
 import '../model/config/quiz_config.dart';
 import '../model/config/quiz_mode_config.dart';
+import '../model/config/hint_config.dart';
 import 'config_manager/config_manager.dart';
 import 'config_manager/config_source.dart';
 
@@ -71,6 +73,12 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Whether the timers are currently paused.
   bool _timersPaused = false;
 
+  /// The current hint state tracking which hints have been used.
+  late HintState _hintState;
+
+  /// Options disabled for the current question (e.g., from 50/50 hint).
+  Set<QuestionEntry> _disabledOptions = {};
+
   /// Creates a `QuizBloc` with a provided data fetch function.
   ///
   /// [dataProvider] - Function to fetch quiz data
@@ -104,6 +112,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
     // Initialize lives from mode config
     _remainingLives = _config.modeConfig.lives;
+
+    // Initialize hint state from config
+    _hintState = HintState.fromConfig(_config.hintConfig);
 
     // Initialize timers from mode config
     _initializeTimers();
@@ -180,12 +191,17 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         remainingLives: _remainingLives,
         questionTimeRemaining: _questionTimeRemaining,
         totalTimeRemaining: _totalTimeRemaining,
+        hintState: _hintState,
+        disabledOptions: _disabledOptions,
       );
       dispatchState(state);
       _notifyGameOver();
     } else {
       var question = Question.fromRandomResult(randomResult!);
       currentQuestion = question;
+
+      // Reset disabled options for new question
+      _disabledOptions = {};
 
       // Reset question timer for new question (unless paused)
       if (!_timersPaused) {
@@ -202,6 +218,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         remainingLives: _remainingLives,
         questionTimeRemaining: _questionTimeRemaining,
         totalTimeRemaining: _totalTimeRemaining,
+        hintState: _hintState,
+        disabledOptions: _disabledOptions,
       );
       dispatchState(state);
     }
@@ -279,6 +297,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
           remainingLives: _remainingLives,
           questionTimeRemaining: _questionTimeRemaining,
           totalTimeRemaining: _totalTimeRemaining,
+          hintState: _hintState,
+          disabledOptions: _disabledOptions,
         );
         dispatchState(state);
       } else {
@@ -389,9 +409,75 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       remainingLives: _remainingLives,
       questionTimeRemaining: _questionTimeRemaining,
       totalTimeRemaining: _totalTimeRemaining,
+      hintState: _hintState,
+      disabledOptions: _disabledOptions,
     );
     dispatchState(state);
     _notifyGameOver();
+  }
+
+  /// Uses the 50/50 hint to disable 2 incorrect options.
+  ///
+  /// Randomly selects and disables 2 incorrect options from the current question,
+  /// making it easier for the player to identify the correct answer.
+  void use50_50Hint() {
+    // Check if hint is available
+    if (!_hintState.canUseHint(HintType.fiftyFifty)) return;
+
+    // Mark hint as used
+    _hintState.useHint(HintType.fiftyFifty);
+
+    // Find all incorrect options
+    final incorrectOptions = currentQuestion.options
+        .where((option) => option != currentQuestion.answer)
+        .toList();
+
+    // If there are less than 2 incorrect options, can't use this hint
+    if (incorrectOptions.length < 2) return;
+
+    // Randomly select 2 incorrect options to disable
+    final random = Random();
+    incorrectOptions.shuffle(random);
+    _disabledOptions = incorrectOptions.take(2).toSet();
+
+    // Emit updated state with disabled options
+    var state = QuizState.question(
+      currentQuestion,
+      _currentProgress,
+      _totalCount,
+      remainingLives: _remainingLives,
+      questionTimeRemaining: _questionTimeRemaining,
+      totalTimeRemaining: _totalTimeRemaining,
+      hintState: _hintState,
+      disabledOptions: _disabledOptions,
+    );
+    dispatchState(state);
+  }
+
+  /// Skips the current question.
+  ///
+  /// Marks the current question as skipped and moves to the next question.
+  Future<void> skipQuestion() async {
+    // Check if hint is available
+    if (!_hintState.canUseHint(HintType.skip)) return;
+
+    // Cancel question timer
+    _cancelQuestionTimer();
+
+    // Mark hint as used
+    _hintState.useHint(HintType.skip);
+
+    // Create a skipped answer
+    final skippedAnswer = Answer(
+      currentQuestion.answer,
+      currentQuestion,
+      isSkipped: true,
+    );
+
+    // Record the skipped answer and move to next question
+    _answers.add(skippedAnswer);
+    _currentProgress++;
+    _pickQuestion();
   }
 
   @override

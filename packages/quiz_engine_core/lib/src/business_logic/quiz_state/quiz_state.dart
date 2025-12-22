@@ -1,5 +1,6 @@
 import '../../model/question.dart';
 import '../../model/question_entry.dart';
+import '../../model/config/hint_config.dart';
 
 /// An abstract class representing the state of a quiz.
 ///
@@ -14,6 +15,8 @@ sealed class QuizState {
     int? remainingLives,
     int? questionTimeRemaining,
     int? totalTimeRemaining,
+    HintState? hintState,
+    Set<QuestionEntry>? disabledOptions,
   }) = QuestionState;
   factory QuizState.answerFeedback(
     Question question,
@@ -52,6 +55,12 @@ class QuestionState extends QuizState {
   /// The remaining total time for the entire quiz in seconds (null if no total time limit).
   final int? totalTimeRemaining;
 
+  /// The current state of available hints.
+  final HintState? hintState;
+
+  /// Options that are disabled (e.g., from using 50/50 hint).
+  final Set<QuestionEntry> disabledOptions;
+
   /// Computes the percentage of progress made through the quiz.
   double get percentageProgress =>
       total == 0 ? 0 : (progress / total).toDouble();
@@ -64,7 +73,9 @@ class QuestionState extends QuizState {
     this.remainingLives,
     this.questionTimeRemaining,
     this.totalTimeRemaining,
-  });
+    this.hintState,
+    Set<QuestionEntry>? disabledOptions,
+  }) : disabledOptions = disabledOptions ?? {};
 }
 
 /// A state representing the answer feedback phase after the player has answered a question.

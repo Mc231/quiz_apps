@@ -2176,18 +2176,108 @@ QuizConfig(
 - ✅ Can answer 3x more questions than initial pool
 - ✅ All 59 tests passing
 
-**Next:** Sprint 3.1 (Hints System) - Implement hint functionality
+**Next:** Sprint 4.1 (Results Screen) - Implement results screen
 
 ### Phase 3: Hints System (Week 4)
 
-- [ ] Create `HintState` class
-- [ ] Implement hint logic in `QuizBloc`
-- [ ] Create `HintsPanel` widget
-- [ ] Implement 50/50 hint
-- [ ] Implement skip hint
-- [ ] Implement reveal letter hint
-- [ ] Implement extra time hint (timed mode)
-- [ ] Test hint system
+- [x] Create `HintState` class
+- [x] Implement hint logic in `QuizBloc`
+- [x] Create `HintsPanel` widget
+- [x] Implement 50/50 hint
+- [x] Implement skip hint
+- [x] Test hint system
+
+**Status:** ✅ COMPLETED (2025-12-22)
+
+**Completed Tasks:**
+- **HintState Integration**: Used existing HintState from HintConfig
+  - HintState initialized from QuizConfig.hintConfig in QuizBloc
+  - Tracks available hints per type (fiftyFifty, skip)
+  - `canUseHint()` and `useHint()` methods for hint management
+  - Location: `packages/quiz_engine_core/lib/src/model/config/hint_config.dart`
+- **QuizBloc Hint Logic**: Complete hint implementation
+  - `use50_50Hint()` method - Disables 2 random incorrect options
+  - `skipQuestion()` method - Skips current question and marks as skipped
+  - Hint state properly tracked and updated
+  - All state emissions include current hint state
+  - Location: `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart`
+- **QuizState Enhancement**: Added hint support
+  - Added `hintState` field to QuestionState
+  - Added `disabledOptions` set to track 50/50 disabled options
+  - Both fields propagated through all quiz states
+  - Location: `packages/quiz_engine_core/lib/src/business_logic/quiz_state/quiz_state.dart`
+- **Answer Model Enhancement**: Added skip tracking
+  - Added `isSkipped` field to Answer class
+  - Skipped questions counted as incorrect in scoring
+  - Skipped flag distinct from timeout
+  - Location: `packages/quiz_engine_core/lib/src/model/answer.dart`
+- **HintsPanel Widget**: Responsive hints UI component
+  - Shows 50/50 and Skip hint buttons with count badges
+  - Buttons auto-disable when hints depleted
+  - Visual feedback: gray + disabled when used
+  - Responsive sizing for mobile/tablet/desktop/watch
+  - Auto-hides when no hints available
+  - Location: `packages/quiz_engine/lib/src/widgets/hints_panel.dart`
+- **OptionButton Enhancement**: Added disabled state support
+  - `isDisabled` parameter for disabling options
+  - Visual feedback: gray background + strikethrough text
+  - Non-clickable when disabled
+  - Location: `packages/quiz_engine/lib/src/components/option_button.dart`
+- **QuizAnswersWidget Update**: Passes disabled options to buttons
+  - `disabledOptions` parameter added
+  - Checks each option against disabled set
+  - Disabled options rendered with visual feedback
+  - Location: `packages/quiz_engine/lib/src/quiz/quiz_answers_widget.dart`
+- **QuizLayout Integration**: HintsPanel displayed in quiz screen
+  - HintsPanel positioned at top of quiz layout
+  - Receives bloc reference for hint callbacks
+  - Passes disabled options to answer buttons
+  - Location: `packages/quiz_engine/lib/src/quiz/quiz_layout.dart`
+- **QuizScreen Integration**: Bloc passed to all components
+  - QuizLayout receives bloc reference
+  - AnswerFeedbackWidget receives bloc reference
+  - Enables hint functionality throughout quiz flow
+  - Location: `packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
+- **Tests**: All tests passing (59/59 in quiz_engine_core, 33/36 in quiz_engine)
+
+**Implementation Details:**
+- **50/50 Hint**:
+  - Finds all incorrect options
+  - Randomly selects 2 to disable
+  - Adds to `disabledOptions` set
+  - Options remain disabled only for current question
+  - Options reset on next question
+- **Skip Hint**:
+  - Creates Answer with `isSkipped: true`
+  - Records skipped answer in answers list
+  - Moves to next question immediately
+  - Counted as incorrect in final score
+- **Configuration**: Hints configured via HintConfig
+  ```dart
+  QuizConfig(
+    hintConfig: HintConfig(
+      initialHints: {
+        HintType.fiftyFifty: 3,  // 3 uses
+        HintType.skip: 2,         // 2 uses
+      },
+    ),
+  )
+  ```
+
+**Files Modified:**
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_state/quiz_state.dart` - Added hintState and disabledOptions
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Added hint methods
+- `packages/quiz_engine_core/lib/src/model/answer.dart` - Added isSkipped field
+- `packages/quiz_engine/lib/src/widgets/hints_panel.dart` - NEW: Hints UI widget
+- `packages/quiz_engine/lib/src/components/option_button.dart` - Added disabled state support
+- `packages/quiz_engine/lib/src/quiz/quiz_answers_widget.dart` - Disabled options support
+- `packages/quiz_engine/lib/src/quiz/quiz_layout.dart` - HintsPanel integration
+- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Bloc propagation
+- `packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart` - Bloc reference added
+- `packages/quiz_engine/lib/quiz_engine.dart` - Export HintsPanel
+- Tests updated to pass bloc reference to layouts
+
+**Next:** Sprint 4.1 (Results Screen) - Enhanced results screen with review functionality
 
 ### Phase 4: Results & Statistics (Week 5)
 

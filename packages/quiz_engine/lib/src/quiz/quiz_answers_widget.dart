@@ -28,6 +28,9 @@ class QuizAnswersWidget extends StatelessWidget {
   /// Callback function to be invoked when an option is clicked.
   final Function(QuestionEntry answer) answerClickListener;
 
+  /// Set of disabled options (e.g., from using 50/50 hint).
+  final Set<QuestionEntry> disabledOptions;
+
   /// Theme data for customizing button appearance.
   final QuizThemeData themeData;
 
@@ -37,12 +40,14 @@ class QuizAnswersWidget extends StatelessWidget {
   /// [options] is the list of countries to display as answer options.
   /// [sizingInformation] provides screen size and orientation information.
   /// [answerClickListener] is called when an option button is clicked.
+  /// [disabledOptions] is the set of options that should be disabled.
   /// [themeData] provides theme customization options.
   const QuizAnswersWidget({
     required Key key,
     required this.options,
     required this.sizingInformation,
     required this.answerClickListener,
+    this.disabledOptions = const {},
     this.themeData = const QuizThemeData(),
   }) : super(key: key);
 
@@ -81,11 +86,15 @@ class QuizAnswersWidget extends StatelessWidget {
       title = option.otherOptions["name"] as String? ?? code;
     }
 
+    // Check if this option is disabled
+    final isDisabled = disabledOptions.contains(option);
+
     return Container(
       margin: getButtonMargin(context),
       child: OptionButton(
         title: title,
         onClickListener: () => answerClickListener(option),
+        isDisabled: isDisabled,
         themeData: themeData,
         key: Key("button_$code"),
       ),

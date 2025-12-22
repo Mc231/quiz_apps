@@ -27,23 +27,28 @@ class Answer {
   /// Whether this answer was caused by a timeout (time expiration).
   final bool isTimeout;
 
+  /// Whether this question was skipped using the skip hint.
+  final bool isSkipped;
+
   /// Creates an `Answer<T>` with the given [selectedOption] and [question].
   ///
   /// [selectedOption] is the choice made by the user.
   /// [question] is the question object that includes the correct answer
   /// and other options.
   /// [isTimeout] indicates if this answer was due to time expiration (default: false).
+  /// [isSkipped] indicates if this question was skipped using a hint (default: false).
   Answer(
     this.selectedOption,
     this.question, {
     this.isTimeout = false,
+    this.isSkipped = false,
   });
 
   /// Checks if the selected option is the correct answer.
   ///
   /// This getter compares the [selectedOption] with the correct answer
   /// in the [question]. It returns `true` if the selected option matches
-  /// the correct answer and the answer was not caused by a timeout.
-  /// Timeouts are always counted as incorrect, regardless of the selected option.
-  bool get isCorrect => !isTimeout && question.answer == selectedOption;
+  /// the correct answer and the answer was not caused by a timeout or skip.
+  /// Timeouts and skips are always counted as incorrect, regardless of the selected option.
+  bool get isCorrect => !isTimeout && !isSkipped && question.answer == selectedOption;
 }

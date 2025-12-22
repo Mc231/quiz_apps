@@ -17,6 +17,9 @@ class AnswerFeedbackWidget extends StatefulWidget {
   /// Callback to process the user's answer selection
   final Function(QuestionEntry answer) processAnswer;
 
+  /// The quiz bloc for accessing hint methods
+  final QuizBloc quizBloc;
+
   /// Theme configuration for styling the feedback
   final QuizThemeData themeData;
 
@@ -27,6 +30,7 @@ class AnswerFeedbackWidget extends StatefulWidget {
     super.key,
     required this.feedbackState,
     required this.processAnswer,
+    required this.quizBloc,
     required this.themeData,
     required this.information,
   });
@@ -87,6 +91,7 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
               ),
               information: widget.information,
               processAnswer: widget.processAnswer,
+              quizBloc: widget.quizBloc,
               themeData: widget.themeData,
             ),
           ),

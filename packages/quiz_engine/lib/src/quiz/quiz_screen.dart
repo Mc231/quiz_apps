@@ -161,6 +161,7 @@ class QuizScreenState extends State<QuizScreen> {
           return AnswerFeedbackWidget(
             feedbackState: state,
             processAnswer: _bloc.processAnswer,
+            quizBloc: _bloc,
             themeData: widget.themeData,
             information: information,
           );
@@ -175,6 +176,7 @@ class QuizScreenState extends State<QuizScreen> {
           questionState: questionState,
           information: information,
           processAnswer: _bloc.processAnswer,
+          quizBloc: _bloc,
           themeData: widget.themeData,
         );
       },

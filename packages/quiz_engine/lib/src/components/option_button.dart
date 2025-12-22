@@ -18,7 +18,10 @@ class OptionButton extends StatelessWidget {
   final String title;
 
   /// The callback function invoked when the button is clicked.
-  final VoidCallback onClickListener;
+  final VoidCallback? onClickListener;
+
+  /// Whether the button is disabled (e.g., from using 50/50 hint).
+  final bool isDisabled;
 
   /// Theme data for customizing button appearance.
   final QuizThemeData themeData;
@@ -28,11 +31,13 @@ class OptionButton extends StatelessWidget {
   /// [key] is the unique key for this widget.
   /// [title] is the text displayed on the button.
   /// [onClickListener] is the function called when the button is pressed.
+  /// [isDisabled] indicates if the button should be disabled.
   /// [themeData] provides theme customization options.
   const OptionButton({
     super.key,
     required this.title,
     required this.onClickListener,
+    this.isDisabled = false,
     this.themeData = const QuizThemeData(),
   });
 
@@ -42,19 +47,21 @@ class OptionButton extends StatelessWidget {
 
     return SizedBox.expand(
       child: ElevatedButton(
-        onPressed: onClickListener,
+        onPressed: isDisabled ? null : onClickListener,
         style: ElevatedButton.styleFrom(
           textStyle: TextStyle(color: theme.buttonTextColor),
           shape: RoundedRectangleBorder(
             borderRadius: theme.buttonBorderRadius,
             side: BorderSide(
-              color: theme.buttonBorderColor,
+              color: isDisabled ? Colors.grey : theme.buttonBorderColor,
               width: theme.buttonBorderWidth,
             ),
           ),
-          backgroundColor: theme.buttonColor,
-          foregroundColor: theme.buttonTextColor,
+          backgroundColor: isDisabled ? Colors.grey[300] : theme.buttonColor,
+          foregroundColor: isDisabled ? Colors.grey[600] : theme.buttonTextColor,
           padding: theme.buttonPadding,
+          disabledBackgroundColor: Colors.grey[300],
+          disabledForegroundColor: Colors.grey[600],
         ),
         child: Text(
           title,
@@ -62,6 +69,7 @@ class OptionButton extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: theme.buttonTextStyle.copyWith(
             fontSize: _getFontSize(context, theme),
+            decoration: isDisabled ? TextDecoration.lineThrough : null,
           ),
           textAlign: TextAlign.center,
         ),
