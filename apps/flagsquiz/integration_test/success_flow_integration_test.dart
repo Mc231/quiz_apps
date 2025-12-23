@@ -1,3 +1,4 @@
+import 'package:flags_quiz/data/country_counts.dart';
 import 'package:flags_quiz/data/flags_categories.dart';
 import 'package:flags_quiz/data/flags_data_provider.dart';
 import 'package:flags_quiz/l10n/app_localizations.dart';
@@ -30,7 +31,7 @@ void main() {
   Widget createTestApp(SettingsService settingsService) {
     return QuizApp(
       settingsService: settingsService,
-      categories: createFlagsCategories(),
+      categories: createFlagsCategories(CountryCounts.forTest),
       dataProvider: const FlagsDataProvider(),
       storageService: sl.get<StorageService>(),
       config: QuizAppConfig(
