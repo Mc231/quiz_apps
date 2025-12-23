@@ -16,6 +16,7 @@ This document helps AI assistants work efficiently with this Flutter quiz apps m
 4. **Write tests** for all new code
 5. **Update the guide** to mark completed tasks with `[x]` and add `✅` to the sprint title
 6. **List created files** under the sprint section
+7. **Use the commiter agent** to create dedicated commits for each file with appropriate prefixes
 
 ### Quick Reference
 
@@ -29,7 +30,22 @@ docs/CORE_ARCHITECTURE_GUIDE.md
 3. Write unit tests
 4. Run: flutter test (in the relevant package)
 5. Update the guide: mark tasks [x], add ✅, list created files
+6. Use commiter agent with prefix (feat/fix/refactor/test/docs)
 ```
+
+### Committing Changes
+
+After completing a sprint implementation, use the **commiter agent** to create individual commits:
+
+```
+# Example: After implementing Sprint 5.3
+Use commiter agent with prefix='feat'
+```
+
+The commiter agent will:
+- Analyze each changed file
+- Create individual commits with descriptive messages
+- Use the specified prefix (feat, fix, refactor, test, docs, chore)
 
 ### Marking Tasks Complete
 
