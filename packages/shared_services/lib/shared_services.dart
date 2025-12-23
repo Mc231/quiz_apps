@@ -20,3 +20,6 @@ export 'src/haptic/haptic_service.dart';
 // Settings (User preferences and configuration)
 export 'src/settings/quiz_settings.dart';
 export 'src/settings/settings_service.dart';
+
+// Storage (Database and persistence)
+export 'src/storage/storage_exports.dart';
