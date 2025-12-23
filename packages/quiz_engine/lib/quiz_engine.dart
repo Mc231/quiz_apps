@@ -61,3 +61,6 @@ export 'src/settings/quiz_settings_screen.dart';
 
 // Theme
 export 'src/theme/quiz_theme_data.dart';
+
+// Utils
+export 'src/utils/default_data_loader.dart';
