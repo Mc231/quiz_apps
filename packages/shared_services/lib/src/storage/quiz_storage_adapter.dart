@@ -298,6 +298,18 @@ class QuizStorageAdapter implements QuizStorageService {
   }
 
   String? _extractResourceUrl(QuestionEntry entry) {
+    // First try to extract from the question type itself
+    final type = entry.type;
+
+    if (type is ImageQuestion) {
+      return type.imagePath;
+    } else if (type is AudioQuestion) {
+      return type.audioPath;
+    } else if (type is VideoQuestion) {
+      return type.videoUrl;
+    }
+
+    // Fallback to otherOptions for backwards compatibility
     return entry.otherOptions['url']?.toString() ??
         entry.otherOptions['imageUrl']?.toString() ??
         entry.otherOptions['resourceUrl']?.toString();

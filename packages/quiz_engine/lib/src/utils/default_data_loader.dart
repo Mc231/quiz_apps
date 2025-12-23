@@ -83,6 +83,24 @@ class DefaultDataLoader {
     }
   }
 
+  /// Gets session with all its answers for a given session ID.
+  ///
+  /// Returns [SessionWithAnswers] containing both the session and its answers.
+  Future<SessionWithAnswers?> getSessionWithAnswers(String sessionId) async {
+    try {
+      final result = await _storageService.getSessionWithAnswers(sessionId);
+      SessionWithAnswers? sessionWithAnswers;
+
+      result.ifSuccess((data) {
+        sessionWithAnswers = data;
+      });
+
+      return sessionWithAnswers;
+    } catch (e) {
+      return null;
+    }
+  }
+
   /// Converts a [QuizSession] to [SessionCardData].
   SessionCardData _convertSessionToCardData(QuizSession session) {
     return SessionCardData(

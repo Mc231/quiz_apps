@@ -1,5 +1,8 @@
-import 'package:flags_quiz/main.dart';
+import 'package:flags_quiz/data/flags_categories.dart';
+import 'package:flags_quiz/data/flags_data_provider.dart';
+import 'package:flags_quiz/l10n/app_localizations.dart';
 import 'package:flags_quiz/models/continent.dart';
+import 'package:flags_quiz/ui/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -23,13 +26,37 @@ void main() {
     settingsService.dispose();
   });
 
+  /// Creates the FlagsQuiz app widget for testing.
+  Widget createTestApp(SettingsService settingsService) {
+    return QuizApp(
+      settingsService: settingsService,
+      categories: createFlagsCategories(),
+      dataProvider: const FlagsDataProvider(),
+      storageService: sl.get<StorageService>(),
+      config: QuizAppConfig(
+        title: 'Flags Quiz',
+        appLocalizationDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        useMaterial3: false,
+        primaryColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: const AppBarTheme(elevation: 0),
+      ),
+      homeConfig: QuizHomeScreenConfig(
+        tabConfig: QuizTabConfig.defaultConfig(),
+        showSettingsInAppBar: true,
+      ),
+      settingsBuilder: (context) => SettingsScreen(
+        settingsService: settingsService,
+      ),
+    );
+  }
+
   group('FlagsQuiz Integration Test', () {
     testWidgets('App launches and displays categories',
         (WidgetTester tester) async {
       // Given
-      await tester.pumpWidget(
-        FlagsQuizRoot(settingsService: settingsService),
-      );
+      await tester.pumpWidget(createTestApp(settingsService));
       await tester.pumpAndSettle();
 
       // Then - should display the Play tab with categories
@@ -40,9 +67,7 @@ void main() {
     testWidgets('Displays all continent categories',
         (WidgetTester tester) async {
       // Given
-      await tester.pumpWidget(
-        FlagsQuizRoot(settingsService: settingsService),
-      );
+      await tester.pumpWidget(createTestApp(settingsService));
       await tester.pumpAndSettle();
 
       // Then - should have category cards for all continents
@@ -53,9 +78,7 @@ void main() {
     testWidgets('Can navigate to quiz when category is selected',
         (WidgetTester tester) async {
       // Given
-      await tester.pumpWidget(
-        FlagsQuizRoot(settingsService: settingsService),
-      );
+      await tester.pumpWidget(createTestApp(settingsService));
       await tester.pumpAndSettle();
 
       // When - tap first category
@@ -76,9 +99,7 @@ void main() {
     testWidgets('Quiz flow completes successfully',
         (WidgetTester tester) async {
       // Given
-      await tester.pumpWidget(
-        FlagsQuizRoot(settingsService: settingsService),
-      );
+      await tester.pumpWidget(createTestApp(settingsService));
       await tester.pumpAndSettle();
 
       // When - tap first category (All)

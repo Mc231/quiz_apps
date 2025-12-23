@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_services/shared_services.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart';
+import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
 
 import '../home/quiz_home_screen.dart';
 import '../l10n/quiz_localizations_delegate.dart';
 import '../models/quiz_category.dart';
+import '../models/quiz_data_provider.dart';
+import '../quiz_widget.dart';
+import '../quiz_widget_entry.dart';
 import '../settings/quiz_settings_screen.dart';
 import '../widgets/session_card.dart';
 import 'quiz_tab.dart';
@@ -187,6 +191,21 @@ class QuizApp extends StatefulWidget {
   /// Required if [homeBuilder] is not provided.
   final List<QuizCategory>? categories;
 
+  /// Data provider for loading quiz questions and configuration.
+  ///
+  /// When provided, QuizApp handles all navigation automatically:
+  /// - Starting a quiz when category is selected
+  /// - Opening settings screen
+  ///
+  /// If not provided, you must handle navigation via [callbacks].
+  final QuizDataProvider? dataProvider;
+
+  /// Storage service for persisting quiz sessions.
+  ///
+  /// Required when [dataProvider] is provided.
+  /// Used for saving quiz history and statistics.
+  final StorageService? storageService;
+
   /// Configuration for the QuizHomeScreen.
   final QuizHomeScreenConfig homeConfig;
 
@@ -234,6 +253,8 @@ class QuizApp extends StatefulWidget {
     super.key,
     required this.settingsService,
     this.categories,
+    this.dataProvider,
+    this.storageService,
     this.homeConfig = const QuizHomeScreenConfig(),
     this.callbacks = const QuizAppCallbacks(),
     this.config = const QuizAppConfig(),
@@ -255,6 +276,7 @@ class QuizApp extends StatefulWidget {
 class _QuizAppState extends State<QuizApp> {
   late QuizSettings _currentSettings;
   late StreamSubscription<QuizSettings> _settingsSubscription;
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
@@ -281,6 +303,7 @@ class _QuizAppState extends State<QuizApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: _navigatorKey,
       title: widget.config.title ?? '',
       debugShowCheckedModeBanner: widget.config.debugShowCheckedModeBanner,
       theme: _buildLightTheme(),
@@ -344,19 +367,30 @@ class _QuizAppState extends State<QuizApp> {
       return widget.homeBuilder!(context);
     }
 
-    return QuizHomeScreen(
-      categories: widget.categories ?? [],
-      config: widget.homeConfig,
-      onCategorySelected: widget.callbacks.onCategorySelected,
-      onSettingsPressed: widget.callbacks.onSettingsPressed,
-      onSessionTap: widget.callbacks.onSessionTap,
-      onViewAllSessions: widget.callbacks.onViewAllSessions,
-      historyDataProvider: widget.historyDataProvider,
-      statisticsDataProvider: widget.statisticsDataProvider,
-      settingsBuilder: _buildSettingsBuilder(),
-      formatDate: widget.formatDate,
-      formatStatus: widget.formatStatus,
-      formatDuration: widget.formatDuration,
+    // When dataProvider is provided, QuizApp handles navigation internally
+    final hasDataProvider = widget.dataProvider != null;
+
+    // Use Builder to get a context inside MaterialApp with localizations
+    return Builder(
+      builder: (innerContext) => QuizHomeScreen(
+        categories: widget.categories ?? [],
+        storageService: widget.storageService,
+        config: widget.homeConfig,
+        onCategorySelected: hasDataProvider
+            ? (category) => _startQuiz(innerContext, category)
+            : widget.callbacks.onCategorySelected,
+        onSettingsPressed: hasDataProvider
+            ? () => _openSettings(innerContext)
+            : widget.callbacks.onSettingsPressed,
+        onSessionTap: widget.callbacks.onSessionTap,
+        onViewAllSessions: widget.callbacks.onViewAllSessions,
+        historyDataProvider: widget.historyDataProvider,
+        statisticsDataProvider: widget.statisticsDataProvider,
+        settingsBuilder: _buildSettingsBuilder(),
+        formatDate: widget.formatDate,
+        formatStatus: widget.formatStatus,
+        formatDuration: widget.formatDuration,
+      ),
     );
   }
 
@@ -382,6 +416,113 @@ class _QuizAppState extends State<QuizApp> {
           config: widget.settingsConfig ??
               const QuizSettingsConfig(showAppBar: false),
         );
+  }
+
+  /// Starts a quiz for the given category.
+  ///
+  /// This is called when [dataProvider] is provided and handles:
+  /// - Loading questions from the data provider
+  /// - Creating quiz configuration
+  /// - Navigating to the QuizWidget
+  void _startQuiz(BuildContext context, QuizCategory category) async {
+    final dataProvider = widget.dataProvider;
+    final storageService = widget.storageService;
+
+    if (dataProvider == null) {
+      // Fallback to callback if no data provider
+      widget.callbacks.onCategorySelected?.call(category);
+      return;
+    }
+
+    // Load questions
+    final questions = await dataProvider.loadQuestions(context, category);
+
+    // Create quiz texts
+    final texts = dataProvider.createQuizTexts(context, category);
+
+    // Create storage config
+    final storageConfig = dataProvider.createStorageConfig(context, category);
+
+    // Create quiz config
+    final quizConfig = dataProvider.createQuizConfig(context, category) ??
+        QuizConfig(
+          quizId: category.id,
+          hintConfig: HintConfig.noHints(),
+        );
+
+    // Apply storage config to quiz config
+    final configWithStorage = quizConfig.copyWith(
+      storageConfig: storageConfig,
+    );
+
+    // Create storage adapter if storage service is available
+    QuizStorageAdapter? storageAdapter;
+    if (storageService != null) {
+      storageAdapter = QuizStorageAdapter(storageService);
+    }
+
+    // Create config manager that applies user settings
+    final configManager = ConfigManager(
+      defaultConfig: configWithStorage,
+      getSettings: () => {
+        'soundEnabled': widget.settingsService.currentSettings.soundEnabled,
+        'hapticEnabled': widget.settingsService.currentSettings.hapticEnabled,
+        'showAnswerFeedback':
+            widget.settingsService.currentSettings.showAnswerFeedback,
+      },
+    );
+
+    // Navigate to quiz
+    if (context.mounted) {
+      _navigatorKey.currentState?.push(
+        MaterialPageRoute(
+          builder: (ctx) => QuizWidget(
+            quizEntry: QuizWidgetEntry(
+              texts: texts ?? _createDefaultTexts(context, category),
+              dataProvider: () async => questions,
+              configManager: configManager,
+              storageService: storageAdapter,
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  /// Creates default quiz texts using engine localizations.
+  QuizTexts _createDefaultTexts(BuildContext context, QuizCategory category) {
+    // These will be overridden by app-specific localizations if provided
+    return QuizTexts(
+      title: category.title(context),
+      gameOverText: 'Your Score',
+      exitDialogTitle: 'Exit Quiz',
+      exitDialogMessage: 'Are you sure you want to exit?',
+      exitDialogConfirm: 'Exit',
+      exitDialogCancel: 'Cancel',
+      correctFeedback: 'Correct!',
+      incorrectFeedback: 'Wrong!',
+      hint5050Label: '50/50',
+      hintSkipLabel: 'Skip',
+      timerSecondsSuffix: 's',
+      videoLoadError: 'Failed to load video',
+    );
+  }
+
+  /// Opens the settings screen.
+  ///
+  /// Uses [settingsBuilder] if provided, otherwise shows [QuizSettingsScreen].
+  void _openSettings(BuildContext context) {
+    final settingsWidget = widget.settingsBuilder?.call(context) ??
+        QuizSettingsScreen(
+          settingsService: widget.settingsService,
+          config: widget.settingsConfig ?? const QuizSettingsConfig(),
+        );
+
+    _navigatorKey.currentState?.push(
+      MaterialPageRoute(
+        builder: (context) => settingsWidget,
+      ),
+    );
   }
 }
 

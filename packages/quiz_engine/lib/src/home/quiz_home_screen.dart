@@ -6,6 +6,7 @@ import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
 import '../screens/session_detail_screen.dart';
 import '../screens/session_history_screen.dart';
+import '../widgets/question_review_widget.dart';
 import '../screens/statistics_screen.dart';
 import '../utils/default_data_loader.dart';
 import '../widgets/session_card.dart';
@@ -348,12 +349,16 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
 
   /// Navigates to the default session detail screen.
   Future<void> _navigateToSessionDetail(SessionCardData sessionData) async {
-    final quizSession = await _dataLoader!.getSessionById(sessionData.id);
-    if (quizSession == null || !mounted) return;
+    final sessionWithAnswers =
+        await _dataLoader!.getSessionWithAnswers(sessionData.id);
+    if (sessionWithAnswers == null || !mounted) return;
 
     final l10n = QuizLocalizations.of(context);
     final texts = _createSessionDetailTexts(l10n);
-    final detailData = _convertToSessionDetailData(quizSession);
+    final detailData = _convertToSessionDetailData(
+      sessionWithAnswers.session,
+      sessionWithAnswers.answers,
+    );
 
     Navigator.push(
       context,
@@ -365,9 +370,36 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
           body: SessionDetailScreen(
             session: detailData,
             texts: texts,
-            onDelete: () => _deleteSession(quizSession.id),
+            onDelete: () => _deleteSession(sessionWithAnswers.session.id),
+            imageBuilder: _buildQuestionImage,
           ),
         ),
+      ),
+    );
+  }
+
+  /// Builds an image widget for question review.
+  ///
+  /// Handles both local assets and network images.
+  Widget _buildQuestionImage(String path) {
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return Image.network(
+        path,
+        fit: BoxFit.contain,
+        height: 120,
+        errorBuilder: (context, error, stackTrace) => const SizedBox(
+          height: 120,
+          child: Center(child: Icon(Icons.broken_image, size: 48)),
+        ),
+      );
+    }
+    return Image.asset(
+      path,
+      fit: BoxFit.contain,
+      height: 120,
+      errorBuilder: (context, error, stackTrace) => const SizedBox(
+        height: 120,
+        child: Center(child: Icon(Icons.broken_image, size: 48)),
       ),
     );
   }
@@ -397,7 +429,10 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   /// Converts a QuizSession to SessionDetailData.
-  SessionDetailData _convertToSessionDetailData(QuizSession session) {
+  SessionDetailData _convertToSessionDetailData(
+    QuizSession session,
+    List<QuestionAnswer> answers,
+  ) {
     return SessionDetailData(
       id: session.id,
       quizName: session.quizName,
@@ -410,8 +445,21 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
       startTime: session.startTime,
       durationSeconds: session.durationSeconds,
       quizCategory: session.quizCategory,
-      // QuizSession doesn't store individual answers, so we can't show question review
-      questions: const [],
+      questions: answers.map(_convertToReviewedQuestion).toList(),
+    );
+  }
+
+  /// Converts a QuestionAnswer to ReviewedQuestion.
+  ReviewedQuestion _convertToReviewedQuestion(QuestionAnswer answer) {
+    return ReviewedQuestion(
+      questionNumber: answer.questionNumber,
+      questionText: answer.questionContent ?? '',
+      correctAnswer: answer.correctAnswer.text,
+      userAnswer: answer.userAnswer?.text,
+      isCorrect: answer.isCorrect,
+      isSkipped: answer.answerStatus == AnswerStatus.skipped,
+      explanation: answer.explanation,
+      questionImagePath: answer.questionResourceUrl,
     );
   }
 
