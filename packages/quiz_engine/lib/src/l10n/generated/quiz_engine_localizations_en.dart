@@ -343,4 +343,48 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String initializationError(String error) {
     return 'Initialization error: $error';
   }
+
+  @override
+  String get quizComplete => 'Quiz Complete!';
+
+  @override
+  String get excellent => 'Excellent!';
+
+  @override
+  String get greatJob => 'Great Job!';
+
+  @override
+  String get goodWork => 'Good Work!';
+
+  @override
+  String get keepPracticing => 'Keep Practicing!';
+
+  @override
+  String get tryAgain => 'Try Again!';
+
+  @override
+  String get reviewThisSession => 'Review This Session';
+
+  @override
+  String get reviewWrongAnswers => 'Review Wrong Answers';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get playAgain => 'Play Again';
+
+  @override
+  String scoreOf(int correct, int total) {
+    return '$correct of $total';
+  }
+
+  @override
+  String get timedOut => 'Timed Out';
+
+  @override
+  String get hintsUsed => 'Hints Used';
+
+  @override
+  String get comingSoon => 'Coming Soon';
 }
