@@ -85,7 +85,7 @@ void main() {
     expect(imageFinder, findsOneWidget);
   });
 
-  testWidgets('Quiz over dialog', (WidgetTester tester) async {
+  testWidgets('Quiz over shows results screen', (WidgetTester tester) async {
     // Given
     final countries = [
       QuestionEntry(
@@ -104,6 +104,7 @@ void main() {
       () => Future.value(countries),
       randomItemPicker,
       configManager: configManager,
+      quizName: 'Test Quiz',
     );
     bloc2.currentQuestion = Question(countries.first, countries);
     // When
@@ -117,16 +118,11 @@ void main() {
     await tester.pump();
     await tester.pump();
     // Then
-    // Wait for game over dialog
-    final alertDialogFinder = find.byType(AlertDialog);
-    expect(alertDialogFinder, findsOneWidget);
-    // Tap alert button
-    final alertButtonFinder = find.byType(TextButton);
-    expect(alertButtonFinder, findsOneWidget);
-    await tester.tap(alertButtonFinder);
-    await tester.pump();
-    // Check that alert disappear
-    final alertDisappearFinder = find.byType(AlertDialog);
-    expect(alertDisappearFinder, findsNothing);
+    // Wait for results screen to appear
+    final quizResultsScreenFinder = find.byType(QuizResultsScreen);
+    expect(quizResultsScreenFinder, findsOneWidget);
+    // Find the Done button (ElevatedButton)
+    final doneButtonFinder = find.byType(ElevatedButton);
+    expect(doneButtonFinder, findsOneWidget);
   });
 }
