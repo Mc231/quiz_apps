@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_services/shared_services.dart';
 
+import 'data/country_counts.dart';
 import 'data/flags_categories.dart';
 import 'data/flags_data_provider.dart';
 import 'l10n/app_localizations.dart';
@@ -13,10 +14,14 @@ import 'l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedServicesInitializer.initialize();
+
+  // Load country counts from JSON to display accurate question counts
+  final countryCounts = await CountryCounts.load();
+
   runApp(
     QuizApp(
       settingsService: sl.get<SettingsService>(),
-      categories: createFlagsCategories(),
+      categories: createFlagsCategories(countryCounts),
       dataProvider: const FlagsDataProvider(),
       storageService: sl.get<StorageService>(),
       config: QuizAppConfig(
