@@ -1,7 +1,7 @@
+import 'package:flags_quiz/data/flags_categories.dart';
+import 'package:flags_quiz/l10n/app_localizations.dart';
 import 'package:flags_quiz/models/continent.dart';
-import 'package:flags_quiz/ui/continents/continents_screen.dart';
-import 'package:flags_quiz/ui/flags_quiz_app.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,41 +20,91 @@ void main() {
     settingsService.dispose();
   });
 
-  testWidgets('Continents screen contains all continents',
-      (WidgetTester tester) async {
-    // Given
-    final continentsCount = Continent.values.length - 1;
-    await tester.pumpWidget(FlagsQuizApp(
-      homeWidget: ContinentsScreen(settingsService: settingsService),
-      settingsService: settingsService,
-    ));
-    // When
-    await tester.pump();
-    final optionButtonsFinder = find.byType(OptionButton);
-    // Then
-    expect(optionButtonsFinder, findsNWidgets(continentsCount));
+  group('FlagsCategories', () {
+    test('creates categories for all continents', () {
+      // Given
+      final categories = createFlagsCategories();
+
+      // Then
+      expect(categories.length, Continent.values.length);
+    });
+
+    test('each category has valid id and title', () {
+      // Given
+      final categories = createFlagsCategories();
+
+      // Then
+      for (final category in categories) {
+        expect(category.id, isNotEmpty);
+        expect(category.title, isNotNull);
+        expect(category.icon, isNotNull);
+      }
+    });
+
+    test('category ids match continent names', () {
+      // Given
+      final categories = createFlagsCategories();
+
+      // Then
+      for (int i = 0; i < categories.length; i++) {
+        expect(categories[i].id, Continent.values[i].name);
+      }
+    });
   });
 
-  testWidgets('Continents screen navigate to game',
-      (WidgetTester tester) async {
-    // Given
-    await tester.pumpWidget(FlagsQuizApp(
-      homeWidget: ContinentsScreen(settingsService: settingsService),
-      settingsService: settingsService,
-    ));
-    await tester.pump();
-    // When
-    final optionButtonsFinder = find.byType(OptionButton);
-    expect(optionButtonsFinder, findsWidgets);
-    await tester.tap(optionButtonsFinder.first);
-    await tester.pumpAndSettle();
-    // Then
-    final scoreFinder = find.byWidgetPredicate((widget) =>
-        widget is Text &&
-        widget.data != null &&
-        widget.data!.contains(RegExp(r'^\d+ / \d+$')));
+  group('QuizHomeScreen integration', () {
+    testWidgets('displays categories from createFlagsCategories',
+        (WidgetTester tester) async {
+      // Given
+      final categories = createFlagsCategories();
 
-    // Verify that the score text is found
-    expect(scoreFinder, findsOneWidget);
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: QuizHomeScreen(
+            categories: categories,
+            config: QuizHomeScreenConfig(
+              tabConfig: QuizTabConfig(
+                tabs: [QuizTab.play(), QuizTab.history()],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Then - should have category cards
+      final categoryCards = find.byType(CategoryCard);
+      expect(categoryCards, findsWidgets);
+    });
+
+    testWidgets('category card shows localized continent name',
+        (WidgetTester tester) async {
+      // Given
+      final categories = createFlagsCategories();
+
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
+          home: QuizHomeScreen(
+            categories: categories,
+            config: QuizHomeScreenConfig(
+              tabConfig: QuizTabConfig(
+                tabs: [QuizTab.play(), QuizTab.history()],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+
+      // Then - should display "All" (first continent)
+      expect(find.text('All'), findsOneWidget);
+    });
   });
 }
