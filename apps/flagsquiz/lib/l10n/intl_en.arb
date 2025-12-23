@@ -1223,5 +1223,243 @@
   "build": "Build",
   "@build": {
     "description": "Build number label"
+  },
+  "history": "History",
+  "@history": {
+    "description": "History tab/screen title"
+  },
+  "statistics": "Statistics",
+  "@statistics": {
+    "description": "Statistics tab/screen title"
+  },
+  "play": "Play",
+  "@play": {
+    "description": "Play tab/screen title"
+  },
+  "questions": "questions",
+  "@questions": {
+    "description": "Label for questions count"
+  },
+  "sessionCompleted": "Completed",
+  "@sessionCompleted": {
+    "description": "Status label for completed session"
+  },
+  "sessionCancelled": "Cancelled",
+  "@sessionCancelled": {
+    "description": "Status label for cancelled session"
+  },
+  "sessionTimeout": "Timeout",
+  "@sessionTimeout": {
+    "description": "Status label for timed out session"
+  },
+  "sessionFailed": "Failed",
+  "@sessionFailed": {
+    "description": "Status label for failed session"
+  },
+  "perfectScore": "Perfect!",
+  "@perfectScore": {
+    "description": "Label for perfect score"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Today date label"
+  },
+  "yesterday": "Yesterday",
+  "@yesterday": {
+    "description": "Yesterday date label"
+  },
+  "daysAgo": "{count} days ago",
+  "@daysAgo": {
+    "description": "Days ago date label",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noSessionsYet": "No quiz sessions yet",
+  "@noSessionsYet": {
+    "description": "Empty state message for history screen"
+  },
+  "startPlayingToSee": "Start playing to see your history here",
+  "@startPlayingToSee": {
+    "description": "Empty state subtitle for history screen"
+  },
+  "sessionDetails": "Session Details",
+  "@sessionDetails": {
+    "description": "Session details screen title"
+  },
+  "reviewAnswers": "Review Answers",
+  "@reviewAnswers": {
+    "description": "Review answers section title"
+  },
+  "practiceWrongAnswers": "Practice Wrong Answers",
+  "@practiceWrongAnswers": {
+    "description": "Button to practice wrong answers"
+  },
+  "exportSession": "Export Session",
+  "@exportSession": {
+    "description": "Button to export session data"
+  },
+  "questionNumber": "Question {number}",
+  "@questionNumber": {
+    "description": "Question number label",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "yourAnswer": "Your answer",
+  "@yourAnswer": {
+    "description": "Label for user's answer"
+  },
+  "correctAnswer": "Correct answer",
+  "@correctAnswer": {
+    "description": "Label for correct answer"
+  },
+  "skipped": "Skipped",
+  "@skipped": {
+    "description": "Label for skipped question"
+  },
+  "totalSessions": "Total Sessions",
+  "@totalSessions": {
+    "description": "Statistics label for total sessions"
+  },
+  "totalQuestions": "Total Questions",
+  "@totalQuestions": {
+    "description": "Statistics label for total questions"
+  },
+  "averageScore": "Average Score",
+  "@averageScore": {
+    "description": "Statistics label for average score"
+  },
+  "bestScore": "Best Score",
+  "@bestScore": {
+    "description": "Statistics label for best score"
+  },
+  "accuracy": "Accuracy",
+  "@accuracy": {
+    "description": "Statistics label for accuracy"
+  },
+  "timePlayed": "Time Played",
+  "@timePlayed": {
+    "description": "Statistics label for time played"
+  },
+  "perfectScores": "Perfect Scores",
+  "@perfectScores": {
+    "description": "Statistics label for perfect scores count"
+  },
+  "currentStreak": "Current Streak",
+  "@currentStreak": {
+    "description": "Statistics label for current streak"
+  },
+  "bestStreak": "Best Streak",
+  "@bestStreak": {
+    "description": "Statistics label for best streak"
+  },
+  "weeklyTrend": "Weekly Trend",
+  "@weeklyTrend": {
+    "description": "Statistics section for weekly trend"
+  },
+  "improving": "Improving",
+  "@improving": {
+    "description": "Trend label when improving"
+  },
+  "declining": "Declining",
+  "@declining": {
+    "description": "Trend label when declining"
+  },
+  "stable": "Stable",
+  "@stable": {
+    "description": "Trend label when stable"
+  },
+  "noStatisticsYet": "No statistics yet",
+  "@noStatisticsYet": {
+    "description": "Empty state message for statistics screen"
+  },
+  "playQuizzesToSee": "Play some quizzes to see your statistics",
+  "@playQuizzesToSee": {
+    "description": "Empty state subtitle for statistics screen"
+  },
+  "exportAsJson": "Export as JSON",
+  "@exportAsJson": {
+    "description": "Export as JSON option"
+  },
+  "exportAsCsv": "Export as CSV",
+  "@exportAsCsv": {
+    "description": "Export as CSV option"
+  },
+  "exportSuccess": "Session exported successfully",
+  "@exportSuccess": {
+    "description": "Success message after export"
+  },
+  "exportError": "Failed to export session",
+  "@exportError": {
+    "description": "Error message when export fails"
+  },
+  "share": "Share",
+  "@share": {
+    "description": "Share button label"
+  },
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button label"
+  },
+  "deleteSession": "Delete Session",
+  "@deleteSession": {
+    "description": "Delete session dialog title"
+  },
+  "deleteSessionMessage": "Are you sure you want to delete this session? This cannot be undone.",
+  "@deleteSessionMessage": {
+    "description": "Delete session confirmation message"
+  },
+  "sessionDeleted": "Session deleted",
+  "@sessionDeleted": {
+    "description": "Success message after deleting session"
+  },
+  "overview": "Overview",
+  "@overview": {
+    "description": "Overview section title"
+  },
+  "insights": "Insights",
+  "@insights": {
+    "description": "Insights section title"
+  },
+  "recentSessions": "Recent Sessions",
+  "@recentSessions": {
+    "description": "Recent sessions section title"
+  },
+  "viewAll": "View All",
+  "@viewAll": {
+    "description": "View all button label"
+  },
+  "hours": "hours",
+  "@hours": {
+    "description": "Hours unit"
+  },
+  "minutes": "minutes",
+  "@minutes": {
+    "description": "Minutes unit"
+  },
+  "seconds": "seconds",
+  "@seconds": {
+    "description": "Seconds unit"
+  },
+  "duration": "Duration",
+  "@duration": {
+    "description": "Duration label"
+  },
+  "score": "Score",
+  "@score": {
+    "description": "Score label"
+  },
+  "correct": "Correct",
+  "@correct": {
+    "description": "Correct label"
+  },
+  "incorrect": "Incorrect",
+  "@incorrect": {
+    "description": "Incorrect label"
   }
 }
