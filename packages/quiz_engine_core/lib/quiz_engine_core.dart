@@ -16,6 +16,7 @@ export 'src/model/answer.dart';
 export 'src/model/question.dart';
 export 'src/model/question_entry.dart';
 export 'src/model/question_type.dart';
+export 'src/model/quiz_results.dart';
 export 'src/model/random_pick_result.dart';
 
 // Storage
