@@ -22,7 +22,7 @@
 | Phase 8 | Shared Services | Not Started |
 | Phase 9 | Polish & Integration | Not Started |
 | Phase 10 | Second App Validation | Not Started |
-| Phase 11 | QuizApp Refactoring | Not Started |
+| Phase 11 | QuizApp Refactoring | In Progress |
 
 ---
 
@@ -373,18 +373,22 @@ void main() async {
 
 ---
 
-### Sprint 11.1: Core Models and Interfaces
+### Sprint 11.1: Core Models and Interfaces ✅
 
 **Tasks:**
-- [ ] Create `QuizCategory` model with `LocalizedString` support
-- [ ] Create `QuizDataProvider` interface and `CallbackQuizDataProvider`
-- [ ] Create `QuizTab` enum and `QuizTabConfig`
-- [ ] Write unit tests for models
+- [x] Create `QuizCategory` model with `LocalizedString` support
+- [x] Create `QuizDataProvider` interface and `CallbackQuizDataProvider`
+- [x] Create `QuizTab` sealed class and `QuizTabConfig`
+- [x] Write unit tests for models
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/models/quiz_category.dart`
-- `packages/quiz_engine/lib/src/models/quiz_data_provider.dart`
-- `packages/quiz_engine/lib/src/app/quiz_tab.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/models/quiz_category.dart`
+- ✅ `packages/quiz_engine/lib/src/models/quiz_data_provider.dart`
+- ✅ `packages/quiz_engine/lib/src/models/models_exports.dart`
+- ✅ `packages/quiz_engine/lib/src/app/quiz_tab.dart`
+- ✅ `packages/quiz_engine/test/models/quiz_category_test.dart`
+- ✅ `packages/quiz_engine/test/models/quiz_data_provider_test.dart`
+- ✅ `packages/quiz_engine/test/app/quiz_tab_test.dart`
 
 **Key Classes:**
 ```dart
@@ -405,7 +409,14 @@ abstract class QuizDataProvider {
   StorageConfig? createStorageConfig(BuildContext context, QuizCategory category);
 }
 
-enum QuizTab { play, history, statistics, settings }
+// Sealed class with factory methods
+sealed class QuizTab {
+  factory QuizTab.play({...}) = PlayTab;
+  factory QuizTab.history({...}) = HistoryTab;
+  factory QuizTab.statistics({...}) = StatisticsTab;
+  factory QuizTab.settings({...}) = SettingsTab;
+  factory QuizTab.custom({...}) = CustomTab;
+}
 ```
 
 ---
