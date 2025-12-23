@@ -4,6 +4,7 @@ library;
 import '../../storage/data_sources/data_sources_exports.dart';
 import '../../storage/database/app_database.dart';
 import '../../storage/repositories/repositories_exports.dart';
+import '../../storage/storage_service.dart';
 import '../dependency_module.dart';
 import '../service_locator.dart';
 
@@ -69,6 +70,15 @@ class StorageModule extends DependencyModule {
     sl.registerLazySingleton<SettingsRepository>(
       () => SettingsRepositoryImpl(
         dataSource: sl.get<SettingsDataSource>(),
+      ),
+    );
+
+    // Register StorageService facade
+    sl.registerLazySingleton<StorageService>(
+      () => StorageServiceImpl(
+        sessionRepository: sl.get<QuizSessionRepository>(),
+        statisticsRepository: sl.get<StatisticsRepository>(),
+        settingsRepository: sl.get<SettingsRepository>(),
       ),
     );
   }
