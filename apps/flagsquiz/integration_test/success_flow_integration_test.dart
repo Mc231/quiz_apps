@@ -3,7 +3,6 @@ import 'package:flags_quiz/data/flags_categories.dart';
 import 'package:flags_quiz/data/flags_data_provider.dart';
 import 'package:flags_quiz/l10n/app_localizations.dart';
 import 'package:flags_quiz/models/continent.dart';
-import 'package:flags_quiz/ui/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -46,9 +45,6 @@ void main() {
       homeConfig: QuizHomeScreenConfig(
         tabConfig: QuizTabConfig.defaultConfig(),
         showSettingsInAppBar: true,
-      ),
-      settingsBuilder: (context) => SettingsScreen(
-        settingsService: settingsService,
       ),
     );
   }
