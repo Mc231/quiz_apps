@@ -52,27 +52,28 @@ class StatisticsCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 children: [
                   if (icon != null) ...[
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
                         color: (iconColor ?? theme.primaryColor)
                             .withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(6),
                       ),
                       child: Icon(
                         icon,
-                        size: 20,
+                        size: 16,
                         color: iconColor ?? theme.primaryColor,
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 8),
                   ],
                   Expanded(
                     child: Text(
@@ -80,21 +81,28 @@ class StatisticsCard extends StatelessWidget {
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: Colors.grey[600],
                         fontWeight: FontWeight.w500,
+                        fontSize: 11,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   if (trend != null) _buildTrendIndicator(),
                 ],
               ),
-              const SizedBox(height: 12),
-              Text(
-                value,
-                style: theme.textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+              const SizedBox(height: 8),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  value,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               if (subtitle != null || trendLabel != null) ...[
-                const SizedBox(height: 4),
+                const SizedBox(height: 2),
                 Row(
                   children: [
                     if (subtitle != null)
@@ -103,7 +111,10 @@ class StatisticsCard extends StatelessWidget {
                           subtitle!,
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: Colors.grey[500],
+                            fontSize: 10,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     if (trendLabel != null)
@@ -112,6 +123,7 @@ class StatisticsCard extends StatelessWidget {
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: _getTrendColor(),
                           fontWeight: FontWeight.w500,
+                          fontSize: 10,
                         ),
                       ),
                   ],
