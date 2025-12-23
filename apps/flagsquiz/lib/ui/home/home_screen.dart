@@ -27,6 +27,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
 
+  final _historyKey = GlobalKey<HistoryPageState>();
+  final _statisticsKey = GlobalKey<StatisticsPageState>();
+
   late final List<Widget> _pages;
 
   @override
@@ -34,9 +37,26 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _pages = [
       ContinentsScreen(settingsService: widget.settingsService),
-      HistoryPage(storageService: widget.storageService),
-      StatisticsPage(storageService: widget.storageService),
+      HistoryPage(
+        key: _historyKey,
+        storageService: widget.storageService,
+      ),
+      StatisticsPage(
+        key: _statisticsKey,
+        storageService: widget.storageService,
+      ),
     ];
+  }
+
+  void _onTabSelected(int index) {
+    setState(() => _currentIndex = index);
+
+    // Refresh data when switching to History or Statistics tabs
+    if (index == 1) {
+      _historyKey.currentState?.refresh();
+    } else if (index == 2) {
+      _statisticsKey.currentState?.refresh();
+    }
   }
 
   @override
@@ -50,9 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
-        onDestinationSelected: (index) {
-          setState(() => _currentIndex = index);
-        },
+        onDestinationSelected: _onTabSelected,
         destinations: [
           NavigationDestination(
             icon: const Icon(Icons.play_circle_outline),

@@ -16,16 +16,22 @@ class HistoryPage extends StatefulWidget {
   final StorageService storageService;
 
   @override
-  State<HistoryPage> createState() => _HistoryPageState();
+  State<HistoryPage> createState() => HistoryPageState();
 }
 
-class _HistoryPageState extends State<HistoryPage> {
+/// State for [HistoryPage].
+class HistoryPageState extends State<HistoryPage> {
   List<QuizSession> _sessions = [];
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    _loadSessions();
+  }
+
+  /// Refreshes the session list.
+  void refresh() {
     _loadSessions();
   }
 

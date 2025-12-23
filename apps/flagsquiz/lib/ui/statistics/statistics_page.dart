@@ -16,10 +16,11 @@ class StatisticsPage extends StatefulWidget {
   final StorageService storageService;
 
   @override
-  State<StatisticsPage> createState() => _StatisticsPageState();
+  State<StatisticsPage> createState() => StatisticsPageState();
 }
 
-class _StatisticsPageState extends State<StatisticsPage> {
+/// State for [StatisticsPage].
+class StatisticsPageState extends State<StatisticsPage> {
   GlobalStatistics? _statistics;
   List<QuizSession> _recentSessions = [];
   StatisticsTrend? _trend;
@@ -28,6 +29,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
   @override
   void initState() {
     super.initState();
+    _loadStatistics();
+  }
+
+  /// Refreshes the statistics data.
+  void refresh() {
     _loadStatistics();
   }
 
