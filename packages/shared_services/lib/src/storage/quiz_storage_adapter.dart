@@ -231,6 +231,14 @@ class QuizStorageAdapter implements QuizStorageService {
   }
 
   @override
+  Future<void> deleteSession(String sessionId) async {
+    final result = await _storageService.deleteSession(sessionId);
+    if (result.isFailure) {
+      throw Exception('Failed to delete session: ${result.error?.message}');
+    }
+  }
+
+  @override
   void dispose() {
     // StorageService is managed by DI, don't dispose it here
   }
