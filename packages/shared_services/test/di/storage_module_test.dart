@@ -73,8 +73,8 @@ void main() {
           debugInfo['lazySingletons']!.length +
           debugInfo['factories']!.length;
 
-      // 1 database + 4 data sources + 3 repositories = 8
-      expect(totalRegistrations, 8);
+      // 1 database + 4 data sources + 3 repositories + 1 StorageService = 9
+      expect(totalRegistrations, 9);
     });
   });
 
