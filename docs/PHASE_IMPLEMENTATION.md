@@ -536,19 +536,19 @@ class StatisticsTabData { /* Data model for Statistics tab async loading */ }
 
 ---
 
-### Sprint 11.5: QuizSettingsScreen (Optional)
+### Sprint 11.5: QuizSettingsScreen (Optional) ✅
 
 **Tasks:**
-- [ ] Create `QuizSettingsConfig` for configurable settings
-- [ ] Create `QuizSettingsScreen` using engine localizations
-- [ ] Support sound, haptic, theme, about sections
-- [ ] Support custom additional sections
-- [ ] Integrate with SettingsService
-- [ ] Write widget tests
+- [x] Create `QuizSettingsConfig` for configurable settings
+- [x] Create `QuizSettingsScreen` using engine localizations
+- [x] Support sound, haptic, theme, about sections
+- [x] Support custom additional sections
+- [x] Integrate with SettingsService
+- [x] Write widget tests
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/settings/quiz_settings_config.dart`
-- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart` (includes QuizSettingsConfig, SettingsSection)
+- ✅ `packages/quiz_engine/test/settings/quiz_settings_screen_test.dart`
 
 **Configurable Sections:**
 - Sound/Haptics
