@@ -10,27 +10,30 @@ This document helps AI assistants work efficiently with this Flutter quiz apps m
 
 ### How It Works
 
-1. **User requests a sprint/task** from the architecture guide (e.g., "implement Sprint 5.2")
-2. **Read the guide** to understand the task requirements and expected deliverables
-3. **Implement the code** following the specifications in the guide
-4. **Write tests** for all new code
-5. **Update the guide** to mark completed tasks with `[x]` and add `✅` to the sprint title
-6. **List created files** under the sprint section
-7. **Use the commiter agent** to create dedicated commits for each file with appropriate prefixes
+1. **User requests a sprint/task** (e.g., "implement Sprint 5.2")
+2. **Read `CORE_ARCHITECTURE_GUIDE.md`** for architecture patterns and design
+3. **Check `PHASE_IMPLEMENTATION.md`** for specific tasks and requirements
+4. **Implement the code** following the specifications
+5. **Write tests** for all new code
+6. **Update `PHASE_IMPLEMENTATION.md`** to mark completed tasks with `[x]` and add `✅` to the sprint title
+7. **List created files** under the sprint section
+8. **Use the commiter agent** to create dedicated commits for each file with appropriate prefixes
 
 ### Quick Reference
 
 ```bash
-# Architecture guide location
-docs/CORE_ARCHITECTURE_GUIDE.md
+# Documentation locations
+docs/CORE_ARCHITECTURE_GUIDE.md  # Architecture patterns & design
+docs/PHASE_IMPLEMENTATION.md     # Phase/sprint progress tracking
 
 # When implementing a sprint:
-1. Read the sprint section in CORE_ARCHITECTURE_GUIDE.md
-2. Create files as specified
-3. Write unit tests
-4. Run: flutter test (in the relevant package)
-5. Update the guide: mark tasks [x], add ✅, list created files
-6. Use commiter agent with prefix (feat/fix/refactor/test/docs)
+1. Read architecture patterns in CORE_ARCHITECTURE_GUIDE.md
+2. Check sprint tasks in PHASE_IMPLEMENTATION.md
+3. Create files as specified
+4. Write unit tests
+5. Run: flutter test (in the relevant package)
+6. Update PHASE_IMPLEMENTATION.md: mark tasks [x], add ✅, list created files
+7. Use commiter agent with prefix (feat/fix/refactor/test/docs)
 ```
 
 ### Committing Changes
@@ -48,6 +51,8 @@ The commiter agent will:
 - Use the specified prefix (feat, fix, refactor, test, docs, chore)
 
 ### Marking Tasks Complete
+
+In `PHASE_IMPLEMENTATION.md`:
 
 ```markdown
 # Before:

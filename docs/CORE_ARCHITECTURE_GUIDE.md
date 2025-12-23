@@ -2,7 +2,9 @@
 
 **Purpose:** This document defines how to implement all quiz features at the core package level (quiz_engine_core, quiz_engine, shared_services) to maximize reusability across multiple quiz apps.
 
-**Last Updated:** 2025-12-22
+**Implementation Tracking:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for phase/sprint progress and task tracking.
+
+**Last Updated:** 2025-12-23
 
 ---
 
@@ -2798,43 +2800,22 @@ packages/shared_services/lib/src/storage/
 └── storage_service.dart               # Main service facade
 ```
 
-### Sprint 5.1: Database Foundation & Core Models ✅ COMPLETED
+### Sprint 5.1: Database Foundation & Core Models
 
-**Tasks:**
-- [x] Add sqflite dependencies to shared_services
-- [x] Create database configuration and setup
-- [x] Define SQL schema for all tables (see STORAGE_REQUIREMENTS.md)
-- [x] Implement database migrations system
-- [x] Create data models (PODOs) for all entities
-- [x] Write model serialization (toMap/fromMap)
-- [x] Create database indexes for performance
-- [x] Test database initialization and migrations
+> **Status:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for progress
 
-**Core Models to Create:**
+**Core Models:**
 ```dart
-// QuizSession model
 class QuizSession {
   final String id;
   final String quizName;
-  final String quizId;
   final String quizType;
-  final String? quizCategory;
   final int totalQuestions;
-  final int totalAnswered;
   final int totalCorrect;
-  final int totalFailed;
-  final int totalSkipped;
   final double scorePercentage;
-  final DateTime startTime;
-  final DateTime? endTime;
-  final int? durationSeconds;
   final CompletionStatus completionStatus;
   final QuizMode mode;
-  final int? timeLimitSeconds;
-  final int hints5050Used;
-  final int hintsSkipUsed;
-
-  // Methods: toMap, fromMap, copyWith
+  // ... see full implementation
 }
 
 enum CompletionStatus { completed, cancelled, timeout, failed }
@@ -2842,56 +2823,18 @@ enum QuizMode { normal, timed, endless, survival }
 ```
 
 **Database Tables:**
-- quiz_sessions (primary session tracking)
-- question_answers (detailed Q&A for review - stores all 4 options + order + explanations)
-- global_statistics (aggregate stats)
-- quiz_type_statistics (stats per quiz type/category)
-- daily_statistics (✅ pre-aggregated daily stats for fast charts/trends)
-- user_settings (app preferences)
+- `quiz_sessions` - Primary session tracking
+- `question_answers` - Detailed Q&A for review
+- `global_statistics` - Aggregate stats
+- `quiz_type_statistics` - Stats per quiz type/category
+- `daily_statistics` - Pre-aggregated daily stats for charts
+- `user_settings` - App preferences
 
-**Files Created:**
-- ✅ `packages/shared_services/lib/src/storage/database/app_database.dart`
-- ✅ `packages/shared_services/lib/src/storage/database/database_config.dart`
-- ✅ `packages/shared_services/lib/src/storage/database/tables/quiz_sessions_table.dart`
-- ✅ `packages/shared_services/lib/src/storage/database/tables/question_answers_table.dart`
-- ✅ `packages/shared_services/lib/src/storage/database/tables/statistics_tables.dart`
-- ✅ `packages/shared_services/lib/src/storage/database/tables/daily_statistics_table.dart`
-- ✅ `packages/shared_services/lib/src/storage/database/tables/settings_table.dart`
-- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration.dart`
-- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration_v1.dart`
-- ✅ `packages/shared_services/lib/src/storage/models/quiz_session.dart`
-- ✅ `packages/shared_services/lib/src/storage/models/question_answer.dart`
-- ✅ `packages/shared_services/lib/src/storage/models/global_statistics.dart`
-- ✅ `packages/shared_services/lib/src/storage/models/quiz_type_statistics.dart`
-- ✅ `packages/shared_services/lib/src/storage/models/daily_statistics.dart`
-- ✅ `packages/shared_services/lib/src/storage/models/user_settings_model.dart`
-- ✅ `packages/shared_services/lib/src/storage/storage_exports.dart`
-- ✅ `packages/shared_services/test/storage/models_test.dart`
-- ✅ `packages/shared_services/test/storage/tables_test.dart`
-- ✅ `packages/shared_services/test/storage/database_config_test.dart`
+---
 
-### Sprint 5.2: Data Sources Implementation ✅
+### Sprint 5.2: Data Sources Implementation
 
-**Tasks:**
-- [x] Implement QuizSessionDataSource (CRUD operations)
-- [x] Implement QuestionAnswerDataSource (CRUD + queries)
-- [x] Implement StatisticsDataSource (aggregations & updates)
-- [x] Implement SettingsDataSource (read/write preferences)
-- [x] Add error handling and transactions
-- [x] Implement batch operations for performance
-- [x] Add query helpers and filters
-- [x] Write unit tests for all data sources
-
-**Files Created:**
-- ✅ `packages/shared_services/lib/src/storage/data_sources/quiz_session_data_source.dart`
-- ✅ `packages/shared_services/lib/src/storage/data_sources/question_answer_data_source.dart`
-- ✅ `packages/shared_services/lib/src/storage/data_sources/statistics_data_source.dart`
-- ✅ `packages/shared_services/lib/src/storage/data_sources/settings_data_source.dart`
-- ✅ `packages/shared_services/lib/src/storage/data_sources/data_sources_exports.dart`
-- ✅ `packages/shared_services/test/storage/data_sources/quiz_session_data_source_test.dart`
-- ✅ `packages/shared_services/test/storage/data_sources/question_answer_data_source_test.dart`
-- ✅ `packages/shared_services/test/storage/data_sources/statistics_data_source_test.dart`
-- ✅ `packages/shared_services/test/storage/data_sources/settings_data_source_test.dart`
+> **Status:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for progress
 
 **QuizSessionDataSource Interface:**
 ```dart
@@ -2930,24 +2873,11 @@ abstract class QuizSessionDataSource {
 }
 ```
 
-**Files to Create:**
-- `packages/shared_services/lib/src/storage/data_sources/quiz_session_data_source.dart`
-- `packages/shared_services/lib/src/storage/data_sources/question_answer_data_source.dart`
-- `packages/shared_services/lib/src/storage/data_sources/statistics_data_source.dart`
-- `packages/shared_services/lib/src/storage/data_sources/settings_data_source.dart`
-- `packages/shared_services/test/storage/data_sources/*_test.dart`
+---
 
-### Sprint 5.3: Repository Layer Implementation ✅
+### Sprint 5.3: Repository Layer Implementation
 
-**Tasks:**
-- [x] Create repository interfaces (abstract classes)
-- [x] Implement QuizSessionRepository
-- [x] Implement StatisticsRepository with aggregations
-- [x] Implement SettingsRepository (migrate from SharedPreferences)
-- [x] Add caching layer for performance
-- [x] Implement real-time statistics updates
-- [x] Add Stream support for reactive updates
-- [x] Write integration tests for repositories
+> **Status:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for progress
 
 **Repository Pattern:**
 ```dart
@@ -3016,196 +2946,56 @@ class QuizSessionRepositoryImpl implements QuizSessionRepository {
 - Generate reports and insights
 - Real-time statistics updates via Streams
 
-**Files to Create:**
-- `packages/shared_services/lib/src/storage/repositories/quiz_session_repository.dart`
-- `packages/shared_services/lib/src/storage/repositories/statistics_repository.dart`
-- `packages/shared_services/lib/src/storage/repositories/settings_repository.dart`
-- `packages/shared_services/test/storage/repositories/*_test.dart`
-
-**Files Created:**
-- ✅ `packages/shared_services/lib/src/storage/repositories/quiz_session_repository.dart`
-- ✅ `packages/shared_services/lib/src/storage/repositories/statistics_repository.dart`
-- ✅ `packages/shared_services/lib/src/storage/repositories/settings_repository.dart`
-- ✅ `packages/shared_services/lib/src/storage/repositories/repositories_exports.dart`
-- ✅ `packages/shared_services/test/storage/repositories/quiz_session_repository_test.dart`
-- ✅ `packages/shared_services/test/storage/repositories/statistics_repository_test.dart`
-- ✅ `packages/shared_services/test/storage/repositories/settings_repository_test.dart`
+---
 
 ### Sprint 5.3.1: Dependency Injection Setup
 
-**Goal:** Create a simple, library-free dependency injection system with service locator pattern and module-based registration.
-
-**Tasks:**
-- [ ] Create ServiceLocator class with singleton/factory/lazy registration
-- [ ] Create DependencyModule base class for organized registration
-- [ ] Create StorageModule for all storage-related dependencies
-- [ ] Create Disposable interface for resource cleanup
-- [ ] Update data sources to remove singleton fallbacks (explicit DI only)
-- [ ] Add initialization helper for apps
-- [ ] Write unit tests for ServiceLocator
-- [ ] Update shared_services exports
+> **Status:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for progress
 
 **ServiceLocator Pattern:**
 ```dart
-/// Central service locator for dependency injection.
 class ServiceLocator {
-  ServiceLocator._();
   static final ServiceLocator instance = ServiceLocator._();
 
-  final _singletons = <Type, dynamic>{};
-  final _lazySingletons = <Type, dynamic Function()>{};
-  final _factories = <Type, dynamic Function()>{};
-
-  /// Register a singleton instance (already created)
-  void registerSingleton<T>(T instance) {
-    _singletons[T] = instance;
-  }
-
-  /// Register a lazy singleton (created on first access)
-  void registerLazySingleton<T>(T Function() factory) {
-    _lazySingletons[T] = factory;
-  }
-
-  /// Register a factory (new instance each time)
-  void registerFactory<T>(T Function() factory) {
-    _factories[T] = factory;
-  }
-
-  /// Get a registered dependency
-  T get<T>() {
-    // Check singletons first
-    if (_singletons.containsKey(T)) {
-      return _singletons[T] as T;
-    }
-
-    // Check lazy singletons (create and cache on first access)
-    if (_lazySingletons.containsKey(T)) {
-      final instance = _lazySingletons[T]!() as T;
-      _singletons[T] = instance;
-      _lazySingletons.remove(T);
-      return instance;
-    }
-
-    // Check factories (create new each time)
-    if (_factories.containsKey(T)) {
-      return _factories[T]!() as T;
-    }
-
-    throw StateError('Type $T is not registered in ServiceLocator');
-  }
-
-  /// Check if a type is registered
-  bool isRegistered<T>() {
-    return _singletons.containsKey(T) ||
-           _lazySingletons.containsKey(T) ||
-           _factories.containsKey(T);
-  }
-
-  /// Reset all registrations (for testing)
-  void reset() {
-    _singletons.clear();
-    _lazySingletons.clear();
-    _factories.clear();
-  }
+  void registerSingleton<T>(T instance);
+  void registerLazySingleton<T>(T Function() factory);
+  void registerFactory<T>(T Function() factory);
+  T get<T>();
+  void reset();
 }
 
-/// Global shortcut for ServiceLocator.instance
 final sl = ServiceLocator.instance;
 ```
 
 **Module Pattern:**
 ```dart
-/// Base class for dependency modules.
 abstract class DependencyModule {
-  /// Register all dependencies for this module.
   void register(ServiceLocator sl);
-
-  /// Dispose resources when module is no longer needed.
-  Future<void> dispose() async {}
 }
 
-/// Storage module - registers all storage-related dependencies.
 class StorageModule extends DependencyModule {
   @override
   void register(ServiceLocator sl) {
-    // Database
     sl.registerLazySingleton<AppDatabase>(() => AppDatabase.instance);
-
-    // Data Sources
-    sl.registerLazySingleton<QuizSessionDataSource>(
-      () => QuizSessionDataSourceImpl(database: sl.get<AppDatabase>()),
-    );
-    sl.registerLazySingleton<QuestionAnswerDataSource>(
-      () => QuestionAnswerDataSourceImpl(database: sl.get<AppDatabase>()),
-    );
-    sl.registerLazySingleton<StatisticsDataSource>(
-      () => StatisticsDataSourceImpl(database: sl.get<AppDatabase>()),
-    );
-    sl.registerLazySingleton<SettingsDataSource>(
-      () => SettingsDataSourceImpl(database: sl.get<AppDatabase>()),
-    );
-
-    // Repositories
-    sl.registerLazySingleton<QuizSessionRepository>(
-      () => QuizSessionRepositoryImpl(
-        sessionDataSource: sl.get<QuizSessionDataSource>(),
-        answerDataSource: sl.get<QuestionAnswerDataSource>(),
-        statsDataSource: sl.get<StatisticsDataSource>(),
-      ),
-    );
-    sl.registerLazySingleton<StatisticsRepository>(
-      () => StatisticsRepositoryImpl(dataSource: sl.get<StatisticsDataSource>()),
-    );
-    sl.registerLazySingleton<SettingsRepository>(
-      () => SettingsRepositoryImpl(dataSource: sl.get<SettingsDataSource>()),
-    );
+    sl.registerLazySingleton<SettingsRepository>(() => SettingsRepositoryImpl(...));
+    // ... other registrations
   }
 }
 ```
 
 **App Initialization:**
 ```dart
-/// Initialize all shared services dependencies.
 Future<void> initializeSharedServices() async {
-  // Register storage module
   StorageModule().register(sl);
-
-  // Initialize database
   await sl.get<AppDatabase>().database;
-
-  // Run settings migration if needed
-  await sl.get<SettingsRepository>().migrateFromSharedPreferences();
-}
-
-// Usage in main.dart
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await initializeSharedServices();
-  runApp(MyApp());
 }
 ```
 
-**Files to Create:**
-- `packages/shared_services/lib/src/di/service_locator.dart`
-- `packages/shared_services/lib/src/di/dependency_module.dart`
-- `packages/shared_services/lib/src/di/modules/storage_module.dart`
-- `packages/shared_services/lib/src/di/di_exports.dart`
-- `packages/shared_services/lib/src/di/shared_services_initializer.dart`
-- `packages/shared_services/test/di/service_locator_test.dart`
-- `packages/shared_services/test/di/storage_module_test.dart`
+---
 
 ### Sprint 5.4: Integration with Quiz Engine
 
-**Tasks:**
-- [ ] Create StorageService facade in shared_services
-- [ ] Integrate QuizSessionRepository with QuizBloc
-- [ ] Save quiz sessions on completion
-- [ ] Save individual Q&A during quiz
-- [ ] Update statistics in real-time
-- [ ] Implement session recovery (resume interrupted quiz)
-- [ ] Add error handling and retry logic
-- [ ] Update QuizConfig to include storage settings
-- [ ] Test end-to-end storage flow
+> **Status:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for progress
 
 **QuizBloc Integration:**
 ```dart
@@ -3258,28 +3048,15 @@ class QuizBloc {
     );
 
     // Statistics are auto-updated via triggers
-    // Show game over dialog
   }
 }
 ```
 
-**Files to Update:**
-- `packages/quiz_engine_core/lib/src/quiz/quiz_bloc.dart` - ADD storage integration
-- `packages/quiz_engine_core/lib/src/quiz/quiz_config.dart` - ADD storage settings
-- `packages/shared_services/lib/src/storage/storage_service.dart` - CREATE facade
-- `packages/quiz_engine/test/bloc/quiz_bloc_storage_test.dart` - NEW
+---
 
 ### Sprint 5.5: Review & Statistics UI
 
-**Tasks:**
-- [ ] Create SessionHistoryScreen (list of past sessions)
-- [ ] Create SessionDetailScreen (review single session)
-- [ ] Create QuestionReviewWidget (show Q&A with explanations)
-- [ ] Create StatisticsScreen with charts
-- [ ] Create TrendsScreen (daily/weekly performance)
-- [ ] Add "Practice Wrong Answers" mode
-- [ ] Add export functionality (CSV/JSON)
-- [ ] Test all UI screens
+> **Status:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for progress
 
 **Session History Screen:**
 ```dart
@@ -3316,26 +3093,20 @@ class SessionHistoryScreen extends StatelessWidget {
 - Category breakdown
 - Question success rate
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/screens/history_screen.dart` - NEW
-- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart` - NEW
-- `packages/quiz_engine/lib/src/screens/statistics_screen.dart` - NEW
-- `packages/quiz_engine/lib/src/widgets/session_card.dart` - NEW
-- `packages/quiz_engine/lib/src/widgets/statistics_chart.dart` - NEW
-- `packages/quiz_engine/test/screens/*_test.dart`
+---
 
 ### Sprint 5.6: Advanced Features & Optimization
 
-**Tasks:**
-- [ ] Implement data archiving (auto-archive old sessions)
-- [ ] Add database vacuum/cleanup scheduled task
-- [ ] Implement pagination for large datasets
-- [ ] Add search/filter functionality
-- [ ] Implement data export (GDPR compliance)
-- [ ] Add data import (restore from backup)
-- [ ] Optimize queries with proper indexes
-- [ ] Add database performance monitoring
-- [ ] Write performance tests
+> **Status:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for progress
+
+**Features:**
+- Data archiving (auto-archive old sessions)
+- Database vacuum/cleanup scheduled task
+- Pagination for large datasets
+- Search/filter functionality
+- Data export/import (GDPR compliance)
+- Query optimization with proper indexes
+- Performance monitoring
 
 **Advanced Features:**
 - Smart recommendations (practice weak areas)

@@ -4,6 +4,9 @@
 /// that can be reused across multiple quiz apps.
 library;
 
+// Dependency Injection
+export 'src/di/di_exports.dart';
+
 // Data Providers (HTTP-based quiz data fetching)
 export 'src/data_providers/data_providers_exports.dart';
 
