@@ -32,6 +32,7 @@ class QuizWidget extends StatelessWidget {
       RandomItemPicker([]),
       configManager: quizEntry.configManager,
       storageService: quizEntry.storageService,
+      quizName: quizEntry.title,
     );
 
     return BlocProvider(
