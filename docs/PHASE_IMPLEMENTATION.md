@@ -452,22 +452,45 @@ sealed class QuizTab {
 
 ---
 
-### Sprint 11.3: PlayScreen and Category Views
+### Sprint 11.3: PlayScreen and Category Views ✅
 
 **Tasks:**
-- [ ] Create `CategoryCard` widget (displays category with image/icon)
-- [ ] Create `PlayScreen` with configurable layout (grid/list)
-- [ ] Add responsive design support
-- [ ] Write widget tests
+- [x] Create `CategoryCard` widget (displays category with image/icon)
+- [x] Create `PlayScreen` with configurable layout (grid/list)
+- [x] Add responsive design support
+- [x] Write widget tests
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/home/category_card.dart`
-- `packages/quiz_engine/lib/src/home/play_screen.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/home/category_card.dart` - CategoryCard with CategoryCardStyle
+- ✅ `packages/quiz_engine/lib/src/home/play_screen.dart` - PlayScreen, PlayScreenSliver, PlayScreenConfig
+- ✅ `packages/quiz_engine/test/home/category_card_test.dart` - 25 widget tests
+- ✅ `packages/quiz_engine/test/home/play_screen_test.dart` - 18 widget tests
+
+**Key Classes:**
+```dart
+class CategoryCard extends StatelessWidget {
+  const CategoryCard.grid({...});  // Vertical layout for grid
+  const CategoryCard.list({...});  // Horizontal layout for list
+}
+
+enum PlayScreenLayout { grid, list, adaptive }
+
+class PlayScreen extends StatelessWidget {
+  // Responsive grid/list/adaptive display of categories
+}
+
+class PlayScreenSliver extends StatelessWidget {
+  // For use in CustomScrollView
+}
+```
 
 **Features:**
-- Configurable layout: `PlayScreenLayout.grid` or `PlayScreenLayout.list`
+- Configurable layout: `PlayScreenLayout.grid`, `PlayScreenLayout.list`, or `PlayScreenLayout.adaptive`
 - Category card shows: image/icon, title, subtitle
 - Settings action in app bar (optional)
+- Responsive design using `responsive_builder` package
+- Custom app bar actions support
+- Empty state and loading state widgets
 
 ---
 
