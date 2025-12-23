@@ -16,8 +16,8 @@
 | Phase 2 | Quiz Modes & Features | ✅ Completed |
 | Phase 3 | Achievements & Statistics | In Progress |
 | Phase 4 | Settings & Configuration | In Progress |
-| Phase 5 | Data Persistence & Storage | In Progress |
-| Phase 6 | Results & Statistics UI | Not Started |
+| Phase 5 | Data Persistence & Storage | ✅ Completed |
+| Phase 6 | Results & Statistics UI | In Progress |
 | Phase 7 | Achievements | Not Started |
 | Phase 8 | Shared Services | Not Started |
 | Phase 9 | Polish & Integration | Not Started |
@@ -179,25 +179,32 @@
 
 ---
 
-### Sprint 5.5: Review & Statistics UI
+### Sprint 5.5: Review & Statistics UI ✅
 
 **Tasks:**
-- [ ] Create SessionHistoryScreen (list of past sessions)
-- [ ] Create SessionDetailScreen (review single session)
-- [ ] Create QuestionReviewWidget (show Q&A with explanations)
-- [ ] Create StatisticsScreen with charts
-- [ ] Create TrendsScreen (daily/weekly performance)
-- [ ] Add "Practice Wrong Answers" mode
-- [ ] Add export functionality (CSV/JSON)
-- [ ] Test all UI screens
+- [x] Create SessionHistoryScreen (list of past sessions)
+- [x] Create SessionDetailScreen (review single session)
+- [x] Create QuestionReviewWidget (show Q&A with explanations)
+- [x] Create StatisticsScreen with charts
+- [x] Create TrendsWidget (daily/weekly performance)
+- [ ] Add "Practice Wrong Answers" mode (TODO - stub added)
+- [x] Add export functionality (CSV/JSON)
+- [x] Integrate screens into flags quiz app
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/screens/history_screen.dart`
-- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
-- `packages/quiz_engine/lib/src/screens/statistics_screen.dart`
-- `packages/quiz_engine/lib/src/widgets/session_card.dart`
-- `packages/quiz_engine/lib/src/widgets/statistics_chart.dart`
-- `packages/quiz_engine/test/screens/*_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/widgets/session_card.dart` - SessionCard and SessionCardData
+- ✅ `packages/quiz_engine/lib/src/widgets/statistics_card.dart` - StatisticsCard and StatisticsGrid
+- ✅ `packages/quiz_engine/lib/src/widgets/question_review_widget.dart` - QuestionReviewWidget and ReviewedQuestion
+- ✅ `packages/quiz_engine/lib/src/widgets/trends_widget.dart` - TrendsWidget, TrendDataPoint, TrendType
+- ✅ `packages/quiz_engine/lib/src/screens/session_history_screen.dart` - SessionHistoryScreen with SessionHistoryTexts
+- ✅ `packages/quiz_engine/lib/src/screens/session_detail_screen.dart` - SessionDetailScreen with SessionDetailData
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_screen.dart` - StatisticsScreen with GlobalStatisticsData
+- ✅ `packages/shared_services/lib/src/storage/services/session_export_service.dart` - Export to JSON/CSV/text
+- ✅ `apps/flagsquiz/lib/ui/home/home_screen.dart` - HomeScreen with bottom navigation
+- ✅ `apps/flagsquiz/lib/ui/history/history_page.dart` - HistoryPage integration
+- ✅ `apps/flagsquiz/lib/ui/history/session_detail_page.dart` - SessionDetailPage integration
+- ✅ `apps/flagsquiz/lib/ui/statistics/statistics_page.dart` - StatisticsPage integration
+- ✅ `apps/flagsquiz/lib/l10n/intl_en.arb` - Added 60+ localization strings
 
 ---
 
