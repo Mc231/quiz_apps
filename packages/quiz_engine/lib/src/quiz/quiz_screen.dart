@@ -58,10 +58,6 @@ class QuizScreenState extends State<QuizScreen> {
     _bloc = BlocProvider.of<QuizBloc>(context);
     _initializeServices();
     _bloc.performInitialLoad();
-    _bloc.gameOverCallback = (String result) {
-      _isQuizOver = true;
-      _showQuizOverDialog(result);
-    };
   }
 
   /// Get whether exit confirmation should be shown
@@ -96,6 +92,8 @@ class QuizScreenState extends State<QuizScreen> {
     _bloc.stream.listen((state) {
       if (state is AnswerFeedbackState) {
         _provideFeedback(state);
+      } else if (state is QuizCompletedState) {
+        _isQuizOver = true;
       }
     });
   }
@@ -200,6 +198,16 @@ class QuizScreenState extends State<QuizScreen> {
       return Center(child: CircularProgressIndicator());
     }
 
+    if (state is QuizCompletedState) {
+      // Show results screen when quiz is completed
+      return QuizResultsScreen(
+        results: state.results,
+        onDone: () {
+          Navigator.of(context).pop();
+        },
+      );
+    }
+
     if (state is AnswerFeedbackState) {
       // Show feedback with the answered question
       return ResponsiveBuilder(
@@ -227,42 +235,6 @@ class QuizScreenState extends State<QuizScreen> {
         );
       },
     );
-  }
-
-  /// Displays a dialog indicating the quiz is over, showing the final score.
-  ///
-  /// This method is called when the quiz is completed, presenting a dialog
-  /// with the user's score. The dialog is non-dismissible, requiring the user
-  /// to tap the OK button to close it.
-  ///
-  /// [message] is the score message to display in the dialog.
-  void _showQuizOverDialog(String message) async {
-    final l10n = QuizL10n.of(context);
-
-    await showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(l10n.gameOverText),
-          content: SingleChildScrollView(
-            child: ListBody(children: <Widget>[Text(message)]),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                MaterialLocalizations.of(context).okButtonLabel,
-                key: QuizScreen.okButtonKey,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-    Navigator.of(context).pop();
   }
 }
 
