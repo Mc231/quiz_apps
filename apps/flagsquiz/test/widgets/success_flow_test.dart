@@ -1,3 +1,4 @@
+import 'package:flags_quiz/data/country_counts.dart';
 import 'package:flags_quiz/data/flags_categories.dart';
 import 'package:flags_quiz/data/flags_data_provider.dart';
 import 'package:flags_quiz/l10n/app_localizations.dart';
@@ -51,7 +52,7 @@ void main() {
     testWidgets('displays all continent categories',
         (WidgetTester tester) async {
       // Given
-      final categories = createFlagsCategories();
+      final categories = createFlagsCategories(CountryCounts.forTest);
 
       await tester.pumpWidget(
         MaterialApp(
@@ -79,7 +80,7 @@ void main() {
     testWidgets('triggers onCategorySelected callback when category tapped',
         (WidgetTester tester) async {
       // Given
-      final categories = createFlagsCategories();
+      final categories = createFlagsCategories(CountryCounts.forTest);
       QuizCategory? selectedCategory;
 
       await tester.pumpWidget(
