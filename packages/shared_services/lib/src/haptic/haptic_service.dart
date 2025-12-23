@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import '../logger/logger_service.dart';
 
 /// Types of haptic feedback available
 enum HapticFeedbackType {
@@ -75,11 +76,13 @@ class HapticService {
           await HapticFeedback.vibrate();
           break;
       }
-    } catch (e) {
-      // Silently fail if haptic feedback is not supported
-      // This prevents crashes on platforms without haptic support
-      // ignore: avoid_print
-      print('Haptic feedback error: $e');
+    } catch (e, stackTrace) {
+      // Log error but don't fail - haptic may not be supported
+      AppLogger.instance.warning(
+        'Haptic feedback error',
+        error: e,
+        stackTrace: stackTrace,
+      );
     }
   }
 
