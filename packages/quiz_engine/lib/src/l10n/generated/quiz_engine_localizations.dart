@@ -738,6 +738,90 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Initialization error: {error}'**
   String initializationError(String error);
+
+  /// Title shown when quiz is finished
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Complete!'**
+  String get quizComplete;
+
+  /// Message for 5 stars (100%)
+  ///
+  /// In en, this message translates to:
+  /// **'Excellent!'**
+  String get excellent;
+
+  /// Message for 4 stars (80-99%)
+  ///
+  /// In en, this message translates to:
+  /// **'Great Job!'**
+  String get greatJob;
+
+  /// Message for 3 stars (60-79%)
+  ///
+  /// In en, this message translates to:
+  /// **'Good Work!'**
+  String get goodWork;
+
+  /// Message for 2 stars (40-59%)
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Practicing!'**
+  String get keepPracticing;
+
+  /// Message for 0-1 stars (0-39%)
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again!'**
+  String get tryAgain;
+
+  /// Button to review the completed session
+  ///
+  /// In en, this message translates to:
+  /// **'Review This Session'**
+  String get reviewThisSession;
+
+  /// Button to review only wrong answers
+  ///
+  /// In en, this message translates to:
+  /// **'Review Wrong Answers'**
+  String get reviewWrongAnswers;
+
+  /// Done button to return home
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// Button to play the quiz again
+  ///
+  /// In en, this message translates to:
+  /// **'Play Again'**
+  String get playAgain;
+
+  /// Score display format
+  ///
+  /// In en, this message translates to:
+  /// **'{correct} of {total}'**
+  String scoreOf(int correct, int total);
+
+  /// Timed out questions label
+  ///
+  /// In en, this message translates to:
+  /// **'Timed Out'**
+  String get timedOut;
+
+  /// Hints used label
+  ///
+  /// In en, this message translates to:
+  /// **'Hints Used'**
+  String get hintsUsed;
+
+  /// Coming soon label for disabled features
+  ///
+  /// In en, this message translates to:
+  /// **'Coming Soon'**
+  String get comingSoon;
 }
 
 class _QuizEngineLocalizationsDelegate
