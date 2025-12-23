@@ -7,6 +7,11 @@ export 'src/models/quiz_data_provider.dart';
 // App
 export 'src/app/quiz_tab.dart';
 
+// Localization
+export 'src/l10n/quiz_localizations.dart';
+export 'src/l10n/quiz_localizations_en.dart';
+export 'src/l10n/quiz_localizations_delegate.dart';
+
 // Widgets
 export 'src/quiz_widget.dart';
 export 'src/quiz_widget_entry.dart';
