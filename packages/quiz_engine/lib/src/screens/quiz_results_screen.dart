@@ -448,11 +448,11 @@ class QuizResultsScreen extends StatelessWidget {
       final answer = entry.value;
       return ReviewedQuestion(
         questionNumber: index + 1,
-        questionText: _getQuestionText(answer.question),
-        correctAnswer: _getAnswerText(answer.question.answer),
+        questionText: _getDisplayText(answer.question.answer),
+        correctAnswer: _getDisplayText(answer.question.answer),
         userAnswer: answer.isSkipped || answer.isTimeout
             ? null
-            : _getAnswerText(answer.selectedOption),
+            : _getDisplayText(answer.selectedOption),
         isCorrect: answer.isCorrect,
         isSkipped: answer.isSkipped,
         questionImagePath: _getQuestionImagePath(answer.question),
@@ -460,19 +460,18 @@ class QuizResultsScreen extends StatelessWidget {
     }).toList();
   }
 
-  /// Gets the display text for a question.
-  String _getQuestionText(Question question) {
-    final questionType = question.answer.type;
-    return switch (questionType) {
-      TextQuestion(:final text) => text,
-      ImageQuestion(:final imagePath) => imagePath,
-      AudioQuestion(:final audioPath) => audioPath,
-      VideoQuestion(:final videoUrl) => videoUrl,
-    };
-  }
+  /// Gets the display text for a question entry.
+  ///
+  /// For image-based questions (like flags quiz), the display text is stored
+  /// in `otherOptions['name']`. For text-based questions, it's in the type.
+  String _getDisplayText(QuestionEntry entry) {
+    // First try to get name from otherOptions (used for flags quiz, etc.)
+    final name = entry.otherOptions['name'];
+    if (name != null && name is String && name.isNotEmpty) {
+      return name;
+    }
 
-  /// Gets the display text for an answer entry.
-  String _getAnswerText(QuestionEntry entry) {
+    // Fallback to extracting from the question type
     final questionType = entry.type;
     return switch (questionType) {
       TextQuestion(:final text) => text,

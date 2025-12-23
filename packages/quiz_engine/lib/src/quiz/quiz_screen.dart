@@ -193,6 +193,32 @@ class QuizScreenState extends State<QuizScreen> {
     );
   }
 
+  /// Builds an image widget for question review.
+  ///
+  /// Handles both local assets and network images.
+  Widget _buildQuestionImage(String path) {
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return Image.network(
+        path,
+        fit: BoxFit.contain,
+        height: 120,
+        errorBuilder: (context, error, stackTrace) => const SizedBox(
+          height: 120,
+          child: Center(child: Icon(Icons.broken_image, size: 48)),
+        ),
+      );
+    }
+    return Image.asset(
+      path,
+      fit: BoxFit.contain,
+      height: 120,
+      errorBuilder: (context, error, stackTrace) => const SizedBox(
+        height: 120,
+        child: Center(child: Icon(Icons.broken_image, size: 48)),
+      ),
+    );
+  }
+
   Widget _buildBody(QuizState? state) {
     if (state is LoadingState) {
       return Center(child: CircularProgressIndicator());
@@ -205,6 +231,7 @@ class QuizScreenState extends State<QuizScreen> {
         onDone: () {
           Navigator.of(context).pop();
         },
+        imageBuilder: _buildQuestionImage,
       );
     }
 
