@@ -55,5 +55,8 @@ export 'src/screens/session_history_screen.dart';
 export 'src/screens/session_detail_screen.dart';
 export 'src/screens/statistics_screen.dart';
 
+// Settings
+export 'src/settings/quiz_settings_screen.dart';
+
 // Theme
 export 'src/theme/quiz_theme_data.dart';
