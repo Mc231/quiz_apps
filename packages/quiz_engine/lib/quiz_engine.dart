@@ -15,6 +15,7 @@ export 'src/l10n/quiz_localizations_delegate.dart';
 // Home
 export 'src/home/category_card.dart';
 export 'src/home/play_screen.dart';
+export 'src/home/quiz_home_screen.dart';
 
 // Widgets
 export 'src/quiz_widget.dart';
