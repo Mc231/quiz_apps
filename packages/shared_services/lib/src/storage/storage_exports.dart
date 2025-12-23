@@ -27,3 +27,9 @@ export 'data_sources/data_sources_exports.dart';
 
 // Repositories
 export 'repositories/repositories_exports.dart';
+
+// Storage Service
+export 'storage_service.dart';
+
+// Quiz Storage Adapter
+export 'quiz_storage_adapter.dart';
