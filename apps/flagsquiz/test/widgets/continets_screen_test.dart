@@ -1,3 +1,4 @@
+import 'package:flags_quiz/data/country_counts.dart';
 import 'package:flags_quiz/data/flags_categories.dart';
 import 'package:flags_quiz/l10n/app_localizations.dart';
 import 'package:flags_quiz/models/continent.dart';
@@ -23,7 +24,7 @@ void main() {
   group('FlagsCategories', () {
     test('creates categories for all continents', () {
       // Given
-      final categories = createFlagsCategories();
+      final categories = createFlagsCategories(CountryCounts.forTest);
 
       // Then
       expect(categories.length, Continent.values.length);
@@ -31,7 +32,7 @@ void main() {
 
     test('each category has valid id and title', () {
       // Given
-      final categories = createFlagsCategories();
+      final categories = createFlagsCategories(CountryCounts.forTest);
 
       // Then
       for (final category in categories) {
@@ -43,7 +44,7 @@ void main() {
 
     test('category ids match continent names', () {
       // Given
-      final categories = createFlagsCategories();
+      final categories = createFlagsCategories(CountryCounts.forTest);
 
       // Then
       for (int i = 0; i < categories.length; i++) {
@@ -56,7 +57,7 @@ void main() {
     testWidgets('displays categories from createFlagsCategories',
         (WidgetTester tester) async {
       // Given
-      final categories = createFlagsCategories();
+      final categories = createFlagsCategories(CountryCounts.forTest);
 
       await tester.pumpWidget(
         MaterialApp(
@@ -83,7 +84,7 @@ void main() {
     testWidgets('category card shows localized continent name',
         (WidgetTester tester) async {
       // Given
-      final categories = createFlagsCategories();
+      final categories = createFlagsCategories(CountryCounts.forTest);
 
       await tester.pumpWidget(
         MaterialApp(
