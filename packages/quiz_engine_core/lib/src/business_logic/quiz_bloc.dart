@@ -7,6 +7,7 @@ import 'package:quiz_engine_core/src/model/question_entry.dart';
 import '../bloc/single_subscription_bloc.dart';
 import '../model/answer.dart';
 import '../model/question.dart';
+import '../model/quiz_results.dart';
 import '../model/random_pick_result.dart';
 import '../random_item_picker.dart';
 import '../model/config/quiz_config.dart';
@@ -40,6 +41,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
   /// Optional storage service for persisting quiz sessions.
   final QuizStorageService? storageService;
+
+  /// Human-readable name of the quiz (for display in results).
+  final String quizName;
 
   /// The loaded configuration (initialized with default, can be updated from configManager).
   late final QuizConfig _config;
@@ -103,9 +107,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// [dataProvider] - Function to fetch quiz data
   /// [randomItemPicker] - Random item picker for selecting questions
   /// [filter] - Optional filter function for quiz data
-  /// [gameOverCallback] - Optional callback when quiz ends
+  /// [gameOverCallback] - Optional callback when quiz ends (deprecated, use QuizCompletedState instead)
   /// [configManager] - Configuration manager with default config
   /// [storageService] - Optional storage service for persisting quiz sessions
+  /// [quizName] - Human-readable name of the quiz (for display in results)
   QuizBloc(
     this.dataProvider,
     this.randomItemPicker, {
@@ -113,6 +118,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     this.gameOverCallback,
     required this.configManager,
     this.storageService,
+    this.quizName = 'Quiz',
   });
 
   /// The initial state of the game, set to loading.
@@ -350,7 +356,6 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     var failedAnswers = _answers.where((answer) => !answer.isCorrect && !answer.isSkipped && !answer.isTimeout).length;
     var skippedAnswers = _answers.where((answer) => answer.isSkipped).length;
     var timedOutAnswers = _answers.where((answer) => answer.isTimeout).length;
-    var result = '$correctAnswers / $_totalCount';
 
     // Complete the session in storage
     _completeStorageSession(
@@ -360,6 +365,29 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       totalSkipped: skippedAnswers,
     );
 
+    // Create quiz results
+    final results = QuizResults(
+      sessionId: _currentSessionId,
+      quizId: _config.quizId,
+      quizName: quizName,
+      completedAt: DateTime.now(),
+      totalQuestions: _totalCount,
+      correctAnswers: correctAnswers,
+      incorrectAnswers: failedAnswers,
+      skippedAnswers: skippedAnswers,
+      timedOutAnswers: timedOutAnswers,
+      durationSeconds: _sessionStopwatch.elapsed.inSeconds,
+      modeConfig: _config.modeConfig,
+      answers: List.unmodifiable(_answers),
+      hintsUsed5050: _hintsUsed5050,
+      hintsUsedSkip: _hintsUsedSkip,
+    );
+
+    // Emit completed state with results
+    dispatchState(QuizState.completed(results));
+
+    // Also call legacy callback for backward compatibility
+    var result = '$correctAnswers / $_totalCount';
     gameOverCallback?.call(result);
   }
 
