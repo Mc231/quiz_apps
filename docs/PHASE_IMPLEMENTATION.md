@@ -559,28 +559,32 @@ class StatisticsTabData { /* Data model for Statistics tab async loading */ }
 
 ---
 
-### Sprint 11.6: QuizApp Widget
+### Sprint 11.6: QuizApp Widget ✅
 
 **Tasks:**
-- [ ] Create `QuizApp` root widget
-- [ ] Integrate MaterialApp with theme, localization
-- [ ] Handle service initialization internally
-- [ ] Connect all components (home, quiz, settings)
-- [ ] Add navigation observers support
-- [ ] Update `quiz_engine.dart` exports
-- [ ] Write integration tests
+- [x] Create `QuizApp` root widget
+- [x] Integrate MaterialApp with theme, localization
+- [x] Handle service initialization internally
+- [x] Connect all components (home, quiz, settings)
+- [x] Add navigation observers support
+- [x] Update `quiz_engine.dart` exports
+- [x] Write widget tests
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/app/quiz_app.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` (QuizApp, QuizAppConfig, QuizAppCallbacks, QuizAppBuilder)
+- ✅ `packages/quiz_engine/test/app/quiz_app_test.dart`
 
-**Update:**
-- `packages/quiz_engine/lib/quiz_engine.dart` - Add exports
+**Files Updated:**
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Added QuizApp export
 
-**Responsibilities:**
-- MaterialApp setup with theme
-- Localization (engine + app delegates)
-- Service initialization (SharedServicesInitializer)
-- Route to QuizHomeScreen
+**Features Implemented:**
+- MaterialApp setup with theme (light/dark based on settings)
+- Localization (engine + app delegates combined)
+- Settings-based theme mode switching via SettingsService
+- Navigation observer support
+- QuizHomeScreen integration with categories and callbacks
+- QuizAppBuilder for service initialization with loading/error states
+- Default QuizSettingsScreen integration for Settings tab
 
 ---
 
