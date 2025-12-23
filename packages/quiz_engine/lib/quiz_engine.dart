@@ -27,5 +27,16 @@ export 'src/widgets/quiz_lifecycle_handler.dart';
 export 'src/widgets/hints_panel.dart';
 export 'src/widgets/exit_confirmation_dialog.dart';
 
+// History & Statistics Widgets
+export 'src/widgets/session_card.dart';
+export 'src/widgets/statistics_card.dart';
+export 'src/widgets/question_review_widget.dart';
+export 'src/widgets/trends_widget.dart';
+
+// Screens
+export 'src/screens/session_history_screen.dart';
+export 'src/screens/session_detail_screen.dart';
+export 'src/screens/statistics_screen.dart';
+
 // Theme
 export 'src/theme/quiz_theme_data.dart';
