@@ -686,12 +686,26 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   String? get currentSessionId => _currentSessionId;
 
   /// Cancels the current quiz and marks it as cancelled in storage.
+  ///
+  /// If no answers were given, the session is deleted entirely.
+  /// Otherwise, it is marked as cancelled with the current progress.
   Future<void> cancelQuiz() async {
     _cancelQuestionTimer();
     _cancelTotalTimer();
     _sessionStopwatch.stop();
 
     if (_isStorageEnabled && _currentSessionId != null) {
+      // If no answers were given, delete the session entirely
+      if (_answers.isEmpty) {
+        try {
+          await storageService!.deleteSession(_currentSessionId!);
+        } catch (e) {
+          // Storage failure should not block cancellation
+        }
+        return;
+      }
+
+      // Otherwise, complete the session as cancelled with progress
       var correctAnswers = _answers.where((answer) => answer.isCorrect).length;
       var failedAnswers = _answers.where((answer) => !answer.isCorrect && !answer.isSkipped && !answer.isTimeout).length;
       var skippedAnswers = _answers.where((answer) => answer.isSkipped).length;
