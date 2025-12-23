@@ -1087,13 +1087,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get viewAll => 'View All';
 
   @override
-  String get hours => 'hours';
+  String get hours => 'hr';
 
   @override
-  String get minutes => 'minutes';
+  String get minutes => 'min';
 
   @override
-  String get seconds => 'seconds';
+  String get seconds => 'sec';
+
+  @override
+  String get days => 'days';
 
   @override
   String get duration => 'Duration';

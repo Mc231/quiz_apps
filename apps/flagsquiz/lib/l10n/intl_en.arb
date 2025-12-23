@@ -1434,17 +1434,21 @@
   "@viewAll": {
     "description": "View all button label"
   },
-  "hours": "hours",
+  "hours": "hr",
   "@hours": {
     "description": "Hours unit"
   },
-  "minutes": "minutes",
+  "minutes": "min",
   "@minutes": {
     "description": "Minutes unit"
   },
-  "seconds": "seconds",
+  "seconds": "sec",
   "@seconds": {
     "description": "Seconds unit"
+  },
+  "days": "days",
+  "@days": {
+    "description": "Days unit"
   },
   "duration": "Duration",
   "@duration": {

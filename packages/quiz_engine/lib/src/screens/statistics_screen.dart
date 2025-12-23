@@ -91,6 +91,7 @@ class StatisticsTexts {
     required this.decliningLabel,
     required this.stableLabel,
     required this.questionsLabel,
+    required this.daysLabel,
     required this.formatDate,
     required this.formatStatus,
     required this.formatDuration,
@@ -158,6 +159,9 @@ class StatisticsTexts {
 
   /// Questions label.
   final String questionsLabel;
+
+  /// Days label.
+  final String daysLabel;
 
   /// Date formatter.
   final DateFormatter formatDate;
@@ -347,7 +351,7 @@ class StatisticsScreen extends StatelessWidget {
         ),
         StatisticsCard(
           title: texts.currentStreakLabel,
-          value: '${statistics.currentStreak} days',
+          value: '${statistics.currentStreak}',
           subtitle: '${texts.bestStreakLabel}: ${statistics.bestStreak}',
           icon: Icons.local_fire_department,
           iconColor: Colors.deepOrange,

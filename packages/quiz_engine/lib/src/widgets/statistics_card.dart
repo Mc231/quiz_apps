@@ -188,7 +188,7 @@ class StatisticsGrid extends StatelessWidget {
     this.crossAxisCount = 2,
     this.mainAxisSpacing = 12,
     this.crossAxisSpacing = 12,
-    this.childAspectRatio = 1.3,
+    this.childAspectRatio = 1.1,
     this.padding = const EdgeInsets.all(16),
   });
 

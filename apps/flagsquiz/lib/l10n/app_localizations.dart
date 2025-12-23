@@ -2347,20 +2347,26 @@ abstract class AppLocalizations {
   /// Hours unit
   ///
   /// In en, this message translates to:
-  /// **'hours'**
+  /// **'hr'**
   String get hours;
 
   /// Minutes unit
   ///
   /// In en, this message translates to:
-  /// **'minutes'**
+  /// **'min'**
   String get minutes;
 
   /// Seconds unit
   ///
   /// In en, this message translates to:
-  /// **'seconds'**
+  /// **'sec'**
   String get seconds;
+
+  /// Days unit
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
 
   /// Duration label
   ///

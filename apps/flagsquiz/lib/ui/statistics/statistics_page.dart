@@ -179,6 +179,7 @@ class StatisticsPageState extends State<StatisticsPage> {
       decliningLabel: l10n.declining,
       stableLabel: l10n.stable,
       questionsLabel: l10n.questions,
+      daysLabel: l10n.days,
       formatDate: (date) => _formatDate(date),
       formatStatus: (status, isPerfect) => _formatStatus(status, isPerfect),
       formatDuration: _formatDuration,
