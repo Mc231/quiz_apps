@@ -2,6 +2,52 @@
 
 This document helps AI assistants work efficiently with this Flutter quiz apps monorepo.
 
+---
+
+## Primary Workflow: Architecture Implementation
+
+**The main task is implementing features from `docs/CORE_ARCHITECTURE_GUIDE.md`.**
+
+### How It Works
+
+1. **User requests a sprint/task** from the architecture guide (e.g., "implement Sprint 5.2")
+2. **Read the guide** to understand the task requirements and expected deliverables
+3. **Implement the code** following the specifications in the guide
+4. **Write tests** for all new code
+5. **Update the guide** to mark completed tasks with `[x]` and add `✅` to the sprint title
+6. **List created files** under the sprint section
+
+### Quick Reference
+
+```bash
+# Architecture guide location
+docs/CORE_ARCHITECTURE_GUIDE.md
+
+# When implementing a sprint:
+1. Read the sprint section in CORE_ARCHITECTURE_GUIDE.md
+2. Create files as specified
+3. Write unit tests
+4. Run: flutter test (in the relevant package)
+5. Update the guide: mark tasks [x], add ✅, list created files
+```
+
+### Marking Tasks Complete
+
+```markdown
+# Before:
+### Sprint 5.2: Data Sources Implementation
+- [ ] Implement QuizSessionDataSource
+
+# After:
+### Sprint 5.2: Data Sources Implementation ✅
+- [x] Implement QuizSessionDataSource
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/storage/data_sources/quiz_session_data_source.dart`
+```
+
+---
+
 ## Project Overview
 
 A Flutter monorepo for building multiple quiz applications using shared packages and reusable architecture. Built with Melos for monorepo management.
