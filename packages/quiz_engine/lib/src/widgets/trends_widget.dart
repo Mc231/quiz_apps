@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../l10n/quiz_localizations.dart';
 
 /// Data point for a trend chart.
 class TrendDataPoint {
@@ -89,7 +90,7 @@ class TrendsWidget extends StatelessWidget {
             const SizedBox(height: 16),
             SizedBox(
               height: height,
-              child: _buildChart(theme),
+              child: _buildChart(context, theme),
             ),
           ],
         ),
@@ -152,11 +153,11 @@ class TrendsWidget extends StatelessWidget {
     }
   }
 
-  Widget _buildChart(ThemeData theme) {
+  Widget _buildChart(BuildContext context, ThemeData theme) {
     if (dataPoints.isEmpty) {
       return Center(
         child: Text(
-          'No data',
+          QuizL10n.of(context).noData,
           style: TextStyle(color: Colors.grey[500]),
         ),
       );
