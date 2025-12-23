@@ -12,6 +12,7 @@ import '../random_item_picker.dart';
 import '../model/config/quiz_config.dart';
 import '../model/config/quiz_mode_config.dart';
 import '../model/config/hint_config.dart';
+import '../storage/quiz_storage_service.dart';
 import 'config_manager/config_manager.dart';
 import 'config_manager/config_source.dart';
 
@@ -37,8 +38,26 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Configuration manager for loading quiz configuration.
   final ConfigManager configManager;
 
+  /// Optional storage service for persisting quiz sessions.
+  final QuizStorageService? storageService;
+
   /// The loaded configuration (initialized with default, can be updated from configManager).
   late final QuizConfig _config;
+
+  /// The current session ID (null if storage is disabled).
+  String? _currentSessionId;
+
+  /// Stopwatch for tracking quiz duration.
+  final Stopwatch _sessionStopwatch = Stopwatch();
+
+  /// Stopwatch for tracking individual question duration.
+  final Stopwatch _questionStopwatch = Stopwatch();
+
+  /// Count of 50/50 hints used.
+  int _hintsUsed5050 = 0;
+
+  /// Count of skip hints used.
+  int _hintsUsedSkip = 0;
 
   /// The list of quiz data items available for the game.
   List<QuestionEntry> _items = [];
@@ -86,12 +105,14 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// [filter] - Optional filter function for quiz data
   /// [gameOverCallback] - Optional callback when quiz ends
   /// [configManager] - Configuration manager with default config
+  /// [storageService] - Optional storage service for persisting quiz sessions
   QuizBloc(
     this.dataProvider,
     this.randomItemPicker, {
     this.filter,
     this.gameOverCallback,
     required this.configManager,
+    this.storageService,
   });
 
   /// The initial state of the game, set to loading.
@@ -126,8 +147,34 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
     _totalCount = _items.length;
     randomItemPicker.replaceItems(_items);
+
+    // Create storage session if storage is enabled
+    await _initializeStorageSession();
+
+    // Start tracking session duration
+    _sessionStopwatch.start();
+
     _pickQuestion();
   }
+
+  /// Initializes the storage session if storage is enabled.
+  Future<void> _initializeStorageSession() async {
+    if (!_isStorageEnabled) return;
+
+    try {
+      _currentSessionId = await storageService!.createSession(
+        config: _config,
+        totalQuestions: _totalCount,
+      );
+    } catch (e) {
+      // Storage failure should not block quiz from starting
+      _currentSessionId = null;
+    }
+  }
+
+  /// Whether storage is enabled for this quiz.
+  bool get _isStorageEnabled =>
+      storageService != null && _config.storageConfig.enabled;
 
   /// Processes the player's answer to the current question.
   ///
@@ -138,6 +185,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Cancel question timer when answer is submitted
     _cancelQuestionTimer();
 
+    // Stop question timer and get elapsed time
+    _questionStopwatch.stop();
+    final timeSpentSeconds = _questionStopwatch.elapsed.inSeconds;
+
     var answer = Answer(selectedItem, currentQuestion);
     final isCorrect = answer.isCorrect;
 
@@ -145,6 +196,17 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     if (!isCorrect && _remainingLives != null) {
       _remainingLives = _remainingLives! - 1;
     }
+
+    // Save answer to storage if enabled
+    await _saveAnswerToStorage(
+      questionNumber: _currentProgress + 1,
+      question: currentQuestion,
+      selectedAnswer: selectedItem,
+      isCorrect: isCorrect,
+      status: isCorrect ? AnswerStatus.correct : AnswerStatus.incorrect,
+      timeSpentSeconds: timeSpentSeconds,
+      hintUsed: null,
+    );
 
     // Show feedback if enabled in configuration
     if (_config.uiBehaviorConfig.showAnswerFeedback) {
@@ -171,6 +233,39 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _answers.add(answer);
     _currentProgress++;
     _pickQuestion();
+  }
+
+  /// Saves an answer to storage if enabled.
+  Future<void> _saveAnswerToStorage({
+    required int questionNumber,
+    required Question question,
+    required QuestionEntry? selectedAnswer,
+    required bool isCorrect,
+    required AnswerStatus status,
+    required int? timeSpentSeconds,
+    required HintType? hintUsed,
+  }) async {
+    if (!_isStorageEnabled ||
+        _currentSessionId == null ||
+        !_config.storageConfig.saveAnswersDuringQuiz) {
+      return;
+    }
+
+    try {
+      await storageService!.saveAnswer(
+        sessionId: _currentSessionId!,
+        questionNumber: questionNumber,
+        question: question,
+        selectedAnswer: selectedAnswer,
+        isCorrect: isCorrect,
+        status: status,
+        timeSpentSeconds: timeSpentSeconds,
+        hintUsed: hintUsed,
+        disabledOptions: _disabledOptions,
+      );
+    } catch (e) {
+      // Storage failure should not block quiz progression
+    }
   }
 
   /// Picks the next question or ends the game if no more items are available.
@@ -211,6 +306,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       // Start question timer for new question
       _startQuestionTimer();
 
+      // Reset and start question stopwatch for tracking time spent
+      _questionStopwatch.reset();
+      _questionStopwatch.start();
+
       var state = QuizState.question(
         question,
         _currentProgress,
@@ -243,9 +342,67 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   void _notifyGameOver() {
     _cancelQuestionTimer();
     _cancelTotalTimer();
+
+    // Stop tracking session duration
+    _sessionStopwatch.stop();
+
     var correctAnswers = _answers.where((answer) => answer.isCorrect).length;
+    var failedAnswers = _answers.where((answer) => !answer.isCorrect && !answer.isSkipped && !answer.isTimeout).length;
+    var skippedAnswers = _answers.where((answer) => answer.isSkipped).length;
+    var timedOutAnswers = _answers.where((answer) => answer.isTimeout).length;
     var result = '$correctAnswers / $_totalCount';
+
+    // Complete the session in storage
+    _completeStorageSession(
+      status: _determineCompletionStatus(),
+      totalCorrect: correctAnswers,
+      totalFailed: failedAnswers + timedOutAnswers,
+      totalSkipped: skippedAnswers,
+    );
+
     gameOverCallback?.call(result);
+  }
+
+  /// Determines the completion status based on how the quiz ended.
+  SessionCompletionStatus _determineCompletionStatus() {
+    // Check if game ended due to time
+    if (_totalTimeRemaining != null && _totalTimeRemaining! <= 0) {
+      return SessionCompletionStatus.timeout;
+    }
+
+    // Check if game ended due to running out of lives
+    if (_remainingLives != null && _remainingLives! <= 0) {
+      return SessionCompletionStatus.failed;
+    }
+
+    // Normal completion
+    return SessionCompletionStatus.completed;
+  }
+
+  /// Completes the session in storage.
+  Future<void> _completeStorageSession({
+    required SessionCompletionStatus status,
+    required int totalCorrect,
+    required int totalFailed,
+    required int totalSkipped,
+  }) async {
+    if (!_isStorageEnabled || _currentSessionId == null) return;
+
+    try {
+      await storageService!.completeSession(
+        sessionId: _currentSessionId!,
+        status: status,
+        totalAnswered: _answers.length,
+        totalCorrect: totalCorrect,
+        totalFailed: totalFailed,
+        totalSkipped: totalSkipped,
+        durationSeconds: _sessionStopwatch.elapsed.inSeconds,
+        hintsUsed5050: _hintsUsed5050,
+        hintsUsedSkip: _hintsUsedSkip,
+      );
+    } catch (e) {
+      // Storage failure should not affect game over flow
+    }
   }
 
   /// Initializes timer settings from mode configuration.
@@ -375,6 +532,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   void _handleQuestionTimeExpired() {
     _cancelQuestionTimer();
 
+    // Stop question timer
+    _questionStopwatch.stop();
+    final timeSpentSeconds = _questionStopwatch.elapsed.inSeconds;
+
     // Treat time expiration as a wrong answer
     final mode = _config.modeConfig;
     if (mode is TimedMode || mode is SurvivalMode) {
@@ -389,6 +550,18 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         currentQuestion,
         isTimeout: true,
       );
+
+      // Save timeout answer to storage
+      _saveAnswerToStorage(
+        questionNumber: _currentProgress + 1,
+        question: currentQuestion,
+        selectedAnswer: null,
+        isCorrect: false,
+        status: AnswerStatus.timeout,
+        timeSpentSeconds: timeSpentSeconds,
+        hintUsed: null,
+      );
+
       _answers.add(dummyAnswer);
       _currentProgress++;
       _pickQuestion();
@@ -424,8 +597,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Check if hint is available
     if (!_hintState.canUseHint(HintType.fiftyFifty)) return;
 
-    // Mark hint as used
+    // Mark hint as used and track for storage
     _hintState.useHint(HintType.fiftyFifty);
+    _hintsUsed5050++;
 
     // Find all incorrect options
     final incorrectOptions =
@@ -465,14 +639,30 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Cancel question timer
     _cancelQuestionTimer();
 
-    // Mark hint as used
+    // Stop question timer and get elapsed time
+    _questionStopwatch.stop();
+    final timeSpentSeconds = _questionStopwatch.elapsed.inSeconds;
+
+    // Mark hint as used and track for storage
     _hintState.useHint(HintType.skip);
+    _hintsUsedSkip++;
 
     // Create a skipped answer
     final skippedAnswer = Answer(
       currentQuestion.answer,
       currentQuestion,
       isSkipped: true,
+    );
+
+    // Save skipped answer to storage
+    await _saveAnswerToStorage(
+      questionNumber: _currentProgress + 1,
+      question: currentQuestion,
+      selectedAnswer: null,
+      isCorrect: false,
+      status: AnswerStatus.skipped,
+      timeSpentSeconds: timeSpentSeconds,
+      hintUsed: HintType.skip,
     );
 
     // Record the skipped answer and move to next question
@@ -486,6 +676,33 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _timersPaused = false;
     _cancelQuestionTimer();
     _cancelTotalTimer();
+    _sessionStopwatch.stop();
+    _questionStopwatch.stop();
+    storageService?.dispose();
     super.dispose();
+  }
+
+  /// Gets the current session ID (for external use if needed).
+  String? get currentSessionId => _currentSessionId;
+
+  /// Cancels the current quiz and marks it as cancelled in storage.
+  Future<void> cancelQuiz() async {
+    _cancelQuestionTimer();
+    _cancelTotalTimer();
+    _sessionStopwatch.stop();
+
+    if (_isStorageEnabled && _currentSessionId != null) {
+      var correctAnswers = _answers.where((answer) => answer.isCorrect).length;
+      var failedAnswers = _answers.where((answer) => !answer.isCorrect && !answer.isSkipped && !answer.isTimeout).length;
+      var skippedAnswers = _answers.where((answer) => answer.isSkipped).length;
+      var timedOutAnswers = _answers.where((answer) => answer.isTimeout).length;
+
+      await _completeStorageSession(
+        status: SessionCompletionStatus.cancelled,
+        totalCorrect: correctAnswers,
+        totalFailed: failedAnswers + timedOutAnswers,
+        totalSkipped: skippedAnswers,
+      );
+    }
   }
 }
