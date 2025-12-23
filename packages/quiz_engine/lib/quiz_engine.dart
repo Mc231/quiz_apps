@@ -5,6 +5,7 @@ export 'src/models/quiz_category.dart';
 export 'src/models/quiz_data_provider.dart';
 
 // App
+export 'src/app/quiz_app.dart';
 export 'src/app/quiz_tab.dart';
 
 // Localization
