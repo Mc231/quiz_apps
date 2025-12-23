@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:video_player/video_player.dart';
-import '../quiz_widget_entry.dart';
+import '../l10n/quiz_localizations.dart';
 
 /// A widget that displays and plays a video-based question.
 ///
@@ -22,22 +22,17 @@ class QuizVideoWidget extends StatefulWidget {
   /// The height constraint for the video player container.
   final double height;
 
-  /// Text strings for the quiz UI
-  final QuizTexts texts;
-
   /// Creates a `QuizVideoWidget` with the specified question entry and dimensions.
   ///
   /// [key] is the unique key for this widget.
   /// [entry] is the `QuestionEntry` object containing the video question.
   /// [width] is the width constraint for the video player container.
   /// [height] is the height constraint for the video player container.
-  /// [texts] provides text strings for the UI.
   const QuizVideoWidget({
     required Key key,
     required this.entry,
     required this.width,
     required this.height,
-    required this.texts,
   }) : super(key: key);
 
   @override
@@ -197,7 +192,7 @@ class _QuizVideoWidgetState extends State<QuizVideoWidget> {
           ),
           SizedBox(height: 16),
           Text(
-            widget.texts.videoLoadError,
+            QuizL10n.of(context).videoLoadError,
             style: TextStyle(
               color: Theme.of(context).colorScheme.onSurface,
               fontSize: _getErrorTextSize(context),

@@ -353,7 +353,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
         await _dataLoader!.getSessionWithAnswers(sessionData.id);
     if (sessionWithAnswers == null || !mounted) return;
 
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
     final texts = _createSessionDetailTexts(l10n);
     final detailData = _convertToSessionDetailData(
       sessionWithAnswers.session,
@@ -506,7 +506,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
     final currentTab = _tabs[_currentIndex];
     final title = _getTabTitle(context, currentTab, l10n);
 
@@ -544,7 +544,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
         IconButton(
           icon: const Icon(Icons.settings),
           onPressed: widget.onSettingsPressed,
-          tooltip: QuizLocalizations.of(context).settings,
+          tooltip: QuizL10n.of(context).settings,
         ),
       );
     }
@@ -584,7 +584,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   Widget _buildHistoryTab(BuildContext context) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
     final texts = _createHistoryTexts(l10n);
 
     return SessionHistoryScreen(
@@ -597,7 +597,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   Widget _buildStatisticsTab(BuildContext context) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
     final texts = _createStatisticsTexts(l10n);
 
     return StatisticsScreen(
@@ -627,7 +627,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
           ),
           const SizedBox(height: 16),
           Text(
-            QuizLocalizations.of(context).settings,
+            QuizL10n.of(context).settings,
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ],
@@ -677,7 +677,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   String _defaultFormatDate(DateTime date) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final dateOnly = DateTime(date.year, date.month, date.day);
@@ -690,7 +690,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   (String, Color) _defaultFormatStatus(String status, bool isPerfect) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
 
     if (isPerfect) {
       return (l10n.perfectScore, Colors.amber);
@@ -711,7 +711,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   String _defaultFormatDuration(int seconds) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
     if (seconds < 60) {
       return '$seconds ${l10n.seconds}';
     }
@@ -728,7 +728,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   Widget _buildBottomNavigation(BuildContext context) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
 
     return NavigationBar(
       selectedIndex: _currentIndex,

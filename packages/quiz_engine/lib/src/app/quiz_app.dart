@@ -437,9 +437,6 @@ class _QuizAppState extends State<QuizApp> {
     // Load questions
     final questions = await dataProvider.loadQuestions(context, category);
 
-    // Create quiz texts
-    final texts = dataProvider.createQuizTexts(context, category);
-
     // Create storage config
     final storageConfig = dataProvider.createStorageConfig(context, category);
 
@@ -478,7 +475,7 @@ class _QuizAppState extends State<QuizApp> {
         MaterialPageRoute(
           builder: (ctx) => QuizWidget(
             quizEntry: QuizWidgetEntry(
-              texts: texts ?? _createDefaultTexts(context, category),
+              title: category.title(context),
               dataProvider: () async => questions,
               configManager: configManager,
               storageService: storageAdapter,
@@ -487,25 +484,6 @@ class _QuizAppState extends State<QuizApp> {
         ),
       );
     }
-  }
-
-  /// Creates default quiz texts using engine localizations.
-  QuizTexts _createDefaultTexts(BuildContext context, QuizCategory category) {
-    // These will be overridden by app-specific localizations if provided
-    return QuizTexts(
-      title: category.title(context),
-      gameOverText: 'Your Score',
-      exitDialogTitle: 'Exit Quiz',
-      exitDialogMessage: 'Are you sure you want to exit?',
-      exitDialogConfirm: 'Exit',
-      exitDialogCancel: 'Cancel',
-      correctFeedback: 'Correct!',
-      incorrectFeedback: 'Wrong!',
-      hint5050Label: '50/50',
-      hintSkipLabel: 'Skip',
-      timerSecondsSuffix: 's',
-      videoLoadError: 'Failed to load video',
-    );
   }
 
   /// Opens the settings screen.

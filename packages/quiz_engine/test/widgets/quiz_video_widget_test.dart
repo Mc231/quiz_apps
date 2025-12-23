@@ -16,14 +16,13 @@ void main() {
 
       // When
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        wrapWithLocalizations(
+          Scaffold(
             body: QuizVideoWidget(
               key: Key('test_widget'),
               entry: entry,
               width: 300,
               height: 300,
-              texts: testQuizTexts,
             ),
           ),
         ),
@@ -46,14 +45,13 @@ void main() {
 
       // When
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        wrapWithLocalizations(
+          Scaffold(
             body: QuizVideoWidget(
               key: Key('test_widget'),
               entry: entry,
               width: width,
               height: height,
-              texts: testQuizTexts,
             ),
           ),
         ),
@@ -76,14 +74,13 @@ void main() {
 
       // When
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        wrapWithLocalizations(
+          Scaffold(
             body: QuizVideoWidget(
               key: Key('test_widget'),
               entry: entry,
               width: 300,
               height: 300,
-              texts: testQuizTexts,
             ),
           ),
         ),
@@ -107,14 +104,13 @@ void main() {
 
       // When
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        wrapWithLocalizations(
+          Scaffold(
             body: QuizVideoWidget(
               key: Key('test_widget'),
               entry: entry,
               width: 300,
               height: 300,
-              texts: testQuizTexts,
             ),
           ),
         ),
@@ -134,14 +130,13 @@ void main() {
 
       // When
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        wrapWithLocalizations(
+          Scaffold(
             body: QuizVideoWidget(
               key: Key('test_widget'),
               entry: entry,
               width: 300,
               height: 300,
-              texts: testQuizTexts,
             ),
           ),
         ),
@@ -165,14 +160,13 @@ void main() {
 
       // When
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        wrapWithLocalizations(
+          Scaffold(
             body: QuizVideoWidget(
               key: Key('test_widget'),
               entry: entry,
               width: 300,
               height: 300,
-              texts: testQuizTexts,
             ),
           ),
         ),
@@ -192,14 +186,13 @@ void main() {
 
       // When
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        wrapWithLocalizations(
+          Scaffold(
             body: QuizVideoWidget(
               key: Key('test_widget'),
               entry: entry,
               width: 300,
               height: 300,
-              texts: testQuizTexts,
             ),
           ),
         ),
@@ -218,14 +211,13 @@ void main() {
 
       // When
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        wrapWithLocalizations(
+          Scaffold(
             body: QuizVideoWidget(
               key: Key('test_widget'),
               entry: entry,
               width: 300,
               height: 300,
-              texts: testQuizTexts,
             ),
           ),
         ),

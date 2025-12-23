@@ -1,0 +1,543 @@
+{
+  "@@locale": "en",
+
+  "play": "Play",
+  "@play": {
+    "description": "Play tab label"
+  },
+
+  "history": "History",
+  "@history": {
+    "description": "History tab label"
+  },
+
+  "statistics": "Statistics",
+  "@statistics": {
+    "description": "Statistics tab label"
+  },
+
+  "settings": "Settings",
+  "@settings": {
+    "description": "Settings tab/screen title"
+  },
+
+  "score": "Score",
+  "@score": {
+    "description": "Score label"
+  },
+
+  "correct": "Correct",
+  "@correct": {
+    "description": "Correct answer label"
+  },
+
+  "incorrect": "Incorrect",
+  "@incorrect": {
+    "description": "Incorrect answer label"
+  },
+
+  "duration": "Duration",
+  "@duration": {
+    "description": "Duration label"
+  },
+
+  "questions": "questions",
+  "@questions": {
+    "description": "Questions count label"
+  },
+
+  "exitDialogTitle": "Exit Quiz?",
+  "@exitDialogTitle": {
+    "description": "Exit dialog title"
+  },
+
+  "exitDialogMessage": "Are you sure you want to exit? Your progress will be lost.",
+  "@exitDialogMessage": {
+    "description": "Exit dialog message"
+  },
+
+  "exitDialogConfirm": "Yes",
+  "@exitDialogConfirm": {
+    "description": "Exit dialog confirm button"
+  },
+
+  "exitDialogCancel": "No",
+  "@exitDialogCancel": {
+    "description": "Exit dialog cancel button"
+  },
+
+  "correctFeedback": "Correct!",
+  "@correctFeedback": {
+    "description": "Correct answer feedback"
+  },
+
+  "incorrectFeedback": "Incorrect!",
+  "@incorrectFeedback": {
+    "description": "Incorrect answer feedback"
+  },
+
+  "videoLoadError": "Failed to load video",
+  "@videoLoadError": {
+    "description": "Video load error message"
+  },
+
+  "hint5050Label": "50/50",
+  "@hint5050Label": {
+    "description": "50/50 hint label"
+  },
+
+  "hintSkipLabel": "Skip",
+  "@hintSkipLabel": {
+    "description": "Skip hint label"
+  },
+
+  "timerSecondsSuffix": "s",
+  "@timerSecondsSuffix": {
+    "description": "Timer seconds suffix"
+  },
+
+  "hours": "hr",
+  "@hours": {
+    "description": "Hours unit"
+  },
+
+  "minutes": "min",
+  "@minutes": {
+    "description": "Minutes unit"
+  },
+
+  "seconds": "sec",
+  "@seconds": {
+    "description": "Seconds unit"
+  },
+
+  "sessionCompleted": "Completed",
+  "@sessionCompleted": {
+    "description": "Session completed status"
+  },
+
+  "sessionCancelled": "Cancelled",
+  "@sessionCancelled": {
+    "description": "Session cancelled status"
+  },
+
+  "sessionTimeout": "Timeout",
+  "@sessionTimeout": {
+    "description": "Session timeout status"
+  },
+
+  "sessionFailed": "Failed",
+  "@sessionFailed": {
+    "description": "Session failed status"
+  },
+
+  "perfectScore": "Perfect!",
+  "@perfectScore": {
+    "description": "Perfect score label"
+  },
+
+  "today": "Today",
+  "@today": {
+    "description": "Today date label"
+  },
+
+  "yesterday": "Yesterday",
+  "@yesterday": {
+    "description": "Yesterday date label"
+  },
+
+  "daysAgo": "{count} days ago",
+  "@daysAgo": {
+    "description": "Days ago label",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "noSessionsYet": "No quiz sessions yet",
+  "@noSessionsYet": {
+    "description": "No sessions yet empty state title"
+  },
+
+  "startPlayingToSee": "Start playing to see your history here",
+  "@startPlayingToSee": {
+    "description": "No sessions yet empty state subtitle"
+  },
+
+  "sessionDetails": "Session Details",
+  "@sessionDetails": {
+    "description": "Session details screen title"
+  },
+
+  "reviewAnswers": "Review Answers",
+  "@reviewAnswers": {
+    "description": "Review answers section title"
+  },
+
+  "questionNumber": "Question {number}",
+  "@questionNumber": {
+    "description": "Question number label",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+
+  "yourAnswer": "Your answer",
+  "@yourAnswer": {
+    "description": "Your answer label"
+  },
+
+  "correctAnswer": "Correct answer",
+  "@correctAnswer": {
+    "description": "Correct answer label (for review)"
+  },
+
+  "skipped": "Skipped",
+  "@skipped": {
+    "description": "Skipped question label"
+  },
+
+  "practiceWrongAnswers": "Practice Wrong Answers",
+  "@practiceWrongAnswers": {
+    "description": "Practice wrong answers button"
+  },
+
+  "totalSessions": "Total Sessions",
+  "@totalSessions": {
+    "description": "Total sessions stat label"
+  },
+
+  "totalQuestions": "Total Questions",
+  "@totalQuestions": {
+    "description": "Total questions stat label"
+  },
+
+  "averageScore": "Average Score",
+  "@averageScore": {
+    "description": "Average score stat label"
+  },
+
+  "bestScore": "Best Score",
+  "@bestScore": {
+    "description": "Best score stat label"
+  },
+
+  "accuracy": "Accuracy",
+  "@accuracy": {
+    "description": "Accuracy stat label"
+  },
+
+  "timePlayed": "Time Played",
+  "@timePlayed": {
+    "description": "Time played stat label"
+  },
+
+  "perfectScores": "Perfect Scores",
+  "@perfectScores": {
+    "description": "Perfect scores count label"
+  },
+
+  "currentStreak": "Current Streak",
+  "@currentStreak": {
+    "description": "Current streak label"
+  },
+
+  "bestStreak": "Best Streak",
+  "@bestStreak": {
+    "description": "Best streak label"
+  },
+
+  "weeklyTrend": "Weekly Trend",
+  "@weeklyTrend": {
+    "description": "Weekly trend section title"
+  },
+
+  "improving": "Improving",
+  "@improving": {
+    "description": "Improving trend label"
+  },
+
+  "declining": "Declining",
+  "@declining": {
+    "description": "Declining trend label"
+  },
+
+  "stable": "Stable",
+  "@stable": {
+    "description": "Stable trend label"
+  },
+
+  "noStatisticsYet": "No statistics yet",
+  "@noStatisticsYet": {
+    "description": "No statistics yet empty state title"
+  },
+
+  "playQuizzesToSee": "Play some quizzes to see your statistics",
+  "@playQuizzesToSee": {
+    "description": "No statistics yet empty state subtitle"
+  },
+
+  "overview": "Overview",
+  "@overview": {
+    "description": "Overview section title"
+  },
+
+  "insights": "Insights",
+  "@insights": {
+    "description": "Insights section title"
+  },
+
+  "days": "days",
+  "@days": {
+    "description": "Days unit"
+  },
+
+  "audioAndHaptics": "Audio & Haptics",
+  "@audioAndHaptics": {
+    "description": "Audio & Haptics section header"
+  },
+
+  "soundEffects": "Sound Effects",
+  "@soundEffects": {
+    "description": "Sound effects toggle title"
+  },
+
+  "soundEffectsDescription": "Play sounds for answers and interactions",
+  "@soundEffectsDescription": {
+    "description": "Sound effects description"
+  },
+
+  "backgroundMusic": "Background Music",
+  "@backgroundMusic": {
+    "description": "Background music toggle title"
+  },
+
+  "backgroundMusicDescription": "Play background music during quiz",
+  "@backgroundMusicDescription": {
+    "description": "Background music description"
+  },
+
+  "hapticFeedback": "Haptic Feedback",
+  "@hapticFeedback": {
+    "description": "Haptic feedback toggle title"
+  },
+
+  "hapticFeedbackDescription": "Vibrate on button presses and answers",
+  "@hapticFeedbackDescription": {
+    "description": "Haptic feedback description"
+  },
+
+  "quizBehavior": "Quiz Behavior",
+  "@quizBehavior": {
+    "description": "Quiz behavior section header"
+  },
+
+  "showAnswerFeedback": "Show Answer Feedback",
+  "@showAnswerFeedback": {
+    "description": "Show answer feedback toggle title"
+  },
+
+  "showAnswerFeedbackDescription": "Display animations when answering",
+  "@showAnswerFeedbackDescription": {
+    "description": "Show answer feedback description"
+  },
+
+  "appearance": "Appearance",
+  "@appearance": {
+    "description": "Appearance section header"
+  },
+
+  "theme": "Theme",
+  "@theme": {
+    "description": "Theme setting title"
+  },
+
+  "themeLight": "Light",
+  "@themeLight": {
+    "description": "Light theme option"
+  },
+
+  "themeDark": "Dark",
+  "@themeDark": {
+    "description": "Dark theme option"
+  },
+
+  "themeSystem": "System default",
+  "@themeSystem": {
+    "description": "System theme option"
+  },
+
+  "selectTheme": "Select Theme",
+  "@selectTheme": {
+    "description": "Theme selection dialog title"
+  },
+
+  "about": "About",
+  "@about": {
+    "description": "About section header"
+  },
+
+  "version": "Version",
+  "@version": {
+    "description": "Version label"
+  },
+
+  "build": "Build",
+  "@build": {
+    "description": "Build label"
+  },
+
+  "aboutThisApp": "About This App",
+  "@aboutThisApp": {
+    "description": "About this app menu item"
+  },
+
+  "privacyPolicy": "Privacy Policy",
+  "@privacyPolicy": {
+    "description": "Privacy policy menu item"
+  },
+
+  "termsOfService": "Terms of Service",
+  "@termsOfService": {
+    "description": "Terms of service menu item"
+  },
+
+  "openSourceLicenses": "Open Source Licenses",
+  "@openSourceLicenses": {
+    "description": "Open source licenses menu item"
+  },
+
+  "advanced": "Advanced",
+  "@advanced": {
+    "description": "Advanced section header"
+  },
+
+  "resetToDefaults": "Reset to Defaults",
+  "@resetToDefaults": {
+    "description": "Reset to defaults menu item"
+  },
+
+  "resetToDefaultsDescription": "Restore all settings to default values",
+  "@resetToDefaultsDescription": {
+    "description": "Reset to defaults description"
+  },
+
+  "resetSettings": "Reset Settings",
+  "@resetSettings": {
+    "description": "Reset settings dialog title"
+  },
+
+  "resetSettingsMessage": "Are you sure you want to reset all settings to their default values? This cannot be undone.",
+  "@resetSettingsMessage": {
+    "description": "Reset settings dialog message"
+  },
+
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+
+  "reset": "Reset",
+  "@reset": {
+    "description": "Reset button"
+  },
+
+  "close": "Close",
+  "@close": {
+    "description": "Close button"
+  },
+
+  "share": "Share",
+  "@share": {
+    "description": "Share button"
+  },
+
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button"
+  },
+
+  "viewAll": "View All",
+  "@viewAll": {
+    "description": "View all button"
+  },
+
+  "credits": "Credits",
+  "@credits": {
+    "description": "Credits section title"
+  },
+
+  "attributions": "Attributions",
+  "@attributions": {
+    "description": "Attributions section title"
+  },
+
+  "exportSession": "Export Session",
+  "@exportSession": {
+    "description": "Export session button"
+  },
+
+  "exportAsJson": "Export as JSON",
+  "@exportAsJson": {
+    "description": "Export as JSON option"
+  },
+
+  "exportAsCsv": "Export as CSV",
+  "@exportAsCsv": {
+    "description": "Export as CSV option"
+  },
+
+  "exportSuccess": "Session exported successfully",
+  "@exportSuccess": {
+    "description": "Export success message"
+  },
+
+  "exportError": "Failed to export session",
+  "@exportError": {
+    "description": "Export error message"
+  },
+
+  "deleteSession": "Delete Session",
+  "@deleteSession": {
+    "description": "Delete session dialog title"
+  },
+
+  "deleteSessionMessage": "Are you sure you want to delete this session? This cannot be undone.",
+  "@deleteSessionMessage": {
+    "description": "Delete session confirmation message"
+  },
+
+  "sessionDeleted": "Session deleted",
+  "@sessionDeleted": {
+    "description": "Session deleted success message"
+  },
+
+  "recentSessions": "Recent Sessions",
+  "@recentSessions": {
+    "description": "Recent sessions section title"
+  },
+
+  "settingsResetToDefaults": "Settings reset to defaults",
+  "@settingsResetToDefaults": {
+    "description": "Settings reset confirmation message"
+  },
+
+  "couldNotOpenUrl": "Could not open {url}",
+  "@couldNotOpenUrl": {
+    "description": "Could not open URL error",
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+
+  "gameOverText": "Your Score",
+  "@gameOverText": {
+    "description": "Game over screen title showing the user's score"
+  }
+}

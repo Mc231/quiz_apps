@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/src/models/quiz_category.dart';
 import 'package:quiz_engine/src/models/quiz_data_provider.dart';
-import 'package:quiz_engine/src/quiz_widget_entry.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 
 class TestQuizDataProvider extends QuizDataProvider {
   final List<QuestionEntry> questions;
-  final QuizTexts? texts;
   final StorageConfig? storageConfig;
   final QuizConfig? quizConfig;
 
   const TestQuizDataProvider({
     this.questions = const [],
-    this.texts,
     this.storageConfig,
     this.quizConfig,
   });
@@ -24,11 +21,6 @@ class TestQuizDataProvider extends QuizDataProvider {
     QuizCategory category,
   ) async {
     return questions;
-  }
-
-  @override
-  QuizTexts? createQuizTexts(BuildContext context, QuizCategory category) {
-    return texts;
   }
 
   @override
@@ -50,21 +42,6 @@ void main() {
     id: 'test',
     title: (context) => 'Test',
     config: const QuizConfig(quizId: 'category_config'),
-  );
-
-  final testTexts = QuizTexts(
-    title: 'Test Quiz',
-    gameOverText: 'Game Over',
-    exitDialogTitle: 'Exit',
-    exitDialogMessage: 'Are you sure?',
-    exitDialogConfirm: 'Yes',
-    exitDialogCancel: 'No',
-    correctFeedback: 'Correct!',
-    incorrectFeedback: 'Wrong!',
-    hint5050Label: '50/50',
-    hintSkipLabel: 'Skip',
-    timerSecondsSuffix: 's',
-    videoLoadError: 'Error',
   );
 
   group('QuizDataProvider', () {
@@ -94,25 +71,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(loadedQuestions, questions);
-    });
-
-    testWidgets('createQuizTexts returns texts', (tester) async {
-      final provider = TestQuizDataProvider(texts: testTexts);
-
-      QuizTexts? result;
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Builder(
-            builder: (context) {
-              result = provider.createQuizTexts(context, testCategory);
-              return const SizedBox();
-            },
-          ),
-        ),
-      );
-
-      expect(result, testTexts);
     });
 
     testWidgets('createStorageConfig returns config', (tester) async {
@@ -208,51 +166,6 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(result, questions);
-    });
-
-    testWidgets('createQuizTextsCallback is called when provided',
-        (tester) async {
-      final provider = CallbackQuizDataProvider(
-        loadQuestionsCallback: (context, category) async => [],
-        createQuizTextsCallback: (context, category) => testTexts,
-      );
-
-      QuizTexts? result;
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Builder(
-            builder: (context) {
-              result = provider.createQuizTexts(context, testCategory);
-              return const SizedBox();
-            },
-          ),
-        ),
-      );
-
-      expect(result, testTexts);
-    });
-
-    testWidgets('createQuizTexts returns null when callback not provided',
-        (tester) async {
-      final provider = CallbackQuizDataProvider(
-        loadQuestionsCallback: (context, category) async => [],
-      );
-
-      QuizTexts? result;
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Builder(
-            builder: (context) {
-              result = provider.createQuizTexts(context, testCategory);
-              return const SizedBox();
-            },
-          ),
-        ),
-      );
-
-      expect(result, isNull);
     });
 
     testWidgets('createStorageConfigCallback is called when provided',

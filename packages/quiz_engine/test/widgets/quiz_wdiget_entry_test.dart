@@ -9,13 +9,12 @@ void main() {
     const defaultConfig = QuizConfig(quizId: 'science_quiz');
 
     final quizEntry = QuizWidgetEntry.withDefaultConfig(
-      texts: testQuizTexts,
+      title: testQuizTitle,
       dataProvider: () async => [],
       defaultConfig: defaultConfig,
     );
 
-    expect(quizEntry.texts.title, "Test Quiz");
-    expect(quizEntry.texts.gameOverText, "Game Over");
+    expect(quizEntry.title, "Test Quiz");
     expect(quizEntry.dataProvider, isNotNull);
     expect(quizEntry.configManager.defaultConfig.quizId, 'science_quiz');
   });

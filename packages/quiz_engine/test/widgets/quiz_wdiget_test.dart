@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine/src/quiz/quiz_screen.dart';
@@ -27,14 +26,14 @@ void main() {
 
     // Create QuizWidgetEntry
     final quizEntry = QuizWidgetEntry.withDefaultConfig(
-      texts: testQuizTexts,
+      title: testQuizTitle,
       dataProvider: () => Future.value(mockQuestions),
       defaultConfig: defaultConfig,
     );
 
-    // Pump the widget into the test environment
+    // Pump the widget into the test environment with localization support
     await tester.pumpWidget(
-      MaterialApp(home: QuizWidget(quizEntry: quizEntry)),
+      wrapWithLocalizations(QuizWidget(quizEntry: quizEntry)),
     );
 
     await tester.pump(); // Allow async actions to complete

@@ -36,13 +36,12 @@ void main() {
       final mockBloc = MockQuizBloc();
 
       await tester.pumpWidget(
-        MaterialApp(
-          home: QuizLayout(
+        wrapWithLocalizations(
+          QuizLayout(
             questionState: mockQuestionState,
             information: sizingInformation,
             processAnswer: (_) {},
             quizBloc: mockBloc,
-            texts: testQuizTexts,
           ),
         ),
       );

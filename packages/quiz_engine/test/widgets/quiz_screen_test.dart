@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine/src/quiz/quiz_screen.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
-
-import '../test_helpers.dart';
 
 @GenerateNiceMocks([MockSpec<RandomItemPicker>()])
 import 'quiz_screen_test.mocks.dart';
@@ -40,6 +39,23 @@ void main() {
     );
   });
 
+  /// Helper to wrap widgets with localization support for tests.
+  Widget wrapWithLocalizationsForBloc(Widget child, QuizBloc bloc) {
+    return MaterialApp(
+      localizationsDelegates: const [
+        QuizLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en')],
+      home: BlocProvider(
+        bloc: bloc,
+        child: child,
+      ),
+    );
+  }
+
   testWidgets('Question showing', (WidgetTester tester) async {
     // Given
     final country1 = QuestionEntry(
@@ -55,15 +71,9 @@ void main() {
     // When
     when(randomItemPicker.pick()).thenReturn(randomPickResult);
     await tester.pumpWidget(
-      MaterialApp(
-        home: BlocProvider(
-          bloc: bloc,
-          child: QuizScreen(
-            title: "Test",
-            gameOverTitle: "Game Over",
-            texts: testQuizTexts,
-          ),
-        ),
+      wrapWithLocalizationsForBloc(
+        QuizScreen(title: "Test"),
+        bloc,
       ),
     );
     await tester.pump();
@@ -99,15 +109,9 @@ void main() {
     // When
     when(randomItemPicker.pick()).thenReturn(null);
     await tester.pumpWidget(
-      MaterialApp(
-        home: BlocProvider(
-          bloc: bloc2,
-          child: QuizScreen(
-            title: "Test",
-            gameOverTitle: "Game Over",
-            texts: testQuizTexts,
-          ),
-        ),
+      wrapWithLocalizationsForBloc(
+        QuizScreen(title: "Test"),
+        bloc2,
       ),
     );
     await tester.pump();

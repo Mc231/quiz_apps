@@ -3,7 +3,7 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../theme/quiz_theme_data.dart';
 import '../quiz/quiz_layout.dart';
-import '../quiz_widget_entry.dart';
+import '../l10n/quiz_localizations.dart';
 
 /// A widget that displays visual feedback after the user answers a question.
 ///
@@ -27,9 +27,6 @@ class AnswerFeedbackWidget extends StatefulWidget {
   /// Responsive sizing information
   final SizingInformation information;
 
-  /// Text strings for the quiz UI
-  final QuizTexts texts;
-
   const AnswerFeedbackWidget({
     super.key,
     required this.feedbackState,
@@ -37,7 +34,6 @@ class AnswerFeedbackWidget extends StatefulWidget {
     required this.quizBloc,
     required this.themeData,
     required this.information,
-    required this.texts,
   });
 
   @override
@@ -98,7 +94,6 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
               processAnswer: widget.processAnswer,
               quizBloc: widget.quizBloc,
               themeData: widget.themeData,
-              texts: widget.texts,
             ),
           ),
         ),
@@ -130,10 +125,8 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
             : widget.themeData.incorrectAnswerColor;
 
     final icon = isCorrect ? Icons.check_circle : Icons.cancel;
-    final message =
-        isCorrect
-            ? widget.texts.correctFeedback
-            : widget.texts.incorrectFeedback;
+    final l10n = QuizL10n.of(context);
+    final message = isCorrect ? l10n.correctFeedback : l10n.incorrectFeedback;
 
     return Card(
       elevation: 8,

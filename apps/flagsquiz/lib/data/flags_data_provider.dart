@@ -42,26 +42,6 @@ class FlagsDataProvider extends engine.QuizDataProvider {
   }
 
   @override
-  engine.QuizTexts? createQuizTexts(BuildContext context, engine.QuizCategory category) {
-    final l10n = AppLocalizations.of(context)!;
-
-    return engine.QuizTexts(
-      title: category.title(context),
-      gameOverText: l10n.yourScore,
-      exitDialogTitle: l10n.exitDialogTitle,
-      exitDialogMessage: l10n.exitDialogMessage,
-      exitDialogConfirm: l10n.exitDialogConfirm,
-      exitDialogCancel: l10n.exitDialogCancel,
-      correctFeedback: l10n.correctFeedback,
-      incorrectFeedback: l10n.incorrectFeedback,
-      hint5050Label: l10n.hint5050Label,
-      hintSkipLabel: l10n.hintSkipLabel,
-      timerSecondsSuffix: l10n.timerSecondsSuffix,
-      videoLoadError: l10n.videoLoadError,
-    );
-  }
-
-  @override
   StorageConfig? createStorageConfig(
     BuildContext context,
     engine.QuizCategory category,

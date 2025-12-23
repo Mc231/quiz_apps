@@ -38,9 +38,7 @@ class QuizWidget extends StatelessWidget {
       bloc: bloc,
       child: QuizLifecycleHandler(
         child: QuizScreen(
-          title: quizEntry.texts.title,
-          gameOverTitle: quizEntry.texts.gameOverText,
-          texts: quizEntry.texts,
+          title: quizEntry.title,
           themeData: quizEntry.themeData,
         ),
       ),

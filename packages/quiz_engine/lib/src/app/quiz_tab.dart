@@ -145,7 +145,7 @@ final class PlayTab extends QuizTab {
         );
 
   static String _defaultLabel(BuildContext context) =>
-      QuizLocalizations.of(context).play;
+      QuizL10n.of(context).play;
 }
 
 /// Tab for viewing quiz history.
@@ -166,7 +166,7 @@ final class HistoryTab extends QuizTab {
         );
 
   static String _defaultLabel(BuildContext context) =>
-      QuizLocalizations.of(context).history;
+      QuizL10n.of(context).history;
 }
 
 /// Tab for viewing statistics.
@@ -187,7 +187,7 @@ final class StatisticsTab extends QuizTab {
         );
 
   static String _defaultLabel(BuildContext context) =>
-      QuizLocalizations.of(context).statistics;
+      QuizL10n.of(context).statistics;
 }
 
 /// Tab for app settings.
@@ -208,7 +208,7 @@ final class SettingsTab extends QuizTab {
         );
 
   static String _defaultLabel(BuildContext context) =>
-      QuizLocalizations.of(context).settings;
+      QuizL10n.of(context).settings;
 }
 
 /// Custom tab with app-specific content.

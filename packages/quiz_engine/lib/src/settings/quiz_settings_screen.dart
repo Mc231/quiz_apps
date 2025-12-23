@@ -219,7 +219,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
 
     final body = ListView(
       children: _buildSettingsList(context, l10n),
@@ -452,38 +452,30 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            RadioListTile<AppThemeMode>(
-              title: Text(l10n.themeLight),
-              value: AppThemeMode.light,
+            RadioGroup<AppThemeMode>(
               groupValue: _currentSettings.themeMode,
               onChanged: (value) async {
-                if (value != null) {
-                  await widget.settingsService.setThemeMode(value);
-                  if (mounted) Navigator.pop(context);
-                }
+                if (value == null) return;
+                await widget.settingsService.setThemeMode(value);
+                if (mounted) Navigator.pop(context);
               },
-            ),
-            RadioListTile<AppThemeMode>(
-              title: Text(l10n.themeDark),
-              value: AppThemeMode.dark,
-              groupValue: _currentSettings.themeMode,
-              onChanged: (value) async {
-                if (value != null) {
-                  await widget.settingsService.setThemeMode(value);
-                  if (mounted) Navigator.pop(context);
-                }
-              },
-            ),
-            RadioListTile<AppThemeMode>(
-              title: Text(l10n.themeSystem),
-              value: AppThemeMode.system,
-              groupValue: _currentSettings.themeMode,
-              onChanged: (value) async {
-                if (value != null) {
-                  await widget.settingsService.setThemeMode(value);
-                  if (mounted) Navigator.pop(context);
-                }
-              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RadioListTile<AppThemeMode>(
+                    title: Text(l10n.themeLight),
+                    value: AppThemeMode.light,
+                  ),
+                  RadioListTile<AppThemeMode>(
+                    title: Text(l10n.themeDark),
+                    value: AppThemeMode.dark,
+                  ),
+                  RadioListTile<AppThemeMode>(
+                    title: Text(l10n.themeSystem),
+                    value: AppThemeMode.system,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -1,15 +1,12 @@
-import 'quiz_localizations.dart';
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
+import 'quiz_engine_localizations.dart';
 
-/// English implementation of [QuizLocalizations].
-///
-/// Provides default English strings for all quiz engine UI elements.
-/// This is the fallback localization when no other is available.
-class QuizLocalizationsEn extends QuizLocalizations {
-  const QuizLocalizationsEn();
+// ignore_for_file: type=lint
 
-  // ============================================================
-  // Navigation
-  // ============================================================
+/// The translations for English (`en`).
+class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
+  QuizEngineLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
   String get play => 'Play';
@@ -22,10 +19,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
 
   @override
   String get settings => 'Settings';
-
-  // ============================================================
-  // Quiz UI
-  // ============================================================
 
   @override
   String get score => 'Score';
@@ -64,19 +57,11 @@ class QuizLocalizationsEn extends QuizLocalizations {
   @override
   String get videoLoadError => 'Failed to load video';
 
-  // ============================================================
-  // Hints
-  // ============================================================
-
   @override
   String get hint5050Label => '50/50';
 
   @override
   String get hintSkipLabel => 'Skip';
-
-  // ============================================================
-  // Timer
-  // ============================================================
 
   @override
   String get timerSecondsSuffix => 's';
@@ -89,10 +74,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
 
   @override
   String get seconds => 'sec';
-
-  // ============================================================
-  // Session Status
-  // ============================================================
 
   @override
   String get sessionCompleted => 'Completed';
@@ -109,10 +90,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
   @override
   String get perfectScore => 'Perfect!';
 
-  // ============================================================
-  // History Screen
-  // ============================================================
-
   @override
   String get today => 'Today';
 
@@ -120,7 +97,9 @@ class QuizLocalizationsEn extends QuizLocalizations {
   String get yesterday => 'Yesterday';
 
   @override
-  String daysAgo(int count) => '$count days ago';
+  String daysAgo(int count) {
+    return '$count days ago';
+  }
 
   @override
   String get noSessionsYet => 'No quiz sessions yet';
@@ -135,11 +114,9 @@ class QuizLocalizationsEn extends QuizLocalizations {
   String get reviewAnswers => 'Review Answers';
 
   @override
-  String questionNumber(int number) => 'Question $number';
-
-  // ============================================================
-  // Question Review
-  // ============================================================
+  String questionNumber(int number) {
+    return 'Question $number';
+  }
 
   @override
   String get yourAnswer => 'Your answer';
@@ -152,10 +129,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
 
   @override
   String get practiceWrongAnswers => 'Practice Wrong Answers';
-
-  // ============================================================
-  // Statistics Screen
-  // ============================================================
 
   @override
   String get totalSessions => 'Total Sessions';
@@ -211,10 +184,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
   @override
   String get days => 'days';
 
-  // ============================================================
-  // Settings Screen
-  // ============================================================
-
   @override
   String get audioAndHaptics => 'Audio & Haptics';
 
@@ -229,8 +198,7 @@ class QuizLocalizationsEn extends QuizLocalizations {
   String get backgroundMusic => 'Background Music';
 
   @override
-  String get backgroundMusicDescription =>
-      'Play background music during quiz';
+  String get backgroundMusicDescription => 'Play background music during quiz';
 
   @override
   String get hapticFeedback => 'Haptic Feedback';
@@ -285,10 +253,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
   @override
   String get termsOfService => 'Terms of Service';
 
-  // ============================================================
-  // Advanced Settings
-  // ============================================================
-
   @override
   String get openSourceLicenses => 'Open Source Licenses';
 
@@ -308,10 +272,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
   @override
   String get resetSettingsMessage =>
       'Are you sure you want to reset all settings to their default values? This cannot be undone.';
-
-  // ============================================================
-  // Common Actions
-  // ============================================================
 
   @override
   String get cancel => 'Cancel';
@@ -337,10 +297,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
   @override
   String get attributions => 'Attributions';
 
-  // ============================================================
-  // Export
-  // ============================================================
-
   @override
   String get exportSession => 'Export Session';
 
@@ -356,10 +312,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
   @override
   String get exportError => 'Failed to export session';
 
-  // ============================================================
-  // Delete Session
-  // ============================================================
-
   @override
   String get deleteSession => 'Delete Session';
 
@@ -370,10 +322,6 @@ class QuizLocalizationsEn extends QuizLocalizations {
   @override
   String get sessionDeleted => 'Session deleted';
 
-  // ============================================================
-  // Parameterized Strings
-  // ============================================================
-
   @override
   String get recentSessions => 'Recent Sessions';
 
@@ -381,5 +329,10 @@ class QuizLocalizationsEn extends QuizLocalizations {
   String get settingsResetToDefaults => 'Settings reset to defaults';
 
   @override
-  String couldNotOpenUrl(String url) => 'Could not open $url';
+  String couldNotOpenUrl(String url) {
+    return 'Could not open $url';
+  }
+
+  @override
+  String get gameOverText => 'Your Score';
 }

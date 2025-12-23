@@ -161,7 +161,7 @@ class PlayScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
 
     if (config.showAppBar) {
       return Scaffold(
@@ -188,7 +188,7 @@ class PlayScreen extends StatelessWidget {
         IconButton(
           icon: const Icon(Icons.settings),
           onPressed: onSettingsPressed,
-          tooltip: QuizLocalizations.of(context).settings,
+          tooltip: QuizL10n.of(context).settings,
         ),
       );
     }
@@ -301,7 +301,7 @@ class PlayScreen extends StatelessWidget {
   }
 
   Widget _buildDefaultEmptyState(BuildContext context) {
-    final l10n = QuizLocalizations.of(context);
+    final l10n = QuizL10n.of(context);
     final theme = Theme.of(context);
 
     return Center(

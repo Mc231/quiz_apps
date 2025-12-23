@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 
-import '../quiz_widget_entry.dart';
 import 'quiz_category.dart';
 
 /// Interface for loading quiz data for a category.
@@ -21,16 +20,6 @@ import 'quiz_category.dart';
 ///     final countries = loadCountriesForContinent(category.id);
 ///     return countries.map((c) => c.toQuestionEntry()).toList();
 ///   }
-///
-///   @override
-///   QuizTexts createQuizTexts(BuildContext context, QuizCategory category) {
-///     final l10n = AppLocalizations.of(context)!;
-///     return QuizTexts(
-///       title: category.title(context),
-///       gameOverText: l10n.gameOver,
-///       // ... other texts
-///     );
-///   }
 /// }
 /// ```
 abstract class QuizDataProvider {
@@ -48,15 +37,6 @@ abstract class QuizDataProvider {
     BuildContext context,
     QuizCategory category,
   );
-
-  /// Creates quiz texts for the given category.
-  ///
-  /// Returns localized text strings for the quiz UI.
-  /// If null, the QuizApp will use default texts from engine localizations.
-  ///
-  /// [context] - BuildContext for localization access
-  /// [category] - The selected quiz category
-  QuizTexts? createQuizTexts(BuildContext context, QuizCategory category);
 
   /// Creates storage configuration for the given category.
   ///
@@ -93,9 +73,6 @@ abstract class QuizDataProvider {
 ///   loadQuestionsCallback: (context, category) async {
 ///     return loadQuestionsForCategory(category.id);
 ///   },
-///   createQuizTextsCallback: (context, category) {
-///     return QuizTexts(title: category.title(context), ...);
-///   },
 /// );
 /// ```
 class CallbackQuizDataProvider extends QuizDataProvider {
@@ -104,10 +81,6 @@ class CallbackQuizDataProvider extends QuizDataProvider {
     BuildContext context,
     QuizCategory category,
   ) loadQuestionsCallback;
-
-  /// Optional callback for creating quiz texts.
-  final QuizTexts? Function(BuildContext context, QuizCategory category)?
-      createQuizTextsCallback;
 
   /// Optional callback for creating storage config.
   final StorageConfig? Function(BuildContext context, QuizCategory category)?
@@ -123,7 +96,6 @@ class CallbackQuizDataProvider extends QuizDataProvider {
   /// Other callbacks are optional and will return null if not provided.
   const CallbackQuizDataProvider({
     required this.loadQuestionsCallback,
-    this.createQuizTextsCallback,
     this.createStorageConfigCallback,
     this.createQuizConfigCallback,
   });
@@ -134,11 +106,6 @@ class CallbackQuizDataProvider extends QuizDataProvider {
     QuizCategory category,
   ) {
     return loadQuestionsCallback(context, category);
-  }
-
-  @override
-  QuizTexts? createQuizTexts(BuildContext context, QuizCategory category) {
-    return createQuizTextsCallback?.call(context, category);
   }
 
   @override

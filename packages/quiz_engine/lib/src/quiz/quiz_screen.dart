@@ -24,15 +24,11 @@ class QuizScreen extends StatefulWidget {
   static const okButtonKey = Key("ok_button");
 
   final String title;
-  final String gameOverTitle;
-  final QuizTexts texts;
   final QuizThemeData themeData;
 
   const QuizScreen({
     super.key,
     required this.title,
-    required this.gameOverTitle,
-    required this.texts,
     this.themeData = const QuizThemeData(),
   });
 
@@ -137,6 +133,8 @@ class QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = QuizL10n.of(context);
+
     return StreamBuilder<QuizState>(
       initialData: _bloc.initialState,
       stream: _bloc.stream,
@@ -155,10 +153,10 @@ class QuizScreenState extends State<QuizScreen> {
             if (_showExitConfirmation) {
               final shouldExit = await ExitConfirmationDialog.show(
                 context,
-                title: widget.texts.exitDialogTitle,
-                message: widget.texts.exitDialogMessage,
-                confirmButtonText: widget.texts.exitDialogConfirm,
-                cancelButtonText: widget.texts.exitDialogCancel,
+                title: l10n.exitDialogTitle,
+                message: l10n.exitDialogMessage,
+                confirmButtonText: l10n.exitDialogConfirm,
+                cancelButtonText: l10n.exitDialogCancel,
               );
               if (shouldExit && context.mounted) {
                 Navigator.of(context).pop();
@@ -174,7 +172,6 @@ class QuizScreenState extends State<QuizScreen> {
                   QuizAppBarActions(
                     state: state,
                     config: _bloc.config,
-                    texts: widget.texts,
                   ),
               ],
             ),
@@ -201,7 +198,6 @@ class QuizScreenState extends State<QuizScreen> {
             feedbackState: state,
             processAnswer: _bloc.processAnswer,
             quizBloc: _bloc,
-            texts: widget.texts,
             themeData: widget.themeData,
             information: information,
           );
@@ -217,7 +213,6 @@ class QuizScreenState extends State<QuizScreen> {
           information: information,
           processAnswer: _bloc.processAnswer,
           quizBloc: _bloc,
-          texts: widget.texts,
           themeData: widget.themeData,
         );
       },
@@ -232,12 +227,14 @@ class QuizScreenState extends State<QuizScreen> {
   ///
   /// [message] is the score message to display in the dialog.
   void _showQuizOverDialog(String message) async {
+    final l10n = QuizL10n.of(context);
+
     await showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(widget.gameOverTitle),
+          title: Text(l10n.gameOverText),
           content: SingleChildScrollView(
             child: ListBody(children: <Widget>[Text(message)]),
           ),

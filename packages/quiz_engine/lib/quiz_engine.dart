@@ -10,7 +10,6 @@ export 'src/app/quiz_tab.dart';
 
 // Localization
 export 'src/l10n/quiz_localizations.dart';
-export 'src/l10n/quiz_localizations_en.dart';
 export 'src/l10n/quiz_localizations_delegate.dart';
 
 // Home
