@@ -1,5 +1,12 @@
 library quiz_engine;
 
+// Models
+export 'src/models/quiz_category.dart';
+export 'src/models/quiz_data_provider.dart';
+
+// App
+export 'src/app/quiz_tab.dart';
+
 // Widgets
 export 'src/quiz_widget.dart';
 export 'src/quiz_widget_entry.dart';
