@@ -335,4 +335,12 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get gameOverText => 'Your Score';
+
+  @override
+  String get noData => 'No data';
+
+  @override
+  String initializationError(String error) {
+    return 'Initialization error: $error';
+  }
 }
