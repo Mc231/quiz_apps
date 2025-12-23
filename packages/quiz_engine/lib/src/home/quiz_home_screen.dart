@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../app/quiz_tab.dart';
 import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
+import '../screens/session_detail_screen.dart';
 import '../screens/session_history_screen.dart';
 import '../screens/statistics_screen.dart';
+import '../utils/default_data_loader.dart';
 import '../widgets/session_card.dart';
 import 'category_card.dart';
 import 'play_screen.dart';
@@ -99,14 +102,24 @@ class StatisticsTabData {
 /// Integrates PlayScreen, SessionHistoryScreen, and StatisticsScreen
 /// with configurable tabs and navigation.
 ///
-/// Example:
+/// When [storageService] is provided, default data loading and session
+/// navigation are enabled, making the widget usage much simpler:
+///
 /// ```dart
+/// // Minimal usage with defaults
 /// QuizHomeScreen(
 ///   categories: myCategories,
-///   config: QuizHomeScreenConfig.defaultConfig(),
+///   storageService: storageService,
 ///   onCategorySelected: (category) => navigateToQuiz(category),
+///   onSettingsPressed: () => openSettings(),
+/// )
+///
+/// // Or with custom data providers
+/// QuizHomeScreen(
+///   categories: myCategories,
 ///   historyDataProvider: () => loadHistoryData(),
 ///   statisticsDataProvider: () => loadStatisticsData(),
+///   onSessionTap: (session) => openSessionDetail(session),
 /// )
 /// ```
 class QuizHomeScreen extends StatefulWidget {
@@ -116,6 +129,17 @@ class QuizHomeScreen extends StatefulWidget {
   /// Configuration for the home screen.
   final QuizHomeScreenConfig config;
 
+  /// Storage service for default data loading.
+  ///
+  /// When provided, enables:
+  /// - Automatic history data loading
+  /// - Automatic statistics data loading
+  /// - Default session tap navigation to [SessionDetailScreen]
+  ///
+  /// Custom providers ([historyDataProvider], [statisticsDataProvider])
+  /// take precedence over default loading when both are provided.
+  final StorageService? storageService;
+
   /// Callback when a category is selected in the Play tab.
   final void Function(QuizCategory category)? onCategorySelected;
 
@@ -123,17 +147,24 @@ class QuizHomeScreen extends StatefulWidget {
   final VoidCallback? onSettingsPressed;
 
   /// Callback when a session is tapped in History/Statistics.
+  ///
+  /// When [storageService] is provided and this is null, default
+  /// navigation to [SessionDetailScreen] is used.
   final void Function(SessionCardData session)? onSessionTap;
 
   /// Callback when "View All Sessions" is tapped in Statistics.
   final VoidCallback? onViewAllSessions;
 
   /// Data provider for the History tab.
+  ///
   /// Called when the History tab is selected or refreshed.
+  /// If null and [storageService] is provided, default loading is used.
   final Future<HistoryTabData> Function()? historyDataProvider;
 
   /// Data provider for the Statistics tab.
+  ///
   /// Called when the Statistics tab is selected or refreshed.
+  /// If null and [storageService] is provided, default loading is used.
   final Future<StatisticsTabData> Function()? statisticsDataProvider;
 
   /// Builder for the Settings tab content.
@@ -152,11 +183,17 @@ class QuizHomeScreen extends StatefulWidget {
   /// Duration formatter for statistics.
   final String Function(int seconds)? formatDuration;
 
+  /// Callback when a session is deleted.
+  ///
+  /// Called after successful deletion from [SessionDetailScreen].
+  final VoidCallback? onSessionDeleted;
+
   /// Creates a [QuizHomeScreen].
   const QuizHomeScreen({
     super.key,
     required this.categories,
     this.config = const QuizHomeScreenConfig(),
+    this.storageService,
     this.onCategorySelected,
     this.onSettingsPressed,
     this.onSessionTap,
@@ -168,6 +205,7 @@ class QuizHomeScreen extends StatefulWidget {
     this.formatDate,
     this.formatStatus,
     this.formatDuration,
+    this.onSessionDeleted,
   });
 
   @override
@@ -178,17 +216,58 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   late int _currentIndex;
   HistoryTabData _historyData = const HistoryTabData();
   StatisticsTabData _statisticsData = StatisticsTabData.empty();
+  DefaultDataLoader? _dataLoader;
 
   List<QuizTab> get _tabs {
     final configTabs = widget.config.tabConfig.tabs;
     return configTabs.isNotEmpty ? configTabs : QuizTabConfig.defaultConfig().tabs;
   }
 
+  /// Whether default data loading is enabled.
+  bool get _useDefaults => widget.storageService != null;
+
+  /// Gets the effective history data provider.
+  Future<HistoryTabData> Function()? get _effectiveHistoryProvider {
+    if (widget.historyDataProvider != null) {
+      return widget.historyDataProvider;
+    }
+    if (_useDefaults && _dataLoader != null) {
+      return () => _dataLoader!.loadHistoryData();
+    }
+    return null;
+  }
+
+  /// Gets the effective statistics data provider.
+  Future<StatisticsTabData> Function()? get _effectiveStatisticsProvider {
+    if (widget.statisticsDataProvider != null) {
+      return widget.statisticsDataProvider;
+    }
+    if (_useDefaults && _dataLoader != null) {
+      return () => _dataLoader!.loadStatisticsData();
+    }
+    return null;
+  }
+
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.config.tabConfig.initialIndex;
+    if (widget.storageService != null) {
+      _dataLoader = DefaultDataLoader(widget.storageService!);
+    }
     _loadDataForCurrentTab();
+  }
+
+  @override
+  void didUpdateWidget(QuizHomeScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.storageService != oldWidget.storageService) {
+      if (widget.storageService != null) {
+        _dataLoader = DefaultDataLoader(widget.storageService!);
+      } else {
+        _dataLoader = null;
+      }
+    }
   }
 
   void _loadDataForCurrentTab() {
@@ -203,14 +282,15 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   Future<void> _loadHistoryData() async {
-    if (widget.historyDataProvider == null) return;
+    final provider = _effectiveHistoryProvider;
+    if (provider == null) return;
 
     setState(() {
       _historyData = const HistoryTabData(isLoading: true);
     });
 
     try {
-      final data = await widget.historyDataProvider!();
+      final data = await provider();
       if (mounted) {
         setState(() {
           _historyData = data;
@@ -226,7 +306,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   Future<void> _loadStatisticsData() async {
-    if (widget.statisticsDataProvider == null) return;
+    final provider = _effectiveStatisticsProvider;
+    if (provider == null) return;
 
     setState(() {
       _statisticsData = StatisticsTabData(
@@ -237,7 +318,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
     });
 
     try {
-      final data = await widget.statisticsDataProvider!();
+      final data = await provider();
       if (mounted) {
         setState(() {
           _statisticsData = data;
@@ -249,6 +330,107 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
           _statisticsData = StatisticsTabData.empty();
         });
       }
+    }
+  }
+
+  /// Handles session tap with default navigation if no callback provided.
+  void _handleSessionTap(SessionCardData session) {
+    if (widget.onSessionTap != null) {
+      widget.onSessionTap!(session);
+      return;
+    }
+
+    // Use default navigation if storageService is available
+    if (_useDefaults && _dataLoader != null) {
+      _navigateToSessionDetail(session);
+    }
+  }
+
+  /// Navigates to the default session detail screen.
+  Future<void> _navigateToSessionDetail(SessionCardData sessionData) async {
+    final quizSession = await _dataLoader!.getSessionById(sessionData.id);
+    if (quizSession == null || !mounted) return;
+
+    final l10n = QuizLocalizations.of(context);
+    final texts = _createSessionDetailTexts(l10n);
+    final detailData = _convertToSessionDetailData(quizSession);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Scaffold(
+          appBar: AppBar(
+            title: Text(texts.title),
+          ),
+          body: SessionDetailScreen(
+            session: detailData,
+            texts: texts,
+            onDelete: () => _deleteSession(quizSession.id),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Creates session detail texts from localizations.
+  SessionDetailTexts _createSessionDetailTexts(QuizLocalizations l10n) {
+    return SessionDetailTexts(
+      title: l10n.sessionDetails,
+      reviewAnswersLabel: l10n.reviewAnswers,
+      practiceWrongAnswersLabel: l10n.practiceWrongAnswers,
+      exportLabel: l10n.exportSession,
+      deleteLabel: l10n.delete,
+      scoreLabel: l10n.score,
+      correctLabel: l10n.correct,
+      incorrectLabel: l10n.incorrect,
+      skippedLabel: l10n.skipped,
+      durationLabel: l10n.duration,
+      questionLabel: (n) => l10n.questionNumber(n),
+      yourAnswerLabel: l10n.yourAnswer,
+      correctAnswerLabel: l10n.correctAnswer,
+      formatDate: widget.formatDate ?? _defaultFormatDate,
+      formatStatus: widget.formatStatus ?? _defaultFormatStatus,
+      deleteDialogTitle: l10n.deleteSession,
+      deleteDialogMessage: l10n.deleteSessionMessage,
+      cancelLabel: l10n.cancel,
+    );
+  }
+
+  /// Converts a QuizSession to SessionDetailData.
+  SessionDetailData _convertToSessionDetailData(QuizSession session) {
+    return SessionDetailData(
+      id: session.id,
+      quizName: session.quizName,
+      totalQuestions: session.totalQuestions,
+      totalCorrect: session.totalCorrect,
+      totalIncorrect: session.totalFailed,
+      totalSkipped: session.totalSkipped,
+      scorePercentage: session.scorePercentage,
+      completionStatus: session.completionStatus.name,
+      startTime: session.startTime,
+      durationSeconds: session.durationSeconds,
+      quizCategory: session.quizCategory,
+      // QuizSession doesn't store individual answers, so we can't show question review
+      questions: const [],
+    );
+  }
+
+  /// Deletes a session and refreshes data.
+  Future<void> _deleteSession(String sessionId) async {
+    if (widget.storageService == null) return;
+
+    await widget.storageService!.deleteSession(sessionId);
+
+    // Refresh data
+    _loadHistoryData();
+    _loadStatisticsData();
+
+    // Notify callback
+    widget.onSessionDeleted?.call();
+
+    // Pop back to home
+    if (mounted) {
+      Navigator.pop(context);
     }
   }
 
@@ -361,8 +543,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
       sessions: _historyData.sessions,
       texts: texts,
       isLoading: _historyData.isLoading,
-      onSessionTap: widget.onSessionTap ?? (_) {},
-      onRefresh: widget.historyDataProvider != null ? _loadHistoryData : null,
+      onSessionTap: _handleSessionTap,
+      onRefresh: _effectiveHistoryProvider != null ? _loadHistoryData : null,
     );
   }
 
@@ -375,7 +557,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
       texts: texts,
       recentSessions: _statisticsData.recentSessions,
       isLoading: _statisticsData.isLoading,
-      onSessionTap: widget.onSessionTap,
+      onSessionTap: _handleSessionTap,
       onViewAllSessions: widget.onViewAllSessions,
     );
   }
