@@ -4,8 +4,8 @@ This checklist contains features to implement before publishing quiz apps to imp
 
 **Current Status:** Based on flagsquiz app analysis
 - ✅ Solid foundation: responsive design, 60+ languages, clean architecture
-- ✅ Implemented: sound effects, haptic feedback, settings, statistics tracking, results screen, answer feedback, database storage, logger
-- ⏳ In Progress: onboarding, achievements, statistics UI screen
+- ✅ Implemented: sound effects, haptic feedback, settings, statistics tracking, results screen, answer feedback, database storage, logger, hint system, lives/hearts system, game modes (standard/timed/lives/endless/survival)
+- ⏳ Remaining: onboarding, achievements UI, statistics UI screen, ads, privacy policy
 
 ---
 
@@ -122,37 +122,43 @@ This checklist contains features to implement before publishing quiz apps to imp
     - `apps/flagsquiz/lib/services/achievement_service.dart`
 
 ### Hint System
-- [ ] **Hint Types**
-  - [ ] 50/50: Remove 2 wrong answers
-  - [ ] Skip: Skip current question (no penalty)
-  - [ ] Reveal Letter: Show first letter of answer
-  - [ ] Ask the Audience: Show percentage bars (simulated)
+- [x] **Hint Types**
+  - [x] 50/50: Remove 2 wrong answers
+  - [x] Skip: Skip current question (no penalty)
+  - [x] Reveal Letter: Show first letter of answer
+  - [x] Extra Time: Add time in timed mode
+  - File: `packages/quiz_engine_core/lib/src/model/config/hint_config.dart`
 
-- [ ] **Hint Management**
-  - [ ] Start with 3 hints of each type per quiz
-  - [ ] Show remaining hints in UI
-  - [ ] Disable hint buttons when depleted
-  - [ ] Optional: Earn hints through achievements
-  - [ ] Optional: Watch ad for extra hints (future monetization)
+- [x] **Hint Management**
+  - [x] Start with configurable hints per type per quiz
+  - [x] Show remaining hints in UI (HintsPanel widget)
+  - [x] Disable hint buttons when depleted
+  - [x] Optional: Earn hints through achievements (canEarnHints)
+  - [x] Optional: Watch ad for extra hints (allowAdForHint)
+  - File: `packages/quiz_engine/lib/src/widgets/hints_panel.dart`
 
 ### Lives/Hearts System
-- [ ] **Implement Lives**
-  - [ ] Start with 3 lives per quiz
-  - [ ] Lose a life on wrong answer
-  - [ ] Game over when lives reach 0
-  - [ ] Display hearts/lives at top of screen
+- [x] **Implement Lives**
+  - [x] Start with configurable lives per quiz (default 3)
+  - [x] Lose a life on wrong answer
+  - [x] Game over when lives reach 0
+  - [x] Display hearts/lives at top of screen (LivesDisplay widget)
   - [ ] Animation when losing a life
+  - File: `packages/quiz_engine/lib/src/widgets/lives_display.dart`
 
-- [ ] **Game Over Handling**
-  - [ ] Show game over screen with score
+- [x] **Game Over Handling**
+  - [x] Show game over screen with score
   - [ ] Option to continue from checkpoint (monetization opportunity)
-  - [ ] Option to start over
+  - [x] Option to start over
+  - File: `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
 
-- [ ] **Difficulty Modes**
-  - [ ] Practice Mode: Unlimited lives
-  - [ ] Normal Mode: 3 lives
-  - [ ] Hard Mode: 1 life
-  - Setting in game setup screen
+- [x] **Difficulty Modes** (via QuizModeConfig)
+  - [x] Standard Mode: No lives, no time limit
+  - [x] Lives Mode: Configurable lives (default 3)
+  - [x] Timed Mode: Time limit per question
+  - [x] Endless Mode: 1 life (first mistake ends)
+  - [x] Survival Mode: Lives + timed combined
+  - File: `packages/quiz_engine_core/lib/src/model/config/quiz_mode_config.dart`
 
 ---
 
@@ -173,11 +179,12 @@ This checklist contains features to implement before publishing quiz apps to imp
   - [ ] Random mix of flag-to-country and country-to-flag
   - [ ] Keeps players engaged with variety
 
-- [ ] **Timed Challenge**
-  - [ ] Add countdown timer (30 seconds per question)
+- [x] **Timed Challenge**
+  - [x] Add countdown timer (configurable seconds per question)
   - [ ] Bonus points for quick answers
   - [ ] Speed leaderboard
-  - [ ] Optional stress-free mode (no timer)
+  - [x] Optional stress-free mode (StandardMode - no timer)
+  - File: `packages/quiz_engine_core/lib/src/model/config/quiz_mode_config.dart`
 
 ### Difficulty Levels
 - [ ] **Easy Mode**
@@ -520,12 +527,12 @@ apps/flagsquiz/lib/
 
 **Should-Have (Launch Soon After):**
 9. Achievements system
-10. Hint system
+10. ✅ Hint system - DONE
 11. Daily challenges
 12. IAP (remove ads)
 
 **Nice-to-Have (Post-Launch Updates):**
-13. Multiple game modes
+13. ✅ Multiple game modes - DONE (Standard/Timed/Lives/Endless/Survival)
 14. Study mode
 15. Social features
 16. Leaderboards
