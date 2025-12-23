@@ -253,19 +253,6 @@
 
 ---
 
-### Sprint 4.4: UI Testing & Polish
-
-**Tasks:**
-- [ ] Test on all device types (mobile, tablet, desktop)
-- [ ] Test all orientations (portrait, landscape, split screen)
-- [ ] Test all platforms (iOS, Android, Web, macOS)
-- [ ] Performance testing (60 FPS, no jank)
-- [ ] Accessibility testing (screen reader, contrast, font scaling)
-- [ ] Edge cases (long text, special characters, RTL)
-- [ ] Polish (transitions, loading states, error states)
-
----
-
 ## Phase 5: Data Persistence & Storage ✅
 
 ### Sprint 5.1: Database Foundation & Core Models ✅
@@ -457,22 +444,7 @@
 
 ---
 
-### Sprint 5.6: Advanced Features & Optimization
-
-**Tasks:**
-- [ ] Implement data archiving (auto-archive old sessions)
-- [ ] Add database vacuum/cleanup scheduled task
-- [ ] Implement pagination for large datasets
-- [ ] Add search/filter functionality
-- [ ] Implement data export (GDPR compliance)
-- [ ] Add data import (restore from backup)
-- [ ] Optimize queries with proper indexes
-- [ ] Add database performance monitoring
-- [ ] Write performance tests
-
----
-
-## Phase 6: Results & Statistics UI
+## Phase 6: Results & Statistics UI ✅
 
 ### Sprint 6.1: Enhanced Results Screen ✅
 
@@ -499,19 +471,6 @@
 - ✅ `packages/quiz_engine/lib/src/quiz_widget.dart` - Pass quizName to QuizBloc
 - ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added localization strings for results screen
 - ✅ `packages/quiz_engine/test/widgets/quiz_screen_test.dart` - Updated test for results screen
-
----
-
-### Sprint 6.2: Advanced Statistics UI
-
-**Tasks:**
-- [ ] Create Statistics Dashboard UI
-- [ ] Add charts/graphs for trends
-- [ ] Display aggregate statistics
-- [ ] Show improvement over time
-- [ ] Add category breakdown views
-- [ ] Create leaderboards (local)
-- [ ] Test statistics screens
 
 ---
 
@@ -1037,6 +996,49 @@ QuizCategory(
 - [ ] Add search/filter functionality to history screen
 - [ ] Performance optimization for statistics calculations
 - [ ] Add data export/import for GDPR compliance
+
+---
+
+## Future Sprints (Backlog)
+
+### Sprint 4.4: UI Testing & Polish
+
+**Tasks:**
+- [ ] Test on all device types (mobile, tablet, desktop)
+- [ ] Test all orientations (portrait, landscape, split screen)
+- [ ] Test all platforms (iOS, Android, Web, macOS)
+- [ ] Performance testing (60 FPS, no jank)
+- [ ] Accessibility testing (screen reader, contrast, font scaling)
+- [ ] Edge cases (long text, special characters, RTL)
+- [ ] Polish (transitions, loading states, error states)
+
+---
+
+### Sprint 5.6: Advanced Features & Optimization
+
+**Tasks:**
+- [ ] Implement data archiving (auto-archive old sessions)
+- [ ] Add database vacuum/cleanup scheduled task
+- [ ] Implement pagination for large datasets
+- [ ] Add search/filter functionality
+- [ ] Implement data export (GDPR compliance)
+- [ ] Add data import (restore from backup)
+- [ ] Optimize queries with proper indexes
+- [ ] Add database performance monitoring
+- [ ] Write performance tests
+
+---
+
+### Sprint 6.2: Advanced Statistics UI
+
+**Tasks:**
+- [ ] Create Statistics Dashboard UI
+- [ ] Add charts/graphs for trends
+- [ ] Display aggregate statistics
+- [ ] Show improvement over time
+- [ ] Add category breakdown views
+- [ ] Create leaderboards (local)
+- [ ] Test statistics screens
 
 ---
 
