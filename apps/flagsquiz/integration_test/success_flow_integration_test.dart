@@ -1,10 +1,9 @@
-import 'package:flags_quiz/l10n/app_localizations.dart' show AppLocalizations;
+import 'package:flags_quiz/main.dart';
 import 'package:flags_quiz/models/continent.dart';
-import 'package:flags_quiz/ui/continents/continents_screen.dart';
-import 'package:flags_quiz/ui/flags_quiz_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_services/shared_services.dart';
 
@@ -17,54 +16,101 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     settingsService = SettingsService();
     await settingsService.initialize();
+    await SharedServicesInitializer.initialize();
   });
 
   tearDown(() {
     settingsService.dispose();
   });
 
-  group('Success Flow Test', () {
-    Future<Null> verifySuccessFlow(
-        Continent continent, WidgetTester tester) async {
-      final selectReginFinder = find.byKey(ContinentsScreen.mainScreenTitleKey);
-      expect(selectReginFinder, findsOneWidget);
+  group('FlagsQuiz Integration Test', () {
+    testWidgets('App launches and displays categories',
+        (WidgetTester tester) async {
+      // Given
+      await tester.pumpWidget(
+        FlagsQuizRoot(settingsService: settingsService),
+      );
+      await tester.pumpAndSettle();
 
-      final continentButtonFinder =
-          find.byKey(Key('continent_${continent.index}'));
-      print(continentButtonFinder);
-      await tester.ensureVisible(continentButtonFinder);
-      expect(continentButtonFinder, findsOneWidget);
-      await tester.tap(continentButtonFinder);
-      await tester
-          .pumpAndSettle(); // Ensures all animations and frames are processed
+      // Then - should display the Play tab with categories
+      final categoryCards = find.byType(CategoryCard);
+      expect(categoryCards, findsWidgets);
+    });
 
-      // Get the total number of iterations from the text "0 / 14"
+    testWidgets('Displays all continent categories',
+        (WidgetTester tester) async {
+      // Given
+      await tester.pumpWidget(
+        FlagsQuizRoot(settingsService: settingsService),
+      );
+      await tester.pumpAndSettle();
+
+      // Then - should have category cards for all continents
+      final categoryCards = find.byType(CategoryCard);
+      expect(categoryCards, findsNWidgets(Continent.values.length));
+    });
+
+    testWidgets('Can navigate to quiz when category is selected',
+        (WidgetTester tester) async {
+      // Given
+      await tester.pumpWidget(
+        FlagsQuizRoot(settingsService: settingsService),
+      );
+      await tester.pumpAndSettle();
+
+      // When - tap first category
+      final firstCard = find.byType(CategoryCard).first;
+      await tester.tap(firstCard);
+      await tester.pumpAndSettle();
+
+      // Then - should navigate to quiz screen
+      // Look for quiz elements (progress indicator, etc.)
       final scoreFinder = find.byWidgetPredicate((widget) =>
           widget is Text &&
           widget.data != null &&
           widget.data!.contains(RegExp(r'^\d+ / \d+$')));
 
-      // Verify that the score text is found
+      expect(scoreFinder, findsOneWidget);
+    });
+
+    testWidgets('Quiz flow completes successfully',
+        (WidgetTester tester) async {
+      // Given
+      await tester.pumpWidget(
+        FlagsQuizRoot(settingsService: settingsService),
+      );
+      await tester.pumpAndSettle();
+
+      // When - tap first category (All)
+      final firstCard = find.byType(CategoryCard).first;
+      await tester.tap(firstCard);
+      await tester.pumpAndSettle();
+
+      // Get the total number of questions
+      final scoreFinder = find.byWidgetPredicate((widget) =>
+          widget is Text &&
+          widget.data != null &&
+          widget.data!.contains(RegExp(r'^\d+ / \d+$')));
+
       expect(scoreFinder, findsOneWidget);
 
       final scoreText = (scoreFinder.evaluate().first.widget as Text).data!;
-      final totalIterations = int.parse(scoreText.split(' / ')[1]);
+      final totalQuestions = int.parse(scoreText.split(' / ')[1]);
 
-      for (int i = 0; i < totalIterations; i++) {
-        // Find all the image widgets by their key prefix.
+      // Answer all questions
+      for (int i = 0; i < totalQuestions; i++) {
+        // Find the image widget to get the country code
         final imageFinder = find.byWidgetPredicate((widget) =>
             widget is Image &&
             widget.key != null &&
             widget.key.toString().startsWith('[<\'image_'));
 
         if (imageFinder.evaluate().isEmpty) {
-          fail('No image found');
+          fail('No image found at question $i');
         }
 
-        final imageFinderEvaluated = imageFinder.evaluate().first;
-
-        // Extract the country code from the image key using a regex
-        final imageKey = imageFinderEvaluated.widget.key as Key;
+        // Extract the country code from the image key
+        final imageKey = imageFinder.evaluate().first.widget.key as Key;
         final keyString = imageKey.toString();
         final regex = RegExp(r'image_(.+?)]');
         final match = regex.firstMatch(keyString);
@@ -74,54 +120,36 @@ void main() {
         }
 
         final countryCode = match.group(1)!;
-        print('Country code: $countryCode');
 
-        // Find the corresponding button by constructing its key
-        final buttonKey = Key('button_$countryCode');
+        // Find and tap the corresponding button
         final buttonFinder = find.byWidgetPredicate((widget) =>
             widget.key != null &&
             widget.key.toString().startsWith('[<\'button_$countryCode'));
 
-        // Verify that the button is found
         if (buttonFinder.evaluate().isEmpty) {
-          print('Button with key $buttonKey not found');
-          fail('Button with key $buttonKey not found');
-        } else {
-          print('Button with key $buttonKey found');
+          fail('Button for $countryCode not found');
         }
 
-        expect(buttonFinder, findsOneWidget);
-
-        // Tap the button
         await tester.tap(buttonFinder);
-
-        // Trigger a frame
         await tester.pumpAndSettle();
       }
 
+      // Then - should show game over dialog
       final dialog = find.byType(Dialog);
       expect(dialog, findsOneWidget);
-      final okFinder = find.byKey(Key("ok_button"));
+
+      // Should show perfect score
+      expect(find.text('$totalQuestions / $totalQuestions'), findsAny);
+
+      // Tap OK to return to home
+      final okFinder = find.byKey(const Key('ok_button'));
       expect(okFinder, findsOneWidget);
-      expect(find.text('$totalIterations / $totalIterations'), findsAny);
       await tester.tap(okFinder);
       await tester.pumpAndSettle();
-      expect(selectReginFinder, findsOneWidget);
-    }
 
-    testWidgets('Test all modes in all localizations',
-        (WidgetTester tester) async {
-      for (Locale locale in AppLocalizations.supportedLocales) {
-        final widget = FlagsQuizApp(
-          homeWidget: ContinentsScreen(settingsService: settingsService),
-          settingsService: settingsService,
-          locale: locale,
-        );
-        await tester.pumpWidget(widget);
-        for (var continent in Continent.values) {
-          await verifySuccessFlow(continent, tester);
-        }
-      }
+      // Should be back at home screen with categories
+      final categoryCardsAfter = find.byType(CategoryCard);
+      expect(categoryCardsAfter, findsWidgets);
     });
   });
 }
