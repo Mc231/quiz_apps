@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/src/app/quiz_tab.dart';
+import 'package:quiz_engine/src/l10n/quiz_localizations_delegate.dart';
 
 void main() {
   group('QuizTab', () {
@@ -178,6 +179,9 @@ void main() {
 
       await tester.pumpWidget(
         MaterialApp(
+          localizationsDelegates: const [
+            QuizLocalizationsDelegate(),
+          ],
           home: Builder(
             builder: (context) {
               playLabel = playTab.labelBuilder(context);
