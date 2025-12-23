@@ -726,6 +726,18 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Your Score'**
   String get gameOverText;
+
+  /// Displayed when there is no data to show
+  ///
+  /// In en, this message translates to:
+  /// **'No data'**
+  String get noData;
+
+  /// Error message shown during app initialization
+  ///
+  /// In en, this message translates to:
+  /// **'Initialization error: {error}'**
+  String initializationError(String error);
 }
 
 class _QuizEngineLocalizationsDelegate
