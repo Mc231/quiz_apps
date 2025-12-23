@@ -149,6 +149,7 @@ void main() {
         onHasRecoverableSession: (quizId) async => false,
         onGetRecoverableSession: (quizId) async => null,
         onClearRecoverableSession: (sessionId) async {},
+        onDeleteSession: (sessionId) async {},
       );
 
       // Create session
