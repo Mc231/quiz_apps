@@ -554,5 +554,83 @@
         "type": "String"
       }
     }
+  },
+
+  "quizComplete": "Quiz Complete!",
+  "@quizComplete": {
+    "description": "Title shown when quiz is finished"
+  },
+
+  "excellent": "Excellent!",
+  "@excellent": {
+    "description": "Message for 5 stars (100%)"
+  },
+
+  "greatJob": "Great Job!",
+  "@greatJob": {
+    "description": "Message for 4 stars (80-99%)"
+  },
+
+  "goodWork": "Good Work!",
+  "@goodWork": {
+    "description": "Message for 3 stars (60-79%)"
+  },
+
+  "keepPracticing": "Keep Practicing!",
+  "@keepPracticing": {
+    "description": "Message for 2 stars (40-59%)"
+  },
+
+  "tryAgain": "Try Again!",
+  "@tryAgain": {
+    "description": "Message for 0-1 stars (0-39%)"
+  },
+
+  "reviewThisSession": "Review This Session",
+  "@reviewThisSession": {
+    "description": "Button to review the completed session"
+  },
+
+  "reviewWrongAnswers": "Review Wrong Answers",
+  "@reviewWrongAnswers": {
+    "description": "Button to review only wrong answers"
+  },
+
+  "done": "Done",
+  "@done": {
+    "description": "Done button to return home"
+  },
+
+  "playAgain": "Play Again",
+  "@playAgain": {
+    "description": "Button to play the quiz again"
+  },
+
+  "scoreOf": "{correct} of {total}",
+  "@scoreOf": {
+    "description": "Score display format",
+    "placeholders": {
+      "correct": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+  "timedOut": "Timed Out",
+  "@timedOut": {
+    "description": "Timed out questions label"
+  },
+
+  "hintsUsed": "Hints Used",
+  "@hintsUsed": {
+    "description": "Hints used label"
+  },
+
+  "comingSoon": "Coming Soon",
+  "@comingSoon": {
+    "description": "Coming soon label for disabled features"
   }
 }
