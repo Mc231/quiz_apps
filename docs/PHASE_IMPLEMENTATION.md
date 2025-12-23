@@ -658,6 +658,148 @@ New exports added:
 
 ---
 
+### Sprint 11.8: ARB-based Localization Migration ✅
+
+**Goal:** Move all quiz UI strings to ARB-based localization system and remove QuizTexts class so apps only provide domain-specific strings.
+
+**Tasks:**
+- [x] Create `l10n.yaml` configuration for quiz_engine
+- [x] Create `quiz_engine_en.arb` with all ~85 strings
+- [x] Generate `QuizEngineLocalizations` classes
+- [x] Create `QuizL10n` helper for non-nullable access with English fallback
+- [x] Remove `QuizTexts` class from `QuizWidgetEntry`
+- [x] Update all widgets to use `QuizL10n.of(context)` directly
+- [x] Remove `createQuizTexts()` from `QuizDataProvider` interface
+- [x] Update `FlagsDataProvider` to remove `createQuizTexts()`
+- [x] Update tests with `wrapWithLocalizations()` helper
+- [x] Add `noData` and `initializationError` localization keys
+- [x] Fix Radio widget deprecation warnings using RadioGroup pattern
+
+**Files Created:**
+- ✅ `packages/quiz_engine/l10n.yaml`
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
+- ✅ `packages/quiz_engine/lib/src/l10n/generated/quiz_engine_localizations.dart`
+- ✅ `packages/quiz_engine/lib/src/l10n/generated/quiz_engine_localizations_en.dart`
+
+**Files Updated:**
+- ✅ `packages/quiz_engine/lib/src/l10n/quiz_localizations.dart` - Added QuizL10n helper
+- ✅ `packages/quiz_engine/lib/src/quiz_widget_entry.dart` - Removed QuizTexts, changed to title
+- ✅ `packages/quiz_engine/lib/src/quiz_widget.dart` - Updated to use title
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Use QuizL10n.of(context)
+- ✅ `packages/quiz_engine/lib/src/widgets/*.dart` - Multiple widgets updated
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart` - Fixed Radio deprecation
+- ✅ `packages/quiz_engine/lib/src/models/quiz_data_provider.dart` - Removed createQuizTexts
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Removed _createDefaultTexts, localized error
+- ✅ `apps/flagsquiz/lib/data/flags_data_provider.dart` - Removed createQuizTexts
+- ✅ `packages/quiz_engine/test/test_helpers.dart` - Added wrapWithLocalizations
+
+**Files Removed:**
+- ✅ `packages/quiz_engine/lib/src/l10n/quiz_localizations_en.dart` (replaced by generated)
+
+---
+
+### Sprint 11.9: Bug Fixes - Play Screen & Storage ✅
+
+**Goal:** Fix question count display and empty session storage issues.
+
+**Tasks:**
+- [x] Fix question count calculation showing incorrect values (e.g., 14 instead of 27 for Oceania)
+- [x] Create `CountryCounts` utility to load actual counts from JSON
+- [x] Update `createFlagsCategories()` to use dynamic counts
+- [x] Add `deleteSession` method to `QuizStorageService` interface
+- [x] Implement `deleteSession` in `QuizStorageAdapter`
+- [x] Update `cancelQuiz()` to delete session if no answers given
+- [x] Call `cancelQuiz()` when user exits quiz screen
+- [x] Update tests
+
+**Files Created:**
+- ✅ `apps/flagsquiz/lib/data/country_counts.dart`
+
+**Files Updated:**
+- ✅ `apps/flagsquiz/lib/data/flags_categories.dart` - Use CountryCounts parameter
+- ✅ `apps/flagsquiz/lib/main.dart` - Load CountryCounts at startup
+- ✅ `packages/quiz_engine_core/lib/src/storage/quiz_storage_service.dart` - Added deleteSession
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Delete empty sessions
+- ✅ `packages/shared_services/lib/src/storage/quiz_storage_adapter.dart` - Implement deleteSession
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Call cancelQuiz on exit
+- ✅ Test files updated with CountryCounts.forTest
+
+---
+
+### Sprint 11.10: Category Mode Configuration
+
+**Goal:** Configure quiz mode per category using existing `QuizCategory.config` field.
+
+**Tasks:**
+- [ ] Update `flags_categories.dart` to configure mode per category
+- [ ] Document mode configuration in category examples
+- [ ] Add different modes for different continents (e.g., Europe=Timed, All=Standard)
+- [ ] Verify mode is applied correctly when starting quiz
+- [ ] Update tests to cover mode configuration
+
+**Example Configuration:**
+```dart
+QuizCategory(
+  id: 'europe',
+  title: (context) => l10n.europe,
+  config: QuizConfig(
+    modeConfig: TimedMode(timePerQuestion: 15),
+  ),
+),
+QuizCategory(
+  id: 'all',
+  title: (context) => l10n.all,
+  config: QuizConfig(
+    modeConfig: StandardMode(),
+  ),
+),
+```
+
+**Notes:**
+- Uses existing `QuizCategory.config` field (no new API needed)
+- App has full control over which modes each category uses
+- Mode is fixed per category (no user selection for now)
+
+---
+
+### Sprint 11.11: PlayScreen Tabs & Challenges (Future)
+
+**Goal:** Add tabbed interface to PlayScreen for different content types.
+
+**Proposed Tabs:**
+- **Categories** - Current grid/list of quiz categories
+- **Challenges** - Daily/weekly challenges with special rewards
+- **Practice** - Practice wrong answers from history
+- **Leaderboard** - Local rankings and achievements
+
+**Tasks:**
+- [ ] Design PlayScreen tab structure
+- [ ] Create `PlayScreenTab` sealed class (similar to QuizTab)
+- [ ] Add `ChallengesTab` with daily/weekly challenge cards
+- [ ] Create `Challenge` model with rules, rewards, expiry
+- [ ] Add `PracticeTab` linking to wrong answers from history
+- [ ] Create challenge completion tracking
+- [ ] Add tab configuration to `PlayScreenConfig`
+
+**UI Considerations:**
+- Tabs at top of PlayScreen (below app bar)
+- Or segmented control for 2-3 options
+- Swipeable between tabs
+- Badge indicators for new challenges
+
+---
+
+### Sprint 11.12: Remaining Tasks
+
+**Tasks:**
+- [ ] Add support for additional languages in quiz_engine ARB files
+- [ ] Add pagination for large session history lists
+- [ ] Add search/filter functionality to history screen
+- [ ] Performance optimization for statistics calculations
+- [ ] Add data export/import for GDPR compliance
+
+---
+
 ## Completion Checklist
 
 When completing a sprint:
