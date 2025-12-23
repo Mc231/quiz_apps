@@ -2,6 +2,7 @@ import 'base_config.dart';
 import 'quiz_mode_config.dart';
 import 'hint_config.dart';
 import 'scoring_strategy.dart';
+import 'storage_config.dart';
 import 'ui_behavior_config.dart';
 import 'question_config.dart';
 
@@ -27,6 +28,9 @@ class QuizConfig extends BaseConfig {
   /// Configuration for question behavior
   final QuestionConfig questionConfig;
 
+  /// Configuration for storage and persistence
+  final StorageConfig storageConfig;
+
   @override
   final int version;
 
@@ -37,6 +41,7 @@ class QuizConfig extends BaseConfig {
     this.uiBehaviorConfig = const UIBehaviorConfig(),
     this.hintConfig = const HintConfig(),
     this.questionConfig = const QuestionConfig(),
+    this.storageConfig = const StorageConfig(),
     this.version = 1,
   });
 
@@ -50,6 +55,7 @@ class QuizConfig extends BaseConfig {
       'uiBehaviorConfig': uiBehaviorConfig.toMap(),
       'hintConfig': hintConfig.toMap(),
       'questionConfig': questionConfig.toMap(),
+      'storageConfig': storageConfig.toMap(),
     };
   }
 
@@ -72,6 +78,9 @@ class QuizConfig extends BaseConfig {
       questionConfig: QuestionConfig.fromMap(
         map['questionConfig'] as Map<String, dynamic>? ?? {},
       ),
+      storageConfig: StorageConfig.fromMap(
+        map['storageConfig'] as Map<String, dynamic>? ?? {},
+      ),
     );
   }
 
@@ -82,6 +91,7 @@ class QuizConfig extends BaseConfig {
     UIBehaviorConfig? uiBehaviorConfig,
     HintConfig? hintConfig,
     QuestionConfig? questionConfig,
+    StorageConfig? storageConfig,
   }) {
     return QuizConfig(
       quizId: quizId ?? this.quizId,
@@ -90,6 +100,7 @@ class QuizConfig extends BaseConfig {
       uiBehaviorConfig: uiBehaviorConfig ?? this.uiBehaviorConfig,
       hintConfig: hintConfig ?? this.hintConfig,
       questionConfig: questionConfig ?? this.questionConfig,
+      storageConfig: storageConfig ?? this.storageConfig,
       version: version,
     );
   }
