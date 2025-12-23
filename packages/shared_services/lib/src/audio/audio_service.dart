@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
+import '../logger/logger_service.dart';
 import 'quiz_sound_effect.dart';
 
 /// Service for playing sound effects in quiz applications
@@ -53,11 +54,13 @@ class AudioService {
       final bytes = data.buffer.asUint8List();
 
       await _player.play(BytesSource(bytes));
-    } catch (e) {
-      // Silently fail if sound file is not found or there's an error
-      // This prevents the app from crashing if sound assets are missing
-      // ignore: avoid_print
-      print('Failed to play sound effect ${effect.name}: $e');
+    } catch (e, stackTrace) {
+      // Log error but don't crash - sound assets may be missing
+      AppLogger.instance.warning(
+        'Failed to play sound effect ${effect.name}',
+        error: e,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -106,10 +109,13 @@ class AudioService {
     try {
       // Load asset bytes to cache them in memory
       await rootBundle.load(effect.assetPath);
-    } catch (e) {
-      // Silently fail if preloading fails
-      // ignore: avoid_print
-      print('Failed to preload sound effect ${effect.name}: $e');
+    } catch (e, stackTrace) {
+      // Log error but don't fail - preloading is optional
+      AppLogger.instance.warning(
+        'Failed to preload sound effect ${effect.name}',
+        error: e,
+        stackTrace: stackTrace,
+      );
     }
   }
 
