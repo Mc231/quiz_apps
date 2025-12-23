@@ -3031,6 +3031,169 @@ class QuizSessionRepositoryImpl implements QuizSessionRepository {
 - ✅ `packages/shared_services/test/storage/repositories/statistics_repository_test.dart`
 - ✅ `packages/shared_services/test/storage/repositories/settings_repository_test.dart`
 
+### Sprint 5.3.1: Dependency Injection Setup
+
+**Goal:** Create a simple, library-free dependency injection system with service locator pattern and module-based registration.
+
+**Tasks:**
+- [ ] Create ServiceLocator class with singleton/factory/lazy registration
+- [ ] Create DependencyModule base class for organized registration
+- [ ] Create StorageModule for all storage-related dependencies
+- [ ] Create Disposable interface for resource cleanup
+- [ ] Update data sources to remove singleton fallbacks (explicit DI only)
+- [ ] Add initialization helper for apps
+- [ ] Write unit tests for ServiceLocator
+- [ ] Update shared_services exports
+
+**ServiceLocator Pattern:**
+```dart
+/// Central service locator for dependency injection.
+class ServiceLocator {
+  ServiceLocator._();
+  static final ServiceLocator instance = ServiceLocator._();
+
+  final _singletons = <Type, dynamic>{};
+  final _lazySingletons = <Type, dynamic Function()>{};
+  final _factories = <Type, dynamic Function()>{};
+
+  /// Register a singleton instance (already created)
+  void registerSingleton<T>(T instance) {
+    _singletons[T] = instance;
+  }
+
+  /// Register a lazy singleton (created on first access)
+  void registerLazySingleton<T>(T Function() factory) {
+    _lazySingletons[T] = factory;
+  }
+
+  /// Register a factory (new instance each time)
+  void registerFactory<T>(T Function() factory) {
+    _factories[T] = factory;
+  }
+
+  /// Get a registered dependency
+  T get<T>() {
+    // Check singletons first
+    if (_singletons.containsKey(T)) {
+      return _singletons[T] as T;
+    }
+
+    // Check lazy singletons (create and cache on first access)
+    if (_lazySingletons.containsKey(T)) {
+      final instance = _lazySingletons[T]!() as T;
+      _singletons[T] = instance;
+      _lazySingletons.remove(T);
+      return instance;
+    }
+
+    // Check factories (create new each time)
+    if (_factories.containsKey(T)) {
+      return _factories[T]!() as T;
+    }
+
+    throw StateError('Type $T is not registered in ServiceLocator');
+  }
+
+  /// Check if a type is registered
+  bool isRegistered<T>() {
+    return _singletons.containsKey(T) ||
+           _lazySingletons.containsKey(T) ||
+           _factories.containsKey(T);
+  }
+
+  /// Reset all registrations (for testing)
+  void reset() {
+    _singletons.clear();
+    _lazySingletons.clear();
+    _factories.clear();
+  }
+}
+
+/// Global shortcut for ServiceLocator.instance
+final sl = ServiceLocator.instance;
+```
+
+**Module Pattern:**
+```dart
+/// Base class for dependency modules.
+abstract class DependencyModule {
+  /// Register all dependencies for this module.
+  void register(ServiceLocator sl);
+
+  /// Dispose resources when module is no longer needed.
+  Future<void> dispose() async {}
+}
+
+/// Storage module - registers all storage-related dependencies.
+class StorageModule extends DependencyModule {
+  @override
+  void register(ServiceLocator sl) {
+    // Database
+    sl.registerLazySingleton<AppDatabase>(() => AppDatabase.instance);
+
+    // Data Sources
+    sl.registerLazySingleton<QuizSessionDataSource>(
+      () => QuizSessionDataSourceImpl(database: sl.get<AppDatabase>()),
+    );
+    sl.registerLazySingleton<QuestionAnswerDataSource>(
+      () => QuestionAnswerDataSourceImpl(database: sl.get<AppDatabase>()),
+    );
+    sl.registerLazySingleton<StatisticsDataSource>(
+      () => StatisticsDataSourceImpl(database: sl.get<AppDatabase>()),
+    );
+    sl.registerLazySingleton<SettingsDataSource>(
+      () => SettingsDataSourceImpl(database: sl.get<AppDatabase>()),
+    );
+
+    // Repositories
+    sl.registerLazySingleton<QuizSessionRepository>(
+      () => QuizSessionRepositoryImpl(
+        sessionDataSource: sl.get<QuizSessionDataSource>(),
+        answerDataSource: sl.get<QuestionAnswerDataSource>(),
+        statsDataSource: sl.get<StatisticsDataSource>(),
+      ),
+    );
+    sl.registerLazySingleton<StatisticsRepository>(
+      () => StatisticsRepositoryImpl(dataSource: sl.get<StatisticsDataSource>()),
+    );
+    sl.registerLazySingleton<SettingsRepository>(
+      () => SettingsRepositoryImpl(dataSource: sl.get<SettingsDataSource>()),
+    );
+  }
+}
+```
+
+**App Initialization:**
+```dart
+/// Initialize all shared services dependencies.
+Future<void> initializeSharedServices() async {
+  // Register storage module
+  StorageModule().register(sl);
+
+  // Initialize database
+  await sl.get<AppDatabase>().database;
+
+  // Run settings migration if needed
+  await sl.get<SettingsRepository>().migrateFromSharedPreferences();
+}
+
+// Usage in main.dart
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeSharedServices();
+  runApp(MyApp());
+}
+```
+
+**Files to Create:**
+- `packages/shared_services/lib/src/di/service_locator.dart`
+- `packages/shared_services/lib/src/di/dependency_module.dart`
+- `packages/shared_services/lib/src/di/modules/storage_module.dart`
+- `packages/shared_services/lib/src/di/di_exports.dart`
+- `packages/shared_services/lib/src/di/shared_services_initializer.dart`
+- `packages/shared_services/test/di/service_locator_test.dart`
+- `packages/shared_services/test/di/storage_module_test.dart`
+
 ### Sprint 5.4: Integration with Quiz Engine
 
 **Tasks:**
