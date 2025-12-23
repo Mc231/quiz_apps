@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
 
 import '../home/quiz_home_screen.dart';
+import '../l10n/quiz_localizations.dart';
 import '../l10n/quiz_localizations_delegate.dart';
 import '../models/quiz_category.dart';
 import '../models/quiz_data_provider.dart';
@@ -571,9 +573,21 @@ class _QuizAppBuilderState extends State<QuizAppBuilder> {
             return widget.errorBuilder!(context, snapshot.error!);
           }
           return MaterialApp(
-            home: Scaffold(
-              body: Center(
-                child: Text('Initialization error: ${snapshot.error}'),
+            localizationsDelegates: const [
+              QuizLocalizationsDelegate(),
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: const [Locale('en')],
+            home: Builder(
+              builder: (ctx) => Scaffold(
+                body: Center(
+                  child: Text(
+                    QuizL10n.of(ctx).initializationError(
+                      snapshot.error.toString(),
+                    ),
+                  ),
+                ),
               ),
             ),
           );
