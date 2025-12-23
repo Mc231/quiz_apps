@@ -151,6 +151,29 @@
 
 ---
 
+### Sprint 5.3.2: Settings Service DI Integration ✅
+
+**Goal:** Integrate SettingsService into the DI system so all services can be accessed consistently via `sl.get<T>()`.
+
+**Tasks:**
+- [x] Create SettingsModule for SettingsService registration
+- [x] Update SharedServicesInitializer to include SettingsModule
+- [x] Update di_exports.dart to export SettingsModule
+- [x] Update flagsquiz main.dart to use sl.get<SettingsService>()
+- [x] Write unit tests for SettingsModule
+- [x] Verify all tests pass
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/di/modules/settings_module.dart`
+- ✅ `packages/shared_services/test/di/settings_module_test.dart`
+
+**Files Updated:**
+- ✅ `packages/shared_services/lib/src/di/shared_services_initializer.dart`
+- ✅ `packages/shared_services/lib/src/di/di_exports.dart`
+- ✅ `apps/flagsquiz/lib/main.dart`
+
+---
+
 ### Sprint 5.4: Integration with Quiz Engine ✅
 
 **Tasks:**
