@@ -33,3 +33,6 @@ export 'storage_service.dart';
 
 // Quiz Storage Adapter
 export 'quiz_storage_adapter.dart';
+
+// Export Service
+export 'services/session_export_service.dart';
