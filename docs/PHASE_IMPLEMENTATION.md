@@ -494,24 +494,45 @@ class PlayScreenSliver extends StatelessWidget {
 
 ---
 
-### Sprint 11.4: QuizHomeScreen
+### Sprint 11.4: QuizHomeScreen ✅
 
 **Tasks:**
-- [ ] Create `QuizHomeScreen` with bottom navigation
-- [ ] Integrate PlayScreen, SessionHistoryScreen, StatisticsScreen
-- [ ] Add settings app bar action
-- [ ] Handle tab switching and data refresh
-- [ ] Add navigation to quiz when category selected
-- [ ] Write widget tests
+- [x] Create `QuizHomeScreen` with bottom navigation
+- [x] Integrate PlayScreen, SessionHistoryScreen, StatisticsScreen
+- [x] Add settings app bar action
+- [x] Handle tab switching and data refresh
+- [x] Add navigation to quiz when category selected
+- [x] Write widget tests
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` - QuizHomeScreen, QuizHomeScreenConfig, HistoryTabData, StatisticsTabData
+- ✅ `packages/quiz_engine/test/home/quiz_home_screen_test.dart` - 19 widget tests
+
+**Key Classes:**
+```dart
+class QuizHomeScreen extends StatefulWidget {
+  // Main home screen with bottom navigation
+  // Integrates Play, History, Statistics tabs
+  // Supports custom Settings tab via settingsBuilder
+}
+
+class QuizHomeScreenConfig {
+  // Configuration for tabs, play screen, app bar actions
+  factory QuizHomeScreenConfig.defaultConfig();
+}
+
+class HistoryTabData { /* Data model for History tab async loading */ }
+class StatisticsTabData { /* Data model for Statistics tab async loading */ }
+```
 
 **Features:**
-- Bottom navigation with configurable tabs
-- IndexedStack to preserve state
-- Tab refresh on selection (History/Statistics)
-- Navigation to quiz when category tapped
+- Bottom navigation with configurable tabs (QuizTabConfig)
+- IndexedStack to preserve state (configurable)
+- Tab refresh on selection (History/Statistics via data providers)
+- Navigation to quiz when category tapped (onCategorySelected)
+- Async data loading for History and Statistics tabs
+- Custom settings builder support
+- Localized labels via QuizLocalizations
 
 ---
 
