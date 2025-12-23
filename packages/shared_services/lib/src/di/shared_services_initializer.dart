@@ -5,6 +5,7 @@
 library;
 
 import 'dependency_module.dart';
+import 'modules/settings_module.dart';
 import 'modules/storage_module.dart';
 import 'service_locator.dart';
 
@@ -86,7 +87,12 @@ class SharedServicesInitializer {
 
     final locator = serviceLocator ?? sl;
 
-    // Register core modules
+    // Register settings module (async initialization for SharedPreferences)
+    final settingsModule = SettingsModule();
+    _modules.add(settingsModule);
+    await SettingsModule.initializeAsync(locator);
+
+    // Register storage module
     final storageModule = StorageModule();
     _modules.add(storageModule);
 
