@@ -2043,6 +2043,348 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Build'**
   String get build;
+
+  /// History tab/screen title
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get history;
+
+  /// Statistics tab/screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics'**
+  String get statistics;
+
+  /// Play tab/screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Play'**
+  String get play;
+
+  /// Label for questions count
+  ///
+  /// In en, this message translates to:
+  /// **'questions'**
+  String get questions;
+
+  /// Status label for completed session
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get sessionCompleted;
+
+  /// Status label for cancelled session
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get sessionCancelled;
+
+  /// Status label for timed out session
+  ///
+  /// In en, this message translates to:
+  /// **'Timeout'**
+  String get sessionTimeout;
+
+  /// Status label for failed session
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get sessionFailed;
+
+  /// Label for perfect score
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect!'**
+  String get perfectScore;
+
+  /// Today date label
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// Yesterday date label
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get yesterday;
+
+  /// Days ago date label
+  ///
+  /// In en, this message translates to:
+  /// **'{count} days ago'**
+  String daysAgo(int count);
+
+  /// Empty state message for history screen
+  ///
+  /// In en, this message translates to:
+  /// **'No quiz sessions yet'**
+  String get noSessionsYet;
+
+  /// Empty state subtitle for history screen
+  ///
+  /// In en, this message translates to:
+  /// **'Start playing to see your history here'**
+  String get startPlayingToSee;
+
+  /// Session details screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Session Details'**
+  String get sessionDetails;
+
+  /// Review answers section title
+  ///
+  /// In en, this message translates to:
+  /// **'Review Answers'**
+  String get reviewAnswers;
+
+  /// Button to practice wrong answers
+  ///
+  /// In en, this message translates to:
+  /// **'Practice Wrong Answers'**
+  String get practiceWrongAnswers;
+
+  /// Button to export session data
+  ///
+  /// In en, this message translates to:
+  /// **'Export Session'**
+  String get exportSession;
+
+  /// Question number label
+  ///
+  /// In en, this message translates to:
+  /// **'Question {number}'**
+  String questionNumber(int number);
+
+  /// Label for user's answer
+  ///
+  /// In en, this message translates to:
+  /// **'Your answer'**
+  String get yourAnswer;
+
+  /// Label for correct answer
+  ///
+  /// In en, this message translates to:
+  /// **'Correct answer'**
+  String get correctAnswer;
+
+  /// Label for skipped question
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped'**
+  String get skipped;
+
+  /// Statistics label for total sessions
+  ///
+  /// In en, this message translates to:
+  /// **'Total Sessions'**
+  String get totalSessions;
+
+  /// Statistics label for total questions
+  ///
+  /// In en, this message translates to:
+  /// **'Total Questions'**
+  String get totalQuestions;
+
+  /// Statistics label for average score
+  ///
+  /// In en, this message translates to:
+  /// **'Average Score'**
+  String get averageScore;
+
+  /// Statistics label for best score
+  ///
+  /// In en, this message translates to:
+  /// **'Best Score'**
+  String get bestScore;
+
+  /// Statistics label for accuracy
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy'**
+  String get accuracy;
+
+  /// Statistics label for time played
+  ///
+  /// In en, this message translates to:
+  /// **'Time Played'**
+  String get timePlayed;
+
+  /// Statistics label for perfect scores count
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Scores'**
+  String get perfectScores;
+
+  /// Statistics label for current streak
+  ///
+  /// In en, this message translates to:
+  /// **'Current Streak'**
+  String get currentStreak;
+
+  /// Statistics label for best streak
+  ///
+  /// In en, this message translates to:
+  /// **'Best Streak'**
+  String get bestStreak;
+
+  /// Statistics section for weekly trend
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Trend'**
+  String get weeklyTrend;
+
+  /// Trend label when improving
+  ///
+  /// In en, this message translates to:
+  /// **'Improving'**
+  String get improving;
+
+  /// Trend label when declining
+  ///
+  /// In en, this message translates to:
+  /// **'Declining'**
+  String get declining;
+
+  /// Trend label when stable
+  ///
+  /// In en, this message translates to:
+  /// **'Stable'**
+  String get stable;
+
+  /// Empty state message for statistics screen
+  ///
+  /// In en, this message translates to:
+  /// **'No statistics yet'**
+  String get noStatisticsYet;
+
+  /// Empty state subtitle for statistics screen
+  ///
+  /// In en, this message translates to:
+  /// **'Play some quizzes to see your statistics'**
+  String get playQuizzesToSee;
+
+  /// Export as JSON option
+  ///
+  /// In en, this message translates to:
+  /// **'Export as JSON'**
+  String get exportAsJson;
+
+  /// Export as CSV option
+  ///
+  /// In en, this message translates to:
+  /// **'Export as CSV'**
+  String get exportAsCsv;
+
+  /// Success message after export
+  ///
+  /// In en, this message translates to:
+  /// **'Session exported successfully'**
+  String get exportSuccess;
+
+  /// Error message when export fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to export session'**
+  String get exportError;
+
+  /// Share button label
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// Delete button label
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Delete session dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Session'**
+  String get deleteSession;
+
+  /// Delete session confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this session? This cannot be undone.'**
+  String get deleteSessionMessage;
+
+  /// Success message after deleting session
+  ///
+  /// In en, this message translates to:
+  /// **'Session deleted'**
+  String get sessionDeleted;
+
+  /// Overview section title
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get overview;
+
+  /// Insights section title
+  ///
+  /// In en, this message translates to:
+  /// **'Insights'**
+  String get insights;
+
+  /// Recent sessions section title
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Sessions'**
+  String get recentSessions;
+
+  /// View all button label
+  ///
+  /// In en, this message translates to:
+  /// **'View All'**
+  String get viewAll;
+
+  /// Hours unit
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get hours;
+
+  /// Minutes unit
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get minutes;
+
+  /// Seconds unit
+  ///
+  /// In en, this message translates to:
+  /// **'seconds'**
+  String get seconds;
+
+  /// Duration label
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// Score label
+  ///
+  /// In en, this message translates to:
+  /// **'Score'**
+  String get score;
+
+  /// Correct label
+  ///
+  /// In en, this message translates to:
+  /// **'Correct'**
+  String get correct;
+
+  /// Incorrect label
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect'**
+  String get incorrect;
 }
 
 class _AppLocalizationsDelegate

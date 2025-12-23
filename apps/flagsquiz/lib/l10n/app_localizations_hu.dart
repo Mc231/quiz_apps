@@ -930,4 +930,180 @@ class AppLocalizationsHu extends AppLocalizations {
 
   @override
   String get build => 'Build';
+
+  @override
+  String get history => 'History';
+
+  @override
+  String get statistics => 'Statistics';
+
+  @override
+  String get play => 'Play';
+
+  @override
+  String get questions => 'questions';
+
+  @override
+  String get sessionCompleted => 'Completed';
+
+  @override
+  String get sessionCancelled => 'Cancelled';
+
+  @override
+  String get sessionTimeout => 'Timeout';
+
+  @override
+  String get sessionFailed => 'Failed';
+
+  @override
+  String get perfectScore => 'Perfect!';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get yesterday => 'Yesterday';
+
+  @override
+  String daysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String get noSessionsYet => 'No quiz sessions yet';
+
+  @override
+  String get startPlayingToSee => 'Start playing to see your history here';
+
+  @override
+  String get sessionDetails => 'Session Details';
+
+  @override
+  String get reviewAnswers => 'Review Answers';
+
+  @override
+  String get practiceWrongAnswers => 'Practice Wrong Answers';
+
+  @override
+  String get exportSession => 'Export Session';
+
+  @override
+  String questionNumber(int number) {
+    return 'Question $number';
+  }
+
+  @override
+  String get yourAnswer => 'Your answer';
+
+  @override
+  String get correctAnswer => 'Correct answer';
+
+  @override
+  String get skipped => 'Skipped';
+
+  @override
+  String get totalSessions => 'Total Sessions';
+
+  @override
+  String get totalQuestions => 'Total Questions';
+
+  @override
+  String get averageScore => 'Average Score';
+
+  @override
+  String get bestScore => 'Best Score';
+
+  @override
+  String get accuracy => 'Accuracy';
+
+  @override
+  String get timePlayed => 'Time Played';
+
+  @override
+  String get perfectScores => 'Perfect Scores';
+
+  @override
+  String get currentStreak => 'Current Streak';
+
+  @override
+  String get bestStreak => 'Best Streak';
+
+  @override
+  String get weeklyTrend => 'Weekly Trend';
+
+  @override
+  String get improving => 'Improving';
+
+  @override
+  String get declining => 'Declining';
+
+  @override
+  String get stable => 'Stable';
+
+  @override
+  String get noStatisticsYet => 'No statistics yet';
+
+  @override
+  String get playQuizzesToSee => 'Play some quizzes to see your statistics';
+
+  @override
+  String get exportAsJson => 'Export as JSON';
+
+  @override
+  String get exportAsCsv => 'Export as CSV';
+
+  @override
+  String get exportSuccess => 'Session exported successfully';
+
+  @override
+  String get exportError => 'Failed to export session';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get deleteSession => 'Delete Session';
+
+  @override
+  String get deleteSessionMessage =>
+      'Are you sure you want to delete this session? This cannot be undone.';
+
+  @override
+  String get sessionDeleted => 'Session deleted';
+
+  @override
+  String get overview => 'Overview';
+
+  @override
+  String get insights => 'Insights';
+
+  @override
+  String get recentSessions => 'Recent Sessions';
+
+  @override
+  String get viewAll => 'View All';
+
+  @override
+  String get hours => 'hours';
+
+  @override
+  String get minutes => 'minutes';
+
+  @override
+  String get seconds => 'seconds';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get score => 'Score';
+
+  @override
+  String get correct => 'Correct';
+
+  @override
+  String get incorrect => 'Incorrect';
 }
