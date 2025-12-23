@@ -12,17 +12,10 @@ import 'l10n/app_localizations.dart';
 /// country quiz data. All navigation is handled automatically by QuizApp.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Initialize settings service
-  final settingsService = SettingsService();
-  await settingsService.initialize();
-
-  // Initialize shared services (including storage)
   await SharedServicesInitializer.initialize();
-
   runApp(
     QuizApp(
-      settingsService: settingsService,
+      settingsService: sl.get<SettingsService>(),
       categories: createFlagsCategories(),
       dataProvider: const FlagsDataProvider(),
       storageService: sl.get<StorageService>(),
