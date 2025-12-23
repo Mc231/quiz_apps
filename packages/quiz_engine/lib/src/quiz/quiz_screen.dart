@@ -144,7 +144,13 @@ class QuizScreenState extends State<QuizScreen> {
         return PopScope(
           canPop: _isQuizOver || !_showExitConfirmation,
           onPopInvokedWithResult: (bool didPop, dynamic result) async {
-            if (didPop) return;
+            // If pop already happened (exit confirmation disabled), cancel quiz
+            if (didPop) {
+              if (!_isQuizOver) {
+                await _bloc.cancelQuiz();
+              }
+              return;
+            }
 
             // Don't show exit confirmation if quiz is over
             if (_isQuizOver) return;
@@ -159,7 +165,11 @@ class QuizScreenState extends State<QuizScreen> {
                 cancelButtonText: l10n.exitDialogCancel,
               );
               if (shouldExit && context.mounted) {
-                Navigator.of(context).pop();
+                // Cancel the quiz (deletes session if no answers given)
+                await _bloc.cancelQuiz();
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               }
             }
           },
