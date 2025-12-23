@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 
+import '../l10n/quiz_localizations.dart';
+
 /// A sealed class representing a tab in the quiz app's bottom navigation.
 ///
 /// Each tab type has its own icon, selected icon, and label.
@@ -142,7 +144,8 @@ final class PlayTab extends QuizTab {
           labelBuilder: labelBuilder ?? _defaultLabel,
         );
 
-  static String _defaultLabel(BuildContext context) => 'Play';
+  static String _defaultLabel(BuildContext context) =>
+      QuizLocalizations.of(context).play;
 }
 
 /// Tab for viewing quiz history.
@@ -162,7 +165,8 @@ final class HistoryTab extends QuizTab {
           labelBuilder: labelBuilder ?? _defaultLabel,
         );
 
-  static String _defaultLabel(BuildContext context) => 'History';
+  static String _defaultLabel(BuildContext context) =>
+      QuizLocalizations.of(context).history;
 }
 
 /// Tab for viewing statistics.
@@ -182,7 +186,8 @@ final class StatisticsTab extends QuizTab {
           labelBuilder: labelBuilder ?? _defaultLabel,
         );
 
-  static String _defaultLabel(BuildContext context) => 'Statistics';
+  static String _defaultLabel(BuildContext context) =>
+      QuizLocalizations.of(context).statistics;
 }
 
 /// Tab for app settings.
@@ -202,7 +207,8 @@ final class SettingsTab extends QuizTab {
           labelBuilder: labelBuilder ?? _defaultLabel,
         );
 
-  static String _defaultLabel(BuildContext context) => 'Settings';
+  static String _defaultLabel(BuildContext context) =>
+      QuizLocalizations.of(context).settings;
 }
 
 /// Custom tab with app-specific content.
@@ -247,12 +253,14 @@ class QuizTabConfig {
   final bool preserveState;
 
   /// Creates a [QuizTabConfig].
+  ///
+  /// Note: If [tabs] is empty, QuizHomeScreen will use default tabs.
   const QuizTabConfig({
     required this.tabs,
     this.initialIndex = 0,
     this.onTabSelected,
     this.preserveState = true,
-  }) : assert(tabs.length > 0, 'At least one tab is required');
+  });
 
   /// Default configuration with Play, History, and Statistics tabs.
   factory QuizTabConfig.defaultConfig() {
