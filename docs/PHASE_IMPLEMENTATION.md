@@ -249,16 +249,31 @@
 
 ## Phase 6: Results & Statistics UI
 
-### Sprint 6.1: Enhanced Results Screen
+### Sprint 6.1: Enhanced Results Screen ✅
 
 **Tasks:**
-- [ ] Create `QuizResults` model (enhanced from Phase 5 data)
-- [ ] Create enhanced `QuizResultsScreen` with historical data
-- [ ] Add star rating display
-- [ ] Add percentage display
-- [ ] Add "Review This Session" button
-- [ ] Add "Review All Wrong Answers" button
-- [ ] Test results screens
+- [x] Create `QuizResults` model (enhanced from Phase 5 data)
+- [x] Create enhanced `QuizResultsScreen` with historical data
+- [x] Add star rating display
+- [x] Add percentage display
+- [x] Add "Review This Session" button
+- [x] Add "Review All Wrong Answers" button (disabled, coming soon)
+- [x] Test results screens
+
+**Files Created:**
+- ✅ `packages/quiz_engine_core/lib/src/model/quiz_results.dart` - QuizResults model with score calculation and star rating
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Full results screen with star rating, percentage, statistics
+- ✅ `packages/quiz_engine_core/test/model/quiz_results_test.dart` - Unit tests for QuizResults model
+
+**Files Modified:**
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_state/quiz_state.dart` - Added QuizCompletedState
+- ✅ `packages/quiz_engine_core/lib/quiz_engine_core.dart` - Export QuizResults
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Export QuizResultsScreen
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Emit QuizCompletedState with QuizResults
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Show QuizResultsScreen instead of dialog
+- ✅ `packages/quiz_engine/lib/src/quiz_widget.dart` - Pass quizName to QuizBloc
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added localization strings for results screen
+- ✅ `packages/quiz_engine/test/widgets/quiz_screen_test.dart` - Updated test for results screen
 
 ---
 
