@@ -539,5 +539,20 @@
   "gameOverText": "Your Score",
   "@gameOverText": {
     "description": "Game over screen title showing the user's score"
+  },
+
+  "noData": "No data",
+  "@noData": {
+    "description": "Displayed when there is no data to show"
+  },
+
+  "initializationError": "Initialization error: {error}",
+  "@initializationError": {
+    "description": "Error message shown during app initialization",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }
