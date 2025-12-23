@@ -24,3 +24,6 @@ export 'models/user_settings_model.dart';
 
 // Data Sources
 export 'data_sources/data_sources_exports.dart';
+
+// Repositories
+export 'repositories/repositories_exports.dart';
