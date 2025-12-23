@@ -60,10 +60,12 @@ class AppDatabase {
   /// Configures the database connection.
   Future<void> _onConfigure(Database db) async {
     if (DatabaseConfig.enableForeignKeys) {
-      await db.execute('PRAGMA foreign_keys = ON');
+      // Use rawQuery for PRAGMA on Android (execute doesn't work for PRAGMA)
+      await db.rawQuery('PRAGMA foreign_keys = ON');
     }
     if (DatabaseConfig.enableWalMode) {
-      await db.execute('PRAGMA journal_mode = WAL');
+      // Use rawQuery for PRAGMA on Android (execute doesn't work for PRAGMA)
+      await db.rawQuery('PRAGMA journal_mode = WAL');
     }
   }
 
