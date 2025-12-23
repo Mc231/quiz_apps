@@ -1,5 +1,6 @@
 import '../../model/question.dart';
 import '../../model/question_entry.dart';
+import '../../model/quiz_results.dart';
 import '../../model/config/hint_config.dart';
 
 /// An abstract class representing the state of a quiz.
@@ -28,6 +29,7 @@ sealed class QuizState {
     int? questionTimeRemaining,
     int? totalTimeRemaining,
   }) = AnswerFeedbackState;
+  factory QuizState.completed(QuizResults results) = QuizCompletedState;
   const QuizState();
 }
 
@@ -122,4 +124,16 @@ class AnswerFeedbackState extends QuizState {
     this.questionTimeRemaining,
     this.totalTimeRemaining,
   });
+}
+
+/// A state representing the completion of the quiz.
+///
+/// This state is emitted when the quiz has finished and contains
+/// the final results including score, statistics, and all answers.
+class QuizCompletedState extends QuizState {
+  /// The results of the completed quiz.
+  final QuizResults results;
+
+  /// Creates a new `QuizCompletedState` with the given results.
+  QuizCompletedState(this.results);
 }
