@@ -2,7 +2,6 @@ import 'package:flags_quiz/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_services/shared_services.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// Settings screen for the Flags Quiz app
 class SettingsScreen extends StatefulWidget {
@@ -42,20 +41,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       setState(() {
         _packageInfo = info;
       });
-    }
-  }
-
-  Future<void> _launchUrl(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      if (mounted) {
-        final loc = AppLocalizations.of(context)!;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(loc.couldNotOpenUrl(url))),
-        );
-      }
     }
   }
 
