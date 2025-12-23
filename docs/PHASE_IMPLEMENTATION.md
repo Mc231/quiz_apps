@@ -18,11 +18,11 @@
 | Phase 4 | Settings & Configuration | ✅ Completed |
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
-| Phase 7 | Achievements | Not Started |
-| Phase 8 | Shared Services (Ads, Analytics, IAP) | Not Started |
-| Phase 9 | Polish & Integration | Not Started |
-| Phase 10 | Second App Validation | Not Started |
-| Phase 11 | QuizApp Refactoring | ✅ Completed |
+| Phase 7 | QuizApp Refactoring | ✅ Completed |
+| Phase 8 | Achievements | Not Started |
+| Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
+| Phase 10 | Polish & Integration | Not Started |
+| Phase 11 | Second App Validation | Not Started |
 
 ---
 
@@ -474,86 +474,7 @@
 
 ---
 
-## Phase 7: Achievements
-
-**Tasks:**
-- [ ] Create `Achievement` model
-- [ ] Create `AchievementTrigger` hierarchy
-- [ ] Create `AchievementEngine`
-- [ ] Create `AchievementRepository` interface
-- [ ] Implement repository in app
-- [ ] Create `AchievementNotification` widget
-- [ ] Create `AchievementsScreen`
-- [ ] Define default achievements
-- [ ] Test achievement system
-
----
-
-## Phase 8: Shared Services
-
-### Sprint 8.1: Analytics
-
-**Tasks:**
-- [ ] Create `AnalyticsService` interface
-- [ ] Implement `FirebaseAnalyticsService`
-- [ ] Implement `ConsoleAnalyticsService`
-- [ ] Add analytics calls to `QuizBloc`
-- [ ] Test analytics integration
-
----
-
-### Sprint 8.2: Ads
-
-**Tasks:**
-- [ ] Create `AdsService` interface
-- [ ] Implement `AdMobService`
-- [ ] Implement `NoAdsService`
-- [ ] Create banner ad widget
-- [ ] Add interstitial ad points
-- [ ] Add rewarded ad for hints
-- [ ] Test ads integration
-
----
-
-### Sprint 8.3: IAP
-
-**Tasks:**
-- [ ] Create `IAPService` interface
-- [ ] Implement `StoreIAPService`
-- [ ] Add "Remove Ads" product
-- [ ] Create purchase UI
-- [ ] Implement restore purchases
-- [ ] Test IAP flow
-
----
-
-## Phase 9: Polish & Integration
-
-**Tasks:**
-- [ ] Review all animations
-- [ ] Optimize performance
-- [ ] Add loading states
-- [ ] Error handling
-- [ ] Add comprehensive tests
-- [ ] Update documentation
-- [ ] Create migration guide for flagsquiz
-- [ ] Test complete flow end-to-end
-
----
-
-## Phase 10: Second App Validation
-
-**Tasks:**
-- [ ] Create second quiz app (e.g., capitals_quiz)
-- [ ] Validate reusability of all components
-- [ ] Identify any app-specific leakage
-- [ ] Refactor as needed
-- [ ] Update documentation with learnings
-- [ ] Create app creation checklist
-
----
-
-## Phase 11: QuizApp Refactoring
+## Phase 7: QuizApp Refactoring ✅
 
 **Goal:** Refactor quiz_engine to provide a complete `QuizApp` widget that handles everything (MaterialApp, theme, navigation, localization), so apps only need to provide data and configuration.
 
@@ -595,7 +516,7 @@ void main() async {
 
 ---
 
-### Sprint 11.1: Core Models and Interfaces ✅
+### Sprint 7.1: Core Models and Interfaces ✅
 
 **Tasks:**
 - [x] Create `QuizCategory` model with `LocalizedString` support
@@ -643,7 +564,7 @@ sealed class QuizTab {
 
 ---
 
-### Sprint 11.2: Localization System ✅
+### Sprint 7.2: Localization System ✅
 
 **Tasks:**
 - [x] Create `QuizLocalizations` abstract class with all engine strings
@@ -674,7 +595,7 @@ sealed class QuizTab {
 
 ---
 
-### Sprint 11.3: PlayScreen and Category Views ✅
+### Sprint 7.3: PlayScreen and Category Views ✅
 
 **Tasks:**
 - [x] Create `CategoryCard` widget (displays category with image/icon)
@@ -716,7 +637,7 @@ class PlayScreenSliver extends StatelessWidget {
 
 ---
 
-### Sprint 11.4: QuizHomeScreen ✅
+### Sprint 7.4: QuizHomeScreen ✅
 
 **Tasks:**
 - [x] Create `QuizHomeScreen` with bottom navigation
@@ -758,7 +679,7 @@ class StatisticsTabData { /* Data model for Statistics tab async loading */ }
 
 ---
 
-### Sprint 11.5: QuizSettingsScreen (Optional) ✅
+### Sprint 7.5: QuizSettingsScreen (Optional) ✅
 
 **Tasks:**
 - [x] Create `QuizSettingsConfig` for configurable settings
@@ -781,7 +702,7 @@ class StatisticsTabData { /* Data model for Statistics tab async loading */ }
 
 ---
 
-### Sprint 11.6: QuizApp Widget ✅
+### Sprint 7.6: QuizApp Widget ✅
 
 **Tasks:**
 - [x] Create `QuizApp` root widget
@@ -810,7 +731,7 @@ class StatisticsTabData { /* Data model for Statistics tab async loading */ }
 
 ---
 
-### Sprint 11.7: FlagsQuiz Migration ✅
+### Sprint 7.7: FlagsQuiz Migration ✅
 
 **Tasks:**
 - [x] Create `FlagsDataProvider` implementing `QuizDataProvider`
@@ -857,7 +778,7 @@ New exports added:
 
 ---
 
-### Sprint 11.8: ARB-based Localization Migration ✅
+### Sprint 7.8: ARB-based Localization Migration ✅
 
 **Goal:** Move all quiz UI strings to ARB-based localization system and remove QuizTexts class so apps only provide domain-specific strings.
 
@@ -897,7 +818,7 @@ New exports added:
 
 ---
 
-### Sprint 11.9: Bug Fixes - Play Screen & Storage ✅
+### Sprint 7.9: Bug Fixes - Play Screen & Storage ✅
 
 **Goal:** Fix question count display and empty session storage issues.
 
@@ -925,7 +846,7 @@ New exports added:
 
 ---
 
-### Sprint 11.10: Category Mode Configuration
+### Sprint 7.10: Category Mode Configuration
 
 **Goal:** Configure quiz mode per category using existing `QuizCategory.config` field.
 
@@ -961,7 +882,7 @@ QuizCategory(
 
 ---
 
-### Sprint 11.11: PlayScreen Tabs & Challenges (Future)
+### Sprint 7.11: PlayScreen Tabs & Challenges (Future)
 
 **Goal:** Add tabbed interface to PlayScreen for different content types.
 
@@ -988,7 +909,7 @@ QuizCategory(
 
 ---
 
-### Sprint 11.12: Remaining Tasks
+### Sprint 7.12: Remaining Tasks
 
 **Tasks:**
 - [ ] Add support for additional languages in quiz_engine ARB files
@@ -996,6 +917,85 @@ QuizCategory(
 - [ ] Add search/filter functionality to history screen
 - [ ] Performance optimization for statistics calculations
 - [ ] Add data export/import for GDPR compliance
+
+---
+
+## Phase 8: Achievements (Not Started)
+
+**Tasks:**
+- [ ] Create `Achievement` model
+- [ ] Create `AchievementTrigger` hierarchy
+- [ ] Create `AchievementEngine`
+- [ ] Create `AchievementRepository` interface
+- [ ] Implement repository in app
+- [ ] Create `AchievementNotification` widget
+- [ ] Create `AchievementsScreen`
+- [ ] Define default achievements
+- [ ] Test achievement system
+
+---
+
+## Phase 9: Shared Services (Not Started)
+
+### Sprint 9.1: Analytics
+
+**Tasks:**
+- [ ] Create `AnalyticsService` interface
+- [ ] Implement `FirebaseAnalyticsService`
+- [ ] Implement `ConsoleAnalyticsService`
+- [ ] Add analytics calls to `QuizBloc`
+- [ ] Test analytics integration
+
+---
+
+### Sprint 9.2: Ads
+
+**Tasks:**
+- [ ] Create `AdsService` interface
+- [ ] Implement `AdMobService`
+- [ ] Implement `NoAdsService`
+- [ ] Create banner ad widget
+- [ ] Add interstitial ad points
+- [ ] Add rewarded ad for hints
+- [ ] Test ads integration
+
+---
+
+### Sprint 9.3: IAP
+
+**Tasks:**
+- [ ] Create `IAPService` interface
+- [ ] Implement `StoreIAPService`
+- [ ] Add "Remove Ads" product
+- [ ] Create purchase UI
+- [ ] Implement restore purchases
+- [ ] Test IAP flow
+
+---
+
+## Phase 10: Polish & Integration (Not Started)
+
+**Tasks:**
+- [ ] Review all animations
+- [ ] Optimize performance
+- [ ] Add loading states
+- [ ] Error handling
+- [ ] Add comprehensive tests
+- [ ] Update documentation
+- [ ] Create migration guide for flagsquiz
+- [ ] Test complete flow end-to-end
+
+---
+
+## Phase 11: Second App Validation (Not Started)
+
+**Tasks:**
+- [ ] Create second quiz app (e.g., capitals_quiz)
+- [ ] Validate reusability of all components
+- [ ] Identify any app-specific leakage
+- [ ] Refactor as needed
+- [ ] Update documentation with learnings
+- [ ] Create app creation checklist
 
 ---
 
