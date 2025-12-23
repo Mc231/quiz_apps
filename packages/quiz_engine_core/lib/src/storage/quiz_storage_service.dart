@@ -74,6 +74,9 @@ abstract class QuizStorageService {
   /// Marks a session as no longer recoverable (e.g., after recovery or timeout).
   Future<void> clearRecoverableSession(String sessionId);
 
+  /// Deletes a session completely (e.g., when cancelled with no answers).
+  Future<void> deleteSession(String sessionId);
+
   /// Disposes of resources.
   void dispose();
 }
@@ -173,6 +176,7 @@ class CallbackQuizStorageService implements QuizStorageService {
     required this.onHasRecoverableSession,
     required this.onGetRecoverableSession,
     required this.onClearRecoverableSession,
+    required this.onDeleteSession,
   });
 
   /// Callback to create a session.
@@ -225,6 +229,9 @@ class CallbackQuizStorageService implements QuizStorageService {
 
   /// Callback to clear recoverable session.
   final Future<void> Function(String sessionId) onClearRecoverableSession;
+
+  /// Callback to delete session.
+  final Future<void> Function(String sessionId) onDeleteSession;
 
   @override
   Future<String> createSession({
@@ -317,6 +324,11 @@ class CallbackQuizStorageService implements QuizStorageService {
   }
 
   @override
+  Future<void> deleteSession(String sessionId) {
+    return onDeleteSession(sessionId);
+  }
+
+  @override
   void dispose() {
     // Nothing to dispose in callback implementation
   }
@@ -387,6 +399,11 @@ class NoOpQuizStorageService implements QuizStorageService {
 
   @override
   Future<void> clearRecoverableSession(String sessionId) async {
+    // No-op
+  }
+
+  @override
+  Future<void> deleteSession(String sessionId) async {
     // No-op
   }
 
