@@ -54,6 +54,7 @@ export 'src/widgets/trends_widget.dart';
 export 'src/screens/session_history_screen.dart';
 export 'src/screens/session_detail_screen.dart';
 export 'src/screens/statistics_screen.dart';
+export 'src/screens/quiz_results_screen.dart';
 
 // Settings
 export 'src/settings/quiz_settings_screen.dart';
