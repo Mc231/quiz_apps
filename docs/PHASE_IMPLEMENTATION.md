@@ -22,6 +22,7 @@
 | Phase 8 | Shared Services | Not Started |
 | Phase 9 | Polish & Integration | Not Started |
 | Phase 10 | Second App Validation | Not Started |
+| Phase 11 | QuizApp Refactoring | Not Started |
 
 ---
 
@@ -327,6 +328,238 @@
 - [ ] Refactor as needed
 - [ ] Update documentation with learnings
 - [ ] Create app creation checklist
+
+---
+
+## Phase 11: QuizApp Refactoring
+
+**Goal:** Refactor quiz_engine to provide a complete `QuizApp` widget that handles everything (MaterialApp, theme, navigation, localization), so apps only need to provide data and configuration.
+
+### Target Usage
+
+```dart
+// Simplified flagsquiz main.dart
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    QuizApp(
+      appName: 'Flags Quiz',
+      categories: flagsCategories,
+      dataProvider: FlagsDataProvider(),
+      theme: flagsLightTheme,
+      darkTheme: flagsDarkTheme,
+      tabs: [QuizTab.play, QuizTab.history, QuizTab.statistics],
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+    ),
+  );
+}
+```
+
+### Ownership Split
+
+**quiz_engine owns:**
+- `QuizApp` - Root MaterialApp widget
+- `QuizHomeScreen` - Bottom navigation with configurable tabs
+- `PlayScreen` - Category selection (grid/list layout)
+- `QuizSettingsScreen` - Generic settings (optional)
+- `QuizLocalizations` - Generic UI strings (~80 strings)
+
+**App provides:**
+- `QuizDataProvider` implementation (loads questions)
+- `QuizCategory` list (categories to display)
+- `ThemeData` (light/dark themes)
+- App-specific localization (country names, category names)
+
+---
+
+### Sprint 11.1: Core Models and Interfaces
+
+**Tasks:**
+- [ ] Create `QuizCategory` model with `LocalizedString` support
+- [ ] Create `QuizDataProvider` interface and `CallbackQuizDataProvider`
+- [ ] Create `QuizTab` enum and `QuizTabConfig`
+- [ ] Write unit tests for models
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/models/quiz_category.dart`
+- `packages/quiz_engine/lib/src/models/quiz_data_provider.dart`
+- `packages/quiz_engine/lib/src/app/quiz_tab.dart`
+
+**Key Classes:**
+```dart
+typedef LocalizedString = String Function(BuildContext context);
+
+class QuizCategory {
+  final String id;
+  final LocalizedString title;
+  final LocalizedString? subtitle;
+  final ImageProvider? imageProvider;
+  final IconData? icon;
+  final QuizConfig? config;
+}
+
+abstract class QuizDataProvider {
+  Future<List<QuestionEntry>> loadQuestions(BuildContext context, QuizCategory category);
+  QuizTexts? createQuizTexts(BuildContext context, QuizCategory category);
+  StorageConfig? createStorageConfig(BuildContext context, QuizCategory category);
+}
+
+enum QuizTab { play, history, statistics, settings }
+```
+
+---
+
+### Sprint 11.2: Localization System
+
+**Tasks:**
+- [ ] Create `QuizLocalizations` abstract class with all engine strings
+- [ ] Create `QuizLocalizationsEn` with English defaults
+- [ ] Create `QuizLocalizationsDelegate` for loading localizations
+- [ ] Add support for app overrides
+- [ ] Write unit tests for localization
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/l10n/quiz_localizations.dart`
+- `packages/quiz_engine/lib/src/l10n/quiz_localizations_en.dart`
+- `packages/quiz_engine/lib/src/l10n/quiz_localizations_delegate.dart`
+
+**Engine-Owned Strings (~80 strings):**
+- Navigation: play, history, statistics, settings
+- Quiz UI: score, correct, incorrect, duration, exitDialogTitle, etc.
+- History: noSessionsYet, sessionCompleted, today, yesterday, daysAgo(n), etc.
+- Statistics: totalSessions, averageScore, weeklyTrend, improving, etc.
+- Settings: soundEffects, hapticFeedback, theme, about, etc.
+
+---
+
+### Sprint 11.3: PlayScreen and Category Views
+
+**Tasks:**
+- [ ] Create `CategoryCard` widget (displays category with image/icon)
+- [ ] Create `PlayScreen` with configurable layout (grid/list)
+- [ ] Add responsive design support
+- [ ] Write widget tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/home/category_card.dart`
+- `packages/quiz_engine/lib/src/home/play_screen.dart`
+
+**Features:**
+- Configurable layout: `PlayScreenLayout.grid` or `PlayScreenLayout.list`
+- Category card shows: image/icon, title, subtitle
+- Settings action in app bar (optional)
+
+---
+
+### Sprint 11.4: QuizHomeScreen
+
+**Tasks:**
+- [ ] Create `QuizHomeScreen` with bottom navigation
+- [ ] Integrate PlayScreen, SessionHistoryScreen, StatisticsScreen
+- [ ] Add settings app bar action
+- [ ] Handle tab switching and data refresh
+- [ ] Add navigation to quiz when category selected
+- [ ] Write widget tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
+
+**Features:**
+- Bottom navigation with configurable tabs
+- IndexedStack to preserve state
+- Tab refresh on selection (History/Statistics)
+- Navigation to quiz when category tapped
+
+---
+
+### Sprint 11.5: QuizSettingsScreen (Optional)
+
+**Tasks:**
+- [ ] Create `QuizSettingsConfig` for configurable settings
+- [ ] Create `QuizSettingsScreen` using engine localizations
+- [ ] Support sound, haptic, theme, about sections
+- [ ] Support custom additional sections
+- [ ] Integrate with SettingsService
+- [ ] Write widget tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/settings/quiz_settings_config.dart`
+- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+
+**Configurable Sections:**
+- Sound/Haptics
+- Answer feedback
+- Theme selection
+- About/Version
+- Custom sections via callback
+
+---
+
+### Sprint 11.6: QuizApp Widget
+
+**Tasks:**
+- [ ] Create `QuizApp` root widget
+- [ ] Integrate MaterialApp with theme, localization
+- [ ] Handle service initialization internally
+- [ ] Connect all components (home, quiz, settings)
+- [ ] Add navigation observers support
+- [ ] Update `quiz_engine.dart` exports
+- [ ] Write integration tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/app/quiz_app.dart`
+
+**Update:**
+- `packages/quiz_engine/lib/quiz_engine.dart` - Add exports
+
+**Responsibilities:**
+- MaterialApp setup with theme
+- Localization (engine + app delegates)
+- Service initialization (SharedServicesInitializer)
+- Route to QuizHomeScreen
+
+---
+
+### Sprint 11.7: FlagsQuiz Migration
+
+**Tasks:**
+- [ ] Create `FlagsDataProvider` implementing `QuizDataProvider`
+- [ ] Create `flagsCategories` list from Continent enum
+- [ ] Update `main.dart` to use `QuizApp`
+- [ ] Keep `AppLocalizations` for country names
+- [ ] Remove duplicated files (HomeScreen, ContinentsScreen)
+- [ ] Update tests
+- [ ] Verify all existing functionality works
+
+**Files to Create:**
+- `apps/flagsquiz/lib/data/flags_data_provider.dart`
+- `apps/flagsquiz/lib/data/flags_categories.dart`
+
+**Files to Update:**
+- `apps/flagsquiz/lib/main.dart`
+
+**Files to Remove:**
+- `apps/flagsquiz/lib/ui/home/home_screen.dart`
+- `apps/flagsquiz/lib/ui/continents/continents_screen.dart`
+
+**Keep:**
+- `apps/flagsquiz/lib/l10n/` - Country names localization
+- `apps/flagsquiz/lib/ui/settings/settings_screen.dart` - If app-specific settings needed
+
+---
+
+### Backward Compatibility
+
+All existing exports remain:
+- `QuizWidget`, `QuizWidgetEntry` - Standalone quiz usage
+- `SessionHistoryScreen`, `StatisticsScreen` - Standalone screens
+- All widgets and themes
+
+New exports added:
+- `QuizApp`, `QuizHomeScreen`, `PlayScreen`
+- `QuizCategory`, `QuizDataProvider`
+- `QuizLocalizations`, `QuizTab`
 
 ---
 

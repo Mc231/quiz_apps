@@ -16,6 +16,7 @@
 4. [Configuration System](#configuration-system)
 5. [App-Specific vs Core Code](#app-specific-vs-core-code)
 6. [Implementation Roadmap](#implementation-roadmap)
+7. [Phase 11: QuizApp Refactoring](#phase-11-quizapp-refactoring)
 
 ---
 
@@ -3317,6 +3318,139 @@ dev_dependencies:
 
 ---
 
+## Phase 11: QuizApp Refactoring
+
+### Goal
+
+Refactor quiz_engine to provide a complete `QuizApp` widget that handles everything (MaterialApp, theme, navigation, localization), so apps only need to provide data and configuration.
+
+### QuizApp Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  App Layer (flagsquiz)                                          │
+│  - QuizDataProvider implementation                              │
+│  - QuizCategory list (continents)                               │
+│  - ThemeData (light/dark)                                       │
+│  - App-specific localization (country names)                    │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ provides
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  QuizApp (quiz_engine)                                          │
+│  ┌─────────────────────────────────────────────────────────────┐│
+│  │  MaterialApp                                                ││
+│  │  - Theme management                                         ││
+│  │  - Localization (QuizLocalizations + app delegates)         ││
+│  │  - Service initialization                                   ││
+│  └─────────────────────────────────────────────────────────────┘│
+│  ┌─────────────────────────────────────────────────────────────┐│
+│  │  QuizHomeScreen                                             ││
+│  │  - Bottom navigation (configurable tabs)                    ││
+│  │  - PlayScreen | HistoryScreen | StatisticsScreen | Settings ││
+│  └─────────────────────────────────────────────────────────────┘│
+│  ┌─────────────────────────────────────────────────────────────┐│
+│  │  QuizLocalizations                                          ││
+│  │  - ~80 engine-owned strings                                 ││
+│  │  - Navigation, Quiz UI, History, Statistics, Settings       ││
+│  └─────────────────────────────────────────────────────────────┘│
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Target Usage
+
+```dart
+// Simplified flagsquiz main.dart
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    QuizApp(
+      appName: 'Flags Quiz',
+      categories: flagsCategories,
+      dataProvider: FlagsDataProvider(),
+      theme: flagsLightTheme,
+      darkTheme: flagsDarkTheme,
+      tabs: [QuizTab.play, QuizTab.history, QuizTab.statistics],
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+    ),
+  );
+}
+```
+
+### Key Components
+
+#### QuizCategory
+
+```dart
+typedef LocalizedString = String Function(BuildContext context);
+
+class QuizCategory {
+  final String id;
+  final LocalizedString title;      // Supports localization
+  final LocalizedString? subtitle;
+  final ImageProvider? imageProvider;
+  final IconData? icon;
+  final Color? iconColor;
+  final QuizConfig? config;
+  final Map<String, dynamic>? metadata;
+}
+```
+
+#### QuizDataProvider
+
+```dart
+abstract class QuizDataProvider {
+  Future<List<QuestionEntry>> loadQuestions(
+    BuildContext context,
+    QuizCategory category,
+  );
+
+  QuizTexts? createQuizTexts(BuildContext context, QuizCategory category);
+  StorageConfig? createStorageConfig(BuildContext context, QuizCategory category);
+  ConfigManager? createConfigManager(BuildContext context, QuizCategory category);
+}
+```
+
+#### QuizTab
+
+```dart
+enum QuizTab { play, history, statistics, settings }
+```
+
+#### QuizLocalizations (Engine-owned strings)
+
+- **Navigation:** play, history, statistics, settings
+- **Quiz UI:** score, correct, incorrect, duration, exitDialogTitle, etc.
+- **History:** noSessionsYet, sessionCompleted, today, yesterday, daysAgo(n), etc.
+- **Statistics:** totalSessions, averageScore, weeklyTrend, improving, etc.
+- **Settings:** soundEffects, hapticFeedback, theme, about, etc.
+
+### Ownership Split
+
+| quiz_engine owns | App provides |
+|------------------|--------------|
+| QuizApp (root widget) | QuizDataProvider implementation |
+| QuizHomeScreen (tabs) | QuizCategory list |
+| PlayScreen (category grid/list) | ThemeData (light/dark) |
+| QuizSettingsScreen (optional) | App-specific localization |
+| QuizLocalizations (~80 strings) | |
+
+### Implementation Sprints
+
+See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md#phase-11-quizapp-refactoring) for detailed sprint breakdown:
+
+- **Sprint 11.1:** Core Models (QuizCategory, QuizDataProvider, QuizTab)
+- **Sprint 11.2:** QuizLocalizations system
+- **Sprint 11.3:** PlayScreen and CategoryCard
+- **Sprint 11.4:** QuizHomeScreen with tabs
+- **Sprint 11.5:** QuizSettingsScreen (optional)
+- **Sprint 11.6:** QuizApp widget
+- **Sprint 11.7:** FlagsQuiz migration
+
+---
+
 ## Success Criteria
 
 ### Architecture Quality
@@ -3370,6 +3504,6 @@ dev_dependencies:
 
 ---
 
-**Document Version:** 1.2
-**Last Updated:** 2025-12-22
-**Status:** Phase 4 Completed - Ready for Phase 5 (Data Persistence & Storage)
+**Document Version:** 1.3
+**Last Updated:** 2025-12-23
+**Status:** Phase 5 Completed - Phase 11 (QuizApp Refactoring) Planned
