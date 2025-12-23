@@ -212,7 +212,7 @@ class _SessionDetailPageState extends State<SessionDetailPage> {
 
   Widget _buildFlagImage(String countryCode) {
     return Image.asset(
-      'assets/images/${countryCode.toLowerCase()}.png',
+      'assets/images/${countryCode.toUpperCase()}.png',
       width: double.infinity,
       height: 100,
       fit: BoxFit.contain,
