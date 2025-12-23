@@ -103,10 +103,20 @@ class ContinentsScreen extends StatelessWidget {
   void _handleItemClick(Continent continent, BuildContext context) {
     final appLocalizations = AppLocalizations.of(context)!;
 
-    // Create base config with quiz-specific settings
+    // Get storage service from DI and create adapter
+    final storageService = sl.get<StorageService>();
+    final storageAdapter = QuizStorageAdapter(storageService);
+
+    // Create base config with quiz-specific settings and storage enabled
     final baseConfig = QuizConfig(
-      quizId: 'flags_quiz',
+      quizId: continent.name,
       hintConfig: HintConfig.noHints(),
+      storageConfig: StorageConfig(
+        enabled: true,
+        quizType: 'flags',
+        quizName: continent.localizedName(context) ?? 'Flags Quiz',
+        quizCategory: continent.name,
+      ),
     );
 
     // Create config manager that applies user settings
@@ -136,7 +146,8 @@ class ContinentsScreen extends StatelessWidget {
         ),
         dataProvider: () async =>
             loadCountriesForContinent(appLocalizations, continent),
-        configManager: configManager);
+        configManager: configManager,
+        storageService: storageAdapter);
     Navigator.push(
         context,
         MaterialPageRoute(

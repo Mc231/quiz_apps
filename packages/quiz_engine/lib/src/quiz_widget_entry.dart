@@ -1,4 +1,5 @@
 import 'package:quiz_engine_core/quiz_engine_core.dart';
+
 import 'theme/quiz_theme_data.dart';
 
 /// Contains text strings used in the quiz UI.
@@ -70,6 +71,7 @@ class QuizTexts {
 /// - Data provider function
 /// - Quiz configuration (via ConfigManager or defaultConfig)
 /// - Optional theme customization
+/// - Optional storage service for persisting quiz sessions
 class QuizWidgetEntry {
   /// Text strings for the quiz UI.
   final QuizTexts texts;
@@ -83,17 +85,22 @@ class QuizWidgetEntry {
   /// Theme data for quiz UI customization.
   final QuizThemeData themeData;
 
+  /// Optional storage service for persisting quiz sessions.
+  final QuizStorageService? storageService;
+
   /// Creates a `QuizWidgetEntry` with a ConfigManager.
   ///
   /// [texts] - Text strings for quiz UI
   /// [dataProvider] - Function to fetch quiz data
   /// [configManager] - Configuration manager with settings integration
   /// [themeData] - Theme customization (defaults to QuizThemeData())
+  /// [storageService] - Optional storage service for persisting sessions
   QuizWidgetEntry({
     required this.texts,
     required this.dataProvider,
     required this.configManager,
     this.themeData = const QuizThemeData(),
+    this.storageService,
   });
 
   /// Creates a `QuizWidgetEntry` with a default configuration.
@@ -105,10 +112,12 @@ class QuizWidgetEntry {
   /// [dataProvider] - Function to fetch quiz data
   /// [defaultConfig] - Default quiz configuration
   /// [themeData] - Theme customization (defaults to QuizThemeData())
+  /// [storageService] - Optional storage service for persisting sessions
   QuizWidgetEntry.withDefaultConfig({
     required this.texts,
     required this.dataProvider,
     required QuizConfig defaultConfig,
     this.themeData = const QuizThemeData(),
+    this.storageService,
   }) : configManager = ConfigManager(defaultConfig: defaultConfig);
 }
