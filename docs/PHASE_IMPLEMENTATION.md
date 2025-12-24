@@ -19,7 +19,7 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements | Not Started |
+| Phase 8 | Achievements | In Progress (1/10 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
@@ -953,7 +953,7 @@ New exports added:
 
 ---
 
-## Phase 8: Achievements (Not Started)
+## Phase 8: Achievements (In Progress)
 
 **Reference:** See [ACHIEVEMENTS_DESIGN.md](./ACHIEVEMENTS_DESIGN.md) for full achievement list and architecture.
 
@@ -966,32 +966,50 @@ New exports added:
 
 ---
 
-### Sprint 8.1: Core Models
+### Sprint 8.1: Core Models ✅
 
 **Goal:** Create achievement data models and trigger types.
 
 **Tasks:**
-- [ ] Create `Achievement` model with id, name, description, icon, tier, points, target
-- [ ] Create `AchievementTier` enum (common, uncommon, rare, epic, legendary)
-- [ ] Create `AchievementTrigger` sealed class hierarchy
-- [ ] Create `CumulativeTrigger` (total count reaches target)
-- [ ] Create `ThresholdTrigger` (single session meets condition)
-- [ ] Create `StreakTrigger` (consecutive count)
-- [ ] Create `CategoryTrigger` (complete specific category)
-- [ ] Create `ChallengeTrigger` (complete specific challenge mode)
-- [ ] Create `CompositeTrigger` (multiple conditions)
-- [ ] Create `AchievementProgress` model (tracks progress toward achievement)
-- [ ] Create `UnlockedAchievement` model (stored in database)
-- [ ] Write unit tests for all models
-- [ ] Export from shared_services
+- [x] Create `Achievement` model with id, name, description, icon, tier, points, target
+- [x] Create `AchievementTier` enum (common, uncommon, rare, epic, legendary)
+- [x] Create `AchievementTrigger` sealed class hierarchy
+- [x] Create `CumulativeTrigger` (total count reaches target)
+- [x] Create `ThresholdTrigger` (single session meets condition)
+- [x] Create `StreakTrigger` (consecutive count)
+- [x] Create `CategoryTrigger` (complete specific category)
+- [x] Create `ChallengeTrigger` (complete specific challenge mode)
+- [x] Create `CompositeTrigger` (multiple conditions)
+- [x] Create `CustomTrigger` (app-specific complex conditions)
+- [x] Create `StatField` enum for type-safe trigger field references
+- [x] Create `AchievementProgress` model (tracks progress toward achievement)
+- [x] Create `UnlockedAchievement` model (stored in database)
+- [x] Write unit tests for all models (88 tests)
+- [x] Export from shared_services
 
-**Files to Create:**
-- `packages/shared_services/lib/src/achievements/models/achievement.dart`
-- `packages/shared_services/lib/src/achievements/models/achievement_tier.dart`
-- `packages/shared_services/lib/src/achievements/models/achievement_trigger.dart`
-- `packages/shared_services/lib/src/achievements/models/achievement_progress.dart`
-- `packages/shared_services/lib/src/achievements/models/unlocked_achievement.dart`
-- `packages/shared_services/lib/src/achievements/achievements_exports.dart`
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/achievements/models/achievement_tier.dart`
+- ✅ `packages/shared_services/lib/src/achievements/models/stat_field.dart`
+- ✅ `packages/shared_services/lib/src/achievements/models/achievement_trigger.dart`
+- ✅ `packages/shared_services/lib/src/achievements/models/achievement.dart`
+- ✅ `packages/shared_services/lib/src/achievements/models/achievement_progress.dart`
+- ✅ `packages/shared_services/lib/src/achievements/models/unlocked_achievement.dart`
+- ✅ `packages/shared_services/lib/src/achievements/achievements_exports.dart`
+- ✅ `packages/shared_services/test/achievements/achievement_tier_test.dart`
+- ✅ `packages/shared_services/test/achievements/achievement_trigger_test.dart`
+- ✅ `packages/shared_services/test/achievements/achievement_test.dart`
+- ✅ `packages/shared_services/test/achievements/achievement_progress_test.dart`
+- ✅ `packages/shared_services/test/achievements/unlocked_achievement_test.dart`
+
+**Files Updated:**
+- ✅ `packages/shared_services/lib/shared_services.dart` - Added achievements export
+
+**Key Design Decisions:**
+- `LocalizedString` typedef (`String Function(BuildContext)`) for localized names/descriptions
+- `StatField` enum for type-safe references to statistics fields in triggers
+- `CustomTrigger` for app-specific complex conditions not covered by other triggers
+- Achievement definitions stored in code, only `UnlockedAchievement` stored in database
+- `AchievementTier` determines visibility: Common/Uncommon/Rare visible, Epic/Legendary hidden
 
 ---
 
