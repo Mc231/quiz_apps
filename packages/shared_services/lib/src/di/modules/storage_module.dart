@@ -1,6 +1,8 @@
 /// Module for registering storage-related dependencies.
 library;
 
+import '../../achievements/data_sources/achievement_data_source.dart';
+import '../../achievements/repositories/achievement_repository.dart';
 import '../../storage/data_sources/data_sources_exports.dart';
 import '../../storage/database/app_database.dart';
 import '../../storage/repositories/repositories_exports.dart';
@@ -50,6 +52,10 @@ class StorageModule extends DependencyModule {
     sl.registerLazySingleton<SettingsDataSource>(
       () => SettingsDataSourceImpl(database: sl.get<AppDatabase>()),
     );
+
+    sl.registerLazySingleton<AchievementDataSource>(
+      () => AchievementDataSourceImpl(database: sl.get<AppDatabase>()),
+    );
   }
 
   void _registerRepositories(ServiceLocator sl) {
@@ -70,6 +76,13 @@ class StorageModule extends DependencyModule {
     sl.registerLazySingleton<SettingsRepository>(
       () => SettingsRepositoryImpl(
         dataSource: sl.get<SettingsDataSource>(),
+      ),
+    );
+
+    sl.registerLazySingleton<AchievementRepository>(
+      () => AchievementRepositoryImpl(
+        dataSource: sl.get<AchievementDataSource>(),
+        statisticsDataSource: sl.get<StatisticsDataSource>(),
       ),
     );
 
