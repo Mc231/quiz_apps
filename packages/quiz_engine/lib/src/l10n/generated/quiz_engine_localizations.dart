@@ -1002,6 +1002,678 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Practice'**
   String get practice;
+
+  /// Achievements tab/screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Achievements'**
+  String get achievements;
+
+  /// Achievement unlocked notification title
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement Unlocked!'**
+  String get achievementUnlocked;
+
+  /// Achievements progress display
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total} Unlocked'**
+  String achievementsUnlocked(int count, int total);
+
+  /// Achievement points display
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String achievementPoints(int points);
+
+  /// Hidden achievement placeholder name
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden Achievement'**
+  String get hiddenAchievement;
+
+  /// Hidden achievement placeholder description
+  ///
+  /// In en, this message translates to:
+  /// **'Keep playing to discover!'**
+  String get hiddenAchievementDesc;
+
+  /// Achievement name: first_quiz
+  ///
+  /// In en, this message translates to:
+  /// **'First Steps'**
+  String get achievementFirstQuiz;
+
+  /// Achievement description: first_quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your first quiz'**
+  String get achievementFirstQuizDesc;
+
+  /// Achievement name: first_perfect
+  ///
+  /// In en, this message translates to:
+  /// **'Perfectionist'**
+  String get achievementFirstPerfect;
+
+  /// Achievement description: first_perfect
+  ///
+  /// In en, this message translates to:
+  /// **'Get your first perfect score'**
+  String get achievementFirstPerfectDesc;
+
+  /// Achievement name: first_challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Challenger'**
+  String get achievementFirstChallenge;
+
+  /// Achievement description: first_challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your first challenge mode'**
+  String get achievementFirstChallengeDesc;
+
+  /// Achievement name: quizzes_10
+  ///
+  /// In en, this message translates to:
+  /// **'Getting Started'**
+  String get achievementQuizzes10;
+
+  /// Achievement description: quizzes_10
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 10 quizzes'**
+  String get achievementQuizzes10Desc;
+
+  /// Achievement name: quizzes_50
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Enthusiast'**
+  String get achievementQuizzes50;
+
+  /// Achievement description: quizzes_50
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 50 quizzes'**
+  String get achievementQuizzes50Desc;
+
+  /// Achievement name: quizzes_100
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Master'**
+  String get achievementQuizzes100;
+
+  /// Achievement description: quizzes_100
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 100 quizzes'**
+  String get achievementQuizzes100Desc;
+
+  /// Achievement name: quizzes_500
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Legend'**
+  String get achievementQuizzes500;
+
+  /// Achievement description: quizzes_500
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 500 quizzes'**
+  String get achievementQuizzes500Desc;
+
+  /// Achievement name: questions_100
+  ///
+  /// In en, this message translates to:
+  /// **'Century'**
+  String get achievementQuestions100;
+
+  /// Achievement description: questions_100
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 100 questions'**
+  String get achievementQuestions100Desc;
+
+  /// Achievement name: questions_500
+  ///
+  /// In en, this message translates to:
+  /// **'Half Thousand'**
+  String get achievementQuestions500;
+
+  /// Achievement description: questions_500
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 500 questions'**
+  String get achievementQuestions500Desc;
+
+  /// Achievement name: questions_1000
+  ///
+  /// In en, this message translates to:
+  /// **'Thousand Club'**
+  String get achievementQuestions1000;
+
+  /// Achievement description: questions_1000
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 1000 questions'**
+  String get achievementQuestions1000Desc;
+
+  /// Achievement name: questions_5000
+  ///
+  /// In en, this message translates to:
+  /// **'Expert'**
+  String get achievementQuestions5000;
+
+  /// Achievement description: questions_5000
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 5000 questions'**
+  String get achievementQuestions5000Desc;
+
+  /// Achievement name: correct_100
+  ///
+  /// In en, this message translates to:
+  /// **'Sharp Eye'**
+  String get achievementCorrect100;
+
+  /// Achievement description: correct_100
+  ///
+  /// In en, this message translates to:
+  /// **'Get 100 correct answers'**
+  String get achievementCorrect100Desc;
+
+  /// Achievement name: correct_500
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge Keeper'**
+  String get achievementCorrect500;
+
+  /// Achievement description: correct_500
+  ///
+  /// In en, this message translates to:
+  /// **'Get 500 correct answers'**
+  String get achievementCorrect500Desc;
+
+  /// Achievement name: correct_1000
+  ///
+  /// In en, this message translates to:
+  /// **'Scholar'**
+  String get achievementCorrect1000;
+
+  /// Achievement description: correct_1000
+  ///
+  /// In en, this message translates to:
+  /// **'Get 1000 correct answers'**
+  String get achievementCorrect1000Desc;
+
+  /// Achievement name: perfect_5
+  ///
+  /// In en, this message translates to:
+  /// **'Rising Star'**
+  String get achievementPerfect5;
+
+  /// Achievement description: perfect_5
+  ///
+  /// In en, this message translates to:
+  /// **'Get 5 perfect scores'**
+  String get achievementPerfect5Desc;
+
+  /// Achievement name: perfect_10
+  ///
+  /// In en, this message translates to:
+  /// **'Shining Bright'**
+  String get achievementPerfect10;
+
+  /// Achievement description: perfect_10
+  ///
+  /// In en, this message translates to:
+  /// **'Get 10 perfect scores'**
+  String get achievementPerfect10Desc;
+
+  /// Achievement name: perfect_25
+  ///
+  /// In en, this message translates to:
+  /// **'Constellation'**
+  String get achievementPerfect25;
+
+  /// Achievement description: perfect_25
+  ///
+  /// In en, this message translates to:
+  /// **'Get 25 perfect scores'**
+  String get achievementPerfect25Desc;
+
+  /// Achievement name: perfect_50
+  ///
+  /// In en, this message translates to:
+  /// **'Galaxy'**
+  String get achievementPerfect50;
+
+  /// Achievement description: perfect_50
+  ///
+  /// In en, this message translates to:
+  /// **'Get 50 perfect scores'**
+  String get achievementPerfect50Desc;
+
+  /// Achievement name: score_90_10
+  ///
+  /// In en, this message translates to:
+  /// **'High Achiever'**
+  String get achievementScore9010;
+
+  /// Achievement description: score_90_10
+  ///
+  /// In en, this message translates to:
+  /// **'Score 90%+ in 10 quizzes'**
+  String get achievementScore9010Desc;
+
+  /// Achievement name: score_95_10
+  ///
+  /// In en, this message translates to:
+  /// **'Excellence'**
+  String get achievementScore9510;
+
+  /// Achievement description: score_95_10
+  ///
+  /// In en, this message translates to:
+  /// **'Score 95%+ in 10 quizzes'**
+  String get achievementScore9510Desc;
+
+  /// Achievement name: perfect_streak_3
+  ///
+  /// In en, this message translates to:
+  /// **'Flawless Run'**
+  String get achievementPerfectStreak3;
+
+  /// Achievement description: perfect_streak_3
+  ///
+  /// In en, this message translates to:
+  /// **'Get 3 perfect scores in a row'**
+  String get achievementPerfectStreak3Desc;
+
+  /// Achievement name: speed_demon
+  ///
+  /// In en, this message translates to:
+  /// **'Speed Demon'**
+  String get achievementSpeedDemon;
+
+  /// Achievement description: speed_demon
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz in under 60 seconds'**
+  String get achievementSpeedDemonDesc;
+
+  /// Achievement name: lightning
+  ///
+  /// In en, this message translates to:
+  /// **'Lightning Fast'**
+  String get achievementLightning;
+
+  /// Achievement description: lightning
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz in under 30 seconds'**
+  String get achievementLightningDesc;
+
+  /// Achievement name: quick_answer_10
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Thinker'**
+  String get achievementQuickAnswer10;
+
+  /// Achievement description: quick_answer_10
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 10 questions in under 2 seconds each'**
+  String get achievementQuickAnswer10Desc;
+
+  /// Achievement name: quick_answer_50
+  ///
+  /// In en, this message translates to:
+  /// **'Rapid Fire'**
+  String get achievementQuickAnswer50;
+
+  /// Achievement description: quick_answer_50
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 50 questions in under 2 seconds each'**
+  String get achievementQuickAnswer50Desc;
+
+  /// Achievement name: streak_10
+  ///
+  /// In en, this message translates to:
+  /// **'On Fire'**
+  String get achievementStreak10;
+
+  /// Achievement description: streak_10
+  ///
+  /// In en, this message translates to:
+  /// **'Get 10 correct answers in a row'**
+  String get achievementStreak10Desc;
+
+  /// Achievement name: streak_25
+  ///
+  /// In en, this message translates to:
+  /// **'Unstoppable'**
+  String get achievementStreak25;
+
+  /// Achievement description: streak_25
+  ///
+  /// In en, this message translates to:
+  /// **'Get 25 correct answers in a row'**
+  String get achievementStreak25Desc;
+
+  /// Achievement name: streak_50
+  ///
+  /// In en, this message translates to:
+  /// **'Legendary Streak'**
+  String get achievementStreak50;
+
+  /// Achievement description: streak_50
+  ///
+  /// In en, this message translates to:
+  /// **'Get 50 correct answers in a row'**
+  String get achievementStreak50Desc;
+
+  /// Achievement name: streak_100
+  ///
+  /// In en, this message translates to:
+  /// **'Mythical'**
+  String get achievementStreak100;
+
+  /// Achievement description: streak_100
+  ///
+  /// In en, this message translates to:
+  /// **'Get 100 correct answers in a row'**
+  String get achievementStreak100Desc;
+
+  /// Achievement name: survival_complete
+  ///
+  /// In en, this message translates to:
+  /// **'Survivor'**
+  String get achievementSurvivalComplete;
+
+  /// Achievement description: survival_complete
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Survival mode'**
+  String get achievementSurvivalCompleteDesc;
+
+  /// Achievement name: survival_perfect
+  ///
+  /// In en, this message translates to:
+  /// **'Immortal'**
+  String get achievementSurvivalPerfect;
+
+  /// Achievement description: survival_perfect
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Survival without losing a life'**
+  String get achievementSurvivalPerfectDesc;
+
+  /// Achievement name: blitz_complete
+  ///
+  /// In en, this message translates to:
+  /// **'Blitz Master'**
+  String get achievementBlitzComplete;
+
+  /// Achievement description: blitz_complete
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Blitz mode'**
+  String get achievementBlitzCompleteDesc;
+
+  /// Achievement name: blitz_perfect
+  ///
+  /// In en, this message translates to:
+  /// **'Lightning God'**
+  String get achievementBlitzPerfect;
+
+  /// Achievement description: blitz_perfect
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Blitz with perfect score'**
+  String get achievementBlitzPerfectDesc;
+
+  /// Achievement name: time_attack_20
+  ///
+  /// In en, this message translates to:
+  /// **'Time Warrior'**
+  String get achievementTimeAttack20;
+
+  /// Achievement description: time_attack_20
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 20+ correct in Time Attack'**
+  String get achievementTimeAttack20Desc;
+
+  /// Achievement name: time_attack_30
+  ///
+  /// In en, this message translates to:
+  /// **'Time Lord'**
+  String get achievementTimeAttack30;
+
+  /// Achievement description: time_attack_30
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 30+ correct in Time Attack'**
+  String get achievementTimeAttack30Desc;
+
+  /// Achievement name: marathon_50
+  ///
+  /// In en, this message translates to:
+  /// **'Endurance'**
+  String get achievementMarathon50;
+
+  /// Achievement description: marathon_50
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 50 questions in Marathon'**
+  String get achievementMarathon50Desc;
+
+  /// Achievement name: marathon_100
+  ///
+  /// In en, this message translates to:
+  /// **'Ultra Marathon'**
+  String get achievementMarathon100;
+
+  /// Achievement description: marathon_100
+  ///
+  /// In en, this message translates to:
+  /// **'Answer 100 questions in Marathon'**
+  String get achievementMarathon100Desc;
+
+  /// Achievement name: speed_run_fast
+  ///
+  /// In en, this message translates to:
+  /// **'Speed Runner'**
+  String get achievementSpeedRunFast;
+
+  /// Achievement description: speed_run_fast
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Speed Run in under 2 minutes'**
+  String get achievementSpeedRunFastDesc;
+
+  /// Achievement name: all_challenges
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge Champion'**
+  String get achievementAllChallenges;
+
+  /// Achievement description: all_challenges
+  ///
+  /// In en, this message translates to:
+  /// **'Complete all challenge modes'**
+  String get achievementAllChallengesDesc;
+
+  /// Achievement name: time_1h
+  ///
+  /// In en, this message translates to:
+  /// **'Dedicated'**
+  String get achievementTime1h;
+
+  /// Achievement description: time_1h
+  ///
+  /// In en, this message translates to:
+  /// **'Play for 1 hour total'**
+  String get achievementTime1hDesc;
+
+  /// Achievement name: time_5h
+  ///
+  /// In en, this message translates to:
+  /// **'Committed'**
+  String get achievementTime5h;
+
+  /// Achievement description: time_5h
+  ///
+  /// In en, this message translates to:
+  /// **'Play for 5 hours total'**
+  String get achievementTime5hDesc;
+
+  /// Achievement name: time_10h
+  ///
+  /// In en, this message translates to:
+  /// **'Devoted'**
+  String get achievementTime10h;
+
+  /// Achievement description: time_10h
+  ///
+  /// In en, this message translates to:
+  /// **'Play for 10 hours total'**
+  String get achievementTime10hDesc;
+
+  /// Achievement name: time_24h
+  ///
+  /// In en, this message translates to:
+  /// **'Fanatic'**
+  String get achievementTime24h;
+
+  /// Achievement description: time_24h
+  ///
+  /// In en, this message translates to:
+  /// **'Play for 24 hours total'**
+  String get achievementTime24hDesc;
+
+  /// Achievement name: days_3
+  ///
+  /// In en, this message translates to:
+  /// **'Regular'**
+  String get achievementDays3;
+
+  /// Achievement description: days_3
+  ///
+  /// In en, this message translates to:
+  /// **'Play 3 days in a row'**
+  String get achievementDays3Desc;
+
+  /// Achievement name: days_7
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Warrior'**
+  String get achievementDays7;
+
+  /// Achievement description: days_7
+  ///
+  /// In en, this message translates to:
+  /// **'Play 7 days in a row'**
+  String get achievementDays7Desc;
+
+  /// Achievement name: days_14
+  ///
+  /// In en, this message translates to:
+  /// **'Two Week Streak'**
+  String get achievementDays14;
+
+  /// Achievement description: days_14
+  ///
+  /// In en, this message translates to:
+  /// **'Play 14 days in a row'**
+  String get achievementDays14Desc;
+
+  /// Achievement name: days_30
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Master'**
+  String get achievementDays30;
+
+  /// Achievement description: days_30
+  ///
+  /// In en, this message translates to:
+  /// **'Play 30 days in a row'**
+  String get achievementDays30Desc;
+
+  /// Achievement name: no_hints
+  ///
+  /// In en, this message translates to:
+  /// **'Purist'**
+  String get achievementNoHints;
+
+  /// Achievement description: no_hints
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz without using hints'**
+  String get achievementNoHintsDesc;
+
+  /// Achievement name: no_hints_10
+  ///
+  /// In en, this message translates to:
+  /// **'True Expert'**
+  String get achievementNoHints10;
+
+  /// Achievement description: no_hints_10
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 10 quizzes without hints'**
+  String get achievementNoHints10Desc;
+
+  /// Achievement name: no_skip
+  ///
+  /// In en, this message translates to:
+  /// **'Determined'**
+  String get achievementNoSkip;
+
+  /// Achievement description: no_skip
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz without skipping'**
+  String get achievementNoSkipDesc;
+
+  /// Achievement name: flawless
+  ///
+  /// In en, this message translates to:
+  /// **'Flawless Victory'**
+  String get achievementFlawless;
+
+  /// Achievement description: flawless
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect score, no hints, no lives lost'**
+  String get achievementFlawlessDesc;
+
+  /// Achievement name: comeback
+  ///
+  /// In en, this message translates to:
+  /// **'Comeback King'**
+  String get achievementComeback;
+
+  /// Achievement description: comeback
+  ///
+  /// In en, this message translates to:
+  /// **'Win after losing 4+ lives'**
+  String get achievementComebackDesc;
+
+  /// Achievement name: clutch
+  ///
+  /// In en, this message translates to:
+  /// **'Clutch Player'**
+  String get achievementClutch;
+
+  /// Achievement description: clutch
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Survival with 1 life remaining'**
+  String get achievementClutchDesc;
 }
 
 class _QuizEngineLocalizationsDelegate
