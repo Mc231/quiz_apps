@@ -931,27 +931,14 @@ New exports added:
 
 ---
 
-### Sprint 7.12: Category Mode Configuration
+### Sprint 7.12: Category Mode Configuration ⏭️ SKIPPED
 
-**Goal:** Configure quiz mode per category using existing `QuizCategory.config` field.
+**Status:** Cancelled - No longer needed.
 
-**Tasks:**
-- [ ] Update `flags_categories.dart` to configure mode per category
-- [ ] Document mode configuration in category examples
-- [ ] Add different modes for different continents (e.g., Europe=Timed, All=Standard)
-- [ ] Verify mode is applied correctly when starting quiz
-- [ ] Update tests to cover mode configuration
-
-**Example Configuration:**
-```dart
-QuizCategory(
-  id: 'europe',
-  title: (context) => l10n.europe,
-  config: QuizConfig(
-    modeConfig: TimedMode(timePerQuestion: 15),
-  ),
-),
-```
+**Reason:** With the Challenges tab implemented (Sprint 7.10), per-category mode configuration in the Play tab is redundant:
+- Play tab now has a consistent experience (5 lives, hints, skip) for all categories
+- Challenges tab provides game mode variety (Survival, Time Attack, Blitz, etc.)
+- Per-category modes would confuse users ("why does Europe have timer but Africa doesn't?")
 
 ---
 
