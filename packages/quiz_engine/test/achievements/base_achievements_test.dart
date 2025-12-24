@@ -566,6 +566,12 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get allTiers => 'All Tiers';
   @override
   String achievementProgress(int current, int target) => '$current/$target';
+  @override
+  String pointsRemaining(int points) => '$points remaining';
+  @override
+  String get allPointsEarned => 'All earned!';
+  @override
+  String completionPercentage(int percent) => '$percent%';
 }
 
 void main() {
