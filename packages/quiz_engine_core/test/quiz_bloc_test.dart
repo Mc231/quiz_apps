@@ -130,23 +130,42 @@ void main() {
     when(
       randomItemPicker.pick(),
     ).thenReturn(RandomPickResult(mockItems.first, mockItems));
-    await bloc.performInitialLoad();
 
-    final expectedScore = '1 / ${mockItems.length}';
+    bool callbackCalled = false;
+    QuizResults? receivedResults;
 
-    bloc.gameOverCallback = (score) {
-      expect(score, equals(expectedScore));
-    };
+    // Create bloc with onQuizCompleted callback
+    final blocWithCallback = QuizBloc(
+      () async => mockItems,
+      randomItemPicker,
+      configManager: ConfigManager(
+        defaultConfig: QuizConfig(
+          quizId: 'test_quiz',
+          modeConfig: QuizModeConfig.standard(),
+        ),
+      ),
+      onQuizCompleted: (results) {
+        callbackCalled = true;
+        receivedResults = results;
+      },
+    );
+
+    await blocWithCallback.performInitialLoad();
 
     // Ensure a valid question is set before answering
-    bloc.currentQuestion = Question.fromRandomResult(
+    blocWithCallback.currentQuestion = Question.fromRandomResult(
       RandomPickResult(mockItems.first, mockItems),
     );
 
     // Mock game over condition
     when(randomItemPicker.pick()).thenReturn(null);
 
-    await bloc.processAnswer(mockItems.first);
+    await blocWithCallback.processAnswer(mockItems.first);
+
+    expect(callbackCalled, isTrue);
+    expect(receivedResults, isNotNull);
+    expect(receivedResults!.correctAnswers, equals(1));
+    expect(receivedResults!.totalQuestions, equals(mockItems.length));
   });
 
   group('Endless Mode Tests', () {
@@ -222,11 +241,6 @@ void main() {
       // Initialize the quiz
       await endlessBloc.performInitialLoad();
 
-      bool gameOverCalled = false;
-      endlessBloc.gameOverCallback = (result) {
-        gameOverCalled = true;
-      };
-
       // Get the correct answer
       final correctAnswer = endlessBloc.currentQuestion.answer;
 
@@ -235,11 +249,17 @@ void main() {
         (option) => option != correctAnswer,
       );
 
+      // Start listening for completed state
+      final streamFuture = expectLater(
+        endlessBloc.stream,
+        emitsThrough(isA<QuizCompletedState>()),
+      );
+
       // Answer with wrong answer
       await endlessBloc.processAnswer(wrongAnswer);
 
-      // Game should be over
-      expect(gameOverCalled, true);
+      // Game should be over - verify completed state was emitted
+      await streamFuture;
     });
 
     test(
@@ -248,10 +268,13 @@ void main() {
         // Initialize the quiz
         await endlessBloc.performInitialLoad();
 
-        bool gameOverCalled = false;
-        endlessBloc.gameOverCallback = (result) {
-          gameOverCalled = true;
-        };
+        // Track if we ever see a completed state
+        bool completedStateEmitted = false;
+        final subscription = endlessBloc.stream.listen((state) {
+          if (state is QuizCompletedState) {
+            completedStateEmitted = true;
+          }
+        });
 
         // Answer correctly many times (more than the initial question count)
         final timesToAnswer = endlessItems.length * 3;
@@ -260,11 +283,13 @@ void main() {
           await endlessBloc.processAnswer(correctAnswer);
 
           // Game should never be over when answering correctly
-          expect(gameOverCalled, false);
+          expect(completedStateEmitted, false);
         }
 
         // Should still have a valid question after many rounds
         expect(endlessBloc.currentQuestion, isNotNull);
+
+        await subscription.cancel();
       },
     );
   });
