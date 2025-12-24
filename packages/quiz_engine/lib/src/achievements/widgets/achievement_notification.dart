@@ -4,6 +4,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../../l10n/quiz_localizations.dart';
+
 /// Style configuration for [AchievementNotification].
 class AchievementNotificationStyle {
   /// Creates an [AchievementNotificationStyle].
@@ -189,58 +191,72 @@ class _AchievementNotificationState extends State<AchievementNotification>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = QuizL10n.of(context);
     final tierColor = widget.achievement.tier.color;
+    final tierName = widget.achievement.tier.name;
 
-    return SlideTransition(
-      position: _slideAnimation,
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: GestureDetector(
-            onTap: _dismiss,
-            child: Stack(
-              children: [
-                // Main notification card
-                Container(
-                  decoration: BoxDecoration(
-                    color: widget.style.backgroundColor ??
-                        theme.colorScheme.primaryContainer,
-                    borderRadius:
-                        BorderRadius.circular(widget.style.borderRadius),
-                    boxShadow: [
-                      BoxShadow(
-                        color: tierColor.withValues(alpha: 0.3),
-                        blurRadius: 20,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                    border: Border.all(
-                      color: tierColor.withValues(alpha: 0.5),
-                      width: 2,
-                    ),
-                  ),
-                  padding: widget.style.padding,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      _buildIcon(theme, tierColor),
-                      const SizedBox(width: 16),
-                      Flexible(child: _buildContent(context, theme)),
-                    ],
-                  ),
-                ),
+    final semanticLabel = l10n.accessibilityAchievementNotification(
+      widget.achievement.name(context),
+      tierName,
+      widget.achievement.points,
+    );
 
-                // Confetti overlay
-                if (widget.style.showConfetti)
-                  Positioned.fill(
-                    child: IgnorePointer(
-                      child: _ConfettiOverlay(
-                        color: tierColor,
-                        controller: _scaleController,
+    return Semantics(
+      label: semanticLabel,
+      hint: l10n.accessibilityDoubleTapToDismiss,
+      liveRegion: true,
+      child: SlideTransition(
+        position: _slideAnimation,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: GestureDetector(
+              onTap: _dismiss,
+              excludeFromSemantics: true,
+              child: Stack(
+                children: [
+                  // Main notification card
+                  Container(
+                    decoration: BoxDecoration(
+                      color: widget.style.backgroundColor ??
+                          theme.colorScheme.primaryContainer,
+                      borderRadius:
+                          BorderRadius.circular(widget.style.borderRadius),
+                      boxShadow: [
+                        BoxShadow(
+                          color: tierColor.withValues(alpha: 0.3),
+                          blurRadius: 20,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                      border: Border.all(
+                        color: tierColor.withValues(alpha: 0.5),
+                        width: 2,
                       ),
                     ),
+                    padding: widget.style.padding,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildIcon(theme, tierColor),
+                        const SizedBox(width: 16),
+                        Flexible(child: _buildContent(context, theme)),
+                      ],
+                    ),
                   ),
-              ],
+
+                  // Confetti overlay
+                  if (widget.style.showConfetti)
+                    Positioned.fill(
+                      child: IgnorePointer(
+                        child: _ConfettiOverlay(
+                          color: tierColor,
+                          controller: _scaleController,
+                        ),
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ),
