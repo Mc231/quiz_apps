@@ -2,7 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_services/src/di/modules/storage_module.dart';
 import 'package:shared_services/src/di/service_locator.dart';
 import 'package:shared_services/src/achievements/data_sources/achievement_data_source.dart';
+import 'package:shared_services/src/achievements/engine/achievement_engine.dart';
 import 'package:shared_services/src/achievements/repositories/achievement_repository.dart';
+import 'package:shared_services/src/achievements/services/achievement_service.dart';
 import 'package:shared_services/src/storage/data_sources/data_sources_exports.dart';
 import 'package:shared_services/src/storage/database/app_database.dart';
 import 'package:shared_services/src/storage/repositories/repositories_exports.dart';
@@ -48,6 +50,14 @@ void main() {
       expect(locator.isRegistered<AchievementRepository>(), isTrue);
     });
 
+    test('registers achievement engine and service', () {
+      final module = StorageModule();
+      module.register(locator);
+
+      expect(locator.isRegistered<AchievementEngine>(), isTrue);
+      expect(locator.isRegistered<AchievementService>(), isTrue);
+    });
+
     test('uses lazy singletons (no immediate instantiation)', () {
       final module = StorageModule();
       module.register(locator);
@@ -65,6 +75,8 @@ void main() {
       expect(debugInfo['lazySingletons'], contains('StatisticsRepository'));
       expect(debugInfo['lazySingletons'], contains('SettingsRepository'));
       expect(debugInfo['lazySingletons'], contains('AchievementRepository'));
+      expect(debugInfo['lazySingletons'], contains('AchievementEngine'));
+      expect(debugInfo['lazySingletons'], contains('AchievementService'));
 
       // Singletons should be empty (nothing eagerly instantiated)
       expect(debugInfo['singletons'], isEmpty);
@@ -79,8 +91,8 @@ void main() {
           debugInfo['lazySingletons']!.length +
           debugInfo['factories']!.length;
 
-      // 1 database + 5 data sources + 4 repositories + 1 StorageService = 11
-      expect(totalRegistrations, 11);
+      // 1 database + 5 data sources + 4 repositories + 1 engine + 1 service + 1 StorageService = 13
+      expect(totalRegistrations, 13);
     });
   });
 
