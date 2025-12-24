@@ -208,12 +208,20 @@ class TrendsWidget extends StatelessWidget {
     final percentage = (point.value / maxValue).clamp(0.0, 1.0);
     final color = barColor ?? theme.primaryColor;
 
+    // Reserve space for label (fontSize 10 ~= 14px height) + spacing (4px)
+    const labelReservedHeight = 18.0;
+    const minBarHeight = 4.0;
+
     return LayoutBuilder(
       builder: (context, constraints) {
-        final barHeight = constraints.maxHeight * percentage;
+        // Calculate available height for the bar (subtract label space)
+        final availableHeight = constraints.maxHeight - labelReservedHeight;
+        final barHeight =
+            (availableHeight * percentage).clamp(minBarHeight, availableHeight);
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisSize: MainAxisSize.min,
           children: [
             if (point.value > 0)
               Text(
@@ -227,7 +235,7 @@ class TrendsWidget extends StatelessWidget {
             const SizedBox(height: 4),
             Container(
               width: double.infinity,
-              height: barHeight > 4 ? barHeight : 4,
+              height: barHeight,
               decoration: BoxDecoration(
                 color: point.value > 0
                     ? color
