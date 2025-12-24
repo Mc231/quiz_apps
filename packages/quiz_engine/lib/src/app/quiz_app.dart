@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
 
+import '../achievements/widgets/achievement_card.dart';
 import '../home/quiz_home_screen.dart';
 import '../l10n/quiz_localizations.dart';
 import '../l10n/quiz_localizations_delegate.dart';
@@ -228,6 +229,12 @@ class QuizApp extends StatefulWidget {
   /// Data provider for the Statistics tab.
   final Future<StatisticsTabData> Function()? statisticsDataProvider;
 
+  /// Data provider for the Achievements tab.
+  final Future<AchievementsTabData> Function()? achievementsDataProvider;
+
+  /// Callback when an achievement is tapped.
+  final void Function(AchievementDisplayData achievement)? onAchievementTap;
+
   /// Builder for the Settings tab content.
   ///
   /// If not provided and Settings tab is in tabs, uses [QuizSettingsScreen].
@@ -263,6 +270,8 @@ class QuizApp extends StatefulWidget {
     this.homeBuilder,
     this.historyDataProvider,
     this.statisticsDataProvider,
+    this.achievementsDataProvider,
+    this.onAchievementTap,
     this.settingsBuilder,
     this.settingsConfig,
     this.locale,
@@ -388,6 +397,8 @@ class _QuizAppState extends State<QuizApp> {
         onViewAllSessions: widget.callbacks.onViewAllSessions,
         historyDataProvider: widget.historyDataProvider,
         statisticsDataProvider: widget.statisticsDataProvider,
+        achievementsDataProvider: widget.achievementsDataProvider,
+        onAchievementTap: widget.onAchievementTap,
         settingsBuilder: _buildSettingsBuilder(),
         formatDate: widget.formatDate,
         formatStatus: widget.formatStatus,
