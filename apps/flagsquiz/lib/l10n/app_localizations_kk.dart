@@ -1109,4 +1109,94 @@ class AppLocalizationsKk extends AppLocalizations {
 
   @override
   String get incorrect => 'Incorrect';
+
+  @override
+  String get achievementExploreAfrica => 'African Explorer';
+
+  @override
+  String get achievementExploreAfricaDesc => 'Complete a quiz about Africa';
+
+  @override
+  String get achievementExploreAsia => 'Asian Explorer';
+
+  @override
+  String get achievementExploreAsiaDesc => 'Complete a quiz about Asia';
+
+  @override
+  String get achievementExploreEurope => 'European Explorer';
+
+  @override
+  String get achievementExploreEuropeDesc => 'Complete a quiz about Europe';
+
+  @override
+  String get achievementExploreNorthAmerica => 'North American Explorer';
+
+  @override
+  String get achievementExploreNorthAmericaDesc =>
+      'Complete a quiz about North America';
+
+  @override
+  String get achievementExploreSouthAmerica => 'South American Explorer';
+
+  @override
+  String get achievementExploreSouthAmericaDesc =>
+      'Complete a quiz about South America';
+
+  @override
+  String get achievementExploreOceania => 'Oceanian Explorer';
+
+  @override
+  String get achievementExploreOceaniaDesc => 'Complete a quiz about Oceania';
+
+  @override
+  String get achievementWorldTraveler => 'World Traveler';
+
+  @override
+  String get achievementWorldTravelerDesc =>
+      'Complete a quiz in every continent';
+
+  @override
+  String get achievementMasterEurope => 'Europe Master';
+
+  @override
+  String get achievementMasterEuropeDesc => 'Get 5 perfect scores in Europe';
+
+  @override
+  String get achievementMasterAsia => 'Asia Master';
+
+  @override
+  String get achievementMasterAsiaDesc => 'Get 5 perfect scores in Asia';
+
+  @override
+  String get achievementMasterAfrica => 'Africa Master';
+
+  @override
+  String get achievementMasterAfricaDesc => 'Get 5 perfect scores in Africa';
+
+  @override
+  String get achievementMasterAmericas => 'Americas Master';
+
+  @override
+  String get achievementMasterAmericasDesc =>
+      'Get 5 perfect scores in North or South America';
+
+  @override
+  String get achievementMasterOceania => 'Oceania Master';
+
+  @override
+  String get achievementMasterOceaniaDesc => 'Get 5 perfect scores in Oceania';
+
+  @override
+  String get achievementMasterWorld => 'World Master';
+
+  @override
+  String get achievementMasterWorldDesc =>
+      'Get 5 perfect scores in All Countries';
+
+  @override
+  String get achievementFlagCollector => 'Flag Collector';
+
+  @override
+  String get achievementFlagCollectorDesc =>
+      'Answer every flag correctly at least once';
 }

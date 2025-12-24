@@ -2391,6 +2391,174 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Incorrect'**
   String get incorrect;
+
+  /// Achievement name for completing Africa quiz
+  ///
+  /// In en, this message translates to:
+  /// **'African Explorer'**
+  String get achievementExploreAfrica;
+
+  /// Achievement description for completing Africa quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz about Africa'**
+  String get achievementExploreAfricaDesc;
+
+  /// Achievement name for completing Asia quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Asian Explorer'**
+  String get achievementExploreAsia;
+
+  /// Achievement description for completing Asia quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz about Asia'**
+  String get achievementExploreAsiaDesc;
+
+  /// Achievement name for completing Europe quiz
+  ///
+  /// In en, this message translates to:
+  /// **'European Explorer'**
+  String get achievementExploreEurope;
+
+  /// Achievement description for completing Europe quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz about Europe'**
+  String get achievementExploreEuropeDesc;
+
+  /// Achievement name for completing North America quiz
+  ///
+  /// In en, this message translates to:
+  /// **'North American Explorer'**
+  String get achievementExploreNorthAmerica;
+
+  /// Achievement description for completing North America quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz about North America'**
+  String get achievementExploreNorthAmericaDesc;
+
+  /// Achievement name for completing South America quiz
+  ///
+  /// In en, this message translates to:
+  /// **'South American Explorer'**
+  String get achievementExploreSouthAmerica;
+
+  /// Achievement description for completing South America quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz about South America'**
+  String get achievementExploreSouthAmericaDesc;
+
+  /// Achievement name for completing Oceania quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Oceanian Explorer'**
+  String get achievementExploreOceania;
+
+  /// Achievement description for completing Oceania quiz
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz about Oceania'**
+  String get achievementExploreOceaniaDesc;
+
+  /// Achievement name for completing all continents
+  ///
+  /// In en, this message translates to:
+  /// **'World Traveler'**
+  String get achievementWorldTraveler;
+
+  /// Achievement description for completing all continents
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a quiz in every continent'**
+  String get achievementWorldTravelerDesc;
+
+  /// Achievement name for mastering Europe
+  ///
+  /// In en, this message translates to:
+  /// **'Europe Master'**
+  String get achievementMasterEurope;
+
+  /// Achievement description for mastering Europe
+  ///
+  /// In en, this message translates to:
+  /// **'Get 5 perfect scores in Europe'**
+  String get achievementMasterEuropeDesc;
+
+  /// Achievement name for mastering Asia
+  ///
+  /// In en, this message translates to:
+  /// **'Asia Master'**
+  String get achievementMasterAsia;
+
+  /// Achievement description for mastering Asia
+  ///
+  /// In en, this message translates to:
+  /// **'Get 5 perfect scores in Asia'**
+  String get achievementMasterAsiaDesc;
+
+  /// Achievement name for mastering Africa
+  ///
+  /// In en, this message translates to:
+  /// **'Africa Master'**
+  String get achievementMasterAfrica;
+
+  /// Achievement description for mastering Africa
+  ///
+  /// In en, this message translates to:
+  /// **'Get 5 perfect scores in Africa'**
+  String get achievementMasterAfricaDesc;
+
+  /// Achievement name for mastering the Americas
+  ///
+  /// In en, this message translates to:
+  /// **'Americas Master'**
+  String get achievementMasterAmericas;
+
+  /// Achievement description for mastering the Americas
+  ///
+  /// In en, this message translates to:
+  /// **'Get 5 perfect scores in North or South America'**
+  String get achievementMasterAmericasDesc;
+
+  /// Achievement name for mastering Oceania
+  ///
+  /// In en, this message translates to:
+  /// **'Oceania Master'**
+  String get achievementMasterOceania;
+
+  /// Achievement description for mastering Oceania
+  ///
+  /// In en, this message translates to:
+  /// **'Get 5 perfect scores in Oceania'**
+  String get achievementMasterOceaniaDesc;
+
+  /// Achievement name for mastering all countries
+  ///
+  /// In en, this message translates to:
+  /// **'World Master'**
+  String get achievementMasterWorld;
+
+  /// Achievement description for mastering all countries
+  ///
+  /// In en, this message translates to:
+  /// **'Get 5 perfect scores in All Countries'**
+  String get achievementMasterWorldDesc;
+
+  /// Achievement name for collecting all flags
+  ///
+  /// In en, this message translates to:
+  /// **'Flag Collector'**
+  String get achievementFlagCollector;
+
+  /// Achievement description for collecting all flags
+  ///
+  /// In en, this message translates to:
+  /// **'Answer every flag correctly at least once'**
+  String get achievementFlagCollectorDesc;
 }
 
 class _AppLocalizationsDelegate
