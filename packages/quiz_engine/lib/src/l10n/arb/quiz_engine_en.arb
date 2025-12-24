@@ -1376,5 +1376,71 @@
     "placeholders": {
       "percent": {"type": "int"}
     }
+  },
+
+  "accessibilityDoubleTapToView": "Double tap to view details",
+  "@accessibilityDoubleTapToView": {
+    "description": "Accessibility hint for tappable items"
+  },
+
+  "accessibilityDoubleTapToDismiss": "Double tap to dismiss",
+  "@accessibilityDoubleTapToDismiss": {
+    "description": "Accessibility hint for dismissable notifications"
+  },
+
+  "accessibilityAchievementUnlocked": "{name}, {tier} achievement, {points} points, unlocked",
+  "@accessibilityAchievementUnlocked": {
+    "description": "Accessibility label for unlocked achievement",
+    "placeholders": {
+      "name": {"type": "String"},
+      "tier": {"type": "String"},
+      "points": {"type": "int"}
+    }
+  },
+
+  "accessibilityAchievementLocked": "{name}, {tier} achievement, {points} points, locked, {progress} percent complete",
+  "@accessibilityAchievementLocked": {
+    "description": "Accessibility label for locked achievement with progress",
+    "placeholders": {
+      "name": {"type": "String"},
+      "tier": {"type": "String"},
+      "points": {"type": "int"},
+      "progress": {"type": "int"}
+    }
+  },
+
+  "accessibilityAchievementNotification": "Achievement unlocked: {name}, {tier}, plus {points} points",
+  "@accessibilityAchievementNotification": {
+    "description": "Accessibility label for achievement notification",
+    "placeholders": {
+      "name": {"type": "String"},
+      "tier": {"type": "String"},
+      "points": {"type": "int"}
+    }
+  },
+
+  "accessibilityProgressBar": "Progress: {current} of {target}",
+  "@accessibilityProgressBar": {
+    "description": "Accessibility label for progress bar",
+    "placeholders": {
+      "current": {"type": "int"},
+      "target": {"type": "int"}
+    }
+  },
+
+  "accessibilityTierBadge": "{tier} tier",
+  "@accessibilityTierBadge": {
+    "description": "Accessibility label for tier badge",
+    "placeholders": {
+      "tier": {"type": "String"}
+    }
+  },
+
+  "accessibilityPointsBadge": "{points} points",
+  "@accessibilityPointsBadge": {
+    "description": "Accessibility label for points badge",
+    "placeholders": {
+      "points": {"type": "int"}
+    }
   }
 }
