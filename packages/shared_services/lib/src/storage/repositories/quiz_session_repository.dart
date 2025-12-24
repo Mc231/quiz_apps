@@ -179,10 +179,8 @@ class QuizSessionRepositoryImpl implements QuizSessionRepository {
   Future<String> saveSession(QuizSession session) async {
     await _sessionDataSource.insertSession(session);
 
-    // Update statistics
-    await _statsDataSource.updateGlobalStatisticsForSession(session);
-    await _statsDataSource.updateQuizTypeStatisticsForSession(session);
-    await _statsDataSource.updateDailyStatisticsForSession(session);
+    // NOTE: Statistics are updated when the session is COMPLETED, not created.
+    // This ensures we only count the final scores, not the initial zeros.
 
     // Invalidate cache
     _invalidateCache();
@@ -343,10 +341,21 @@ class QuizSessionRepositoryImpl implements QuizSessionRepository {
     _sessionCache.remove(sessionId);
     _recentSessionsCache = null;
 
+    // Get the updated session with final scores
+    final updatedSession = await _sessionDataSource.getSessionById(sessionId);
+
+    // Update statistics with the completed session data
+    if (updatedSession != null) {
+      await _statsDataSource.updateGlobalStatisticsForSession(updatedSession);
+      await _statsDataSource.updateQuizTypeStatisticsForSession(updatedSession);
+      await _statsDataSource.updateDailyStatisticsForSession(updatedSession);
+
+      // Update cache
+      _sessionCache[sessionId] = _CacheEntry(updatedSession, _cacheDuration);
+    }
+
     // Notify listeners
     _notifyRecentSessionsChanged();
-
-    final updatedSession = await getSession(sessionId);
     _notifySessionChanged(sessionId, updatedSession);
   }
 
