@@ -60,8 +60,8 @@ class FlagsDataProvider extends engine.QuizDataProvider {
       quizId: category.id,
       // Enable hints (50/50, skip, reveal letter) for Play tab
       hintConfig: const HintConfig(),
-      // Enable skip button in standard mode
-      modeConfig: QuizModeConfig.standard(allowSkip: true),
+      // Lives mode with 5 hearts and skip button enabled
+      modeConfig: QuizModeConfig.lives(lives: 5, allowSkip: true),
     );
   }
 
