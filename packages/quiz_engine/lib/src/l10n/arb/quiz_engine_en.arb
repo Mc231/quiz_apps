@@ -1355,5 +1355,26 @@
       "current": {"type": "int"},
       "target": {"type": "int"}
     }
+  },
+
+  "pointsRemaining": "{points} remaining",
+  "@pointsRemaining": {
+    "description": "Points remaining to earn",
+    "placeholders": {
+      "points": {"type": "int"}
+    }
+  },
+
+  "allPointsEarned": "All earned!",
+  "@allPointsEarned": {
+    "description": "Message when all achievement points are earned"
+  },
+
+  "completionPercentage": "{percent}%",
+  "@completionPercentage": {
+    "description": "Completion percentage display",
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
   }
 }
