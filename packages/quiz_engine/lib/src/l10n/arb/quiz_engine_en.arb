@@ -772,5 +772,20 @@
   "lowestScore": "Lowest",
   "@lowestScore": {
     "description": "Lowest score label"
+  },
+
+  "noPracticeItems": "No wrong answers to practice",
+  "@noPracticeItems": {
+    "description": "Empty state title when no wrong answers available"
+  },
+
+  "noPracticeItemsDescription": "Complete some quizzes and any wrong answers will appear here for practice",
+  "@noPracticeItemsDescription": {
+    "description": "Empty state description when no wrong answers available"
+  },
+
+  "practice": "Practice",
+  "@practice": {
+    "description": "Practice tab label"
   }
 }
