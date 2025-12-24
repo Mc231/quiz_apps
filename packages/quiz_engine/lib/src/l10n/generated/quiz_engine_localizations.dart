@@ -1752,6 +1752,63 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'{percent}%'**
   String completionPercentage(int percent);
+
+  /// Accessibility hint for tappable items
+  ///
+  /// In en, this message translates to:
+  /// **'Double tap to view details'**
+  String get accessibilityDoubleTapToView;
+
+  /// Accessibility hint for dismissable notifications
+  ///
+  /// In en, this message translates to:
+  /// **'Double tap to dismiss'**
+  String get accessibilityDoubleTapToDismiss;
+
+  /// Accessibility label for unlocked achievement
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {tier} achievement, {points} points, unlocked'**
+  String accessibilityAchievementUnlocked(String name, String tier, int points);
+
+  /// Accessibility label for locked achievement with progress
+  ///
+  /// In en, this message translates to:
+  /// **'{name}, {tier} achievement, {points} points, locked, {progress} percent complete'**
+  String accessibilityAchievementLocked(
+    String name,
+    String tier,
+    int points,
+    int progress,
+  );
+
+  /// Accessibility label for achievement notification
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement unlocked: {name}, {tier}, plus {points} points'**
+  String accessibilityAchievementNotification(
+    String name,
+    String tier,
+    int points,
+  );
+
+  /// Accessibility label for progress bar
+  ///
+  /// In en, this message translates to:
+  /// **'Progress: {current} of {target}'**
+  String accessibilityProgressBar(int current, int target);
+
+  /// Accessibility label for tier badge
+  ///
+  /// In en, this message translates to:
+  /// **'{tier} tier'**
+  String accessibilityTierBadge(String tier);
+
+  /// Accessibility label for points badge
+  ///
+  /// In en, this message translates to:
+  /// **'{points} points'**
+  String accessibilityPointsBadge(int points);
 }
 
 class _QuizEngineLocalizationsDelegate
