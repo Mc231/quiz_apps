@@ -572,6 +572,30 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get allPointsEarned => 'All earned!';
   @override
   String completionPercentage(int percent) => '$percent%';
+
+  // Accessibility labels
+  @override
+  String get accessibilityDoubleTapToView => 'Double tap to view details';
+  @override
+  String get accessibilityDoubleTapToDismiss => 'Double tap to dismiss';
+  @override
+  String accessibilityAchievementUnlocked(String name, String tier, int points) =>
+      '$name, $tier achievement, $points points, unlocked';
+  @override
+  String accessibilityAchievementLocked(
+          String name, String tier, int points, int progress) =>
+      '$name, $tier achievement, $points points, locked, $progress percent complete';
+  @override
+  String accessibilityAchievementNotification(
+          String name, String tier, int points) =>
+      'Achievement unlocked: $name, $tier, plus $points points';
+  @override
+  String accessibilityProgressBar(int current, int target) =>
+      'Progress: $current of $target';
+  @override
+  String accessibilityTierBadge(String tier) => '$tier tier';
+  @override
+  String accessibilityPointsBadge(int points) => '$points points';
 }
 
 void main() {
