@@ -2,6 +2,7 @@
 library;
 
 import '../database/app_database.dart';
+import '../database/migrations/migration_v2.dart';
 import '../database/tables/daily_statistics_table.dart';
 import '../database/tables/statistics_tables.dart';
 import '../models/daily_statistics.dart';
@@ -56,6 +57,16 @@ abstract class StatisticsDataSource {
   // Aggregation helpers
   /// Recalculates all statistics from session data.
   Future<void> recalculateAllStatistics();
+
+  // Achievement-related statistics (V2)
+  /// Increments the quick answers count.
+  Future<void> incrementQuickAnswersCount(int count);
+
+  /// Updates achievement statistics in global stats.
+  Future<void> updateAchievementStats({
+    required int totalUnlocked,
+    required int totalPoints,
+  });
 }
 
 /// SQLite implementation of [StatisticsDataSource].
@@ -91,10 +102,14 @@ class StatisticsDataSourceImpl implements StatisticsDataSource {
   Future<void> updateGlobalStatisticsForSession(QuizSession session) async {
     final now = DateTime.now();
     final timestamp = now.millisecondsSinceEpoch ~/ 1000;
+    final todayStr = _formatDate(now);
 
     final isCompleted = session.completionStatus == CompletionStatus.completed;
     final isCancelled = session.completionStatus == CompletionStatus.cancelled;
     final isPerfect = session.scorePercentage >= 100.0;
+    final noHintsUsed = session.hintsUsed5050 == 0 && session.hintsUsedSkip == 0;
+    final isScore90Plus = session.scorePercentage >= 90.0;
+    final isScore95Plus = session.scorePercentage >= 95.0;
 
     await _database.rawQuery('''
       UPDATE $globalStatisticsTable SET
@@ -112,7 +127,11 @@ class StatisticsDataSourceImpl implements StatisticsDataSource {
         ${GlobalStatisticsColumns.totalPerfectScores} = ${GlobalStatisticsColumns.totalPerfectScores} + ${isPerfect ? 1 : 0},
         ${GlobalStatisticsColumns.firstSessionDate} = COALESCE(${GlobalStatisticsColumns.firstSessionDate}, ?),
         ${GlobalStatisticsColumns.lastSessionDate} = ?,
-        ${GlobalStatisticsColumns.updatedAt} = ?
+        ${GlobalStatisticsColumns.updatedAt} = ?,
+        -- V2 achievement-related fields
+        ${GlobalStatisticsColumnsV2.sessionsNoHints} = ${GlobalStatisticsColumnsV2.sessionsNoHints} + ${isCompleted && noHintsUsed ? 1 : 0},
+        ${GlobalStatisticsColumnsV2.highScore90Count} = ${GlobalStatisticsColumnsV2.highScore90Count} + ${isCompleted && isScore90Plus ? 1 : 0},
+        ${GlobalStatisticsColumnsV2.highScore95Count} = ${GlobalStatisticsColumnsV2.highScore95Count} + ${isCompleted && isScore95Plus ? 1 : 0}
       WHERE ${GlobalStatisticsColumns.id} = 1
     ''', [
       session.totalAnswered,
@@ -130,6 +149,57 @@ class StatisticsDataSourceImpl implements StatisticsDataSource {
 
     // Update average score separately (requires calculation)
     await _updateAverageScore();
+
+    // Update consecutive days played
+    await _updateConsecutiveDays(todayStr);
+  }
+
+  /// Formats a date as YYYY-MM-DD string.
+  String _formatDate(DateTime date) {
+    return '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+  }
+
+  /// Updates the consecutive days played counter.
+  Future<void> _updateConsecutiveDays(String todayStr) async {
+    // Get current last play date
+    final stats = await getGlobalStatistics();
+    final lastPlayDate = stats.lastPlayDate;
+
+    if (lastPlayDate == null) {
+      // First time playing
+      await _database.rawQuery('''
+        UPDATE $globalStatisticsTable SET
+          ${GlobalStatisticsColumnsV2.consecutiveDaysPlayed} = 1,
+          ${GlobalStatisticsColumnsV2.lastPlayDate} = ?
+        WHERE ${GlobalStatisticsColumns.id} = 1
+      ''', [todayStr]);
+    } else if (lastPlayDate == todayStr) {
+      // Already played today, no change needed
+      return;
+    } else {
+      // Check if yesterday
+      final today = DateTime.parse(todayStr);
+      final lastDate = DateTime.parse(lastPlayDate);
+      final difference = today.difference(lastDate).inDays;
+
+      if (difference == 1) {
+        // Consecutive day - increment
+        await _database.rawQuery('''
+          UPDATE $globalStatisticsTable SET
+            ${GlobalStatisticsColumnsV2.consecutiveDaysPlayed} = ${GlobalStatisticsColumnsV2.consecutiveDaysPlayed} + 1,
+            ${GlobalStatisticsColumnsV2.lastPlayDate} = ?
+          WHERE ${GlobalStatisticsColumns.id} = 1
+        ''', [todayStr]);
+      } else {
+        // Streak broken - reset to 1
+        await _database.rawQuery('''
+          UPDATE $globalStatisticsTable SET
+            ${GlobalStatisticsColumnsV2.consecutiveDaysPlayed} = 1,
+            ${GlobalStatisticsColumnsV2.lastPlayDate} = ?
+          WHERE ${GlobalStatisticsColumns.id} = 1
+        ''', [todayStr]);
+      }
+    }
   }
 
   Future<void> _updateAverageScore() async {
@@ -169,6 +239,15 @@ class StatisticsDataSourceImpl implements StatisticsDataSource {
         GlobalStatisticsColumns.totalPerfectScores: 0,
         GlobalStatisticsColumns.firstSessionDate: null,
         GlobalStatisticsColumns.lastSessionDate: null,
+        // V2 fields
+        GlobalStatisticsColumnsV2.consecutiveDaysPlayed: 0,
+        GlobalStatisticsColumnsV2.lastPlayDate: null,
+        GlobalStatisticsColumnsV2.quickAnswersCount: 0,
+        GlobalStatisticsColumnsV2.sessionsNoHints: 0,
+        GlobalStatisticsColumnsV2.highScore90Count: 0,
+        GlobalStatisticsColumnsV2.highScore95Count: 0,
+        GlobalStatisticsColumnsV2.totalAchievementsUnlocked: 0,
+        GlobalStatisticsColumnsV2.totalAchievementPoints: 0,
         GlobalStatisticsColumns.updatedAt: now,
       },
       where: '${GlobalStatisticsColumns.id} = 1',
@@ -471,5 +550,41 @@ class StatisticsDataSourceImpl implements StatisticsDataSource {
 
     // Clear daily stats
     await _database.delete(dailyStatisticsTable);
+  }
+
+  // ==========================================================================
+  // Achievement-related Statistics (V2)
+  // ==========================================================================
+
+  @override
+  Future<void> incrementQuickAnswersCount(int count) async {
+    if (count <= 0) return;
+
+    final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    await _database.rawQuery('''
+      UPDATE $globalStatisticsTable SET
+        ${GlobalStatisticsColumnsV2.quickAnswersCount} = ${GlobalStatisticsColumnsV2.quickAnswersCount} + ?,
+        ${GlobalStatisticsColumns.updatedAt} = ?
+      WHERE ${GlobalStatisticsColumns.id} = 1
+    ''', [count, timestamp]);
+  }
+
+  @override
+  Future<void> updateAchievementStats({
+    required int totalUnlocked,
+    required int totalPoints,
+  }) async {
+    final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    await _database.update(
+      globalStatisticsTable,
+      {
+        GlobalStatisticsColumnsV2.totalAchievementsUnlocked: totalUnlocked,
+        GlobalStatisticsColumnsV2.totalAchievementPoints: totalPoints,
+        GlobalStatisticsColumns.updatedAt: timestamp,
+      },
+      where: '${GlobalStatisticsColumns.id} = 1',
+    );
   }
 }
