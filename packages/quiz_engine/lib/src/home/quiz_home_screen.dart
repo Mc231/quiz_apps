@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../achievements/screens/achievements_screen.dart';
+import '../achievements/widgets/achievement_card.dart';
 import '../app/quiz_tab.dart';
 import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
@@ -120,6 +122,28 @@ class StatisticsTabData {
   }
 }
 
+/// Data provider for the Achievements tab.
+class AchievementsTabData {
+  /// Achievements data for the screen.
+  final AchievementsScreenData screenData;
+
+  /// Whether data is loading.
+  final bool isLoading;
+
+  /// Creates [AchievementsTabData].
+  const AchievementsTabData({
+    required this.screenData,
+    this.isLoading = false,
+  });
+
+  /// Creates empty achievements data.
+  factory AchievementsTabData.empty() {
+    return const AchievementsTabData(
+      screenData: AchievementsScreenData.empty(),
+    );
+  }
+}
+
 /// A home screen widget with bottom navigation for quiz apps.
 ///
 /// Integrates PlayScreen, SessionHistoryScreen, and StatisticsScreen
@@ -190,6 +214,15 @@ class QuizHomeScreen extends StatefulWidget {
   /// If null and [storageService] is provided, default loading is used.
   final Future<StatisticsTabData> Function()? statisticsDataProvider;
 
+  /// Data provider for the Achievements tab.
+  ///
+  /// Called when the Achievements tab is selected or refreshed.
+  /// Must be provided if Achievements tab is in tabs.
+  final Future<AchievementsTabData> Function()? achievementsDataProvider;
+
+  /// Callback when an achievement is tapped.
+  final void Function(AchievementDisplayData achievement)? onAchievementTap;
+
   /// Builder for the Settings tab content.
   /// If not provided and Settings tab is in tabs, a placeholder is shown.
   final Widget Function(BuildContext context)? settingsBuilder;
@@ -223,6 +256,8 @@ class QuizHomeScreen extends StatefulWidget {
     this.onViewAllSessions,
     this.historyDataProvider,
     this.statisticsDataProvider,
+    this.achievementsDataProvider,
+    this.onAchievementTap,
     this.settingsBuilder,
     this.isPlayLoading = false,
     this.formatDate,
@@ -240,6 +275,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   late int _currentIndex;
   HistoryTabData _historyData = const HistoryTabData();
   StatisticsTabData _statisticsData = StatisticsTabData.empty();
+  AchievementsTabData _achievementsData = AchievementsTabData.empty();
   DefaultDataLoader? _dataLoader;
 
   List<QuizTab> get _tabs {
@@ -317,6 +353,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
         _loadHistoryData();
       } else if (tab is StatisticsTab) {
         _loadStatisticsData();
+      } else if (tab is AchievementsTab) {
+        _loadAchievementsData();
       }
     }
   }
@@ -368,6 +406,33 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
       if (mounted) {
         setState(() {
           _statisticsData = StatisticsTabData.empty();
+        });
+      }
+    }
+  }
+
+  Future<void> _loadAchievementsData() async {
+    final provider = widget.achievementsDataProvider;
+    if (provider == null) return;
+
+    setState(() {
+      _achievementsData = AchievementsTabData(
+        screenData: _achievementsData.screenData,
+        isLoading: true,
+      );
+    });
+
+    try {
+      final data = await provider();
+      if (mounted) {
+        setState(() {
+          _achievementsData = data;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _achievementsData = AchievementsTabData.empty();
         });
       }
     }
@@ -611,6 +676,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
       HistoryTab() => _buildHistoryTab(context),
       StatisticsTab() => _buildStatisticsTab(context),
       SettingsTab() => _buildSettingsTab(context),
+      AchievementsTab() => _buildAchievementsTab(context),
       CustomTab(:final builder) => builder(context),
     };
   }
@@ -704,6 +770,22 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     );
   }
 
+  Widget _buildAchievementsTab(BuildContext context) {
+    // Show loading indicator while loading
+    if (_achievementsData.isLoading &&
+        _achievementsData.screenData.achievements.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return AchievementsScreen(
+      data: _achievementsData.screenData,
+      onAchievementTap: widget.onAchievementTap,
+      onRefresh: widget.achievementsDataProvider != null
+          ? _loadAchievementsData
+          : null,
+    );
+  }
+
   SessionHistoryTexts _createHistoryTexts(QuizLocalizations l10n) {
     return SessionHistoryTexts(
       title: l10n.history,
@@ -776,6 +858,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
       HistoryTab() => l10n.history,
       StatisticsTab() => l10n.statistics,
       SettingsTab() => l10n.settings,
+      AchievementsTab() => l10n.achievements,
       CustomTab() => tab.labelBuilder(context),
     };
   }
