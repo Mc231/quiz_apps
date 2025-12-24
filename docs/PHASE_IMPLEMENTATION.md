@@ -19,7 +19,7 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements | In Progress (1/10 sprints) |
+| Phase 8 | Achievements | In Progress (2/10 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
@@ -1013,25 +1013,35 @@ New exports added:
 
 ---
 
-### Sprint 8.2: Database & Repository
+### Sprint 8.2: Database & Repository ✅
 
 **Goal:** Create database table and repository for storing unlocked achievements.
 
 **Tasks:**
-- [ ] Create `achievements` database table schema
-- [ ] Create database migration (v2)
-- [ ] Create `AchievementDataSource` for CRUD operations
-- [ ] Create `AchievementRepository` interface
-- [ ] Implement `AchievementRepositoryImpl`
-- [ ] Add methods: getAll, getUnlocked, unlock, updateProgress, getPoints
-- [ ] Register in DI/StorageModule
-- [ ] Write unit tests for data source and repository
+- [x] Create `achievements` database table schema
+- [x] Create database migration (v2)
+- [x] Create `AchievementDataSource` for CRUD operations
+- [x] Create `AchievementRepository` interface
+- [x] Implement `AchievementRepositoryImpl`
+- [x] Add methods: getAll, getUnlocked, unlock, updateProgress, getPoints
+- [x] Register in DI/StorageModule
+- [x] Write unit tests for data source and repository
 
-**Files to Create:**
-- `packages/shared_services/lib/src/storage/database/tables/achievements_table.dart`
-- `packages/shared_services/lib/src/storage/database/migrations/migration_v2.dart`
-- `packages/shared_services/lib/src/achievements/data_sources/achievement_data_source.dart`
-- `packages/shared_services/lib/src/achievements/repositories/achievement_repository.dart`
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/storage/database/tables/achievements_table.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration_v2.dart`
+- ✅ `packages/shared_services/lib/src/achievements/data_sources/achievement_data_source.dart`
+- ✅ `packages/shared_services/lib/src/achievements/repositories/achievement_repository.dart`
+
+**Additional Updates:**
+- ✅ `packages/shared_services/lib/src/storage/database/database_config.dart` (version bump to 2)
+- ✅ `packages/shared_services/lib/src/storage/database/app_database.dart` (added MigrationV2)
+- ✅ `packages/shared_services/lib/src/storage/models/global_statistics.dart` (added V2 fields)
+- ✅ `packages/shared_services/lib/src/storage/data_sources/statistics_data_source.dart` (added V2 methods)
+- ✅ `packages/shared_services/lib/src/di/modules/storage_module.dart` (registered achievement services)
+- ✅ `packages/shared_services/lib/src/achievements/achievements_exports.dart` (updated exports)
+- ✅ `packages/shared_services/test/achievements/achievement_data_source_test.dart`
+- ✅ `packages/shared_services/test/achievements/achievement_repository_test.dart`
 
 ---
 
