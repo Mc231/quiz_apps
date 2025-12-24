@@ -1,6 +1,7 @@
 /// Global statistics data model for database persistence.
 library;
 
+import '../database/migrations/migration_v2.dart';
 import '../database/tables/statistics_tables.dart';
 
 /// Aggregate statistics across all quiz sessions.
@@ -25,6 +26,15 @@ class GlobalStatistics {
     this.totalPerfectScores = 0,
     this.firstSessionDate,
     this.lastSessionDate,
+    // V2 fields for achievements
+    this.consecutiveDaysPlayed = 0,
+    this.lastPlayDate,
+    this.quickAnswersCount = 0,
+    this.sessionsNoHints = 0,
+    this.highScore90Count = 0,
+    this.highScore95Count = 0,
+    this.totalAchievementsUnlocked = 0,
+    this.totalAchievementPoints = 0,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -82,6 +92,32 @@ class GlobalStatistics {
 
   /// Date of the most recent quiz session.
   final DateTime? lastSessionDate;
+
+  // === V2 Fields for Achievements ===
+
+  /// Number of consecutive days the user has played.
+  final int consecutiveDaysPlayed;
+
+  /// Last date the user played (YYYY-MM-DD format for comparison).
+  final String? lastPlayDate;
+
+  /// Total number of quick answers (under 2 seconds).
+  final int quickAnswersCount;
+
+  /// Total sessions completed without using hints.
+  final int sessionsNoHints;
+
+  /// Total sessions with 90%+ score.
+  final int highScore90Count;
+
+  /// Total sessions with 95%+ score.
+  final int highScore95Count;
+
+  /// Total achievements unlocked (cached for quick display).
+  final int totalAchievementsUnlocked;
+
+  /// Total achievement points (cached for quick display).
+  final int totalAchievementPoints;
 
   /// When this record was created.
   final DateTime createdAt;
@@ -163,6 +199,23 @@ class GlobalStatistics {
               (map[GlobalStatisticsColumns.lastSessionDate] as int) * 1000,
             )
           : null,
+      // V2 fields
+      consecutiveDaysPlayed:
+          (map[GlobalStatisticsColumnsV2.consecutiveDaysPlayed] as int?) ?? 0,
+      lastPlayDate: map[GlobalStatisticsColumnsV2.lastPlayDate] as String?,
+      quickAnswersCount:
+          (map[GlobalStatisticsColumnsV2.quickAnswersCount] as int?) ?? 0,
+      sessionsNoHints:
+          (map[GlobalStatisticsColumnsV2.sessionsNoHints] as int?) ?? 0,
+      highScore90Count:
+          (map[GlobalStatisticsColumnsV2.highScore90Count] as int?) ?? 0,
+      highScore95Count:
+          (map[GlobalStatisticsColumnsV2.highScore95Count] as int?) ?? 0,
+      totalAchievementsUnlocked:
+          (map[GlobalStatisticsColumnsV2.totalAchievementsUnlocked] as int?) ??
+              0,
+      totalAchievementPoints:
+          (map[GlobalStatisticsColumnsV2.totalAchievementPoints] as int?) ?? 0,
       createdAt: DateTime.fromMillisecondsSinceEpoch(
         (map[GlobalStatisticsColumns.createdAt] as int) * 1000,
       ),
@@ -198,6 +251,16 @@ class GlobalStatistics {
       GlobalStatisticsColumns.lastSessionDate: lastSessionDate != null
           ? lastSessionDate!.millisecondsSinceEpoch ~/ 1000
           : null,
+      // V2 fields
+      GlobalStatisticsColumnsV2.consecutiveDaysPlayed: consecutiveDaysPlayed,
+      GlobalStatisticsColumnsV2.lastPlayDate: lastPlayDate,
+      GlobalStatisticsColumnsV2.quickAnswersCount: quickAnswersCount,
+      GlobalStatisticsColumnsV2.sessionsNoHints: sessionsNoHints,
+      GlobalStatisticsColumnsV2.highScore90Count: highScore90Count,
+      GlobalStatisticsColumnsV2.highScore95Count: highScore95Count,
+      GlobalStatisticsColumnsV2.totalAchievementsUnlocked:
+          totalAchievementsUnlocked,
+      GlobalStatisticsColumnsV2.totalAchievementPoints: totalAchievementPoints,
       GlobalStatisticsColumns.createdAt:
           createdAt.millisecondsSinceEpoch ~/ 1000,
       GlobalStatisticsColumns.updatedAt:
@@ -225,6 +288,15 @@ class GlobalStatistics {
     int? totalPerfectScores,
     DateTime? firstSessionDate,
     DateTime? lastSessionDate,
+    // V2 fields
+    int? consecutiveDaysPlayed,
+    String? lastPlayDate,
+    int? quickAnswersCount,
+    int? sessionsNoHints,
+    int? highScore90Count,
+    int? highScore95Count,
+    int? totalAchievementsUnlocked,
+    int? totalAchievementPoints,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -254,6 +326,18 @@ class GlobalStatistics {
       totalPerfectScores: totalPerfectScores ?? this.totalPerfectScores,
       firstSessionDate: firstSessionDate ?? this.firstSessionDate,
       lastSessionDate: lastSessionDate ?? this.lastSessionDate,
+      // V2 fields
+      consecutiveDaysPlayed:
+          consecutiveDaysPlayed ?? this.consecutiveDaysPlayed,
+      lastPlayDate: lastPlayDate ?? this.lastPlayDate,
+      quickAnswersCount: quickAnswersCount ?? this.quickAnswersCount,
+      sessionsNoHints: sessionsNoHints ?? this.sessionsNoHints,
+      highScore90Count: highScore90Count ?? this.highScore90Count,
+      highScore95Count: highScore95Count ?? this.highScore95Count,
+      totalAchievementsUnlocked:
+          totalAchievementsUnlocked ?? this.totalAchievementsUnlocked,
+      totalAchievementPoints:
+          totalAchievementPoints ?? this.totalAchievementPoints,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
