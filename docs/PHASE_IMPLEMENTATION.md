@@ -1172,24 +1172,25 @@ New exports added:
 
 ---
 
-### Sprint 8.8: UI - Achievement Notification
+### Sprint 8.8: UI - Achievement Notification ✅
 
 **Goal:** Create popup notification when achievement unlocks.
 
 **Tasks:**
-- [ ] Create `AchievementNotification` widget (overlay/snackbar style)
-- [ ] Show achievement icon, name, points earned
-- [ ] Add celebration animation (confetti, glow, scale)
-- [ ] Add sound effect on unlock
-- [ ] Add haptic feedback on unlock
-- [ ] Auto-dismiss after 3 seconds or tap to dismiss
-- [ ] Support queuing multiple unlocks
-- [ ] Create `AchievementNotificationController` for showing notifications
-- [ ] Write widget tests
+- [x] Create `AchievementNotification` widget (overlay/snackbar style)
+- [x] Show achievement icon, name, points earned
+- [x] Add celebration animation (confetti, glow, scale)
+- [x] Add sound effect on unlock
+- [x] Add haptic feedback on unlock
+- [x] Auto-dismiss after 3 seconds or tap to dismiss
+- [x] Support queuing multiple unlocks
+- [x] Create `AchievementNotificationController` for showing notifications
+- [x] Write widget tests
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/achievements/widgets/achievement_notification.dart`
-- `packages/quiz_engine/lib/src/achievements/achievement_notification_controller.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/achievements/widgets/achievement_notification.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/achievement_notification_controller.dart`
+- ✅ `packages/quiz_engine/test/achievements/widgets/achievement_notification_test.dart`
 
 ---
 
