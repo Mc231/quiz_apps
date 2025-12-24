@@ -8,7 +8,7 @@ void main() {
     });
 
     test('has correct current version', () {
-      expect(DatabaseConfig.currentVersion, 1);
+      expect(DatabaseConfig.currentVersion, 2);
     });
 
     test('minimum version is 1', () {
