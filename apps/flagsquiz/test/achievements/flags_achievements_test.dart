@@ -1,6 +1,5 @@
 import 'package:flags_quiz/achievements/flags_achievements.dart';
 import 'package:flags_quiz/l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/src/achievements/base_achievements.dart';
 import 'package:quiz_engine/src/l10n/generated/quiz_engine_localizations.dart';
@@ -805,8 +804,6 @@ class MockAppLocalizations extends AppLocalizations {
   String get zm => 'ZM';
   @override
   String get zw => 'ZW';
-  @override
-  String get asZ => 'AS';
 
   // Dart reserved word, but generated as getter
   @override
@@ -1349,6 +1346,32 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get hiddenAchievement => 'Hidden';
   @override
   String get hiddenAchievementDesc => 'Keep playing!';
+  @override
+  String get allTiers => 'All Tiers';
+  @override
+  String achievementProgress(int current, int target) => '$current/$target';
+  @override
+  String pointsRemaining(int points) => '$points remaining';
+  @override
+  String get allPointsEarned => 'All earned!';
+  @override
+  String completionPercentage(int percent) => '$percent%';
+  @override
+  String get filterAll => 'All';
+  @override
+  String get filterUnlocked => 'Unlocked';
+  @override
+  String get filterInProgress => 'In Progress';
+  @override
+  String get filterLocked => 'Locked';
+  @override
+  String get noAchievementsFound => 'No achievements found';
+  @override
+  String get tryChangingFilter => 'Try changing filter';
+  @override
+  String get noAchievementsInCategory => 'No achievements in category';
+  @override
+  String get otherAchievements => 'Other achievements';
 }
 
 void main() {
