@@ -833,4 +833,36 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get achievementClutchDesc => 'Complete Survival with 1 life remaining';
+
+  @override
+  String get noAchievementsFound => 'No achievements found';
+
+  @override
+  String get tryChangingFilter => 'Try changing the filter';
+
+  @override
+  String get noAchievementsInCategory => 'No achievements in this category';
+
+  @override
+  String get otherAchievements => 'Other';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterUnlocked => 'Unlocked';
+
+  @override
+  String get filterInProgress => 'In Progress';
+
+  @override
+  String get filterLocked => 'Locked';
+
+  @override
+  String get allTiers => 'All Tiers';
+
+  @override
+  String achievementProgress(int current, int target) {
+    return '$current/$target';
+  }
 }
