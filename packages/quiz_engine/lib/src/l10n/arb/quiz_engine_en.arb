@@ -787,5 +787,519 @@
   "practice": "Practice",
   "@practice": {
     "description": "Practice tab label"
+  },
+
+  "achievements": "Achievements",
+  "@achievements": {
+    "description": "Achievements tab/screen title"
+  },
+
+  "achievementUnlocked": "Achievement Unlocked!",
+  "@achievementUnlocked": {
+    "description": "Achievement unlocked notification title"
+  },
+
+  "achievementsUnlocked": "{count} of {total} Unlocked",
+  "@achievementsUnlocked": {
+    "description": "Achievements progress display",
+    "placeholders": {
+      "count": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+
+  "achievementPoints": "{points} pts",
+  "@achievementPoints": {
+    "description": "Achievement points display",
+    "placeholders": {
+      "points": {"type": "int"}
+    }
+  },
+
+  "hiddenAchievement": "Hidden Achievement",
+  "@hiddenAchievement": {
+    "description": "Hidden achievement placeholder name"
+  },
+
+  "hiddenAchievementDesc": "Keep playing to discover!",
+  "@hiddenAchievementDesc": {
+    "description": "Hidden achievement placeholder description"
+  },
+
+  "achievementFirstQuiz": "First Steps",
+  "@achievementFirstQuiz": {
+    "description": "Achievement name: first_quiz"
+  },
+  "achievementFirstQuizDesc": "Complete your first quiz",
+  "@achievementFirstQuizDesc": {
+    "description": "Achievement description: first_quiz"
+  },
+
+  "achievementFirstPerfect": "Perfectionist",
+  "@achievementFirstPerfect": {
+    "description": "Achievement name: first_perfect"
+  },
+  "achievementFirstPerfectDesc": "Get your first perfect score",
+  "@achievementFirstPerfectDesc": {
+    "description": "Achievement description: first_perfect"
+  },
+
+  "achievementFirstChallenge": "Challenger",
+  "@achievementFirstChallenge": {
+    "description": "Achievement name: first_challenge"
+  },
+  "achievementFirstChallengeDesc": "Complete your first challenge mode",
+  "@achievementFirstChallengeDesc": {
+    "description": "Achievement description: first_challenge"
+  },
+
+  "achievementQuizzes10": "Getting Started",
+  "@achievementQuizzes10": {
+    "description": "Achievement name: quizzes_10"
+  },
+  "achievementQuizzes10Desc": "Complete 10 quizzes",
+  "@achievementQuizzes10Desc": {
+    "description": "Achievement description: quizzes_10"
+  },
+
+  "achievementQuizzes50": "Quiz Enthusiast",
+  "@achievementQuizzes50": {
+    "description": "Achievement name: quizzes_50"
+  },
+  "achievementQuizzes50Desc": "Complete 50 quizzes",
+  "@achievementQuizzes50Desc": {
+    "description": "Achievement description: quizzes_50"
+  },
+
+  "achievementQuizzes100": "Quiz Master",
+  "@achievementQuizzes100": {
+    "description": "Achievement name: quizzes_100"
+  },
+  "achievementQuizzes100Desc": "Complete 100 quizzes",
+  "@achievementQuizzes100Desc": {
+    "description": "Achievement description: quizzes_100"
+  },
+
+  "achievementQuizzes500": "Quiz Legend",
+  "@achievementQuizzes500": {
+    "description": "Achievement name: quizzes_500"
+  },
+  "achievementQuizzes500Desc": "Complete 500 quizzes",
+  "@achievementQuizzes500Desc": {
+    "description": "Achievement description: quizzes_500"
+  },
+
+  "achievementQuestions100": "Century",
+  "@achievementQuestions100": {
+    "description": "Achievement name: questions_100"
+  },
+  "achievementQuestions100Desc": "Answer 100 questions",
+  "@achievementQuestions100Desc": {
+    "description": "Achievement description: questions_100"
+  },
+
+  "achievementQuestions500": "Half Thousand",
+  "@achievementQuestions500": {
+    "description": "Achievement name: questions_500"
+  },
+  "achievementQuestions500Desc": "Answer 500 questions",
+  "@achievementQuestions500Desc": {
+    "description": "Achievement description: questions_500"
+  },
+
+  "achievementQuestions1000": "Thousand Club",
+  "@achievementQuestions1000": {
+    "description": "Achievement name: questions_1000"
+  },
+  "achievementQuestions1000Desc": "Answer 1000 questions",
+  "@achievementQuestions1000Desc": {
+    "description": "Achievement description: questions_1000"
+  },
+
+  "achievementQuestions5000": "Expert",
+  "@achievementQuestions5000": {
+    "description": "Achievement name: questions_5000"
+  },
+  "achievementQuestions5000Desc": "Answer 5000 questions",
+  "@achievementQuestions5000Desc": {
+    "description": "Achievement description: questions_5000"
+  },
+
+  "achievementCorrect100": "Sharp Eye",
+  "@achievementCorrect100": {
+    "description": "Achievement name: correct_100"
+  },
+  "achievementCorrect100Desc": "Get 100 correct answers",
+  "@achievementCorrect100Desc": {
+    "description": "Achievement description: correct_100"
+  },
+
+  "achievementCorrect500": "Knowledge Keeper",
+  "@achievementCorrect500": {
+    "description": "Achievement name: correct_500"
+  },
+  "achievementCorrect500Desc": "Get 500 correct answers",
+  "@achievementCorrect500Desc": {
+    "description": "Achievement description: correct_500"
+  },
+
+  "achievementCorrect1000": "Scholar",
+  "@achievementCorrect1000": {
+    "description": "Achievement name: correct_1000"
+  },
+  "achievementCorrect1000Desc": "Get 1000 correct answers",
+  "@achievementCorrect1000Desc": {
+    "description": "Achievement description: correct_1000"
+  },
+
+  "achievementPerfect5": "Rising Star",
+  "@achievementPerfect5": {
+    "description": "Achievement name: perfect_5"
+  },
+  "achievementPerfect5Desc": "Get 5 perfect scores",
+  "@achievementPerfect5Desc": {
+    "description": "Achievement description: perfect_5"
+  },
+
+  "achievementPerfect10": "Shining Bright",
+  "@achievementPerfect10": {
+    "description": "Achievement name: perfect_10"
+  },
+  "achievementPerfect10Desc": "Get 10 perfect scores",
+  "@achievementPerfect10Desc": {
+    "description": "Achievement description: perfect_10"
+  },
+
+  "achievementPerfect25": "Constellation",
+  "@achievementPerfect25": {
+    "description": "Achievement name: perfect_25"
+  },
+  "achievementPerfect25Desc": "Get 25 perfect scores",
+  "@achievementPerfect25Desc": {
+    "description": "Achievement description: perfect_25"
+  },
+
+  "achievementPerfect50": "Galaxy",
+  "@achievementPerfect50": {
+    "description": "Achievement name: perfect_50"
+  },
+  "achievementPerfect50Desc": "Get 50 perfect scores",
+  "@achievementPerfect50Desc": {
+    "description": "Achievement description: perfect_50"
+  },
+
+  "achievementScore9010": "High Achiever",
+  "@achievementScore9010": {
+    "description": "Achievement name: score_90_10"
+  },
+  "achievementScore9010Desc": "Score 90%+ in 10 quizzes",
+  "@achievementScore9010Desc": {
+    "description": "Achievement description: score_90_10"
+  },
+
+  "achievementScore9510": "Excellence",
+  "@achievementScore9510": {
+    "description": "Achievement name: score_95_10"
+  },
+  "achievementScore9510Desc": "Score 95%+ in 10 quizzes",
+  "@achievementScore9510Desc": {
+    "description": "Achievement description: score_95_10"
+  },
+
+  "achievementPerfectStreak3": "Flawless Run",
+  "@achievementPerfectStreak3": {
+    "description": "Achievement name: perfect_streak_3"
+  },
+  "achievementPerfectStreak3Desc": "Get 3 perfect scores in a row",
+  "@achievementPerfectStreak3Desc": {
+    "description": "Achievement description: perfect_streak_3"
+  },
+
+  "achievementSpeedDemon": "Speed Demon",
+  "@achievementSpeedDemon": {
+    "description": "Achievement name: speed_demon"
+  },
+  "achievementSpeedDemonDesc": "Complete a quiz in under 60 seconds",
+  "@achievementSpeedDemonDesc": {
+    "description": "Achievement description: speed_demon"
+  },
+
+  "achievementLightning": "Lightning Fast",
+  "@achievementLightning": {
+    "description": "Achievement name: lightning"
+  },
+  "achievementLightningDesc": "Complete a quiz in under 30 seconds",
+  "@achievementLightningDesc": {
+    "description": "Achievement description: lightning"
+  },
+
+  "achievementQuickAnswer10": "Quick Thinker",
+  "@achievementQuickAnswer10": {
+    "description": "Achievement name: quick_answer_10"
+  },
+  "achievementQuickAnswer10Desc": "Answer 10 questions in under 2 seconds each",
+  "@achievementQuickAnswer10Desc": {
+    "description": "Achievement description: quick_answer_10"
+  },
+
+  "achievementQuickAnswer50": "Rapid Fire",
+  "@achievementQuickAnswer50": {
+    "description": "Achievement name: quick_answer_50"
+  },
+  "achievementQuickAnswer50Desc": "Answer 50 questions in under 2 seconds each",
+  "@achievementQuickAnswer50Desc": {
+    "description": "Achievement description: quick_answer_50"
+  },
+
+  "achievementStreak10": "On Fire",
+  "@achievementStreak10": {
+    "description": "Achievement name: streak_10"
+  },
+  "achievementStreak10Desc": "Get 10 correct answers in a row",
+  "@achievementStreak10Desc": {
+    "description": "Achievement description: streak_10"
+  },
+
+  "achievementStreak25": "Unstoppable",
+  "@achievementStreak25": {
+    "description": "Achievement name: streak_25"
+  },
+  "achievementStreak25Desc": "Get 25 correct answers in a row",
+  "@achievementStreak25Desc": {
+    "description": "Achievement description: streak_25"
+  },
+
+  "achievementStreak50": "Legendary Streak",
+  "@achievementStreak50": {
+    "description": "Achievement name: streak_50"
+  },
+  "achievementStreak50Desc": "Get 50 correct answers in a row",
+  "@achievementStreak50Desc": {
+    "description": "Achievement description: streak_50"
+  },
+
+  "achievementStreak100": "Mythical",
+  "@achievementStreak100": {
+    "description": "Achievement name: streak_100"
+  },
+  "achievementStreak100Desc": "Get 100 correct answers in a row",
+  "@achievementStreak100Desc": {
+    "description": "Achievement description: streak_100"
+  },
+
+  "achievementSurvivalComplete": "Survivor",
+  "@achievementSurvivalComplete": {
+    "description": "Achievement name: survival_complete"
+  },
+  "achievementSurvivalCompleteDesc": "Complete Survival mode",
+  "@achievementSurvivalCompleteDesc": {
+    "description": "Achievement description: survival_complete"
+  },
+
+  "achievementSurvivalPerfect": "Immortal",
+  "@achievementSurvivalPerfect": {
+    "description": "Achievement name: survival_perfect"
+  },
+  "achievementSurvivalPerfectDesc": "Complete Survival without losing a life",
+  "@achievementSurvivalPerfectDesc": {
+    "description": "Achievement description: survival_perfect"
+  },
+
+  "achievementBlitzComplete": "Blitz Master",
+  "@achievementBlitzComplete": {
+    "description": "Achievement name: blitz_complete"
+  },
+  "achievementBlitzCompleteDesc": "Complete Blitz mode",
+  "@achievementBlitzCompleteDesc": {
+    "description": "Achievement description: blitz_complete"
+  },
+
+  "achievementBlitzPerfect": "Lightning God",
+  "@achievementBlitzPerfect": {
+    "description": "Achievement name: blitz_perfect"
+  },
+  "achievementBlitzPerfectDesc": "Complete Blitz with perfect score",
+  "@achievementBlitzPerfectDesc": {
+    "description": "Achievement description: blitz_perfect"
+  },
+
+  "achievementTimeAttack20": "Time Warrior",
+  "@achievementTimeAttack20": {
+    "description": "Achievement name: time_attack_20"
+  },
+  "achievementTimeAttack20Desc": "Answer 20+ correct in Time Attack",
+  "@achievementTimeAttack20Desc": {
+    "description": "Achievement description: time_attack_20"
+  },
+
+  "achievementTimeAttack30": "Time Lord",
+  "@achievementTimeAttack30": {
+    "description": "Achievement name: time_attack_30"
+  },
+  "achievementTimeAttack30Desc": "Answer 30+ correct in Time Attack",
+  "@achievementTimeAttack30Desc": {
+    "description": "Achievement description: time_attack_30"
+  },
+
+  "achievementMarathon50": "Endurance",
+  "@achievementMarathon50": {
+    "description": "Achievement name: marathon_50"
+  },
+  "achievementMarathon50Desc": "Answer 50 questions in Marathon",
+  "@achievementMarathon50Desc": {
+    "description": "Achievement description: marathon_50"
+  },
+
+  "achievementMarathon100": "Ultra Marathon",
+  "@achievementMarathon100": {
+    "description": "Achievement name: marathon_100"
+  },
+  "achievementMarathon100Desc": "Answer 100 questions in Marathon",
+  "@achievementMarathon100Desc": {
+    "description": "Achievement description: marathon_100"
+  },
+
+  "achievementSpeedRunFast": "Speed Runner",
+  "@achievementSpeedRunFast": {
+    "description": "Achievement name: speed_run_fast"
+  },
+  "achievementSpeedRunFastDesc": "Complete Speed Run in under 2 minutes",
+  "@achievementSpeedRunFastDesc": {
+    "description": "Achievement description: speed_run_fast"
+  },
+
+  "achievementAllChallenges": "Challenge Champion",
+  "@achievementAllChallenges": {
+    "description": "Achievement name: all_challenges"
+  },
+  "achievementAllChallengesDesc": "Complete all challenge modes",
+  "@achievementAllChallengesDesc": {
+    "description": "Achievement description: all_challenges"
+  },
+
+  "achievementTime1h": "Dedicated",
+  "@achievementTime1h": {
+    "description": "Achievement name: time_1h"
+  },
+  "achievementTime1hDesc": "Play for 1 hour total",
+  "@achievementTime1hDesc": {
+    "description": "Achievement description: time_1h"
+  },
+
+  "achievementTime5h": "Committed",
+  "@achievementTime5h": {
+    "description": "Achievement name: time_5h"
+  },
+  "achievementTime5hDesc": "Play for 5 hours total",
+  "@achievementTime5hDesc": {
+    "description": "Achievement description: time_5h"
+  },
+
+  "achievementTime10h": "Devoted",
+  "@achievementTime10h": {
+    "description": "Achievement name: time_10h"
+  },
+  "achievementTime10hDesc": "Play for 10 hours total",
+  "@achievementTime10hDesc": {
+    "description": "Achievement description: time_10h"
+  },
+
+  "achievementTime24h": "Fanatic",
+  "@achievementTime24h": {
+    "description": "Achievement name: time_24h"
+  },
+  "achievementTime24hDesc": "Play for 24 hours total",
+  "@achievementTime24hDesc": {
+    "description": "Achievement description: time_24h"
+  },
+
+  "achievementDays3": "Regular",
+  "@achievementDays3": {
+    "description": "Achievement name: days_3"
+  },
+  "achievementDays3Desc": "Play 3 days in a row",
+  "@achievementDays3Desc": {
+    "description": "Achievement description: days_3"
+  },
+
+  "achievementDays7": "Weekly Warrior",
+  "@achievementDays7": {
+    "description": "Achievement name: days_7"
+  },
+  "achievementDays7Desc": "Play 7 days in a row",
+  "@achievementDays7Desc": {
+    "description": "Achievement description: days_7"
+  },
+
+  "achievementDays14": "Two Week Streak",
+  "@achievementDays14": {
+    "description": "Achievement name: days_14"
+  },
+  "achievementDays14Desc": "Play 14 days in a row",
+  "@achievementDays14Desc": {
+    "description": "Achievement description: days_14"
+  },
+
+  "achievementDays30": "Monthly Master",
+  "@achievementDays30": {
+    "description": "Achievement name: days_30"
+  },
+  "achievementDays30Desc": "Play 30 days in a row",
+  "@achievementDays30Desc": {
+    "description": "Achievement description: days_30"
+  },
+
+  "achievementNoHints": "Purist",
+  "@achievementNoHints": {
+    "description": "Achievement name: no_hints"
+  },
+  "achievementNoHintsDesc": "Complete a quiz without using hints",
+  "@achievementNoHintsDesc": {
+    "description": "Achievement description: no_hints"
+  },
+
+  "achievementNoHints10": "True Expert",
+  "@achievementNoHints10": {
+    "description": "Achievement name: no_hints_10"
+  },
+  "achievementNoHints10Desc": "Complete 10 quizzes without hints",
+  "@achievementNoHints10Desc": {
+    "description": "Achievement description: no_hints_10"
+  },
+
+  "achievementNoSkip": "Determined",
+  "@achievementNoSkip": {
+    "description": "Achievement name: no_skip"
+  },
+  "achievementNoSkipDesc": "Complete a quiz without skipping",
+  "@achievementNoSkipDesc": {
+    "description": "Achievement description: no_skip"
+  },
+
+  "achievementFlawless": "Flawless Victory",
+  "@achievementFlawless": {
+    "description": "Achievement name: flawless"
+  },
+  "achievementFlawlessDesc": "Perfect score, no hints, no lives lost",
+  "@achievementFlawlessDesc": {
+    "description": "Achievement description: flawless"
+  },
+
+  "achievementComeback": "Comeback King",
+  "@achievementComeback": {
+    "description": "Achievement name: comeback"
+  },
+  "achievementComebackDesc": "Win after losing 4+ lives",
+  "@achievementComebackDesc": {
+    "description": "Achievement description: comeback"
+  },
+
+  "achievementClutch": "Clutch Player",
+  "@achievementClutch": {
+    "description": "Achievement name: clutch"
+  },
+  "achievementClutchDesc": "Complete Survival with 1 life remaining",
+  "@achievementClutchDesc": {
+    "description": "Achievement description: clutch"
   }
 }
