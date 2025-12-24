@@ -13,6 +13,8 @@ import '../utils/default_data_loader.dart';
 import '../widgets/session_card.dart';
 import 'category_card.dart';
 import 'play_screen.dart';
+import 'play_screen_tab.dart';
+import 'tabbed_play_screen.dart';
 
 /// Default empty tab config for const initialization.
 const _emptyTabConfig = QuizTabConfig(tabs: []);
@@ -25,6 +27,22 @@ class QuizHomeScreenConfig {
   /// Configuration for the PlayScreen.
   final PlayScreenConfig playScreenConfig;
 
+  /// Optional tabs for TabbedPlayScreen.
+  ///
+  /// When provided, uses [TabbedPlayScreen] instead of [PlayScreen].
+  /// Each tab can be a [CategoriesTab], [PracticeTab], or [CustomContentTab].
+  final List<PlayScreenTab>? playScreenTabs;
+
+  /// Initial tab ID for TabbedPlayScreen.
+  ///
+  /// Only used when [playScreenTabs] is provided.
+  final String? initialPlayTabId;
+
+  /// Configuration for TabbedPlayScreen.
+  ///
+  /// Only used when [playScreenTabs] is provided.
+  final TabbedPlayScreenConfig? tabbedPlayScreenConfig;
+
   /// Whether to show settings button in app bar.
   final bool showSettingsInAppBar;
 
@@ -35,6 +53,9 @@ class QuizHomeScreenConfig {
   const QuizHomeScreenConfig({
     this.tabConfig = _emptyTabConfig,
     this.playScreenConfig = const PlayScreenConfig(),
+    this.playScreenTabs,
+    this.initialPlayTabId,
+    this.tabbedPlayScreenConfig,
     this.showSettingsInAppBar = false,
     this.appBarActions,
   });
@@ -575,12 +596,34 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   Widget _buildPlayTab(BuildContext context) {
-    return PlayScreen(
-      categories: widget.categories,
-      config: widget.config.playScreenConfig.copyWith(showAppBar: false),
+    // Show loading indicator if loading
+    if (widget.isPlayLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final l10n = QuizL10n.of(context);
+
+    // Build tabs - use configured tabs or create default from categories
+    final tabs = widget.config.playScreenTabs ??
+        [
+          PlayScreenTab.categories(
+            id: 'all',
+            label: l10n.play,
+            categories: widget.categories,
+          ),
+        ];
+
+    return TabbedPlayScreen(
+      tabs: tabs,
+      initialTabId: widget.config.initialPlayTabId,
       onCategorySelected: widget.onCategorySelected,
       onSettingsPressed: widget.onSettingsPressed,
-      isLoading: widget.isPlayLoading,
+      config: widget.config.tabbedPlayScreenConfig ??
+          TabbedPlayScreenConfig(
+            showAppBar: false,
+            playScreenConfig:
+                widget.config.playScreenConfig.copyWith(showAppBar: false),
+          ),
     );
   }
 
