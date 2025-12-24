@@ -88,6 +88,16 @@ sealed class QuizTab {
     return SettingsTab(labelBuilder: labelBuilder);
   }
 
+  /// Creates an Achievements tab for viewing and tracking achievements.
+  ///
+  /// [labelBuilder] - Optional custom label builder.
+  /// Defaults to using engine localizations.
+  factory QuizTab.achievements({
+    String Function(BuildContext context)? labelBuilder,
+  }) {
+    return AchievementsTab(labelBuilder: labelBuilder);
+  }
+
   /// Creates a custom tab with app-specific content.
   ///
   /// [id] - Unique identifier for this tab.
@@ -211,6 +221,29 @@ final class SettingsTab extends QuizTab {
       QuizL10n.of(context).settings;
 }
 
+/// Tab for viewing achievements.
+final class AchievementsTab extends QuizTab {
+  /// Default icon for achievements tab.
+  static const IconData defaultIcon =
+      IconData(0xe1af, fontFamily: 'MaterialIcons'); // emoji_events_outlined
+
+  /// Default selected icon for achievements tab.
+  static const IconData defaultSelectedIcon =
+      IconData(0xe1ae, fontFamily: 'MaterialIcons'); // emoji_events
+
+  /// Creates an [AchievementsTab].
+  AchievementsTab({String Function(BuildContext context)? labelBuilder})
+      : super._(
+          id: 'achievements',
+          icon: defaultIcon,
+          selectedIcon: defaultSelectedIcon,
+          labelBuilder: labelBuilder ?? _defaultLabel,
+        );
+
+  static String _defaultLabel(BuildContext context) =>
+      QuizL10n.of(context).achievements;
+}
+
 /// Custom tab with app-specific content.
 final class CustomTab extends QuizTab {
   /// Builder function that creates the tab's content widget.
@@ -281,6 +314,20 @@ class QuizTabConfig {
         QuizTab.history(),
         QuizTab.statistics(),
         QuizTab.settings(),
+      ],
+    );
+  }
+
+  /// Configuration with achievements tab included.
+  ///
+  /// Includes Play, History, Statistics, and Achievements tabs.
+  factory QuizTabConfig.withAchievements() {
+    return QuizTabConfig(
+      tabs: [
+        QuizTab.play(),
+        QuizTab.history(),
+        QuizTab.statistics(),
+        QuizTab.achievements(),
       ],
     );
   }
