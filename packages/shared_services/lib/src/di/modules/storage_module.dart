@@ -2,7 +2,9 @@
 library;
 
 import '../../achievements/data_sources/achievement_data_source.dart';
+import '../../achievements/engine/achievement_engine.dart';
 import '../../achievements/repositories/achievement_repository.dart';
+import '../../achievements/services/achievement_service.dart';
 import '../../storage/data_sources/data_sources_exports.dart';
 import '../../storage/database/app_database.dart';
 import '../../storage/repositories/repositories_exports.dart';
@@ -83,6 +85,20 @@ class StorageModule extends DependencyModule {
       () => AchievementRepositoryImpl(
         dataSource: sl.get<AchievementDataSource>(),
         statisticsDataSource: sl.get<StatisticsDataSource>(),
+      ),
+    );
+
+    sl.registerLazySingleton<AchievementEngine>(
+      () => AchievementEngine(
+        repository: sl.get<AchievementRepository>(),
+      ),
+    );
+
+    sl.registerLazySingleton<AchievementService>(
+      () => AchievementService(
+        repository: sl.get<AchievementRepository>(),
+        statisticsDataSource: sl.get<StatisticsDataSource>(),
+        engine: sl.get<AchievementEngine>(),
       ),
     );
 
