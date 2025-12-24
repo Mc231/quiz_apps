@@ -1,6 +1,7 @@
 library quiz_engine;
 
 // Models
+export 'src/models/challenge_mode.dart';
 export 'src/models/quiz_category.dart';
 export 'src/models/quiz_data_provider.dart';
 
@@ -55,7 +56,12 @@ export 'src/widgets/category_statistics_widget.dart';
 export 'src/widgets/progress_chart_widget.dart';
 export 'src/widgets/leaderboard_widget.dart';
 
+// Challenge Widgets
+export 'src/widgets/challenge_card.dart';
+export 'src/widgets/challenge_list.dart';
+
 // Screens
+export 'src/screens/challenges_screen.dart';
 export 'src/screens/session_history_screen.dart';
 export 'src/screens/session_detail_screen.dart';
 export 'src/screens/statistics_screen.dart';
