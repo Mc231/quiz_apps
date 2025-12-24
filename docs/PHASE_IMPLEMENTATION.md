@@ -1151,22 +1151,24 @@ New exports added:
 
 ---
 
-### Sprint 8.7: UI - Achievements Screen
+### Sprint 8.7: UI - Achievements Screen ✅
 
 **Goal:** Create the full achievements screen with stats header.
 
 **Tasks:**
-- [ ] Create `AchievementsScreen` widget
-- [ ] Add header with: achievement counter (12/67), points counter (450 pts)
-- [ ] Add tab bar or filter chips: All, Unlocked, Progress, Locked
-- [ ] Add category sections or grouped list
-- [ ] Show hidden achievements as "???" or "Hidden Achievement"
-- [ ] Add pull-to-refresh
-- [ ] Create `AchievementsScreenConfig` for customization
-- [ ] Write widget tests
+- [x] Create `AchievementsScreen` widget
+- [x] Add header with: achievement counter (12/67), points counter (450 pts)
+- [x] Add tab bar or filter chips: All, Unlocked, Progress, Locked
+- [x] Add category sections or grouped list
+- [x] Show hidden achievements as "???" or "Hidden Achievement"
+- [x] Add pull-to-refresh
+- [x] Create `AchievementsScreenConfig` for customization
+- [x] Write widget tests
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
+- ✅ `packages/quiz_engine/test/achievements/screens/achievements_screen_test.dart`
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` (3 new strings: pointsRemaining, allPointsEarned, completionPercentage)
 
 ---
 
