@@ -5,6 +5,8 @@
 library;
 
 export 'achievement_category.dart';
+export 'achievement_integration.dart';
+export 'achievement_notification_controller.dart';
 export 'base_achievements.dart';
 export 'screens/screens_exports.dart';
 export 'widgets/widgets_exports.dart';
