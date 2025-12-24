@@ -58,8 +58,13 @@ class FlagsDataProvider extends engine.QuizDataProvider {
   QuizConfig? createQuizConfig(BuildContext context, engine.QuizCategory category) {
     return QuizConfig(
       quizId: category.id,
-      // Enable hints (50/50, skip, reveal letter) for Play tab
-      hintConfig: const HintConfig(),
+      // Enable only 50/50 and skip hints for Play tab
+      hintConfig: const HintConfig(
+        initialHints: {
+          HintType.fiftyFifty: 3,
+          HintType.skip: 2,
+        },
+      ),
       // Lives mode with 5 hearts and skip button enabled
       modeConfig: QuizModeConfig.lives(lives: 5, allowSkip: true),
     );
