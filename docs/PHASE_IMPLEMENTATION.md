@@ -19,7 +19,7 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements | Complete (10/10 sprints) |
+| Phase 8 | Achievements & Core Features | In Progress (10/12 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
@@ -953,7 +953,7 @@ New exports added:
 
 ---
 
-## Phase 8: Achievements (Complete)
+## Phase 8: Achievements & Core Features
 
 **Reference:** See [ACHIEVEMENTS_DESIGN.md](./ACHIEVEMENTS_DESIGN.md) for full achievement list and architecture.
 
@@ -1265,6 +1265,90 @@ New exports added:
 - Edge cases - composite triggers (2 tests)
 - Edge cases - threshold triggers (3 tests)
 - Sorting and display (3 tests)
+
+---
+
+### Sprint 8.11: Practice Mistakes Mode
+
+**Goal:** Allow users to practice questions they got wrong in previous quizzes.
+
+**Requirements:**
+- Load wrong answers from last 10 sessions (`isCorrect == false`)
+- Show exact questions user got wrong (same image, same options)
+- Display as a single combined "Practice" category (not grouped by continent)
+- Clear practiced questions from list only after practice session ends
+- Only clear questions that were answered correctly during practice
+
+**Tasks:**
+- [ ] Add `getWrongAnswersFromRecentSessions(int sessionLimit)` to StorageService
+- [ ] Add `getRecentSessionIds(int limit)` helper method to QuizSessionRepository
+- [ ] Add `clearPracticedAnswers(List<String> answerIds)` to StorageService
+- [ ] Create `PracticeDataProvider` to convert `QuestionAnswer` to `QuizCategory`
+- [ ] Implement `onLoadWrongAnswers` callback in flagsquiz main.dart
+- [ ] Add `onPracticeSessionComplete` callback to handle clearing correct answers
+- [ ] Add localization strings for practice mode
+- [ ] Write unit tests for new storage methods
+- [ ] Write integration tests for practice flow
+
+**Files to Create:**
+- `packages/shared_services/lib/src/storage/services/practice_service.dart`
+- `apps/flagsquiz/lib/practice/flags_practice_provider.dart`
+
+**Files to Modify:**
+- `packages/shared_services/lib/src/storage/storage_service.dart`
+- `packages/shared_services/lib/src/storage/repositories/quiz_session_repository.dart`
+- `apps/flagsquiz/lib/main.dart`
+
+---
+
+### Sprint 8.12: Scoring System
+
+**Goal:** Display session score during and after quizzes using `TimedScoring` strategy.
+
+**Requirements:**
+- Use `TimedScoring` strategy: 100 base points + 5 points per second saved (30s threshold)
+- Display score only on result screen (not during quiz)
+- Score is calculated per session
+- Show score breakdown: base points + time bonus
+
+**Tasks:**
+- [ ] Implement `calculateScore()` method in `ScoringStrategy` classes
+- [ ] Create `ScoreCalculator` service for score calculation
+- [ ] Add `sessionScore` field to `QuizSession` model
+- [ ] Save score when session completes
+- [ ] Create `ScoreDisplay` widget for result screen
+- [ ] Create `ScoreBreakdown` widget showing base + bonus
+- [ ] Update `QuizResultsScreen` to display score
+- [ ] Add `ScoringConfig` to `QuizConfig` for strategy selection
+- [ ] Add localization strings for score display
+- [ ] Write unit tests for score calculation
+- [ ] Write widget tests for score display
+
+**Files to Create:**
+- `packages/quiz_engine_core/lib/src/scoring/score_calculator.dart`
+- `packages/quiz_engine/lib/src/widgets/score_display.dart`
+- `packages/quiz_engine/lib/src/widgets/score_breakdown.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine_core/lib/src/model/config/scoring_strategy.dart` - Uncomment and implement `calculateScore()`
+- `packages/shared_services/lib/src/storage/models/quiz_session.dart` - Add `score` field
+- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Display score
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Calculate score on completion
+- `apps/flagsquiz/lib/main.dart` - Configure TimedScoring
+
+**Scoring Formulas:**
+```dart
+// SimpleScoring
+score = correctAnswers * 1
+
+// TimedScoring
+basePoints = correctAnswers * 100
+timeBonus = max(0, (30 - avgSecondsPerQuestion)) * 5 * correctAnswers
+score = basePoints + timeBonus
+
+// StreakScoring
+score = sum(basePoints * (1 + streak * 0.5)) for each correct answer
+```
 
 ---
 
