@@ -1465,5 +1465,117 @@
   "incorrect": "Incorrect",
   "@incorrect": {
     "description": "Incorrect label"
+  },
+  "achievementExploreAfrica": "African Explorer",
+  "@achievementExploreAfrica": {
+    "description": "Achievement name for completing Africa quiz"
+  },
+  "achievementExploreAfricaDesc": "Complete a quiz about Africa",
+  "@achievementExploreAfricaDesc": {
+    "description": "Achievement description for completing Africa quiz"
+  },
+  "achievementExploreAsia": "Asian Explorer",
+  "@achievementExploreAsia": {
+    "description": "Achievement name for completing Asia quiz"
+  },
+  "achievementExploreAsiaDesc": "Complete a quiz about Asia",
+  "@achievementExploreAsiaDesc": {
+    "description": "Achievement description for completing Asia quiz"
+  },
+  "achievementExploreEurope": "European Explorer",
+  "@achievementExploreEurope": {
+    "description": "Achievement name for completing Europe quiz"
+  },
+  "achievementExploreEuropeDesc": "Complete a quiz about Europe",
+  "@achievementExploreEuropeDesc": {
+    "description": "Achievement description for completing Europe quiz"
+  },
+  "achievementExploreNorthAmerica": "North American Explorer",
+  "@achievementExploreNorthAmerica": {
+    "description": "Achievement name for completing North America quiz"
+  },
+  "achievementExploreNorthAmericaDesc": "Complete a quiz about North America",
+  "@achievementExploreNorthAmericaDesc": {
+    "description": "Achievement description for completing North America quiz"
+  },
+  "achievementExploreSouthAmerica": "South American Explorer",
+  "@achievementExploreSouthAmerica": {
+    "description": "Achievement name for completing South America quiz"
+  },
+  "achievementExploreSouthAmericaDesc": "Complete a quiz about South America",
+  "@achievementExploreSouthAmericaDesc": {
+    "description": "Achievement description for completing South America quiz"
+  },
+  "achievementExploreOceania": "Oceanian Explorer",
+  "@achievementExploreOceania": {
+    "description": "Achievement name for completing Oceania quiz"
+  },
+  "achievementExploreOceaniaDesc": "Complete a quiz about Oceania",
+  "@achievementExploreOceaniaDesc": {
+    "description": "Achievement description for completing Oceania quiz"
+  },
+  "achievementWorldTraveler": "World Traveler",
+  "@achievementWorldTraveler": {
+    "description": "Achievement name for completing all continents"
+  },
+  "achievementWorldTravelerDesc": "Complete a quiz in every continent",
+  "@achievementWorldTravelerDesc": {
+    "description": "Achievement description for completing all continents"
+  },
+  "achievementMasterEurope": "Europe Master",
+  "@achievementMasterEurope": {
+    "description": "Achievement name for mastering Europe"
+  },
+  "achievementMasterEuropeDesc": "Get 5 perfect scores in Europe",
+  "@achievementMasterEuropeDesc": {
+    "description": "Achievement description for mastering Europe"
+  },
+  "achievementMasterAsia": "Asia Master",
+  "@achievementMasterAsia": {
+    "description": "Achievement name for mastering Asia"
+  },
+  "achievementMasterAsiaDesc": "Get 5 perfect scores in Asia",
+  "@achievementMasterAsiaDesc": {
+    "description": "Achievement description for mastering Asia"
+  },
+  "achievementMasterAfrica": "Africa Master",
+  "@achievementMasterAfrica": {
+    "description": "Achievement name for mastering Africa"
+  },
+  "achievementMasterAfricaDesc": "Get 5 perfect scores in Africa",
+  "@achievementMasterAfricaDesc": {
+    "description": "Achievement description for mastering Africa"
+  },
+  "achievementMasterAmericas": "Americas Master",
+  "@achievementMasterAmericas": {
+    "description": "Achievement name for mastering the Americas"
+  },
+  "achievementMasterAmericasDesc": "Get 5 perfect scores in North or South America",
+  "@achievementMasterAmericasDesc": {
+    "description": "Achievement description for mastering the Americas"
+  },
+  "achievementMasterOceania": "Oceania Master",
+  "@achievementMasterOceania": {
+    "description": "Achievement name for mastering Oceania"
+  },
+  "achievementMasterOceaniaDesc": "Get 5 perfect scores in Oceania",
+  "@achievementMasterOceaniaDesc": {
+    "description": "Achievement description for mastering Oceania"
+  },
+  "achievementMasterWorld": "World Master",
+  "@achievementMasterWorld": {
+    "description": "Achievement name for mastering all countries"
+  },
+  "achievementMasterWorldDesc": "Get 5 perfect scores in All Countries",
+  "@achievementMasterWorldDesc": {
+    "description": "Achievement description for mastering all countries"
+  },
+  "achievementFlagCollector": "Flag Collector",
+  "@achievementFlagCollector": {
+    "description": "Achievement name for collecting all flags"
+  },
+  "achievementFlagCollectorDesc": "Answer every flag correctly at least once",
+  "@achievementFlagCollectorDesc": {
+    "description": "Achievement description for collecting all flags"
   }
 }
