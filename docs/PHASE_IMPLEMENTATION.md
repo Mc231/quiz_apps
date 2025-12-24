@@ -19,7 +19,7 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements | In Progress (5/10 sprints) |
+| Phase 8 | Achievements | In Progress (6/10 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
@@ -1123,26 +1123,31 @@ New exports added:
 
 ---
 
-### Sprint 8.6: UI - Achievement Card & List
+### Sprint 8.6: UI - Achievement Card & List ✅
 
 **Goal:** Create reusable achievement display widgets.
 
 **Tasks:**
-- [ ] Create `AchievementCard` widget
-- [ ] Show icon, name, description, tier badge
-- [ ] Show progress bar for progressive achievements (7/10)
-- [ ] Show locked state (grayed out) vs unlocked state (colored)
-- [ ] Show points value
-- [ ] Create `AchievementTierBadge` widget (color-coded tier indicator)
-- [ ] Create `AchievementsList` widget (scrollable list of cards)
-- [ ] Support grouping by category
-- [ ] Support filtering (all, unlocked, locked, by tier)
-- [ ] Write widget tests
+- [x] Create `AchievementCard` widget
+- [x] Show icon, name, description, tier badge
+- [x] Show progress bar for progressive achievements (7/10)
+- [x] Show locked state (grayed out) vs unlocked state (colored)
+- [x] Show points value
+- [x] Create `AchievementTierBadge` widget (color-coded tier indicator)
+- [x] Create `AchievementsList` widget (scrollable list of cards)
+- [x] Support grouping by category
+- [x] Support filtering (all, unlocked, locked, by tier)
+- [x] Write widget tests
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/achievements/widgets/achievement_card.dart`
-- `packages/quiz_engine/lib/src/achievements/widgets/achievement_tier_badge.dart`
-- `packages/quiz_engine/lib/src/achievements/widgets/achievements_list.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/achievements/widgets/achievement_tier_badge.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/widgets/achievement_card.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/widgets/achievements_list.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/widgets/widgets_exports.dart`
+- ✅ `packages/quiz_engine/test/achievements/widgets/achievement_tier_badge_test.dart`
+- ✅ `packages/quiz_engine/test/achievements/widgets/achievement_card_test.dart`
+- ✅ `packages/quiz_engine/test/achievements/widgets/achievements_list_test.dart`
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` (10 new strings for filters/empty states)
 
 ---
 
