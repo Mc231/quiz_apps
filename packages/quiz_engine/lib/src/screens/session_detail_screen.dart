@@ -64,6 +64,15 @@ class SessionDetailData {
       questions.where((q) => !q.isCorrect && !q.isSkipped).length;
 }
 
+/// Filter mode for displaying questions.
+enum QuestionFilterMode {
+  /// Show all questions.
+  all,
+
+  /// Show only wrong answers.
+  wrongOnly,
+}
+
 /// Localization texts for SessionDetailScreen.
 class SessionDetailTexts {
   /// Creates [SessionDetailTexts].
@@ -86,6 +95,8 @@ class SessionDetailTexts {
     required this.deleteDialogTitle,
     required this.deleteDialogMessage,
     required this.cancelLabel,
+    this.showAllLabel = 'All',
+    this.showWrongOnlyLabel = 'Wrong Only',
   });
 
   /// Screen title.
@@ -142,10 +153,16 @@ class SessionDetailTexts {
 
   /// Cancel button label.
   final String cancelLabel;
+
+  /// Label for showing all questions.
+  final String showAllLabel;
+
+  /// Label for showing only wrong answers.
+  final String showWrongOnlyLabel;
 }
 
 /// Screen displaying session details with question review.
-class SessionDetailScreen extends StatelessWidget {
+class SessionDetailScreen extends StatefulWidget {
   /// Creates a [SessionDetailScreen].
   const SessionDetailScreen({
     super.key,
@@ -176,29 +193,48 @@ class SessionDetailScreen extends StatelessWidget {
   final Widget Function(String path)? imageBuilder;
 
   @override
+  State<SessionDetailScreen> createState() => _SessionDetailScreenState();
+}
+
+class _SessionDetailScreenState extends State<SessionDetailScreen> {
+  QuestionFilterMode _filterMode = QuestionFilterMode.all;
+
+  List<ReviewedQuestion> get _filteredQuestions {
+    if (_filterMode == QuestionFilterMode.wrongOnly) {
+      return widget.session.questions
+          .where((q) => !q.isCorrect && !q.isSkipped)
+          .toList();
+    }
+    return widget.session.questions;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final filteredQuestions = _filteredQuestions;
+
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(child: _buildSummaryCard(context)),
-        if (session.wrongAnswersCount > 0 && onPracticeWrongAnswers != null)
+        if (widget.session.wrongAnswersCount > 0 &&
+            widget.onPracticeWrongAnswers != null)
           SliverToBoxAdapter(child: _buildPracticeButton(context)),
         SliverToBoxAdapter(child: _buildActionsRow(context)),
         SliverToBoxAdapter(
-          child: _buildSectionHeader(context, texts.reviewAnswersLabel),
+          child: _buildReviewHeader(context),
         ),
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
               return QuestionReviewWidget(
-                question: session.questions[index],
-                questionLabel: texts.questionLabel,
-                yourAnswerLabel: texts.yourAnswerLabel,
-                correctAnswerLabel: texts.correctAnswerLabel,
-                skippedLabel: texts.skippedLabel,
-                imageBuilder: imageBuilder,
+                question: filteredQuestions[index],
+                questionLabel: widget.texts.questionLabel,
+                yourAnswerLabel: widget.texts.yourAnswerLabel,
+                correctAnswerLabel: widget.texts.correctAnswerLabel,
+                skippedLabel: widget.texts.skippedLabel,
+                imageBuilder: widget.imageBuilder,
               );
             },
-            childCount: session.questions.length,
+            childCount: filteredQuestions.length,
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 24)),
@@ -206,10 +242,56 @@ class SessionDetailScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildReviewHeader(BuildContext context) {
+    final hasWrongAnswers = widget.session.wrongAnswersCount > 0;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              widget.texts.reviewAnswersLabel,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+          if (hasWrongAnswers) _buildFilterToggle(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterToggle(BuildContext context) {
+    return SegmentedButton<QuestionFilterMode>(
+      segments: [
+        ButtonSegment<QuestionFilterMode>(
+          value: QuestionFilterMode.all,
+          label: Text(widget.texts.showAllLabel),
+        ),
+        ButtonSegment<QuestionFilterMode>(
+          value: QuestionFilterMode.wrongOnly,
+          label: Text(widget.texts.showWrongOnlyLabel),
+        ),
+      ],
+      selected: {_filterMode},
+      onSelectionChanged: (Set<QuestionFilterMode> newSelection) {
+        setState(() {
+          _filterMode = newSelection.first;
+        });
+      },
+      style: ButtonStyle(
+        visualDensity: VisualDensity.compact,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+    );
+  }
+
   Widget _buildSummaryCard(BuildContext context) {
     final theme = Theme.of(context);
-    final (statusLabel, statusColor) =
-        texts.formatStatus(session.completionStatus, session.isPerfectScore);
+    final (statusLabel, statusColor) = widget.texts
+        .formatStatus(widget.session.completionStatus, widget.session.isPerfectScore);
 
     return Card(
       margin: const EdgeInsets.all(16),
@@ -229,14 +311,14 @@ class SessionDetailScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        session.quizName,
+                        widget.session.quizName,
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        texts.formatDate(session.startTime),
+                        widget.texts.formatDate(widget.session.startTime),
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: Colors.grey[600],
                         ),
@@ -276,7 +358,7 @@ class SessionDetailScreen extends StatelessWidget {
   }
 
   Widget _buildScoreCircle(BuildContext context) {
-    final scoreColor = _getScoreColor(session.scorePercentage);
+    final scoreColor = _getScoreColor(widget.session.scorePercentage);
 
     return SizedBox(
       width: 120,
@@ -288,7 +370,7 @@ class SessionDetailScreen extends StatelessWidget {
               width: 120,
               height: 120,
               child: CircularProgressIndicator(
-                value: session.scorePercentage / 100,
+                value: widget.session.scorePercentage / 100,
                 strokeWidth: 10,
                 backgroundColor: Colors.grey[200],
                 valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
@@ -300,7 +382,7 @@ class SessionDetailScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '${session.scorePercentage.round()}%',
+                  '${widget.session.scorePercentage.round()}%',
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -308,7 +390,7 @@ class SessionDetailScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  texts.scoreLabel,
+                  widget.texts.scoreLabel,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.grey[600],
@@ -330,31 +412,31 @@ class SessionDetailScreen extends StatelessWidget {
           context,
           icon: Icons.check_circle,
           color: Colors.green,
-          value: session.totalCorrect.toString(),
-          label: texts.correctLabel,
+          value: widget.session.totalCorrect.toString(),
+          label: widget.texts.correctLabel,
         ),
         _buildStatItem(
           context,
           icon: Icons.cancel,
           color: Colors.red,
-          value: session.totalIncorrect.toString(),
-          label: texts.incorrectLabel,
+          value: widget.session.totalIncorrect.toString(),
+          label: widget.texts.incorrectLabel,
         ),
-        if (session.totalSkipped > 0)
+        if (widget.session.totalSkipped > 0)
           _buildStatItem(
             context,
             icon: Icons.skip_next,
             color: Colors.orange,
-            value: session.totalSkipped.toString(),
-            label: texts.skippedLabel,
+            value: widget.session.totalSkipped.toString(),
+            label: widget.texts.skippedLabel,
           ),
-        if (session.durationSeconds != null)
+        if (widget.session.durationSeconds != null)
           _buildStatItem(
             context,
             icon: Icons.timer,
             color: Colors.blue,
-            value: _formatDuration(session.durationSeconds!),
-            label: texts.durationLabel,
+            value: _formatDuration(widget.session.durationSeconds!),
+            label: widget.texts.durationLabel,
           ),
       ],
     );
@@ -400,7 +482,7 @@ class SessionDetailScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: ElevatedButton.icon(
-        onPressed: onPracticeWrongAnswers,
+        onPressed: widget.onPracticeWrongAnswers,
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.orange,
           foregroundColor: Colors.white,
@@ -411,7 +493,7 @@ class SessionDetailScreen extends StatelessWidget {
         ),
         icon: const Icon(Icons.replay),
         label: Text(
-          '${texts.practiceWrongAnswersLabel} (${session.wrongAnswersCount})',
+          '${widget.texts.practiceWrongAnswersLabel} (${widget.session.wrongAnswersCount})',
           style: const TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 16,
@@ -426,25 +508,26 @@ class SessionDetailScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          if (onExport != null)
+          if (widget.onExport != null)
             Expanded(
               child: OutlinedButton.icon(
-                onPressed: onExport,
+                onPressed: widget.onExport,
                 icon: const Icon(Icons.share),
-                label: Text(texts.exportLabel),
+                label: Text(widget.texts.exportLabel),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
               ),
             ),
-          if (onExport != null && onDelete != null) const SizedBox(width: 12),
-          if (onDelete != null)
+          if (widget.onExport != null && widget.onDelete != null)
+            const SizedBox(width: 12),
+          if (widget.onDelete != null)
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: () => _showDeleteDialog(context),
                 icon: const Icon(Icons.delete_outline, color: Colors.red),
                 label: Text(
-                  texts.deleteLabel,
+                  widget.texts.deleteLabel,
                   style: const TextStyle(color: Colors.red),
                 ),
                 style: OutlinedButton.styleFrom(
@@ -458,36 +541,24 @@ class SessionDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-      ),
-    );
-  }
-
   void _showDeleteDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(texts.deleteDialogTitle),
-        content: Text(texts.deleteDialogMessage),
+        title: Text(widget.texts.deleteDialogTitle),
+        content: Text(widget.texts.deleteDialogMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: Text(texts.cancelLabel),
+            child: Text(widget.texts.cancelLabel),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              onDelete?.call();
+              widget.onDelete?.call();
             },
             style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: Text(texts.deleteLabel),
+            child: Text(widget.texts.deleteLabel),
           ),
         ],
       ),
