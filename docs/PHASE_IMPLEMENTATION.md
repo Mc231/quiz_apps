@@ -19,7 +19,7 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements | In Progress (4/10 sprints) |
+| Phase 8 | Achievements | In Progress (5/10 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
@@ -1102,22 +1102,24 @@ New exports added:
 
 ---
 
-### Sprint 8.5: Achievement Definitions - Flags Quiz
+### Sprint 8.5: Achievement Definitions - Flags Quiz ✅
 
 **Goal:** Define all 14 app-specific achievements for Flags Quiz.
 
 **Tasks:**
-- [ ] Create `FlagsAchievements` class extending base achievements
-- [ ] Define Explorer achievements (7): explore_africa/asia/europe/north_america/south_america/oceania, world_traveler
-- [ ] Define Region Mastery achievements (6): master_europe/asia/africa/americas/oceania/world
-- [ ] Define Collection achievements (1): flag_collector
-- [ ] Assign flag-themed icons to each achievement
-- [ ] Assign tiers and points to each achievement
-- [ ] Create combined list of all achievements (generic + app-specific)
-- [ ] Write tests
+- [x] Create `FlagsAchievements` class extending base achievements
+- [x] Define Explorer achievements (7): explore_africa/asia/europe/north_america/south_america/oceania, world_traveler
+- [x] Define Region Mastery achievements (6): master_europe/asia/africa/americas/oceania/world
+- [x] Define Collection achievements (1): flag_collector
+- [x] Assign flag-themed icons to each achievement
+- [x] Assign tiers and points to each achievement
+- [x] Create combined list of all achievements (generic + app-specific)
+- [x] Write tests
 
-**Files to Create:**
-- `apps/flagsquiz/lib/achievements/flags_achievements.dart`
+**Files Created:**
+- ✅ `apps/flagsquiz/lib/achievements/flags_achievements.dart`
+- ✅ `apps/flagsquiz/test/achievements/flags_achievements_test.dart`
+- ✅ `apps/flagsquiz/lib/l10n/intl_en.arb` (28 new localization strings)
 
 ---
 
