@@ -154,6 +154,7 @@ class AchievementsScreen extends StatefulWidget {
     this.onRefresh,
     this.onAchievementTap,
     this.appBar,
+    this.showScaffold = false,
   });
 
   /// The achievements data to display.
@@ -170,6 +171,12 @@ class AchievementsScreen extends StatefulWidget {
 
   /// Optional custom app bar.
   final PreferredSizeWidget? appBar;
+
+  /// Whether to wrap content in a Scaffold with AppBar.
+  ///
+  /// Set to `false` when using inside a tab or another scaffold.
+  /// Defaults to `false` for use in QuizHomeScreen tabs.
+  final bool showScaffold;
 
   @override
   State<AchievementsScreen> createState() => _AchievementsScreenState();
@@ -189,17 +196,23 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
   Widget build(BuildContext context) {
     final l10n = QuizL10n.of(context);
 
+    final content = widget.config.enablePullToRefresh && widget.onRefresh != null
+        ? RefreshIndicator(
+            onRefresh: widget.onRefresh!,
+            child: _buildContent(context),
+          )
+        : _buildContent(context);
+
+    if (!widget.showScaffold) {
+      return content;
+    }
+
     return Scaffold(
       appBar: widget.appBar ??
           AppBar(
             title: Text(l10n.achievements),
           ),
-      body: widget.config.enablePullToRefresh && widget.onRefresh != null
-          ? RefreshIndicator(
-              onRefresh: widget.onRefresh!,
-              child: _buildContent(context),
-            )
-          : _buildContent(context),
+      body: content,
     );
   }
 
