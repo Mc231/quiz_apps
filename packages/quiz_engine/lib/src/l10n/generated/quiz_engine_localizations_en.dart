@@ -387,4 +387,94 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get comingSoon => 'Coming Soon';
+
+  @override
+  String get categoryBreakdown => 'Category Breakdown';
+
+  @override
+  String get noCategoryData => 'No category data yet. Play some quizzes!';
+
+  @override
+  String sessionsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sessions',
+      one: '1 session',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get noProgressData => 'No progress data yet';
+
+  @override
+  String get progressSummary => 'Progress Summary';
+
+  @override
+  String get change => 'Change';
+
+  @override
+  String get lastWeek => 'Week';
+
+  @override
+  String get lastMonth => 'Month';
+
+  @override
+  String get last3Months => '3 Months';
+
+  @override
+  String get lastYear => 'Year';
+
+  @override
+  String get allTime => 'All Time';
+
+  @override
+  String get bestScores => 'Best Scores';
+
+  @override
+  String get fastestPerfect => 'Fastest Perfect';
+
+  @override
+  String get mostPlayed => 'Most Played';
+
+  @override
+  String get bestStreaks => 'Best Streaks';
+
+  @override
+  String get noLeaderboardData =>
+      'No leaderboard entries yet. Complete some quizzes to see your best scores!';
+
+  @override
+  String get progress => 'Progress';
+
+  @override
+  String get categories => 'Categories';
+
+  @override
+  String get leaderboard => 'Leaderboard';
+
+  @override
+  String get scoreOverTime => 'Score Over Time';
+
+  @override
+  String get last7Days => 'Last 7 days';
+
+  @override
+  String get last30Days => 'Last 30 days';
+
+  @override
+  String get last90Days => 'Last 90 days';
+
+  @override
+  String get last365Days => 'Last 365 days';
+
+  @override
+  String get allTimeData => 'All time data';
+
+  @override
+  String get highestScore => 'Highest';
+
+  @override
+  String get lowestScore => 'Lowest';
 }

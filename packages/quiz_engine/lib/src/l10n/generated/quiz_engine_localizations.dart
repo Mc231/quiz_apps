@@ -822,6 +822,168 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Coming Soon'**
   String get comingSoon;
+
+  /// Category breakdown section title
+  ///
+  /// In en, this message translates to:
+  /// **'Category Breakdown'**
+  String get categoryBreakdown;
+
+  /// Empty state for category statistics
+  ///
+  /// In en, this message translates to:
+  /// **'No category data yet. Play some quizzes!'**
+  String get noCategoryData;
+
+  /// Sessions count label
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 session} other{{count} sessions}}'**
+  String sessionsCount(int count);
+
+  /// Empty state for progress chart
+  ///
+  /// In en, this message translates to:
+  /// **'No progress data yet'**
+  String get noProgressData;
+
+  /// Progress summary section title
+  ///
+  /// In en, this message translates to:
+  /// **'Progress Summary'**
+  String get progressSummary;
+
+  /// Change label for progress
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get change;
+
+  /// Last week time range
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get lastWeek;
+
+  /// Last month time range
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get lastMonth;
+
+  /// Last 3 months time range
+  ///
+  /// In en, this message translates to:
+  /// **'3 Months'**
+  String get last3Months;
+
+  /// Last year time range
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get lastYear;
+
+  /// All time range
+  ///
+  /// In en, this message translates to:
+  /// **'All Time'**
+  String get allTime;
+
+  /// Best scores leaderboard title
+  ///
+  /// In en, this message translates to:
+  /// **'Best Scores'**
+  String get bestScores;
+
+  /// Fastest perfect scores leaderboard title
+  ///
+  /// In en, this message translates to:
+  /// **'Fastest Perfect'**
+  String get fastestPerfect;
+
+  /// Most played leaderboard title
+  ///
+  /// In en, this message translates to:
+  /// **'Most Played'**
+  String get mostPlayed;
+
+  /// Best streaks leaderboard title
+  ///
+  /// In en, this message translates to:
+  /// **'Best Streaks'**
+  String get bestStreaks;
+
+  /// Empty state for leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'No leaderboard entries yet. Complete some quizzes to see your best scores!'**
+  String get noLeaderboardData;
+
+  /// Progress tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get progress;
+
+  /// Categories tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Categories'**
+  String get categories;
+
+  /// Leaderboard tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get leaderboard;
+
+  /// Score over time chart title
+  ///
+  /// In en, this message translates to:
+  /// **'Score Over Time'**
+  String get scoreOverTime;
+
+  /// Last 7 days subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get last7Days;
+
+  /// Last 30 days subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get last30Days;
+
+  /// Last 90 days subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Last 90 days'**
+  String get last90Days;
+
+  /// Last 365 days subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Last 365 days'**
+  String get last365Days;
+
+  /// All time data subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'All time data'**
+  String get allTimeData;
+
+  /// Highest score label
+  ///
+  /// In en, this message translates to:
+  /// **'Highest'**
+  String get highestScore;
+
+  /// Lowest score label
+  ///
+  /// In en, this message translates to:
+  /// **'Lowest'**
+  String get lowestScore;
 }
 
 class _QuizEngineLocalizationsDelegate
