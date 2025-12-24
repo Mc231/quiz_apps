@@ -477,4 +477,14 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get lowestScore => 'Lowest';
+
+  @override
+  String get noPracticeItems => 'No wrong answers to practice';
+
+  @override
+  String get noPracticeItemsDescription =>
+      'Complete some quizzes and any wrong answers will appear here for practice';
+
+  @override
+  String get practice => 'Practice';
 }
