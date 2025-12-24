@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../../l10n/quiz_localizations.dart';
+
 /// Size options for [AchievementTierBadge].
 enum AchievementTierBadgeSize {
   /// Small size - compact display.
@@ -67,6 +69,7 @@ class AchievementTierBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = QuizL10n.of(context);
 
     final (iconSize, fontSize, padding) = switch (size) {
       AchievementTierBadgeSize.small => (
@@ -86,36 +89,39 @@ class AchievementTierBadge extends StatelessWidget {
         ),
     };
 
-    return Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        color: tier.color.withValues(alpha: 0.15),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: tier.color.withValues(alpha: 0.3),
-          width: 1,
+    return Semantics(
+      label: l10n.accessibilityTierBadge(tier.label),
+      child: Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          color: tier.color.withValues(alpha: 0.15),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: tier.color.withValues(alpha: 0.3),
+            width: 1,
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (showIcon) ...[
-            Text(
-              tier.icon,
-              style: TextStyle(fontSize: iconSize),
-            ),
-            if (showLabel) const SizedBox(width: 4),
-          ],
-          if (showLabel)
-            Text(
-              tier.label,
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: tier.color,
-                fontWeight: FontWeight.w600,
-                fontSize: fontSize,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (showIcon) ...[
+              Text(
+                tier.icon,
+                style: TextStyle(fontSize: iconSize),
               ),
-            ),
-        ],
+              if (showLabel) const SizedBox(width: 4),
+            ],
+            if (showLabel)
+              Text(
+                tier.label,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: tier.color,
+                  fontWeight: FontWeight.w600,
+                  fontSize: fontSize,
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -145,6 +151,7 @@ class AchievementPointsBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = QuizL10n.of(context);
     final badgeColor = color ?? theme.colorScheme.secondary;
 
     final (fontSize, padding) = switch (size) {
@@ -162,18 +169,21 @@ class AchievementPointsBadge extends StatelessWidget {
         ),
     };
 
-    return Container(
-      padding: padding,
-      decoration: BoxDecoration(
-        color: badgeColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        '$points pts',
-        style: theme.textTheme.labelSmall?.copyWith(
-          color: badgeColor,
-          fontWeight: FontWeight.w600,
-          fontSize: fontSize,
+    return Semantics(
+      label: l10n.accessibilityPointsBadge(points),
+      child: Container(
+        padding: padding,
+        decoration: BoxDecoration(
+          color: badgeColor.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Text(
+          '$points pts',
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: badgeColor,
+            fontWeight: FontWeight.w600,
+            fontSize: fontSize,
+          ),
         ),
       ),
     );
