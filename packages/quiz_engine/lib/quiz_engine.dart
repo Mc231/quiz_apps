@@ -49,11 +49,15 @@ export 'src/widgets/session_card.dart';
 export 'src/widgets/statistics_card.dart';
 export 'src/widgets/question_review_widget.dart';
 export 'src/widgets/trends_widget.dart';
+export 'src/widgets/category_statistics_widget.dart';
+export 'src/widgets/progress_chart_widget.dart';
+export 'src/widgets/leaderboard_widget.dart';
 
 // Screens
 export 'src/screens/session_history_screen.dart';
 export 'src/screens/session_detail_screen.dart';
 export 'src/screens/statistics_screen.dart';
+export 'src/screens/statistics_dashboard_screen.dart';
 export 'src/screens/quiz_results_screen.dart';
 
 // Settings
