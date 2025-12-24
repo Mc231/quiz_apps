@@ -10,7 +10,7 @@ class DatabaseConfig {
 
   /// Current database schema version.
   /// Increment this when making schema changes.
-  static const int currentVersion = 1;
+  static const int currentVersion = 2;
 
   /// Minimum supported database version for migrations.
   static const int minimumVersion = 1;
