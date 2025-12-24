@@ -306,6 +306,7 @@ void main() {
         QuizTab.history(),
         QuizTab.statistics(),
         QuizTab.settings(),
+        QuizTab.achievements(),
         QuizTab.custom(
           id: 'custom',
           icon: Icons.star,
@@ -320,11 +321,13 @@ void main() {
           HistoryTab() => 'history',
           StatisticsTab() => 'statistics',
           SettingsTab() => 'settings',
+          AchievementsTab() => 'achievements',
           CustomTab() => 'custom',
         };
       }).toList();
 
-      expect(results, ['play', 'history', 'statistics', 'settings', 'custom']);
+      expect(results,
+          ['play', 'history', 'statistics', 'settings', 'achievements', 'custom']);
     });
   });
 }
