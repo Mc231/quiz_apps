@@ -4,7 +4,7 @@
 
 **Reference:** See [CORE_ARCHITECTURE_GUIDE.md](./CORE_ARCHITECTURE_GUIDE.md) for architectural details and design patterns.
 
-**Last Updated:** 2025-12-23
+**Last Updated:** 2025-12-24
 
 ---
 
@@ -846,39 +846,49 @@ New exports added:
 
 ---
 
-### Sprint 7.10: Category Mode Configuration
+### Sprint 7.10: Game Modes & Challenges ✅
 
-**Goal:** Configure quiz mode per category using existing `QuizCategory.config` field.
+**Goal:** Add challenge/game mode system with different difficulty levels and rules.
+
+**Implemented Features:**
+- 5 challenge modes: Survival, Time Attack, Speed Run, Marathon, Blitz
+- Difficulty levels: Easy, Medium, Hard with color indicators
+- Challenge list with cards showing name, description, difficulty badge
+- Category picker bottom sheet after selecting a challenge
+- Quiz mode mapping from ChallengeMode to QuizModeConfig (standard, timed, lives, survival, endless)
+- 3-tab Play screen in flagsquiz: Play (categories), Challenges (game modes), Practice (wrong answers)
 
 **Tasks:**
-- [ ] Update `flags_categories.dart` to configure mode per category
-- [ ] Document mode configuration in category examples
-- [ ] Add different modes for different continents (e.g., Europe=Timed, All=Standard)
-- [ ] Verify mode is applied correctly when starting quiz
-- [ ] Update tests to cover mode configuration
+- [x] Create `ChallengeMode` model with difficulty enum
+- [x] Create `ChallengeDifficulty` enum (easy, medium, hard) with colors and icons
+- [x] Create `ChallengeCard` widget with `DifficultyIndicator`
+- [x] Create `ChallengeListWidget` with sorting/grouping by difficulty
+- [x] Create `ChallengesScreen` with category picker flow
+- [x] Create `FlagsChallenges` definitions for flagsquiz app
+- [x] Configure 3-tab Play screen in flagsquiz main.dart
+- [x] Map ChallengeMode settings to QuizModeConfig factory methods
+- [x] Write unit tests for ChallengeCard and ChallengeListWidget
 
-**Example Configuration:**
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/models/challenge_mode.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/challenge_card.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/challenge_list.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/challenges_screen.dart`
+- ✅ `packages/quiz_engine/test/widgets/challenge_card_test.dart`
+- ✅ `apps/flagsquiz/lib/data/flags_challenges.dart`
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Added exports
+- ✅ `apps/flagsquiz/lib/main.dart` - Configured 3-tab Play screen
+
+**Challenge Modes Defined:**
 ```dart
-QuizCategory(
-  id: 'europe',
-  title: (context) => l10n.europe,
-  config: QuizConfig(
-    modeConfig: TimedMode(timePerQuestion: 15),
-  ),
-),
-QuizCategory(
-  id: 'all',
-  title: (context) => l10n.all,
-  config: QuizConfig(
-    modeConfig: StandardMode(),
-  ),
-),
+// Survival: 3 lives, 20 questions, no hints
+// Time Attack: 60 seconds total, endless, skip allowed
+// Speed Run: 20 questions, fastest time wins
+// Marathon: Endless mode, track streak
+// Blitz: 5 seconds per question, 1 life, 20 questions
 ```
-
-**Notes:**
-- Uses existing `QuizCategory.config` field (no new API needed)
-- App has full control over which modes each category uses
-- Mode is fixed per category (no user selection for now)
 
 ---
 
@@ -921,7 +931,31 @@ QuizCategory(
 
 ---
 
-### Sprint 7.12: Remaining Tasks
+### Sprint 7.12: Category Mode Configuration
+
+**Goal:** Configure quiz mode per category using existing `QuizCategory.config` field.
+
+**Tasks:**
+- [ ] Update `flags_categories.dart` to configure mode per category
+- [ ] Document mode configuration in category examples
+- [ ] Add different modes for different continents (e.g., Europe=Timed, All=Standard)
+- [ ] Verify mode is applied correctly when starting quiz
+- [ ] Update tests to cover mode configuration
+
+**Example Configuration:**
+```dart
+QuizCategory(
+  id: 'europe',
+  title: (context) => l10n.europe,
+  config: QuizConfig(
+    modeConfig: TimedMode(timePerQuestion: 15),
+  ),
+),
+```
+
+---
+
+### Sprint 7.13: Remaining Tasks
 
 **Tasks:**
 - [ ] Add support for additional languages in quiz_engine ARB files
