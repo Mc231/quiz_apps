@@ -487,4 +487,350 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get practice => 'Practice';
+
+  @override
+  String get achievements => 'Achievements';
+
+  @override
+  String get achievementUnlocked => 'Achievement Unlocked!';
+
+  @override
+  String achievementsUnlocked(int count, int total) {
+    return '$count of $total Unlocked';
+  }
+
+  @override
+  String achievementPoints(int points) {
+    return '$points pts';
+  }
+
+  @override
+  String get hiddenAchievement => 'Hidden Achievement';
+
+  @override
+  String get hiddenAchievementDesc => 'Keep playing to discover!';
+
+  @override
+  String get achievementFirstQuiz => 'First Steps';
+
+  @override
+  String get achievementFirstQuizDesc => 'Complete your first quiz';
+
+  @override
+  String get achievementFirstPerfect => 'Perfectionist';
+
+  @override
+  String get achievementFirstPerfectDesc => 'Get your first perfect score';
+
+  @override
+  String get achievementFirstChallenge => 'Challenger';
+
+  @override
+  String get achievementFirstChallengeDesc =>
+      'Complete your first challenge mode';
+
+  @override
+  String get achievementQuizzes10 => 'Getting Started';
+
+  @override
+  String get achievementQuizzes10Desc => 'Complete 10 quizzes';
+
+  @override
+  String get achievementQuizzes50 => 'Quiz Enthusiast';
+
+  @override
+  String get achievementQuizzes50Desc => 'Complete 50 quizzes';
+
+  @override
+  String get achievementQuizzes100 => 'Quiz Master';
+
+  @override
+  String get achievementQuizzes100Desc => 'Complete 100 quizzes';
+
+  @override
+  String get achievementQuizzes500 => 'Quiz Legend';
+
+  @override
+  String get achievementQuizzes500Desc => 'Complete 500 quizzes';
+
+  @override
+  String get achievementQuestions100 => 'Century';
+
+  @override
+  String get achievementQuestions100Desc => 'Answer 100 questions';
+
+  @override
+  String get achievementQuestions500 => 'Half Thousand';
+
+  @override
+  String get achievementQuestions500Desc => 'Answer 500 questions';
+
+  @override
+  String get achievementQuestions1000 => 'Thousand Club';
+
+  @override
+  String get achievementQuestions1000Desc => 'Answer 1000 questions';
+
+  @override
+  String get achievementQuestions5000 => 'Expert';
+
+  @override
+  String get achievementQuestions5000Desc => 'Answer 5000 questions';
+
+  @override
+  String get achievementCorrect100 => 'Sharp Eye';
+
+  @override
+  String get achievementCorrect100Desc => 'Get 100 correct answers';
+
+  @override
+  String get achievementCorrect500 => 'Knowledge Keeper';
+
+  @override
+  String get achievementCorrect500Desc => 'Get 500 correct answers';
+
+  @override
+  String get achievementCorrect1000 => 'Scholar';
+
+  @override
+  String get achievementCorrect1000Desc => 'Get 1000 correct answers';
+
+  @override
+  String get achievementPerfect5 => 'Rising Star';
+
+  @override
+  String get achievementPerfect5Desc => 'Get 5 perfect scores';
+
+  @override
+  String get achievementPerfect10 => 'Shining Bright';
+
+  @override
+  String get achievementPerfect10Desc => 'Get 10 perfect scores';
+
+  @override
+  String get achievementPerfect25 => 'Constellation';
+
+  @override
+  String get achievementPerfect25Desc => 'Get 25 perfect scores';
+
+  @override
+  String get achievementPerfect50 => 'Galaxy';
+
+  @override
+  String get achievementPerfect50Desc => 'Get 50 perfect scores';
+
+  @override
+  String get achievementScore9010 => 'High Achiever';
+
+  @override
+  String get achievementScore9010Desc => 'Score 90%+ in 10 quizzes';
+
+  @override
+  String get achievementScore9510 => 'Excellence';
+
+  @override
+  String get achievementScore9510Desc => 'Score 95%+ in 10 quizzes';
+
+  @override
+  String get achievementPerfectStreak3 => 'Flawless Run';
+
+  @override
+  String get achievementPerfectStreak3Desc => 'Get 3 perfect scores in a row';
+
+  @override
+  String get achievementSpeedDemon => 'Speed Demon';
+
+  @override
+  String get achievementSpeedDemonDesc => 'Complete a quiz in under 60 seconds';
+
+  @override
+  String get achievementLightning => 'Lightning Fast';
+
+  @override
+  String get achievementLightningDesc => 'Complete a quiz in under 30 seconds';
+
+  @override
+  String get achievementQuickAnswer10 => 'Quick Thinker';
+
+  @override
+  String get achievementQuickAnswer10Desc =>
+      'Answer 10 questions in under 2 seconds each';
+
+  @override
+  String get achievementQuickAnswer50 => 'Rapid Fire';
+
+  @override
+  String get achievementQuickAnswer50Desc =>
+      'Answer 50 questions in under 2 seconds each';
+
+  @override
+  String get achievementStreak10 => 'On Fire';
+
+  @override
+  String get achievementStreak10Desc => 'Get 10 correct answers in a row';
+
+  @override
+  String get achievementStreak25 => 'Unstoppable';
+
+  @override
+  String get achievementStreak25Desc => 'Get 25 correct answers in a row';
+
+  @override
+  String get achievementStreak50 => 'Legendary Streak';
+
+  @override
+  String get achievementStreak50Desc => 'Get 50 correct answers in a row';
+
+  @override
+  String get achievementStreak100 => 'Mythical';
+
+  @override
+  String get achievementStreak100Desc => 'Get 100 correct answers in a row';
+
+  @override
+  String get achievementSurvivalComplete => 'Survivor';
+
+  @override
+  String get achievementSurvivalCompleteDesc => 'Complete Survival mode';
+
+  @override
+  String get achievementSurvivalPerfect => 'Immortal';
+
+  @override
+  String get achievementSurvivalPerfectDesc =>
+      'Complete Survival without losing a life';
+
+  @override
+  String get achievementBlitzComplete => 'Blitz Master';
+
+  @override
+  String get achievementBlitzCompleteDesc => 'Complete Blitz mode';
+
+  @override
+  String get achievementBlitzPerfect => 'Lightning God';
+
+  @override
+  String get achievementBlitzPerfectDesc => 'Complete Blitz with perfect score';
+
+  @override
+  String get achievementTimeAttack20 => 'Time Warrior';
+
+  @override
+  String get achievementTimeAttack20Desc => 'Answer 20+ correct in Time Attack';
+
+  @override
+  String get achievementTimeAttack30 => 'Time Lord';
+
+  @override
+  String get achievementTimeAttack30Desc => 'Answer 30+ correct in Time Attack';
+
+  @override
+  String get achievementMarathon50 => 'Endurance';
+
+  @override
+  String get achievementMarathon50Desc => 'Answer 50 questions in Marathon';
+
+  @override
+  String get achievementMarathon100 => 'Ultra Marathon';
+
+  @override
+  String get achievementMarathon100Desc => 'Answer 100 questions in Marathon';
+
+  @override
+  String get achievementSpeedRunFast => 'Speed Runner';
+
+  @override
+  String get achievementSpeedRunFastDesc =>
+      'Complete Speed Run in under 2 minutes';
+
+  @override
+  String get achievementAllChallenges => 'Challenge Champion';
+
+  @override
+  String get achievementAllChallengesDesc => 'Complete all challenge modes';
+
+  @override
+  String get achievementTime1h => 'Dedicated';
+
+  @override
+  String get achievementTime1hDesc => 'Play for 1 hour total';
+
+  @override
+  String get achievementTime5h => 'Committed';
+
+  @override
+  String get achievementTime5hDesc => 'Play for 5 hours total';
+
+  @override
+  String get achievementTime10h => 'Devoted';
+
+  @override
+  String get achievementTime10hDesc => 'Play for 10 hours total';
+
+  @override
+  String get achievementTime24h => 'Fanatic';
+
+  @override
+  String get achievementTime24hDesc => 'Play for 24 hours total';
+
+  @override
+  String get achievementDays3 => 'Regular';
+
+  @override
+  String get achievementDays3Desc => 'Play 3 days in a row';
+
+  @override
+  String get achievementDays7 => 'Weekly Warrior';
+
+  @override
+  String get achievementDays7Desc => 'Play 7 days in a row';
+
+  @override
+  String get achievementDays14 => 'Two Week Streak';
+
+  @override
+  String get achievementDays14Desc => 'Play 14 days in a row';
+
+  @override
+  String get achievementDays30 => 'Monthly Master';
+
+  @override
+  String get achievementDays30Desc => 'Play 30 days in a row';
+
+  @override
+  String get achievementNoHints => 'Purist';
+
+  @override
+  String get achievementNoHintsDesc => 'Complete a quiz without using hints';
+
+  @override
+  String get achievementNoHints10 => 'True Expert';
+
+  @override
+  String get achievementNoHints10Desc => 'Complete 10 quizzes without hints';
+
+  @override
+  String get achievementNoSkip => 'Determined';
+
+  @override
+  String get achievementNoSkipDesc => 'Complete a quiz without skipping';
+
+  @override
+  String get achievementFlawless => 'Flawless Victory';
+
+  @override
+  String get achievementFlawlessDesc =>
+      'Perfect score, no hints, no lives lost';
+
+  @override
+  String get achievementComeback => 'Comeback King';
+
+  @override
+  String get achievementComebackDesc => 'Win after losing 4+ lives';
+
+  @override
+  String get achievementClutch => 'Clutch Player';
+
+  @override
+  String get achievementClutchDesc => 'Complete Survival with 1 life remaining';
 }
