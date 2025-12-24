@@ -19,7 +19,7 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements | In Progress (2/10 sprints) |
+| Phase 8 | Achievements | In Progress (3/10 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
@@ -1045,24 +1045,30 @@ New exports added:
 
 ---
 
-### Sprint 8.3: Achievement Engine
+### Sprint 8.3: Achievement Engine ✅
 
 **Goal:** Create engine that checks conditions and unlocks achievements.
 
 **Tasks:**
-- [ ] Create `AchievementEngine` class
-- [ ] Implement trigger evaluation logic for each trigger type
-- [ ] Add method: `checkAndUnlock(context, session, stats)`
-- [ ] Add method: `checkProgressiveAchievements(stats)`
-- [ ] Add method: `getProgress(achievementId)`
-- [ ] Handle visibility rules (show/hide based on tier)
-- [ ] Add caching for performance
-- [ ] Integrate with QuizBloc (call after quiz completion)
-- [ ] Write unit tests for engine logic
+- [x] Create `AchievementEngine` class
+- [x] Implement trigger evaluation logic for each trigger type
+- [x] Add method: `checkAll()` and `checkAfterSession()`
+- [x] Add method: `getAllProgress()` for cumulative progress
+- [x] Add method: `getProgress(achievementId)`
+- [x] Handle visibility rules (show/hide based on tier)
+- [x] Add caching for performance
+- [x] Create `AchievementService` for high-level API
+- [x] Write unit tests for engine logic
 
-**Files to Create:**
-- `packages/shared_services/lib/src/achievements/engine/achievement_engine.dart`
-- `packages/shared_services/lib/src/achievements/engine/trigger_evaluator.dart`
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/achievements/engine/achievement_context.dart`
+- ✅ `packages/shared_services/lib/src/achievements/engine/trigger_evaluator.dart`
+- ✅ `packages/shared_services/lib/src/achievements/engine/achievement_engine.dart`
+- ✅ `packages/shared_services/lib/src/achievements/services/achievement_service.dart`
+- ✅ `packages/shared_services/test/achievements/achievement_context_test.dart`
+- ✅ `packages/shared_services/test/achievements/trigger_evaluator_test.dart`
+- ✅ `packages/shared_services/test/achievements/achievement_engine_test.dart`
+- ✅ `packages/shared_services/test/achievements/achievement_service_test.dart`
 
 ---
 
