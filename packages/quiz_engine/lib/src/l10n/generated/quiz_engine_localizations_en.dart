@@ -878,4 +878,53 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String completionPercentage(int percent) {
     return '$percent%';
   }
+
+  @override
+  String get accessibilityDoubleTapToView => 'Double tap to view details';
+
+  @override
+  String get accessibilityDoubleTapToDismiss => 'Double tap to dismiss';
+
+  @override
+  String accessibilityAchievementUnlocked(
+    String name,
+    String tier,
+    int points,
+  ) {
+    return '$name, $tier achievement, $points points, unlocked';
+  }
+
+  @override
+  String accessibilityAchievementLocked(
+    String name,
+    String tier,
+    int points,
+    int progress,
+  ) {
+    return '$name, $tier achievement, $points points, locked, $progress percent complete';
+  }
+
+  @override
+  String accessibilityAchievementNotification(
+    String name,
+    String tier,
+    int points,
+  ) {
+    return 'Achievement unlocked: $name, $tier, plus $points points';
+  }
+
+  @override
+  String accessibilityProgressBar(int current, int target) {
+    return 'Progress: $current of $target';
+  }
+
+  @override
+  String accessibilityTierBadge(String tier) {
+    return '$tier tier';
+  }
+
+  @override
+  String accessibilityPointsBadge(int points) {
+    return '$points points';
+  }
 }
