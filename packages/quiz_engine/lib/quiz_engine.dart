@@ -76,3 +76,7 @@ export 'src/theme/quiz_theme_data.dart';
 
 // Utils
 export 'src/utils/default_data_loader.dart';
+
+// Achievements
+export 'src/achievements/achievement_category.dart';
+export 'src/achievements/base_achievements.dart';
