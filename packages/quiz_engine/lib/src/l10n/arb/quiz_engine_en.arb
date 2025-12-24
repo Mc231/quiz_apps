@@ -632,5 +632,145 @@
   "comingSoon": "Coming Soon",
   "@comingSoon": {
     "description": "Coming soon label for disabled features"
+  },
+
+  "categoryBreakdown": "Category Breakdown",
+  "@categoryBreakdown": {
+    "description": "Category breakdown section title"
+  },
+
+  "noCategoryData": "No category data yet. Play some quizzes!",
+  "@noCategoryData": {
+    "description": "Empty state for category statistics"
+  },
+
+  "sessionsCount": "{count, plural, =1{1 session} other{{count} sessions}}",
+  "@sessionsCount": {
+    "description": "Sessions count label",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "noProgressData": "No progress data yet",
+  "@noProgressData": {
+    "description": "Empty state for progress chart"
+  },
+
+  "progressSummary": "Progress Summary",
+  "@progressSummary": {
+    "description": "Progress summary section title"
+  },
+
+  "change": "Change",
+  "@change": {
+    "description": "Change label for progress"
+  },
+
+  "lastWeek": "Week",
+  "@lastWeek": {
+    "description": "Last week time range"
+  },
+
+  "lastMonth": "Month",
+  "@lastMonth": {
+    "description": "Last month time range"
+  },
+
+  "last3Months": "3 Months",
+  "@last3Months": {
+    "description": "Last 3 months time range"
+  },
+
+  "lastYear": "Year",
+  "@lastYear": {
+    "description": "Last year time range"
+  },
+
+  "allTime": "All Time",
+  "@allTime": {
+    "description": "All time range"
+  },
+
+  "bestScores": "Best Scores",
+  "@bestScores": {
+    "description": "Best scores leaderboard title"
+  },
+
+  "fastestPerfect": "Fastest Perfect",
+  "@fastestPerfect": {
+    "description": "Fastest perfect scores leaderboard title"
+  },
+
+  "mostPlayed": "Most Played",
+  "@mostPlayed": {
+    "description": "Most played leaderboard title"
+  },
+
+  "bestStreaks": "Best Streaks",
+  "@bestStreaks": {
+    "description": "Best streaks leaderboard title"
+  },
+
+  "noLeaderboardData": "No leaderboard entries yet. Complete some quizzes to see your best scores!",
+  "@noLeaderboardData": {
+    "description": "Empty state for leaderboard"
+  },
+
+  "progress": "Progress",
+  "@progress": {
+    "description": "Progress tab label"
+  },
+
+  "categories": "Categories",
+  "@categories": {
+    "description": "Categories tab label"
+  },
+
+  "leaderboard": "Leaderboard",
+  "@leaderboard": {
+    "description": "Leaderboard tab label"
+  },
+
+  "scoreOverTime": "Score Over Time",
+  "@scoreOverTime": {
+    "description": "Score over time chart title"
+  },
+
+  "last7Days": "Last 7 days",
+  "@last7Days": {
+    "description": "Last 7 days subtitle"
+  },
+
+  "last30Days": "Last 30 days",
+  "@last30Days": {
+    "description": "Last 30 days subtitle"
+  },
+
+  "last90Days": "Last 90 days",
+  "@last90Days": {
+    "description": "Last 90 days subtitle"
+  },
+
+  "last365Days": "Last 365 days",
+  "@last365Days": {
+    "description": "Last 365 days subtitle"
+  },
+
+  "allTimeData": "All time data",
+  "@allTimeData": {
+    "description": "All time data subtitle"
+  },
+
+  "highestScore": "Highest",
+  "@highestScore": {
+    "description": "Highest score label"
+  },
+
+  "lowestScore": "Lowest",
+  "@lowestScore": {
+    "description": "Lowest score label"
   }
 }
