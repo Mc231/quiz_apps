@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 import 'database_config.dart';
 import 'migrations/migration.dart';
 import 'migrations/migration_v1.dart';
+import 'migrations/migration_v2.dart';
 
 /// The main database class that handles initialization and provides access.
 class AppDatabase {
@@ -24,6 +25,7 @@ class AppDatabase {
   /// All available migrations.
   static final List<Migration> _migrations = [
     const MigrationV1(),
+    const MigrationV2(),
   ];
 
   /// The migration runner.
