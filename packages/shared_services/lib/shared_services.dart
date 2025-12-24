@@ -30,3 +30,6 @@ export 'src/settings/settings_service.dart';
 
 // Storage (Database and persistence)
 export 'src/storage/storage_exports.dart';
+
+// Achievements (Achievement system models)
+export 'src/achievements/achievements_exports.dart';
