@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_services/shared_services.dart';
 
+import 'achievements/flags_achievements_data_provider.dart';
 import 'data/country_counts.dart';
 import 'data/flags_categories.dart';
 import 'data/flags_challenges.dart';
@@ -22,10 +23,16 @@ void main() async {
   // Get services
   final settingsService = sl.get<SettingsService>();
   final storageService = sl.get<StorageService>();
+  final achievementService = sl.get<AchievementService>();
 
   // Create categories and data provider
   final categories = createFlagsCategories(countryCounts);
   const dataProvider = FlagsDataProvider();
+
+  // Create achievements data provider
+  final achievementsProvider = FlagsAchievementsDataProvider(
+    achievementService: achievementService,
+  );
 
   runApp(
     QuizApp(
@@ -33,6 +40,8 @@ void main() async {
       categories: categories,
       dataProvider: dataProvider,
       storageService: storageService,
+      achievementsDataProvider: () =>
+          achievementsProvider.loadAchievementsData(),
       config: QuizAppConfig(
         title: 'Flags Quiz',
         appLocalizationDelegates: AppLocalizations.localizationsDelegates,
@@ -43,9 +52,16 @@ void main() async {
         appBarTheme: const AppBarTheme(elevation: 0),
       ),
       homeConfig: QuizHomeScreenConfig(
-        tabConfig: QuizTabConfig.defaultConfig(),
-        showSettingsInAppBar: true,
-        // Configure the 3 tabs: Play, Challenges, Practice
+        // Bottom navigation tabs: Play, Achievements, Settings
+        tabConfig: QuizTabConfig(
+          tabs: [
+            QuizTab.play(),
+            QuizTab.achievements(),
+            QuizTab.settings(),
+          ],
+        ),
+        showSettingsInAppBar: false, // Settings is in bottom nav now
+        // Configure the 3 tabs within Play: Play, Challenges, Practice
         playScreenTabs: [
           // Tab 1: Play - Standard quiz with hints and skip
           PlayScreenTab.categories(
