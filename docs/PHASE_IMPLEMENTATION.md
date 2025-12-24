@@ -1029,16 +1029,41 @@ QuizCategory(
 
 ---
 
-### Sprint 6.2: Advanced Statistics UI
+### Sprint 6.2: Advanced Statistics UI ✅
 
 **Tasks:**
-- [ ] Create Statistics Dashboard UI
-- [ ] Add charts/graphs for trends
-- [ ] Display aggregate statistics
-- [ ] Show improvement over time
-- [ ] Add category breakdown views
-- [ ] Create leaderboards (local)
-- [ ] Test statistics screens
+- [x] Create Statistics Dashboard UI
+- [x] Add charts/graphs for trends
+- [x] Display aggregate statistics
+- [x] Show improvement over time
+- [x] Add category breakdown views
+- [x] Create leaderboards (local)
+- [x] Test statistics screens
+
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/widgets/category_statistics_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/progress_chart_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/leaderboard_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
+- ✅ `packages/quiz_engine/test/widgets/category_statistics_widget_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/progress_chart_widget_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/leaderboard_widget_test.dart`
+
+---
+
+### Sprint 6.3: Session Detail Improvements
+
+**Tasks:**
+- [x] Add question filter toggle (All/Wrong Only) to SessionDetailScreen
+- [ ] Implement "Train Wrong Answers" action - start new quiz with only wrong questions from session
+- [ ] Add session navigation (previous/next session)
+- [ ] Add question jump/navigation within session
+
+**Files Modified:**
+- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
+
+**Files Created:**
+- `packages/quiz_engine/test/screens/session_detail_screen_test.dart`
 
 ---
 
