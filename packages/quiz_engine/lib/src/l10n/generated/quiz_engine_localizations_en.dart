@@ -865,4 +865,17 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String achievementProgress(int current, int target) {
     return '$current/$target';
   }
+
+  @override
+  String pointsRemaining(int points) {
+    return '$points remaining';
+  }
+
+  @override
+  String get allPointsEarned => 'All earned!';
+
+  @override
+  String completionPercentage(int percent) {
+    return '$percent%';
+  }
 }

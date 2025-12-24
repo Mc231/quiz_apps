@@ -1734,6 +1734,24 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'{current}/{target}'**
   String achievementProgress(int current, int target);
+
+  /// Points remaining to earn
+  ///
+  /// In en, this message translates to:
+  /// **'{points} remaining'**
+  String pointsRemaining(int points);
+
+  /// Message when all achievement points are earned
+  ///
+  /// In en, this message translates to:
+  /// **'All earned!'**
+  String get allPointsEarned;
+
+  /// Completion percentage display
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String completionPercentage(int percent);
 }
 
 class _QuizEngineLocalizationsDelegate
