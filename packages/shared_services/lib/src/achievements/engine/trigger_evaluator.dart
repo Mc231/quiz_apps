@@ -286,8 +286,6 @@ class TriggerEvaluator {
   }
 
   int _getConsecutivePerfectScores(GlobalStatistics stats) {
-    // This would need to be tracked separately
-    // For now, return 0 - can be enhanced later
-    return 0;
+    return stats.consecutivePerfectScores;
   }
 }
