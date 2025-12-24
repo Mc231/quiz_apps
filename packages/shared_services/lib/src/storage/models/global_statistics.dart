@@ -33,6 +33,7 @@ class GlobalStatistics {
     this.sessionsNoHints = 0,
     this.highScore90Count = 0,
     this.highScore95Count = 0,
+    this.consecutivePerfectScores = 0,
     this.totalAchievementsUnlocked = 0,
     this.totalAchievementPoints = 0,
     required this.createdAt,
@@ -112,6 +113,9 @@ class GlobalStatistics {
 
   /// Total sessions with 95%+ score.
   final int highScore95Count;
+
+  /// Consecutive perfect scores (resets on non-perfect session).
+  final int consecutivePerfectScores;
 
   /// Total achievements unlocked (cached for quick display).
   final int totalAchievementsUnlocked;
@@ -211,6 +215,9 @@ class GlobalStatistics {
           (map[GlobalStatisticsColumnsV2.highScore90Count] as int?) ?? 0,
       highScore95Count:
           (map[GlobalStatisticsColumnsV2.highScore95Count] as int?) ?? 0,
+      consecutivePerfectScores:
+          (map[GlobalStatisticsColumnsV2.consecutivePerfectScores] as int?) ??
+              0,
       totalAchievementsUnlocked:
           (map[GlobalStatisticsColumnsV2.totalAchievementsUnlocked] as int?) ??
               0,
@@ -258,6 +265,8 @@ class GlobalStatistics {
       GlobalStatisticsColumnsV2.sessionsNoHints: sessionsNoHints,
       GlobalStatisticsColumnsV2.highScore90Count: highScore90Count,
       GlobalStatisticsColumnsV2.highScore95Count: highScore95Count,
+      GlobalStatisticsColumnsV2.consecutivePerfectScores:
+          consecutivePerfectScores,
       GlobalStatisticsColumnsV2.totalAchievementsUnlocked:
           totalAchievementsUnlocked,
       GlobalStatisticsColumnsV2.totalAchievementPoints: totalAchievementPoints,
@@ -295,6 +304,7 @@ class GlobalStatistics {
     int? sessionsNoHints,
     int? highScore90Count,
     int? highScore95Count,
+    int? consecutivePerfectScores,
     int? totalAchievementsUnlocked,
     int? totalAchievementPoints,
     DateTime? createdAt,
@@ -334,6 +344,8 @@ class GlobalStatistics {
       sessionsNoHints: sessionsNoHints ?? this.sessionsNoHints,
       highScore90Count: highScore90Count ?? this.highScore90Count,
       highScore95Count: highScore95Count ?? this.highScore95Count,
+      consecutivePerfectScores:
+          consecutivePerfectScores ?? this.consecutivePerfectScores,
       totalAchievementsUnlocked:
           totalAchievementsUnlocked ?? this.totalAchievementsUnlocked,
       totalAchievementPoints:
