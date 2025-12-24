@@ -137,12 +137,20 @@ void main() {
                 icon: Icons.public,
                 categories: europeCategories,
               ),
+              // Need at least 2 tabs for TabBar to be visible
+              PlayScreenTab.categories(
+                id: 'asia',
+                label: 'Asia',
+                icon: Icons.map,
+                categories: asiaCategories,
+              ),
             ],
           ),
         ),
       );
 
       expect(find.byIcon(Icons.public), findsOneWidget);
+      expect(find.byIcon(Icons.map), findsOneWidget);
     });
 
     testWidgets('shows first tab content by default', (tester) async {
@@ -403,6 +411,53 @@ void main() {
       );
 
       expect(find.byType(AppBar), findsNothing);
+    });
+
+    testWidgets('hides TabBar when only one tab', (tester) async {
+      await tester.pumpWidget(
+        wrapWithLocalizations(
+          TabbedPlayScreen(
+            tabs: [
+              PlayScreenTab.categories(
+                id: 'europe',
+                label: 'Europe',
+                categories: europeCategories,
+              ),
+            ],
+            config: const TabbedPlayScreenConfig(showAppBar: false),
+          ),
+        ),
+      );
+
+      // TabBar should not be visible with single tab
+      expect(find.byType(TabBar), findsNothing);
+      // But content should still be shown
+      expect(find.text('France'), findsOneWidget);
+    });
+
+    testWidgets('shows TabBar when multiple tabs', (tester) async {
+      await tester.pumpWidget(
+        wrapWithLocalizations(
+          TabbedPlayScreen(
+            tabs: [
+              PlayScreenTab.categories(
+                id: 'europe',
+                label: 'Europe',
+                categories: europeCategories,
+              ),
+              PlayScreenTab.categories(
+                id: 'asia',
+                label: 'Asia',
+                categories: asiaCategories,
+              ),
+            ],
+            config: const TabbedPlayScreenConfig(showAppBar: false),
+          ),
+        ),
+      );
+
+      // TabBar should be visible with multiple tabs
+      expect(find.byType(TabBar), findsOneWidget);
     });
   });
 

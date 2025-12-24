@@ -212,6 +212,8 @@ class _TabbedPlayScreenState extends State<TabbedPlayScreen>
     super.dispose();
   }
 
+  bool get _hasSingleTab => widget.tabs.length == 1;
+
   @override
   Widget build(BuildContext context) {
     if (widget.config.showAppBar) {
@@ -219,6 +221,11 @@ class _TabbedPlayScreenState extends State<TabbedPlayScreen>
         appBar: _buildAppBar(context),
         body: _buildBody(context),
       );
+    }
+
+    // If only one tab, show content directly without tab bar
+    if (_hasSingleTab) {
+      return _buildTabContent(context, widget.tabs.first);
     }
 
     return Column(
@@ -235,7 +242,8 @@ class _TabbedPlayScreenState extends State<TabbedPlayScreen>
     return AppBar(
       title: Text(widget.config.title ?? l10n.play),
       actions: _buildAppBarActions(context),
-      bottom: _buildTabBar(context),
+      // Hide tab bar when only one tab
+      bottom: _hasSingleTab ? null : _buildTabBar(context),
     );
   }
 

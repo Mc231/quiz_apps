@@ -51,8 +51,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(NavigationBar), findsOneWidget);
-      // Play appears in AppBar, bottom nav, and TabBar
-      expect(find.text('Play'), findsNWidgets(3));
+      // Play appears in AppBar and bottom nav (TabBar hidden with single tab)
+      expect(find.text('Play'), findsNWidgets(2));
       expect(find.text('History'), findsOneWidget);
       expect(find.text('Statistics'), findsOneWidget);
     });
@@ -69,8 +69,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(AppBar), findsOneWidget);
-      // Default first tab is Play (AppBar title + bottom nav + TabBar)
-      expect(find.text('Play'), findsNWidgets(3));
+      // Default first tab is Play (AppBar title + bottom nav, TabBar hidden with single tab)
+      expect(find.text('Play'), findsNWidgets(2));
     });
 
     testWidgets('displays categories in Play tab', (tester) async {
@@ -181,8 +181,8 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      // Play appears in AppBar, bottom nav, and TabBar
-      expect(find.text('Play'), findsNWidgets(3));
+      // Play appears in AppBar and bottom nav (TabBar hidden with single tab)
+      expect(find.text('Play'), findsNWidgets(2));
       expect(find.text('History'), findsOneWidget);
       expect(find.text('Statistics'), findsOneWidget);
       expect(find.text('Settings'), findsOneWidget);
