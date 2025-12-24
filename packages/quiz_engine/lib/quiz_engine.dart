@@ -80,3 +80,6 @@ export 'src/utils/default_data_loader.dart';
 // Achievements
 export 'src/achievements/achievement_category.dart';
 export 'src/achievements/base_achievements.dart';
+export 'src/achievements/widgets/achievement_card.dart';
+export 'src/achievements/widgets/achievement_tier_badge.dart';
+export 'src/achievements/widgets/achievements_list.dart';
