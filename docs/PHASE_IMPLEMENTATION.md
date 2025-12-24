@@ -1194,25 +1194,28 @@ New exports added:
 
 ---
 
-### Sprint 8.9: Integration - QuizBloc & Home Screen
+### Sprint 8.9: Integration - QuizBloc & Home Screen ✅
 
 **Goal:** Integrate achievements into the quiz flow and navigation.
 
 **Tasks:**
-- [ ] Call `AchievementEngine.checkAndUnlock()` after quiz completion in QuizBloc
-- [ ] Show `AchievementNotification` when achievements unlock
-- [ ] Add "Achievements" tab to `QuizTabConfig` options
-- [ ] Update `QuizHomeScreen` to support Achievements tab
-- [ ] Add achievements data provider to home screen
-- [ ] Update `QuizApp` to include AchievementEngine initialization
-- [ ] Update FlagsQuiz main.dart to enable achievements tab
-- [ ] Write integration tests
+- [x] Call `AchievementEngine.checkAndUnlock()` after quiz completion in QuizBloc
+- [x] Show `AchievementNotification` when achievements unlock
+- [x] Add "Achievements" tab to `QuizTabConfig` options
+- [x] Update `QuizHomeScreen` to support Achievements tab
+- [x] Add achievements data provider to home screen
+- [x] Update `QuizApp` to include AchievementEngine initialization
+- [x] Update FlagsQuiz main.dart to enable achievements tab
+- [x] Write integration tests
 
-**Files to Update:**
-- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart`
-- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
-- `packages/quiz_engine/lib/src/app/quiz_tab.dart`
-- `apps/flagsquiz/lib/main.dart`
+**Files Updated:**
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Added `onQuizCompleted` callback
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` - Added achievements tab support
+- ✅ `packages/quiz_engine/lib/src/app/quiz_tab.dart` - Added `AchievementsTab` and factories
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added achievements data provider
+
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/achievements/achievement_integration.dart` - Integration helper
 
 ---
 
