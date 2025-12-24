@@ -131,52 +131,58 @@ class AchievementCard extends StatelessWidget {
     ThemeData theme,
     QuizEngineLocalizations l10n,
   ) {
-    return Card(
-      elevation: style.elevation,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(style.borderRadius),
-      ),
-      color: style.lockedBackgroundColor ??
-          theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(style.borderRadius),
-        child: Padding(
-          padding: style.padding,
-          child: Row(
-            children: [
-              _buildHiddenIcon(theme),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      l10n.hiddenAchievement,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: theme.colorScheme.onSurface
-                            .withValues(alpha: style.lockedOpacity),
+    return Semantics(
+      label: '${l10n.hiddenAchievement}. ${l10n.hiddenAchievementDesc}',
+      hint: onTap != null ? l10n.accessibilityDoubleTapToView : null,
+      button: onTap != null,
+      child: Card(
+        elevation: style.elevation,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(style.borderRadius),
+        ),
+        color: style.lockedBackgroundColor ??
+            theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(style.borderRadius),
+          excludeFromSemantics: true,
+          child: Padding(
+            padding: style.padding,
+            child: Row(
+              children: [
+                _buildHiddenIcon(theme),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        l10n.hiddenAchievement,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: style.lockedOpacity),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      l10n.hiddenAchievementDesc,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant
-                            .withValues(alpha: style.lockedOpacity),
+                      const SizedBox(height: 4),
+                      Text(
+                        l10n.hiddenAchievementDesc,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant
+                              .withValues(alpha: style.lockedOpacity),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Icon(
-                Icons.help_outline,
-                color: theme.colorScheme.onSurfaceVariant
-                    .withValues(alpha: style.lockedOpacity),
-              ),
-            ],
+                Icon(
+                  Icons.help_outline,
+                  color: theme.colorScheme.onSurfaceVariant
+                      .withValues(alpha: style.lockedOpacity),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -204,39 +210,64 @@ class AchievementCard extends StatelessWidget {
 
   Widget _buildCard(BuildContext context, ThemeData theme) {
     final isUnlocked = data.isUnlocked;
+    final l10n = QuizL10n.of(context);
+    final tierName = data.achievement.tier.name;
 
-    return Card(
-      elevation: style.elevation,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(style.borderRadius),
-      ),
-      color: isUnlocked
-          ? style.backgroundColor
-          : style.lockedBackgroundColor ??
-              theme.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: style.lockedOpacity),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(style.borderRadius),
-        child: Padding(
-          padding: style.padding,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildIcon(context, theme, isUnlocked),
-                  const SizedBox(width: 16),
-                  Expanded(child: _buildContent(context, theme, isUnlocked)),
-                  _buildTrailing(context, theme, isUnlocked),
+    // Build accessibility label
+    final String semanticLabel;
+    if (isUnlocked) {
+      semanticLabel = l10n.accessibilityAchievementUnlocked(
+        data.achievement.name(context),
+        tierName,
+        data.achievement.points,
+      );
+    } else {
+      semanticLabel = l10n.accessibilityAchievementLocked(
+        data.achievement.name(context),
+        tierName,
+        data.achievement.points,
+        data.progress.percentageInt,
+      );
+    }
+
+    return Semantics(
+      label: semanticLabel,
+      hint: onTap != null ? l10n.accessibilityDoubleTapToView : null,
+      button: onTap != null,
+      child: Card(
+        elevation: style.elevation,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(style.borderRadius),
+        ),
+        color: isUnlocked
+            ? style.backgroundColor
+            : style.lockedBackgroundColor ??
+                theme.colorScheme.surfaceContainerHighest
+                    .withValues(alpha: style.lockedOpacity),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(style.borderRadius),
+          excludeFromSemantics: true,
+          child: Padding(
+            padding: style.padding,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildIcon(context, theme, isUnlocked),
+                    const SizedBox(width: 16),
+                    Expanded(child: _buildContent(context, theme, isUnlocked)),
+                    _buildTrailing(context, theme, isUnlocked),
+                  ],
+                ),
+                if (style.showProgressBar && data.showProgress) ...[
+                  const SizedBox(height: 12),
+                  _buildProgressBar(context, theme),
                 ],
-              ),
-              if (style.showProgressBar && data.showProgress) ...[
-                const SizedBox(height: 12),
-                _buildProgressBar(context, theme),
               ],
-            ],
+            ),
           ),
         ),
       ),
@@ -374,14 +405,22 @@ class AchievementCard extends StatelessWidget {
   Widget _buildProgressBar(BuildContext context, ThemeData theme) {
     final progress = data.progress.percentage;
     final tierColor = data.achievement.tier.color;
+    final l10n = QuizL10n.of(context);
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(style.progressBarHeight / 2),
-      child: LinearProgressIndicator(
-        value: progress,
-        minHeight: style.progressBarHeight,
-        backgroundColor: theme.colorScheme.surfaceContainerHighest,
-        valueColor: AlwaysStoppedAnimation<Color>(tierColor),
+    return Semantics(
+      label: l10n.accessibilityProgressBar(
+        data.progress.currentValue,
+        data.progress.targetValue,
+      ),
+      value: '${data.progress.percentageInt}%',
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(style.progressBarHeight / 2),
+        child: LinearProgressIndicator(
+          value: progress,
+          minHeight: style.progressBarHeight,
+          backgroundColor: theme.colorScheme.surfaceContainerHighest,
+          valueColor: AlwaysStoppedAnimation<Color>(tierColor),
+        ),
       ),
     );
   }
@@ -409,66 +448,93 @@ class AchievementCardCompact extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = QuizL10n.of(context);
     final isUnlocked = data.isUnlocked;
     final isHidden = data.isHiddenAndLocked;
     final tierColor = data.achievement.tier.color;
+    final tierName = data.achievement.tier.name;
 
-    return Tooltip(
-      message: isHidden ? '???' : data.achievement.name(context),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: isUnlocked
-                ? tierColor.withValues(alpha: 0.15)
-                : theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(12),
-            border: isUnlocked
-                ? Border.all(color: tierColor.withValues(alpha: 0.5), width: 2)
-                : null,
-          ),
-          child: Stack(
-            children: [
-              Center(
-                child: Opacity(
-                  opacity: isUnlocked ? 1.0 : 0.4,
-                  child: Text(
-                    isHidden ? '?' : data.achievement.icon,
-                    style: TextStyle(fontSize: size * 0.4),
-                  ),
-                ),
-              ),
-              if (isUnlocked)
-                Positioned(
-                  top: 4,
-                  right: 4,
-                  child: Icon(
-                    Icons.check_circle,
-                    size: 16,
-                    color: Colors.green,
-                  ),
-                ),
-              if (!isUnlocked && data.showProgress)
-                Positioned(
-                  bottom: 4,
-                  left: 4,
-                  right: 4,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(2),
-                    child: LinearProgressIndicator(
-                      value: data.progress.percentage,
-                      minHeight: 4,
-                      backgroundColor:
-                          theme.colorScheme.surfaceContainerHighest,
-                      valueColor: AlwaysStoppedAnimation<Color>(tierColor),
+    // Build accessibility label
+    final String semanticLabel;
+    if (isHidden) {
+      semanticLabel = '${l10n.hiddenAchievement}. ${l10n.hiddenAchievementDesc}';
+    } else if (isUnlocked) {
+      semanticLabel = l10n.accessibilityAchievementUnlocked(
+        data.achievement.name(context),
+        tierName,
+        data.achievement.points,
+      );
+    } else {
+      semanticLabel = l10n.accessibilityAchievementLocked(
+        data.achievement.name(context),
+        tierName,
+        data.achievement.points,
+        data.progress.percentageInt,
+      );
+    }
+
+    return Semantics(
+      label: semanticLabel,
+      hint: onTap != null ? l10n.accessibilityDoubleTapToView : null,
+      button: onTap != null,
+      child: Tooltip(
+        message: isHidden ? '???' : data.achievement.name(context),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          excludeFromSemantics: true,
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: isUnlocked
+                  ? tierColor.withValues(alpha: 0.15)
+                  : theme.colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(12),
+              border: isUnlocked
+                  ? Border.all(color: tierColor.withValues(alpha: 0.5), width: 2)
+                  : null,
+            ),
+            child: Stack(
+              children: [
+                Center(
+                  child: Opacity(
+                    opacity: isUnlocked ? 1.0 : 0.4,
+                    child: Text(
+                      isHidden ? '?' : data.achievement.icon,
+                      style: TextStyle(fontSize: size * 0.4),
                     ),
                   ),
                 ),
-            ],
+                if (isUnlocked)
+                  Positioned(
+                    top: 4,
+                    right: 4,
+                    child: Icon(
+                      Icons.check_circle,
+                      size: 16,
+                      color: Colors.green,
+                    ),
+                  ),
+                if (!isUnlocked && data.showProgress)
+                  Positioned(
+                    bottom: 4,
+                    left: 4,
+                    right: 4,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(2),
+                      child: LinearProgressIndicator(
+                        value: data.progress.percentage,
+                        minHeight: 4,
+                        backgroundColor:
+                            theme.colorScheme.surfaceContainerHighest,
+                        valueColor: AlwaysStoppedAnimation<Color>(tierColor),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
         ),
       ),
