@@ -42,6 +42,10 @@ void main() async {
       storageService: storageService,
       achievementsDataProvider: () =>
           achievementsProvider.loadAchievementsData(),
+      onQuizCompleted: (results) async {
+        // Check and unlock achievements after quiz completion
+        await achievementService.checkAll();
+      },
       config: QuizAppConfig(
         title: 'Flags Quiz',
         appLocalizationDelegates: AppLocalizations.localizationsDelegates,
