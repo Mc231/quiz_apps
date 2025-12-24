@@ -136,7 +136,6 @@ class MockStatisticsDataSource implements StatisticsDataSource {
     required int totalPoints,
   }) async {}
 
-  @override
   Future<void> updateStatistics(GlobalStatistics stats) async {
     _stats = stats;
   }
