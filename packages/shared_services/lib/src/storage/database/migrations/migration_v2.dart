@@ -76,6 +76,12 @@ class MigrationV2 extends Migration {
       ADD COLUMN high_score_95_count INTEGER DEFAULT 0
     ''');
 
+    // Consecutive perfect scores (for perfect streak achievements)
+    await db.execute('''
+      ALTER TABLE $globalStatisticsTable
+      ADD COLUMN consecutive_perfect_scores INTEGER DEFAULT 0
+    ''');
+
     // Total achievements unlocked (cached for quick display)
     await db.execute('''
       ALTER TABLE $globalStatisticsTable
@@ -116,6 +122,7 @@ class GlobalStatisticsColumnsV2 {
   static const String sessionsNoHints = 'sessions_no_hints';
   static const String highScore90Count = 'high_score_90_count';
   static const String highScore95Count = 'high_score_95_count';
+  static const String consecutivePerfectScores = 'consecutive_perfect_scores';
   static const String totalAchievementsUnlocked = 'total_achievements_unlocked';
   static const String totalAchievementPoints = 'total_achievement_points';
 }
