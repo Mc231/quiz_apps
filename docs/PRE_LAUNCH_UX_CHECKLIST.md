@@ -4,8 +4,8 @@ This checklist contains features to implement before publishing quiz apps to imp
 
 **Current Status:** Based on flagsquiz app analysis
 - ✅ Solid foundation: responsive design, 60+ languages, clean architecture
-- ✅ Implemented: sound effects, haptic feedback, settings, statistics tracking, results screen, answer feedback, database storage, logger, hint system, lives/hearts system, game modes (standard/timed/lives/endless/survival)
-- ⏳ Remaining: onboarding, achievements UI, statistics UI screen, ads, privacy policy
+- ✅ Implemented: sound effects, haptic feedback, settings, statistics tracking, results screen, answer feedback, database storage, logger, hint system, lives/hearts system, game modes (standard/timed/lives/endless/survival), achievements system (67 achievements with full UI and accessibility)
+- ⏳ Remaining: onboarding, statistics UI screen, ads, privacy policy
 
 ---
 
@@ -102,24 +102,26 @@ This checklist contains features to implement before publishing quiz apps to imp
   - File: `apps/flagsquiz/lib/ui/statistics/statistics_screen.dart`
 
 ### Achievements System
-- [ ] **Define Achievements**
-  - [ ] Perfect Score (100% on any quiz)
-  - [ ] Continental Expert (90%+ on each continent)
-  - [ ] Global Master (90%+ on All Countries)
-  - [ ] Speed Demon (complete quiz quickly, if timed)
-  - [ ] Streak achievements (3, 7, 14, 30 days)
-  - [ ] Country milestones (10, 50, 100, 200 countries learned)
-  - [ ] Quiz count milestones (10, 50, 100 quizzes)
+- [x] **Define Achievements** (67 total achievements)
+  - [x] Perfect Score (100% on any quiz)
+  - [x] Continental Expert (90%+ on each continent)
+  - [x] Global Master (90%+ on All Countries)
+  - [x] Speed Demon (complete quiz quickly, if timed)
+  - [x] Streak achievements (3, 7, 14, 30 days)
+  - [x] Country milestones (10, 50, 100, 200 countries learned)
+  - [x] Quiz count milestones (10, 50, 100 quizzes)
 
-- [ ] **Achievement UI**
-  - [ ] Achievement notification popup
-  - [ ] Achievements gallery/collection screen
-  - [ ] Show locked vs unlocked achievements
-  - [ ] Progress bars for incremental achievements
+- [x] **Achievement UI**
+  - [x] Achievement notification popup (with confetti animation)
+  - [x] Achievements gallery/collection screen (with filters)
+  - [x] Show locked vs unlocked achievements (with hidden tier support)
+  - [x] Progress bars for incremental achievements
+  - [x] Full accessibility support (screen reader labels)
+  - [x] Sound effects on unlock
   - Files:
-    - `apps/flagsquiz/lib/models/achievement.dart`
-    - `apps/flagsquiz/lib/ui/achievements/achievements_screen.dart`
-    - `apps/flagsquiz/lib/services/achievement_service.dart`
+    - `packages/shared_services/lib/src/achievements/` - Core achievement engine
+    - `packages/quiz_engine/lib/src/achievements/` - UI components
+    - `apps/flagsquiz/lib/achievements/` - App-specific achievements
 
 ### Hint System
 - [x] **Hint Types**
@@ -526,7 +528,7 @@ apps/flagsquiz/lib/
 8. ⏳ Privacy policy - NOT STARTED
 
 **Should-Have (Launch Soon After):**
-9. Achievements system
+9. ✅ Achievements system - DONE (67 achievements, full UI, accessibility)
 10. ✅ Hint system - DONE
 11. Daily challenges
 12. IAP (remove ads)
@@ -539,6 +541,6 @@ apps/flagsquiz/lib/
 
 ---
 
-**Last Updated:** 2025-12-23
-**Status:** Core features implemented, MVP nearly complete
+**Last Updated:** 2025-12-24
+**Status:** Core features implemented, achievements complete, MVP nearly ready
 **Estimated Time to MVP:** 1-2 weeks (onboarding, ads, privacy policy remaining)
