@@ -285,6 +285,56 @@ feat: add audio question support to quiz engine
 6. **Keep packages focused** - core logic in quiz_engine_core, UI in quiz_engine
 7. **Shared services** should be app-agnostic
 
+## Coding Rules
+
+### 1. Localization (MANDATORY)
+
+**Every UI-related string MUST be localized:**
+- Never hardcode user-facing strings in Dart code
+- All strings must come from localization (ARB files)
+- Add new strings to the appropriate `.arb` file
+- Use the generated localization class (e.g., `AppLocalizations`, `QuizLocalizations`)
+
+```dart
+// ❌ WRONG - Hardcoded string
+Text('Complete your first quiz')
+
+// ✅ CORRECT - Localized string
+Text(l10n.firstQuizDescription)
+```
+
+**ARB file locations:**
+- `packages/quiz_engine/lib/src/l10n/` - Shared quiz UI strings
+- `apps/flagsquiz/lib/l10n/` - App-specific strings
+
+### 2. Sealed Classes (MANDATORY)
+
+**Every sealed class MUST have factory methods for all cases:**
+- Provides cleaner API for creating instances
+- Makes code more readable and maintainable
+- Ensures all cases are covered
+
+```dart
+// ❌ WRONG - No factory methods
+sealed class QuizModeConfig {
+  const QuizModeConfig();
+}
+
+class StandardMode extends QuizModeConfig { ... }
+class TimedMode extends QuizModeConfig { ... }
+
+// ✅ CORRECT - Factory methods for all cases
+sealed class QuizModeConfig {
+  const QuizModeConfig();
+
+  factory QuizModeConfig.standard({bool allowSkip = false}) = StandardMode;
+  factory QuizModeConfig.timed({int timePerQuestion = 30}) = TimedMode;
+  factory QuizModeConfig.lives({int lives = 3}) = LivesMode;
+  factory QuizModeConfig.endless() = EndlessMode;
+  factory QuizModeConfig.survival({int lives = 3, int timePerQuestion = 30}) = SurvivalMode;
+}
+```
+
 ## Troubleshooting
 
 ### "Package not found" errors
