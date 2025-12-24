@@ -7,6 +7,7 @@ import '../models/quiz_category.dart';
 import '../screens/session_detail_screen.dart';
 import '../screens/session_history_screen.dart';
 import '../widgets/question_review_widget.dart';
+import '../screens/statistics_dashboard_screen.dart';
 import '../screens/statistics_screen.dart';
 import '../utils/default_data_loader.dart';
 import '../widgets/session_card.dart';
@@ -597,16 +598,21 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   Widget _buildStatisticsTab(BuildContext context) {
-    final l10n = QuizL10n.of(context);
-    final texts = _createStatisticsTexts(l10n);
-
-    return StatisticsScreen(
-      statistics: _statisticsData.statistics,
-      texts: texts,
+    // Convert to dashboard data format
+    final dashboardData = StatisticsDashboardData(
+      globalStatistics: _statisticsData.statistics,
       recentSessions: _statisticsData.recentSessions,
+      weeklyTrend: _statisticsData.statistics.weeklyTrend,
+      trendDirection: _statisticsData.statistics.trendDirection,
+    );
+
+    return StatisticsDashboardScreen(
+      data: dashboardData,
       isLoading: _statisticsData.isLoading,
       onSessionTap: _handleSessionTap,
       onViewAllSessions: widget.onViewAllSessions,
+      // Show tabs for enhanced UI - can be disabled with showTabs: false
+      showTabs: true,
     );
   }
 
@@ -646,36 +652,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
     );
   }
 
-  StatisticsTexts _createStatisticsTexts(QuizLocalizations l10n) {
-    return StatisticsTexts(
-      title: l10n.statistics,
-      emptyTitle: l10n.noStatisticsYet,
-      emptySubtitle: l10n.playQuizzesToSee,
-      overviewLabel: l10n.overview,
-      insightsLabel: l10n.insights,
-      recentSessionsLabel: l10n.recentSessions,
-      viewAllLabel: l10n.viewAll,
-      totalSessionsLabel: l10n.totalSessions,
-      totalQuestionsLabel: l10n.totalQuestions,
-      averageScoreLabel: l10n.averageScore,
-      bestScoreLabel: l10n.bestScore,
-      accuracyLabel: l10n.accuracy,
-      timePlayedLabel: l10n.timePlayed,
-      perfectScoresLabel: l10n.perfectScores,
-      currentStreakLabel: l10n.currentStreak,
-      bestStreakLabel: l10n.bestStreak,
-      weeklyTrendLabel: l10n.weeklyTrend,
-      improvingLabel: l10n.improving,
-      decliningLabel: l10n.declining,
-      stableLabel: l10n.stable,
-      questionsLabel: l10n.questions,
-      daysLabel: l10n.days,
-      formatDate: widget.formatDate ?? _defaultFormatDate,
-      formatStatus: widget.formatStatus ?? _defaultFormatStatus,
-      formatDuration: widget.formatDuration ?? _defaultFormatDuration,
-    );
-  }
-
   String _defaultFormatDate(DateTime date) {
     final l10n = QuizL10n.of(context);
     final now = DateTime.now();
@@ -708,23 +684,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
       default:
         return (status, Colors.grey);
     }
-  }
-
-  String _defaultFormatDuration(int seconds) {
-    final l10n = QuizL10n.of(context);
-    if (seconds < 60) {
-      return '$seconds ${l10n.seconds}';
-    }
-    if (seconds < 3600) {
-      final minutes = seconds ~/ 60;
-      return '$minutes ${l10n.minutes}';
-    }
-    final hours = seconds ~/ 3600;
-    final minutes = (seconds % 3600) ~/ 60;
-    if (minutes == 0) {
-      return '$hours ${l10n.hours}';
-    }
-    return '$hours ${l10n.hours} $minutes ${l10n.minutes}';
   }
 
   Widget _buildBottomNavigation(BuildContext context) {
