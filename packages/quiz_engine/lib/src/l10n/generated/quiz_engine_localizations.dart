@@ -1674,6 +1674,66 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Complete Survival with 1 life remaining'**
   String get achievementClutchDesc;
+
+  /// Empty state when no achievements match filter
+  ///
+  /// In en, this message translates to:
+  /// **'No achievements found'**
+  String get noAchievementsFound;
+
+  /// Hint when no achievements match filter
+  ///
+  /// In en, this message translates to:
+  /// **'Try changing the filter'**
+  String get tryChangingFilter;
+
+  /// Empty state for category with no achievements
+  ///
+  /// In en, this message translates to:
+  /// **'No achievements in this category'**
+  String get noAchievementsInCategory;
+
+  /// Category name for uncategorized achievements
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get otherAchievements;
+
+  /// Filter option: show all achievements
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// Filter option: show unlocked achievements
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocked'**
+  String get filterUnlocked;
+
+  /// Filter option: show achievements with progress
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get filterInProgress;
+
+  /// Filter option: show locked achievements
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get filterLocked;
+
+  /// Filter option: show all achievement tiers
+  ///
+  /// In en, this message translates to:
+  /// **'All Tiers'**
+  String get allTiers;
+
+  /// Achievement progress display
+  ///
+  /// In en, this message translates to:
+  /// **'{current}/{target}'**
+  String achievementProgress(int current, int target);
 }
 
 class _QuizEngineLocalizationsDelegate
