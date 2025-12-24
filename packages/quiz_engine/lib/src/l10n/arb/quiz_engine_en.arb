@@ -1301,5 +1301,59 @@
   "achievementClutchDesc": "Complete Survival with 1 life remaining",
   "@achievementClutchDesc": {
     "description": "Achievement description: clutch"
+  },
+
+  "noAchievementsFound": "No achievements found",
+  "@noAchievementsFound": {
+    "description": "Empty state when no achievements match filter"
+  },
+
+  "tryChangingFilter": "Try changing the filter",
+  "@tryChangingFilter": {
+    "description": "Hint when no achievements match filter"
+  },
+
+  "noAchievementsInCategory": "No achievements in this category",
+  "@noAchievementsInCategory": {
+    "description": "Empty state for category with no achievements"
+  },
+
+  "otherAchievements": "Other",
+  "@otherAchievements": {
+    "description": "Category name for uncategorized achievements"
+  },
+
+  "filterAll": "All",
+  "@filterAll": {
+    "description": "Filter option: show all achievements"
+  },
+
+  "filterUnlocked": "Unlocked",
+  "@filterUnlocked": {
+    "description": "Filter option: show unlocked achievements"
+  },
+
+  "filterInProgress": "In Progress",
+  "@filterInProgress": {
+    "description": "Filter option: show achievements with progress"
+  },
+
+  "filterLocked": "Locked",
+  "@filterLocked": {
+    "description": "Filter option: show locked achievements"
+  },
+
+  "allTiers": "All Tiers",
+  "@allTiers": {
+    "description": "Filter option: show all achievement tiers"
+  },
+
+  "achievementProgress": "{current}/{target}",
+  "@achievementProgress": {
+    "description": "Achievement progress display",
+    "placeholders": {
+      "current": {"type": "int"},
+      "target": {"type": "int"}
+    }
   }
 }
