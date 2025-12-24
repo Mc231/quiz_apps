@@ -235,6 +235,12 @@ class QuizApp extends StatefulWidget {
   /// Callback when an achievement is tapped.
   final void Function(AchievementDisplayData achievement)? onAchievementTap;
 
+  /// Callback invoked when a quiz is completed.
+  ///
+  /// Use this to integrate with achievement systems. The callback receives
+  /// the complete [QuizResults] with all session data.
+  final void Function(QuizResults results)? onQuizCompleted;
+
   /// Builder for the Settings tab content.
   ///
   /// If not provided and Settings tab is in tabs, uses [QuizSettingsScreen].
@@ -272,6 +278,7 @@ class QuizApp extends StatefulWidget {
     this.statisticsDataProvider,
     this.achievementsDataProvider,
     this.onAchievementTap,
+    this.onQuizCompleted,
     this.settingsBuilder,
     this.settingsConfig,
     this.locale,
@@ -492,6 +499,7 @@ class _QuizAppState extends State<QuizApp> {
               dataProvider: () async => questions,
               configManager: configManager,
               storageService: storageAdapter,
+              onQuizCompleted: widget.onQuizCompleted,
             ),
           ),
         ),

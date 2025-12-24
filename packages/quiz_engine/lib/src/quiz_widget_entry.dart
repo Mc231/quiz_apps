@@ -10,6 +10,7 @@ import 'theme/quiz_theme_data.dart';
 /// - Quiz configuration (via ConfigManager or defaultConfig)
 /// - Optional theme customization
 /// - Optional storage service for persisting quiz sessions
+/// - Optional quiz completion callback for achievements/analytics
 ///
 /// All localized UI strings (exit dialog, feedback, hints, etc.) are now
 /// provided by [QuizLocalizations] from the quiz_engine l10n system.
@@ -31,6 +32,13 @@ class QuizWidgetEntry {
   /// Optional storage service for persisting quiz sessions.
   final QuizStorageService? storageService;
 
+  /// Optional callback invoked when the quiz is completed.
+  ///
+  /// Use this to integrate with achievement systems, analytics,
+  /// or any post-quiz processing. The callback receives the complete
+  /// [QuizResults] with all session data.
+  final void Function(QuizResults results)? onQuizCompleted;
+
   /// Creates a `QuizWidgetEntry` with a ConfigManager.
   ///
   /// [title] - Title for the quiz UI
@@ -38,12 +46,14 @@ class QuizWidgetEntry {
   /// [configManager] - Configuration manager with settings integration
   /// [themeData] - Theme customization (defaults to QuizThemeData())
   /// [storageService] - Optional storage service for persisting sessions
+  /// [onQuizCompleted] - Optional callback for achievement/analytics integration
   QuizWidgetEntry({
     required this.title,
     required this.dataProvider,
     required this.configManager,
     this.themeData = const QuizThemeData(),
     this.storageService,
+    this.onQuizCompleted,
   });
 
   /// Creates a `QuizWidgetEntry` with a default configuration.
@@ -56,11 +66,13 @@ class QuizWidgetEntry {
   /// [defaultConfig] - Default quiz configuration
   /// [themeData] - Theme customization (defaults to QuizThemeData())
   /// [storageService] - Optional storage service for persisting sessions
+  /// [onQuizCompleted] - Optional callback for achievement/analytics integration
   QuizWidgetEntry.withDefaultConfig({
     required this.title,
     required this.dataProvider,
     required QuizConfig defaultConfig,
     this.themeData = const QuizThemeData(),
     this.storageService,
+    this.onQuizCompleted,
   }) : configManager = ConfigManager(defaultConfig: defaultConfig);
 }
