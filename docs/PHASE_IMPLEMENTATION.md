@@ -955,16 +955,231 @@ New exports added:
 
 ## Phase 8: Achievements (Not Started)
 
+**Reference:** See [ACHIEVEMENTS_DESIGN.md](./ACHIEVEMENTS_DESIGN.md) for full achievement list and architecture.
+
+**Design Decisions:**
+- Some achievements visible (grayed out), rare/legendary hidden until unlocked
+- Show progress for progressive achievements (7/10)
+- Points system with achievement counter (12/67) and points counter (450 pts)
+- Sound + haptic feedback on unlock
+- New "Achievements" tab in bottom navigation
+
+---
+
+### Sprint 8.1: Core Models
+
+**Goal:** Create achievement data models and trigger types.
+
 **Tasks:**
-- [ ] Create `Achievement` model
-- [ ] Create `AchievementTrigger` hierarchy
-- [ ] Create `AchievementEngine`
+- [ ] Create `Achievement` model with id, name, description, icon, tier, points, target
+- [ ] Create `AchievementTier` enum (common, uncommon, rare, epic, legendary)
+- [ ] Create `AchievementTrigger` sealed class hierarchy
+- [ ] Create `CumulativeTrigger` (total count reaches target)
+- [ ] Create `ThresholdTrigger` (single session meets condition)
+- [ ] Create `StreakTrigger` (consecutive count)
+- [ ] Create `CategoryTrigger` (complete specific category)
+- [ ] Create `ChallengeTrigger` (complete specific challenge mode)
+- [ ] Create `CompositeTrigger` (multiple conditions)
+- [ ] Create `AchievementProgress` model (tracks progress toward achievement)
+- [ ] Create `UnlockedAchievement` model (stored in database)
+- [ ] Write unit tests for all models
+- [ ] Export from shared_services
+
+**Files to Create:**
+- `packages/shared_services/lib/src/achievements/models/achievement.dart`
+- `packages/shared_services/lib/src/achievements/models/achievement_tier.dart`
+- `packages/shared_services/lib/src/achievements/models/achievement_trigger.dart`
+- `packages/shared_services/lib/src/achievements/models/achievement_progress.dart`
+- `packages/shared_services/lib/src/achievements/models/unlocked_achievement.dart`
+- `packages/shared_services/lib/src/achievements/achievements_exports.dart`
+
+---
+
+### Sprint 8.2: Database & Repository
+
+**Goal:** Create database table and repository for storing unlocked achievements.
+
+**Tasks:**
+- [ ] Create `achievements` database table schema
+- [ ] Create database migration (v2)
+- [ ] Create `AchievementDataSource` for CRUD operations
 - [ ] Create `AchievementRepository` interface
-- [ ] Implement repository in app
-- [ ] Create `AchievementNotification` widget
-- [ ] Create `AchievementsScreen`
-- [ ] Define default achievements
-- [ ] Test achievement system
+- [ ] Implement `AchievementRepositoryImpl`
+- [ ] Add methods: getAll, getUnlocked, unlock, updateProgress, getPoints
+- [ ] Register in DI/StorageModule
+- [ ] Write unit tests for data source and repository
+
+**Files to Create:**
+- `packages/shared_services/lib/src/storage/database/tables/achievements_table.dart`
+- `packages/shared_services/lib/src/storage/database/migrations/migration_v2.dart`
+- `packages/shared_services/lib/src/achievements/data_sources/achievement_data_source.dart`
+- `packages/shared_services/lib/src/achievements/repositories/achievement_repository.dart`
+
+---
+
+### Sprint 8.3: Achievement Engine
+
+**Goal:** Create engine that checks conditions and unlocks achievements.
+
+**Tasks:**
+- [ ] Create `AchievementEngine` class
+- [ ] Implement trigger evaluation logic for each trigger type
+- [ ] Add method: `checkAndUnlock(context, session, stats)`
+- [ ] Add method: `checkProgressiveAchievements(stats)`
+- [ ] Add method: `getProgress(achievementId)`
+- [ ] Handle visibility rules (show/hide based on tier)
+- [ ] Add caching for performance
+- [ ] Integrate with QuizBloc (call after quiz completion)
+- [ ] Write unit tests for engine logic
+
+**Files to Create:**
+- `packages/shared_services/lib/src/achievements/engine/achievement_engine.dart`
+- `packages/shared_services/lib/src/achievements/engine/trigger_evaluator.dart`
+
+---
+
+### Sprint 8.4: Achievement Definitions - Generic
+
+**Goal:** Define all 53 generic base achievements.
+
+**Tasks:**
+- [ ] Create `BaseAchievements` class with all generic achievements
+- [ ] Define Beginner achievements (3): first_quiz, first_perfect, first_challenge
+- [ ] Define Progress achievements (11): quizzes_10/50/100/500, questions_100/500/1000/5000, correct_100/500/1000
+- [ ] Define Mastery achievements (7): perfect_5/10/25/50, score_90_10, score_95_10, perfect_streak_3
+- [ ] Define Speed achievements (4): speed_demon, lightning, quick_answer_10/50
+- [ ] Define Streak achievements (4): streak_10/25/50/100
+- [ ] Define Challenge achievements (10): survival/blitz complete/perfect, time_attack_20/30, marathon_50/100, speed_run_fast, all_challenges
+- [ ] Define Dedication achievements (8): time_1h/5h/10h/24h, days_3/7/14/30
+- [ ] Define Skill achievements (6): no_hints, no_hints_10, no_skip, flawless, comeback, clutch
+- [ ] Assign icons (emoji) to each achievement
+- [ ] Assign tiers and points to each achievement
+- [ ] Write tests to verify all achievements are valid
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/achievements/base_achievements.dart`
+
+---
+
+### Sprint 8.5: Achievement Definitions - Flags Quiz
+
+**Goal:** Define all 14 app-specific achievements for Flags Quiz.
+
+**Tasks:**
+- [ ] Create `FlagsAchievements` class extending base achievements
+- [ ] Define Explorer achievements (7): explore_africa/asia/europe/north_america/south_america/oceania, world_traveler
+- [ ] Define Region Mastery achievements (6): master_europe/asia/africa/americas/oceania/world
+- [ ] Define Collection achievements (1): flag_collector
+- [ ] Assign flag-themed icons to each achievement
+- [ ] Assign tiers and points to each achievement
+- [ ] Create combined list of all achievements (generic + app-specific)
+- [ ] Write tests
+
+**Files to Create:**
+- `apps/flagsquiz/lib/achievements/flags_achievements.dart`
+
+---
+
+### Sprint 8.6: UI - Achievement Card & List
+
+**Goal:** Create reusable achievement display widgets.
+
+**Tasks:**
+- [ ] Create `AchievementCard` widget
+- [ ] Show icon, name, description, tier badge
+- [ ] Show progress bar for progressive achievements (7/10)
+- [ ] Show locked state (grayed out) vs unlocked state (colored)
+- [ ] Show points value
+- [ ] Create `AchievementTierBadge` widget (color-coded tier indicator)
+- [ ] Create `AchievementsList` widget (scrollable list of cards)
+- [ ] Support grouping by category
+- [ ] Support filtering (all, unlocked, locked, by tier)
+- [ ] Write widget tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/achievements/widgets/achievement_card.dart`
+- `packages/quiz_engine/lib/src/achievements/widgets/achievement_tier_badge.dart`
+- `packages/quiz_engine/lib/src/achievements/widgets/achievements_list.dart`
+
+---
+
+### Sprint 8.7: UI - Achievements Screen
+
+**Goal:** Create the full achievements screen with stats header.
+
+**Tasks:**
+- [ ] Create `AchievementsScreen` widget
+- [ ] Add header with: achievement counter (12/67), points counter (450 pts)
+- [ ] Add tab bar or filter chips: All, Unlocked, Progress, Locked
+- [ ] Add category sections or grouped list
+- [ ] Show hidden achievements as "???" or "Hidden Achievement"
+- [ ] Add pull-to-refresh
+- [ ] Create `AchievementsScreenConfig` for customization
+- [ ] Write widget tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
+
+---
+
+### Sprint 8.8: UI - Achievement Notification
+
+**Goal:** Create popup notification when achievement unlocks.
+
+**Tasks:**
+- [ ] Create `AchievementNotification` widget (overlay/snackbar style)
+- [ ] Show achievement icon, name, points earned
+- [ ] Add celebration animation (confetti, glow, scale)
+- [ ] Add sound effect on unlock
+- [ ] Add haptic feedback on unlock
+- [ ] Auto-dismiss after 3 seconds or tap to dismiss
+- [ ] Support queuing multiple unlocks
+- [ ] Create `AchievementNotificationController` for showing notifications
+- [ ] Write widget tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/achievements/widgets/achievement_notification.dart`
+- `packages/quiz_engine/lib/src/achievements/achievement_notification_controller.dart`
+
+---
+
+### Sprint 8.9: Integration - QuizBloc & Home Screen
+
+**Goal:** Integrate achievements into the quiz flow and navigation.
+
+**Tasks:**
+- [ ] Call `AchievementEngine.checkAndUnlock()` after quiz completion in QuizBloc
+- [ ] Show `AchievementNotification` when achievements unlock
+- [ ] Add "Achievements" tab to `QuizTabConfig` options
+- [ ] Update `QuizHomeScreen` to support Achievements tab
+- [ ] Add achievements data provider to home screen
+- [ ] Update `QuizApp` to include AchievementEngine initialization
+- [ ] Update FlagsQuiz main.dart to enable achievements tab
+- [ ] Write integration tests
+
+**Files to Update:**
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart`
+- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
+- `packages/quiz_engine/lib/src/app/quiz_tab.dart`
+- `apps/flagsquiz/lib/main.dart`
+
+---
+
+### Sprint 8.10: Polish & Testing
+
+**Goal:** Final polish, edge cases, and comprehensive testing.
+
+**Tasks:**
+- [ ] Add achievement unlock sound to AudioService
+- [ ] Test all 67 achievements can be triggered correctly
+- [ ] Test progress tracking accuracy
+- [ ] Test hidden achievement reveal
+- [ ] Test points calculation
+- [ ] Performance testing (many achievements check)
+- [ ] Edge case testing (offline, app restart, etc.)
+- [ ] Update localization strings for achievements
+- [ ] Add accessibility labels
+- [ ] Write comprehensive test suite
 
 ---
 

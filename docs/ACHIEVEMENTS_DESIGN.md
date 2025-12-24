@@ -354,10 +354,84 @@ sealed class AchievementTrigger {
 
 ---
 
-## Open Questions for Discussion
+## Design Decisions (Finalized)
 
-1. **Should achievements sync across devices?** (requires backend)
-2. **Should we show locked achievements or hide them?**
-3. **Should there be achievement points/gamification score?**
-4. **Should achievements show progress (7/10) or just locked/unlocked?**
-5. **Sound/haptic feedback on unlock?**
+| Question | Decision |
+|----------|----------|
+| **Show locked achievements?** | Show Common/Uncommon/Rare grayed out. Hide Epic/Legendary until unlocked. |
+| **Show progress?** | Yes, show progress bar (7/10) for progressive achievements |
+| **Points system?** | Yes, with achievement counter (12/67) and points counter (450 pts) |
+| **Sound/haptic on unlock?** | Yes, play sound effect + haptic feedback |
+| **Where to show?** | New "Achievements" tab in bottom navigation |
+| **Sync across devices?** | Future consideration (requires backend) |
+
+---
+
+## Visibility Rules
+
+| Tier | Visibility |
+|------|------------|
+| Common 🥉 | Always visible (grayed if locked) |
+| Uncommon 🥈 | Always visible (grayed if locked) |
+| Rare 🥇 | Always visible (grayed if locked) |
+| Epic 💜 | Hidden until unlocked (shows as "???") |
+| Legendary 💎 | Hidden until unlocked (shows as "???") |
+
+---
+
+## UI Components
+
+### Achievement Header
+```
+┌─────────────────────────────────────┐
+│  🏆 Achievements                    │
+│  ────────────────────────────────── │
+│  12/67 Unlocked     ⭐ 450 pts      │
+└─────────────────────────────────────┘
+```
+
+### Achievement Card (Unlocked)
+```
+┌─────────────────────────────────────┐
+│  🎯  First Steps              🥉 10 │
+│       Complete your first quiz      │
+│       ✅ Unlocked                   │
+└─────────────────────────────────────┘
+```
+
+### Achievement Card (In Progress)
+```
+┌─────────────────────────────────────┐
+│  📚  Quiz Master              🥇 50 │
+│       Complete 100 quizzes          │
+│       ████████░░░░░░░░░░░░░  73/100 │
+└─────────────────────────────────────┘
+```
+
+### Achievement Card (Locked)
+```
+┌─────────────────────────────────────┐
+│  🔒  Rising Star              🥈 25 │
+│       Get 5 perfect scores          │
+│       ░░░░░░░░░░░░░░░░░░░░░   0/5   │
+└─────────────────────────────────────┘
+```
+
+### Achievement Card (Hidden)
+```
+┌─────────────────────────────────────┐
+│  ❓  Hidden Achievement       💜    │
+│       Keep playing to discover!     │
+└─────────────────────────────────────┘
+```
+
+### Achievement Notification (Popup)
+```
+┌─────────────────────────────────────┐
+│  🎉 Achievement Unlocked!           │
+│  ──────────────────────────────────│
+│  🎯 First Steps                     │
+│      Complete your first quiz       │
+│                           +10 pts   │
+└─────────────────────────────────────┘
+```
