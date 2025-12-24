@@ -882,30 +882,42 @@ QuizCategory(
 
 ---
 
-### Sprint 7.11: PlayScreen Tabs & Challenges (Future)
+### Sprint 7.11: PlayScreen Tabs ✅
 
 **Goal:** Add tabbed interface to PlayScreen for different content types.
 
-**Proposed Tabs:**
-- **Categories** - Current grid/list of quiz categories
-- **Challenges** - Daily/weekly challenges with special rewards
-- **Practice** - Practice wrong answers from history
-- **Leaderboard** - Local rankings and achievements
+**Implemented Tab Types:**
+- **CategoriesTab** - Display quiz categories in grid/list layout
+- **PracticeTab** - Practice wrong answers from history (async loading)
+- **CustomContentTab** - Fully custom content via builder
 
 **Tasks:**
-- [ ] Design PlayScreen tab structure
-- [ ] Create `PlayScreenTab` sealed class (similar to QuizTab)
-- [ ] Add `ChallengesTab` with daily/weekly challenge cards
-- [ ] Create `Challenge` model with rules, rewards, expiry
-- [ ] Add `PracticeTab` linking to wrong answers from history
-- [ ] Create challenge completion tracking
-- [ ] Add tab configuration to `PlayScreenConfig`
+- [x] Design PlayScreen tab structure with sealed class
+- [x] Create `PlayScreenTab` sealed class with factory constructors
+- [x] Create `CategoriesTab` for category lists
+- [x] Create `PracticeTab` for wrong answer practice (with async loading)
+- [x] Create `CustomContentTab` for custom content
+- [x] Create `TabbedPlayScreen` widget with Material TabBar
+- [x] Add `TabbedPlayScreenConfig` for customization
+- [x] Support configurable initial tab via `initialTabId`
+- [x] Write comprehensive tests (22 tests)
 
-**UI Considerations:**
-- Tabs at top of PlayScreen (below app bar)
-- Or segmented control for 2-3 options
-- Swipeable between tabs
-- Badge indicators for new challenges
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/home/play_screen_tab.dart`
+- ✅ `packages/quiz_engine/lib/src/home/tabbed_play_screen.dart`
+- ✅ `packages/quiz_engine/test/home/tabbed_play_screen_test.dart`
+
+**Files Modified:**
+- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` - integrated TabbedPlayScreen
+- `packages/quiz_engine/lib/quiz_engine.dart` - added exports
+
+**UI Features:**
+- Material TabBar at top of screen (below app bar)
+- Swipeable TabBarView between tabs
+- Configurable tab icons and labels
+- Scrollable tabs option for many tabs
+- Customizable indicator and label colors
+- Integrated into QuizHomeScreen via `playScreenTabs` config
 
 ---
 
