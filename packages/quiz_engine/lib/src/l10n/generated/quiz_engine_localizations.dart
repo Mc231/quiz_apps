@@ -984,6 +984,24 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Lowest'**
   String get lowestScore;
+
+  /// Empty state title when no wrong answers available
+  ///
+  /// In en, this message translates to:
+  /// **'No wrong answers to practice'**
+  String get noPracticeItems;
+
+  /// Empty state description when no wrong answers available
+  ///
+  /// In en, this message translates to:
+  /// **'Complete some quizzes and any wrong answers will appear here for practice'**
+  String get noPracticeItemsDescription;
+
+  /// Practice tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Practice'**
+  String get practice;
 }
 
 class _QuizEngineLocalizationsDelegate
