@@ -34,7 +34,15 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   final bool Function(QuestionEntry)? filter;
 
   /// Callback function to be invoked when the game is over.
+  @Deprecated('Use onQuizCompleted instead for more detailed results')
   Function(String result)? gameOverCallback;
+
+  /// Callback invoked when the quiz is completed with detailed results.
+  ///
+  /// Use this callback to integrate with achievement systems, analytics,
+  /// or any post-quiz processing. The callback receives the complete
+  /// [QuizResults] with all session data.
+  final void Function(QuizResults results)? onQuizCompleted;
 
   /// Configuration manager for loading quiz configuration.
   final ConfigManager configManager;
@@ -107,7 +115,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// [dataProvider] - Function to fetch quiz data
   /// [randomItemPicker] - Random item picker for selecting questions
   /// [filter] - Optional filter function for quiz data
-  /// [gameOverCallback] - Optional callback when quiz ends (deprecated, use QuizCompletedState instead)
+  /// [gameOverCallback] - Optional callback when quiz ends (deprecated, use onQuizCompleted instead)
+  /// [onQuizCompleted] - Callback with detailed results for achievement integration
   /// [configManager] - Configuration manager with default config
   /// [storageService] - Optional storage service for persisting quiz sessions
   /// [quizName] - Human-readable name of the quiz (for display in results)
@@ -116,6 +125,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     this.randomItemPicker, {
     this.filter,
     this.gameOverCallback,
+    this.onQuizCompleted,
     required this.configManager,
     this.storageService,
     this.quizName = 'Quiz',
@@ -386,8 +396,12 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Emit completed state with results
     dispatchState(QuizState.completed(results));
 
+    // Call the new completion callback (for achievement integration)
+    onQuizCompleted?.call(results);
+
     // Also call legacy callback for backward compatibility
     var result = '$correctAnswers / $_totalCount';
+    // ignore: deprecated_member_use_from_same_package
     gameOverCallback?.call(result);
   }
 
