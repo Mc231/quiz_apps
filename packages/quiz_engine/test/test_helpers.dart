@@ -18,6 +18,6 @@ Widget wrapWithLocalizations(Widget child) {
       GlobalCupertinoLocalizations.delegate,
     ],
     supportedLocales: const [Locale('en')],
-    home: child,
+    home: Scaffold(body: child),
   );
 }
