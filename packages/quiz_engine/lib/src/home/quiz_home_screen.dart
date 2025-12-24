@@ -235,7 +235,8 @@ class QuizHomeScreen extends StatefulWidget {
   State<QuizHomeScreen> createState() => _QuizHomeScreenState();
 }
 
-class _QuizHomeScreenState extends State<QuizHomeScreen> {
+class _QuizHomeScreenState extends State<QuizHomeScreen>
+    with WidgetsBindingObserver {
   late int _currentIndex;
   HistoryTabData _historyData = const HistoryTabData();
   StatisticsTabData _statisticsData = StatisticsTabData.empty();
@@ -274,6 +275,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _currentIndex = widget.config.tabConfig.initialIndex;
     if (widget.storageService != null) {
       _dataLoader = DefaultDataLoader(widget.storageService!);
@@ -290,6 +292,21 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
       } else {
         _dataLoader = null;
       }
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    // Reload data when app is resumed to ensure fresh statistics
+    if (state == AppLifecycleState.resumed) {
+      _loadDataForCurrentTab();
     }
   }
 
@@ -505,16 +522,19 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   }
 
   void _onTabSelected(int index) {
-    if (index == _currentIndex) return;
+    final isSameTab = index == _currentIndex;
 
-    setState(() {
-      _currentIndex = index;
-    });
+    if (!isSameTab) {
+      setState(() {
+        _currentIndex = index;
+      });
 
-    // Notify callback
-    widget.config.tabConfig.onTabSelected?.call(_tabs[index], index);
+      // Notify callback
+      widget.config.tabConfig.onTabSelected?.call(_tabs[index], index);
+    }
 
-    // Load data for the new tab
+    // Always reload data for the tab (even if already selected)
+    // This ensures fresh data when tapping an already-selected tab
     _loadDataForCurrentTab();
   }
 
