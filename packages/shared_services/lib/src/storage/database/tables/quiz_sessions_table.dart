@@ -27,6 +27,7 @@ CREATE TABLE $quizSessionsTable (
   time_limit_seconds INTEGER,
   hints_used_50_50 INTEGER DEFAULT 0,
   hints_used_skip INTEGER DEFAULT 0,
+  best_streak INTEGER DEFAULT 0,
   app_version TEXT NOT NULL,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL
@@ -67,6 +68,7 @@ class QuizSessionsColumns {
   static const String timeLimitSeconds = 'time_limit_seconds';
   static const String hintsUsed5050 = 'hints_used_50_50';
   static const String hintsUsedSkip = 'hints_used_skip';
+  static const String bestStreak = 'best_streak';
   static const String appVersion = 'app_version';
   static const String createdAt = 'created_at';
   static const String updatedAt = 'updated_at';
