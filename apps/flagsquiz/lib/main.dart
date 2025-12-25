@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart' show QuizResults;
 import 'package:shared_services/shared_services.dart';
 
 import 'achievements/flags_achievements_data_provider.dart';
@@ -40,6 +41,26 @@ void main() async {
   // Sync achievements on app start to catch any missed unlocks
   await achievementService.checkAll();
 
+  // Shared callback for quiz completion (used by both regular quizzes and challenges)
+  Future<void> handleQuizCompleted(QuizResults results) async {
+    // Refresh category and challenge data for achievements
+    await achievementsProvider.refreshCategoryData();
+    await achievementsProvider.refreshChallengeData();
+
+    // Get the completed session to check session-based achievements
+    final sessionId = results.sessionId;
+    if (sessionId != null) {
+      final session = await sessionRepository.getSession(sessionId);
+      if (session != null) {
+        // Check both session-based and cumulative achievements
+        await achievementService.checkAfterSession(session);
+      }
+    } else {
+      // Fallback to checkAll if no session ID
+      await achievementService.checkAll();
+    }
+  }
+
   runApp(
     QuizApp(
       settingsService: settingsService,
@@ -49,23 +70,7 @@ void main() async {
       achievementService: achievementService,
       achievementsDataProvider: () =>
           achievementsProvider.loadAchievementsData(),
-      onQuizCompleted: (results) async {
-        // Refresh category data for category-based achievements
-        await achievementsProvider.refreshCategoryData();
-
-        // Get the completed session to check session-based achievements
-        final sessionId = results.sessionId;
-        if (sessionId != null) {
-          final session = await sessionRepository.getSession(sessionId);
-          if (session != null) {
-            // Check both session-based and cumulative achievements
-            await achievementService.checkAfterSession(session);
-          }
-        } else {
-          // Fallback to checkAll if no session ID
-          await achievementService.checkAll();
-        }
-      },
+      onQuizCompleted: handleQuizCompleted,
       config: QuizAppConfig(
         title: 'Flags Quiz',
         appLocalizationDelegates: AppLocalizations.localizationsDelegates,
@@ -106,6 +111,7 @@ void main() async {
               dataProvider: dataProvider,
               settingsService: settingsService,
               storageService: storageService,
+              onQuizCompleted: handleQuizCompleted,
             ),
           ),
           // Tab 3: Practice - Review wrong answers
