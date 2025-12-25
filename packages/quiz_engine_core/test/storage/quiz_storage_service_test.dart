@@ -143,6 +143,7 @@ void main() {
           required durationSeconds,
           required hintsUsed5050,
           required hintsUsedSkip,
+          bestStreak = 0,
         }) async {
           completeSessionCalled = true;
         },
