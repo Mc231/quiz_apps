@@ -1447,5 +1447,92 @@
     "placeholders": {
       "points": {"type": "int"}
     }
+  },
+
+  "practiceMode": "Practice",
+  "@practiceMode": {
+    "description": "Practice mode label"
+  },
+
+  "practiceEmptyTitle": "No questions to practice",
+  "@practiceEmptyTitle": {
+    "description": "Title when there are no practice questions"
+  },
+
+  "practiceEmptyMessage": "Great job! You've mastered all the questions you got wrong. Keep playing to challenge yourself!",
+  "@practiceEmptyMessage": {
+    "description": "Message when there are no practice questions"
+  },
+
+  "practiceStartQuiz": "Start a Quiz",
+  "@practiceStartQuiz": {
+    "description": "Button to start a quiz from empty practice state"
+  },
+
+  "practiceStartTitle": "Practice Mode",
+  "@practiceStartTitle": {
+    "description": "Practice start screen title"
+  },
+
+  "practiceQuestionCount": "{count, plural, =1{1 question to practice} other{{count} questions to practice}}",
+  "@practiceQuestionCount": {
+    "description": "Number of questions to practice",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "practiceDescription": "These are questions you've answered incorrectly before.",
+  "@practiceDescription": {
+    "description": "Description on practice start screen"
+  },
+
+  "startPractice": "Start Practice",
+  "@startPractice": {
+    "description": "Button to start practice session"
+  },
+
+  "practiceCompleteTitle": "Practice Complete!",
+  "@practiceCompleteTitle": {
+    "description": "Title when practice session is complete"
+  },
+
+  "practiceCorrectCount": "{count, plural, =1{1 correct} other{{count} correct}}",
+  "@practiceCorrectCount": {
+    "description": "Number of correct answers in practice",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "practiceNeedMorePractice": "{count, plural, =1{1 needs more practice} other{{count} need more practice}}",
+  "@practiceNeedMorePractice": {
+    "description": "Number of questions needing more practice",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "practiceKeepGoing": "Keep practicing to master all the questions!",
+  "@practiceKeepGoing": {
+    "description": "Encouragement message after practice"
+  },
+
+  "practiceAllCorrect": "Perfect! You've mastered all the questions!",
+  "@practiceAllCorrect": {
+    "description": "Message when all practice answers are correct"
+  },
+
+  "practiceDone": "Done",
+  "@practiceDone": {
+    "description": "Button to finish practice"
+  },
+
+  "wrongCount": "Wrong {count, plural, =1{1 time} other{{count} times}}",
+  "@wrongCount": {
+    "description": "How many times a question was answered incorrectly",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
   }
 }
