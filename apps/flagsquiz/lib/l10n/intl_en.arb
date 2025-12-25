@@ -1236,6 +1236,14 @@
   "@play": {
     "description": "Play tab/screen title"
   },
+  "challenges": "Challenges",
+  "@challenges": {
+    "description": "Challenges tab label"
+  },
+  "practice": "Practice",
+  "@practice": {
+    "description": "Practice tab label"
+  },
   "questions": "questions",
   "@questions": {
     "description": "Label for questions count"
