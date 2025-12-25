@@ -1846,6 +1846,22 @@ score = sum(basePoints * (1 + streak * 0.5)) for each correct answer
 
 ---
 
+## Future Features (Backlog)
+
+### Score-Based Achievements
+
+**Description:** Add achievements that are unlocked based on score milestones.
+
+**Examples:**
+- "First 1000" - Score 1000+ points in a single session
+- "Score Master" - Score 5000+ points in a single session
+- "Perfect Speed" - Get maximum time bonus on all questions
+- "High Roller" - Accumulate 50,000 total points
+
+**Priority:** Medium (depends on Sprint 8.12 Scoring System)
+
+---
+
 ## Future Sprints (Backlog)
 
 ### Sprint 4.4: UI Testing & Polish
