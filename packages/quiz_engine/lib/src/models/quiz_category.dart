@@ -66,6 +66,12 @@ class QuizCategory {
   /// Can store additional app-specific data.
   final Map<String, dynamic>? metadata;
 
+  /// Whether to show answer feedback for quizzes in this category.
+  ///
+  /// If null, uses the global default from UIBehaviorConfig.
+  /// Can be overridden by mode-specific settings.
+  final bool? showAnswerFeedback;
+
   /// Creates a [QuizCategory].
   ///
   /// [id] and [title] are required.
@@ -78,6 +84,7 @@ class QuizCategory {
     this.icon,
     this.config,
     this.metadata,
+    this.showAnswerFeedback,
   });
 
   /// Creates a copy of this category with the given fields replaced.
@@ -89,6 +96,7 @@ class QuizCategory {
     IconData? icon,
     QuizConfig? config,
     Map<String, dynamic>? metadata,
+    bool? showAnswerFeedback,
   }) {
     return QuizCategory(
       id: id ?? this.id,
@@ -98,6 +106,7 @@ class QuizCategory {
       icon: icon ?? this.icon,
       config: config ?? this.config,
       metadata: metadata ?? this.metadata,
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
     );
   }
 
