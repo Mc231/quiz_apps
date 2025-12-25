@@ -1,10 +1,10 @@
 import 'base_config.dart';
 
 /// Configuration for UI feedback behavior during quiz
+///
+/// Note: `showAnswerFeedback` has been moved to per-category/per-mode
+/// configuration in QuizCategory and QuizModeConfig.
 class UIBehaviorConfig extends BaseConfig {
-  /// Show visual feedback after answering (correct/incorrect indication)
-  final bool showAnswerFeedback;
-
   /// Duration to show feedback before moving to next question (milliseconds)
   final int answerFeedbackDuration;
 
@@ -21,7 +21,6 @@ class UIBehaviorConfig extends BaseConfig {
   final int version;
 
   const UIBehaviorConfig({
-    this.showAnswerFeedback = true,
     this.answerFeedbackDuration = 1500,
     this.playSounds = true,
     this.hapticFeedback = true,
@@ -31,16 +30,14 @@ class UIBehaviorConfig extends BaseConfig {
 
   /// No feedback configuration (instant progression)
   const UIBehaviorConfig.noFeedback()
-    : showAnswerFeedback = false,
-      answerFeedbackDuration = 0,
+    : answerFeedbackDuration = 0,
       playSounds = false,
       hapticFeedback = false,
       showExitConfirmation = true,
       version = 1;
 
-  /// Silent configuration (feedback but no sound/haptics)
+  /// Silent configuration (no sound/haptics)
   const UIBehaviorConfig.silent({
-    this.showAnswerFeedback = true,
     this.answerFeedbackDuration = 1500,
   }) : playSounds = false,
        hapticFeedback = false,
@@ -51,7 +48,6 @@ class UIBehaviorConfig extends BaseConfig {
   Map<String, dynamic> toMap() {
     return {
       'version': version,
-      'showAnswerFeedback': showAnswerFeedback,
       'answerFeedbackDuration': answerFeedbackDuration,
       'playSounds': playSounds,
       'hapticFeedback': hapticFeedback,
@@ -62,7 +58,6 @@ class UIBehaviorConfig extends BaseConfig {
   factory UIBehaviorConfig.fromMap(Map<String, dynamic> map) {
     return UIBehaviorConfig(
       version: map['version'] as int? ?? 1,
-      showAnswerFeedback: map['showAnswerFeedback'] as bool? ?? true,
       answerFeedbackDuration: map['answerFeedbackDuration'] as int? ?? 1500,
       playSounds: map['playSounds'] as bool? ?? true,
       hapticFeedback: map['hapticFeedback'] as bool? ?? true,
@@ -71,14 +66,12 @@ class UIBehaviorConfig extends BaseConfig {
   }
 
   UIBehaviorConfig copyWith({
-    bool? showAnswerFeedback,
     int? answerFeedbackDuration,
     bool? playSounds,
     bool? hapticFeedback,
     bool? showExitConfirmation,
   }) {
     return UIBehaviorConfig(
-      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
       answerFeedbackDuration:
           answerFeedbackDuration ?? this.answerFeedbackDuration,
       playSounds: playSounds ?? this.playSounds,
