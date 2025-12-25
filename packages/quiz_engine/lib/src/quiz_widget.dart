@@ -34,6 +34,7 @@ class QuizWidget extends StatelessWidget {
       storageService: quizEntry.storageService,
       quizName: quizEntry.title,
       onQuizCompleted: quizEntry.onQuizCompleted,
+      filter: quizEntry.filter,
     );
 
     return BlocProvider(

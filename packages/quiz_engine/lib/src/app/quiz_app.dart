@@ -970,9 +970,7 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
 
     final data = _practiceData;
     if (data == null || !data.hasQuestions) {
-      return PracticeEmptyState(
-        onStartQuiz: widget.onStartQuiz,
-      );
+      return const PracticeEmptyState();
     }
 
     // Show practice start screen
@@ -1040,6 +1038,8 @@ class _PracticeQuizScreen extends StatefulWidget {
 class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
   @override
   Widget build(BuildContext context) {
+    final l10n = QuizL10n.of(context);
+
     // Create practice quiz configuration
     // Practice mode: standard (no lives, no time limit), no storage, no hints
     final practiceConfig = QuizConfig(
@@ -1060,10 +1060,13 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
 
     return QuizWidget(
       quizEntry: QuizWidgetEntry(
-        title: '', // Practice mode has no title
-        dataProvider: () async => widget.practiceData.questions,
+        title: l10n.practice, // Localized practice title
+        // Use ALL questions for option generation
+        dataProvider: () async => widget.practiceData.allQuestions,
         configManager: configManager,
         storageService: null, // Practice sessions are not stored
+        // Filter to only ask practice questions
+        filter: widget.practiceData.filter,
         onQuizCompleted: (results) {
           // Collect correctly answered question IDs
           // The question ID is stored in the question's answer.otherOptions['id']

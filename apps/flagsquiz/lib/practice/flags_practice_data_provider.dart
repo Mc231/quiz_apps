@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:quiz_engine/quiz_engine.dart';
-import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
 import 'package:shared_services/shared_services.dart' as services show QuizDataProvider;
 
@@ -38,22 +37,27 @@ class FlagsPracticeDataProvider extends PracticeDataProvider {
     // Load all countries with proper localization
     final countries = await _loadCountriesMap(context);
 
-    // Convert practice questions to quiz format
-    final questions = <QuestionEntry>[];
+    // Build set of practice question IDs and validate they exist
+    final practiceQuestionIds = <String>{};
     final validPracticeQuestions = <PracticeQuestion>[];
 
     for (final pq in practiceQuestions) {
-      final country = countries[pq.questionId];
-      if (country != null) {
-        questions.add(country.toQuestionEntry);
+      if (countries.containsKey(pq.questionId)) {
+        practiceQuestionIds.add(pq.questionId);
         validPracticeQuestions.add(pq);
       }
       // Orphaned questions (removed from app) are silently skipped
     }
 
+    // Convert ALL countries to quiz format for option generation
+    final allQuestions = countries.values
+        .map((country) => country.toQuestionEntry)
+        .toList();
+
     return PracticeTabData(
       practiceQuestions: validPracticeQuestions,
-      questions: questions,
+      allQuestions: allQuestions,
+      practiceQuestionIds: practiceQuestionIds,
     );
   }
 

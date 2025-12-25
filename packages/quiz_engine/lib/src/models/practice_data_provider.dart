@@ -4,20 +4,29 @@ import 'package:shared_services/shared_services.dart';
 
 /// Data for displaying the practice tab.
 ///
-/// Contains both the questions needing practice and their converted
-/// form ready for quiz display.
+/// Contains both the questions needing practice and all available questions
+/// for option generation.
 class PracticeTabData {
   /// Creates [PracticeTabData].
   const PracticeTabData({
     required this.practiceQuestions,
-    required this.questions,
+    required this.allQuestions,
+    required this.practiceQuestionIds,
   });
 
   /// The raw practice questions with metadata (wrong count, dates, etc.).
   final List<PracticeQuestion> practiceQuestions;
 
-  /// The questions converted to quiz format for display.
-  final List<QuestionEntry> questions;
+  /// All available questions for option generation.
+  ///
+  /// The quiz needs all questions to generate wrong answer options,
+  /// even when practicing a subset of questions.
+  final List<QuestionEntry> allQuestions;
+
+  /// Set of question IDs that need practice.
+  ///
+  /// Used to filter which questions to ask during the practice quiz.
+  final Set<String> practiceQuestionIds;
 
   /// Whether there are questions to practice.
   bool get hasQuestions => practiceQuestions.isNotEmpty;
@@ -25,10 +34,17 @@ class PracticeTabData {
   /// The number of questions to practice.
   int get questionCount => practiceQuestions.length;
 
+  /// Creates a filter function for the quiz.
+  ///
+  /// Returns true for questions that need practice.
+  bool Function(QuestionEntry) get filter =>
+      (entry) => practiceQuestionIds.contains(entry.otherOptions['id']);
+
   /// Creates empty practice tab data.
   factory PracticeTabData.empty() => const PracticeTabData(
         practiceQuestions: [],
-        questions: [],
+        allQuestions: [],
+        practiceQuestionIds: {},
       );
 }
 

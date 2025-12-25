@@ -11,6 +11,7 @@ import 'theme/quiz_theme_data.dart';
 /// - Optional theme customization
 /// - Optional storage service for persisting quiz sessions
 /// - Optional quiz completion callback for achievements/analytics
+/// - Optional filter for question selection
 ///
 /// All localized UI strings (exit dialog, feedback, hints, etc.) are now
 /// provided by [QuizLocalizations] from the quiz_engine l10n system.
@@ -39,6 +40,14 @@ class QuizWidgetEntry {
   /// [QuizResults] with all session data.
   final void Function(QuizResults results)? onQuizCompleted;
 
+  /// Optional filter to apply when loading questions.
+  ///
+  /// When provided, only questions that pass this filter will be asked.
+  /// All questions are still available for generating wrong options.
+  /// This is useful for practice mode where you want to practice specific
+  /// questions but need all questions for option generation.
+  final bool Function(QuestionEntry)? filter;
+
   /// Creates a `QuizWidgetEntry` with a ConfigManager.
   ///
   /// [title] - Title for the quiz UI
@@ -47,6 +56,7 @@ class QuizWidgetEntry {
   /// [themeData] - Theme customization (defaults to QuizThemeData())
   /// [storageService] - Optional storage service for persisting sessions
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
+  /// [filter] - Optional filter for question selection
   QuizWidgetEntry({
     required this.title,
     required this.dataProvider,
@@ -54,6 +64,7 @@ class QuizWidgetEntry {
     this.themeData = const QuizThemeData(),
     this.storageService,
     this.onQuizCompleted,
+    this.filter,
   });
 
   /// Creates a `QuizWidgetEntry` with a default configuration.
@@ -67,6 +78,7 @@ class QuizWidgetEntry {
   /// [themeData] - Theme customization (defaults to QuizThemeData())
   /// [storageService] - Optional storage service for persisting sessions
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
+  /// [filter] - Optional filter for question selection
   QuizWidgetEntry.withDefaultConfig({
     required this.title,
     required this.dataProvider,
@@ -74,5 +86,6 @@ class QuizWidgetEntry {
     this.themeData = const QuizThemeData(),
     this.storageService,
     this.onQuizCompleted,
+    this.filter,
   }) : configManager = ConfigManager(defaultConfig: defaultConfig);
 }
