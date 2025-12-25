@@ -349,7 +349,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   }
 
   /// Notifies the game-over state and invokes the callback with the final result.
-  void _notifyGameOver() {
+  Future<void> _notifyGameOver() async {
     _cancelQuestionTimer();
     _cancelTotalTimer();
 
@@ -361,8 +361,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     var skippedAnswers = _answers.where((answer) => answer.isSkipped).length;
     var timedOutAnswers = _answers.where((answer) => answer.isTimeout).length;
 
-    // Complete the session in storage
-    _completeStorageSession(
+    // Complete the session in storage (await to ensure stats are updated
+    // before onQuizCompleted callback, which may check achievements)
+    await _completeStorageSession(
       status: _determineCompletionStatus(),
       totalCorrect: correctAnswers,
       totalFailed: failedAnswers + timedOutAnswers,

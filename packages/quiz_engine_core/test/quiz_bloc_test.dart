@@ -162,6 +162,9 @@ void main() {
 
     await blocWithCallback.processAnswer(mockItems.first);
 
+    // Wait for async _notifyGameOver to complete
+    await Future.delayed(Duration.zero);
+
     expect(callbackCalled, isTrue);
     expect(receivedResults, isNotNull);
     expect(receivedResults!.correctAnswers, equals(1));
