@@ -13,9 +13,27 @@ sealed class QuizModeConfig extends BaseConfig {
     _ => null, // No lives tracking
   };
 
+  /// Whether to show answer feedback for this mode.
+  ///
+  /// If null, uses the category default or global default.
+  /// This allows mode-specific override of feedback behavior.
+  bool? get showAnswerFeedback => switch (this) {
+    StandardMode(:final showAnswerFeedback) => showAnswerFeedback,
+    TimedMode(:final showAnswerFeedback) => showAnswerFeedback,
+    LivesMode(:final showAnswerFeedback) => showAnswerFeedback,
+    EndlessMode(:final showAnswerFeedback) => showAnswerFeedback,
+    SurvivalMode(:final showAnswerFeedback) => showAnswerFeedback,
+  };
+
   /// Factory method for standard mode: no time limits, no lives
-  factory QuizModeConfig.standard({bool allowSkip = false}) {
-    return StandardMode(allowSkip: allowSkip);
+  factory QuizModeConfig.standard({
+    bool allowSkip = false,
+    bool? showAnswerFeedback,
+  }) {
+    return StandardMode(
+      allowSkip: allowSkip,
+      showAnswerFeedback: showAnswerFeedback,
+    );
   }
 
   /// Factory method for timed mode: answer within time limit
@@ -23,22 +41,32 @@ sealed class QuizModeConfig extends BaseConfig {
     int timePerQuestion = 30,
     int? totalTimeLimit,
     bool allowSkip = false,
+    bool? showAnswerFeedback,
   }) {
     return TimedMode(
       timePerQuestion: timePerQuestion,
       totalTimeLimit: totalTimeLimit,
       allowSkip: allowSkip,
+      showAnswerFeedback: showAnswerFeedback,
     );
   }
 
   /// Factory method for lives mode: lose lives on mistakes
-  factory QuizModeConfig.lives({int lives = 3, bool allowSkip = false}) {
-    return LivesMode(lives: lives, allowSkip: allowSkip);
+  factory QuizModeConfig.lives({
+    int lives = 3,
+    bool allowSkip = false,
+    bool? showAnswerFeedback,
+  }) {
+    return LivesMode(
+      lives: lives,
+      allowSkip: allowSkip,
+      showAnswerFeedback: showAnswerFeedback,
+    );
   }
 
   /// Factory method for endless mode: keep going until first mistake
-  factory QuizModeConfig.endless() {
-    return const EndlessMode();
+  factory QuizModeConfig.endless({bool? showAnswerFeedback}) {
+    return EndlessMode(showAnswerFeedback: showAnswerFeedback);
   }
 
   /// Factory method for survival mode: timed + lives combined
@@ -46,11 +74,13 @@ sealed class QuizModeConfig extends BaseConfig {
     int lives = 3,
     int timePerQuestion = 30,
     int? totalTimeLimit,
+    bool? showAnswerFeedback,
   }) {
     return SurvivalMode(
       lives: lives,
       timePerQuestion: timePerQuestion,
       totalTimeLimit: totalTimeLimit,
+      showAnswerFeedback: showAnswerFeedback,
     );
   }
 
@@ -77,19 +107,33 @@ sealed class QuizModeConfig extends BaseConfig {
 class StandardMode extends QuizModeConfig {
   final bool allowSkip;
 
-  const StandardMode({this.allowSkip = false});
+  @override
+  final bool? showAnswerFeedback;
+
+  const StandardMode({this.allowSkip = false, this.showAnswerFeedback});
 
   @override
   Map<String, dynamic> toMap() {
-    return {'type': 'standard', 'version': version, 'allowSkip': allowSkip};
+    return {
+      'type': 'standard',
+      'version': version,
+      'allowSkip': allowSkip,
+      'showAnswerFeedback': showAnswerFeedback,
+    };
   }
 
   factory StandardMode.fromMap(Map<String, dynamic> map) {
-    return StandardMode(allowSkip: map['allowSkip'] as bool? ?? false);
+    return StandardMode(
+      allowSkip: map['allowSkip'] as bool? ?? false,
+      showAnswerFeedback: map['showAnswerFeedback'] as bool?,
+    );
   }
 
-  StandardMode copyWith({bool? allowSkip}) {
-    return StandardMode(allowSkip: allowSkip ?? this.allowSkip);
+  StandardMode copyWith({bool? allowSkip, bool? showAnswerFeedback}) {
+    return StandardMode(
+      allowSkip: allowSkip ?? this.allowSkip,
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
+    );
   }
 }
 
@@ -103,10 +147,14 @@ class TimedMode extends QuizModeConfig {
 
   final bool allowSkip;
 
+  @override
+  final bool? showAnswerFeedback;
+
   const TimedMode({
     this.timePerQuestion = 30,
     this.totalTimeLimit,
     this.allowSkip = false,
+    this.showAnswerFeedback,
   });
 
   @override
@@ -117,6 +165,7 @@ class TimedMode extends QuizModeConfig {
       'timePerQuestion': timePerQuestion,
       'totalTimeLimit': totalTimeLimit,
       'allowSkip': allowSkip,
+      'showAnswerFeedback': showAnswerFeedback,
     };
   }
 
@@ -125,6 +174,7 @@ class TimedMode extends QuizModeConfig {
       timePerQuestion: map['timePerQuestion'] as int? ?? 30,
       totalTimeLimit: map['totalTimeLimit'] as int?,
       allowSkip: map['allowSkip'] as bool? ?? false,
+      showAnswerFeedback: map['showAnswerFeedback'] as bool?,
     );
   }
 
@@ -132,11 +182,13 @@ class TimedMode extends QuizModeConfig {
     int? timePerQuestion,
     int? totalTimeLimit,
     bool? allowSkip,
+    bool? showAnswerFeedback,
   }) {
     return TimedMode(
       timePerQuestion: timePerQuestion ?? this.timePerQuestion,
       totalTimeLimit: totalTimeLimit ?? this.totalTimeLimit,
       allowSkip: allowSkip ?? this.allowSkip,
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
     );
   }
 }
@@ -149,7 +201,14 @@ class LivesMode extends QuizModeConfig {
 
   final bool allowSkip;
 
-  const LivesMode({this.lives = 3, this.allowSkip = false});
+  @override
+  final bool? showAnswerFeedback;
+
+  const LivesMode({
+    this.lives = 3,
+    this.allowSkip = false,
+    this.showAnswerFeedback,
+  });
 
   @override
   Map<String, dynamic> toMap() {
@@ -158,6 +217,7 @@ class LivesMode extends QuizModeConfig {
       'version': version,
       'lives': lives,
       'allowSkip': allowSkip,
+      'showAnswerFeedback': showAnswerFeedback,
     };
   }
 
@@ -165,28 +225,43 @@ class LivesMode extends QuizModeConfig {
     return LivesMode(
       lives: map['lives'] as int? ?? 3,
       allowSkip: map['allowSkip'] as bool? ?? false,
+      showAnswerFeedback: map['showAnswerFeedback'] as bool?,
     );
   }
 
-  LivesMode copyWith({int? lives, bool? allowSkip}) {
+  LivesMode copyWith({int? lives, bool? allowSkip, bool? showAnswerFeedback}) {
     return LivesMode(
       lives: lives ?? this.lives,
       allowSkip: allowSkip ?? this.allowSkip,
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
     );
   }
 }
 
 /// Endless mode - keep answering until wrong answer
 class EndlessMode extends QuizModeConfig {
-  const EndlessMode();
+  @override
+  final bool? showAnswerFeedback;
+
+  const EndlessMode({this.showAnswerFeedback});
 
   @override
   Map<String, dynamic> toMap() {
-    return {'type': 'endless', 'version': version};
+    return {
+      'type': 'endless',
+      'version': version,
+      'showAnswerFeedback': showAnswerFeedback,
+    };
   }
 
   factory EndlessMode.fromMap(Map<String, dynamic> map) {
-    return const EndlessMode();
+    return EndlessMode(showAnswerFeedback: map['showAnswerFeedback'] as bool?);
+  }
+
+  EndlessMode copyWith({bool? showAnswerFeedback}) {
+    return EndlessMode(
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
+    );
   }
 }
 
@@ -202,10 +277,14 @@ class SurvivalMode extends QuizModeConfig {
   /// Total time limit for entire quiz in seconds (optional)
   final int? totalTimeLimit;
 
+  @override
+  final bool? showAnswerFeedback;
+
   const SurvivalMode({
     this.lives = 3,
     this.timePerQuestion = 30,
     this.totalTimeLimit,
+    this.showAnswerFeedback,
   });
 
   @override
@@ -216,6 +295,7 @@ class SurvivalMode extends QuizModeConfig {
       'lives': lives,
       'timePerQuestion': timePerQuestion,
       'totalTimeLimit': totalTimeLimit,
+      'showAnswerFeedback': showAnswerFeedback,
     };
   }
 
@@ -224,6 +304,7 @@ class SurvivalMode extends QuizModeConfig {
       lives: map['lives'] as int? ?? 3,
       timePerQuestion: map['timePerQuestion'] as int? ?? 30,
       totalTimeLimit: map['totalTimeLimit'] as int?,
+      showAnswerFeedback: map['showAnswerFeedback'] as bool?,
     );
   }
 
@@ -231,11 +312,13 @@ class SurvivalMode extends QuizModeConfig {
     int? lives,
     int? timePerQuestion,
     int? totalTimeLimit,
+    bool? showAnswerFeedback,
   }) {
     return SurvivalMode(
       lives: lives ?? this.lives,
       timePerQuestion: timePerQuestion ?? this.timePerQuestion,
       totalTimeLimit: totalTimeLimit ?? this.totalTimeLimit,
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
     );
   }
 }
