@@ -18,6 +18,7 @@ List<QuizCategory> createFlagsCategories(CountryCounts counts) {
       title: (context) => continent.localizedName(context) ?? continent.name,
       subtitle: (context) => _getContinentSubtitle(context, continent, counts),
       icon: _getContinentIcon(continent),
+      showAnswerFeedback: true,
     );
   }).toList();
 }
