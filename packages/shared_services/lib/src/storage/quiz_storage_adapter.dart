@@ -164,6 +164,7 @@ class QuizStorageAdapter implements QuizStorageService {
     required int durationSeconds,
     required int hintsUsed5050,
     required int hintsUsedSkip,
+    int bestStreak = 0,
   }) async {
     // First update the score
     final scorePercentage = totalAnswered > 0
@@ -177,6 +178,7 @@ class QuizStorageAdapter implements QuizStorageService {
       totalFailed: totalFailed,
       totalSkipped: totalSkipped,
       scorePercentage: scorePercentage,
+      bestStreak: bestStreak,
     );
 
     // Then complete the session
