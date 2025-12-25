@@ -81,6 +81,12 @@ class StorageModule extends DependencyModule {
       ),
     );
 
+    sl.registerLazySingleton<PracticeProgressRepository>(
+      () => PracticeProgressRepositoryImpl(
+        database: sl.get<AppDatabase>(),
+      ),
+    );
+
     sl.registerLazySingleton<AchievementRepository>(
       () => AchievementRepositoryImpl(
         dataSource: sl.get<AchievementDataSource>(),
