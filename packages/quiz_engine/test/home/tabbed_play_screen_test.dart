@@ -14,11 +14,13 @@ void main() {
         id: 'france',
         title: (_) => 'France',
         icon: Icons.flag,
+        showAnswerFeedback: true,
       ),
       QuizCategory(
         id: 'germany',
         title: (_) => 'Germany',
         icon: Icons.flag,
+        showAnswerFeedback: true,
       ),
     ];
 
@@ -27,11 +29,13 @@ void main() {
         id: 'japan',
         title: (_) => 'Japan',
         icon: Icons.flag,
+        showAnswerFeedback: true,
       ),
       QuizCategory(
         id: 'china',
         title: (_) => 'China',
         icon: Icons.flag,
+        showAnswerFeedback: true,
       ),
     ];
   });
