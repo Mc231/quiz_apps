@@ -1,4 +1,5 @@
 import '../../model/config/quiz_config.dart';
+import '../../model/config/quiz_mode_config.dart';
 import '../../model/config/ui_behavior_config.dart';
 import 'config_source.dart';
 
@@ -58,6 +59,7 @@ class ConfigManager {
     };
 
     // 2. Apply user settings if available
+    // Note: showAnswerFeedback is now managed per-category/per-mode
     if (getSettings != null) {
       final settings = getSettings!();
 
@@ -65,14 +67,29 @@ class ConfigManager {
       final uiBehaviorConfig = UIBehaviorConfig(
         playSounds: settings['soundEnabled'] ?? true,
         hapticFeedback: settings['hapticEnabled'] ?? true,
-        showAnswerFeedback: settings['showAnswerFeedback'] ?? true,
         // Preserve other UI behavior settings from base config
         answerFeedbackDuration: baseConfig.uiBehaviorConfig.answerFeedbackDuration,
         showExitConfirmation: baseConfig.uiBehaviorConfig.showExitConfirmation,
       );
 
+      // Apply showAnswerFeedback to mode config if provided
+      var modeConfig = baseConfig.modeConfig;
+      if (settings['showAnswerFeedback'] != null) {
+        final showFeedback = settings['showAnswerFeedback'] as bool;
+        modeConfig = switch (modeConfig) {
+          StandardMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
+          TimedMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
+          LivesMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
+          EndlessMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
+          SurvivalMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
+        };
+      }
+
       // Return config with settings applied
-      return baseConfig.copyWith(uiBehaviorConfig: uiBehaviorConfig);
+      return baseConfig.copyWith(
+        uiBehaviorConfig: uiBehaviorConfig,
+        modeConfig: modeConfig,
+      );
     }
 
     return baseConfig;
