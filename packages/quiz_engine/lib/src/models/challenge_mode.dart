@@ -86,6 +86,7 @@ class ChallengeMode {
     this.trackTime = false,
     this.trackStreak = false,
     this.isEndless = false,
+    this.showAnswerFeedback,
   });
 
   /// Unique identifier for this challenge.
@@ -130,6 +131,12 @@ class ChallengeMode {
   /// Whether this is an endless mode.
   final bool isEndless;
 
+  /// Whether to show answer feedback for this challenge mode.
+  ///
+  /// If null, uses the category default or global default.
+  /// This allows mode-specific override of feedback behavior.
+  final bool? showAnswerFeedback;
+
   /// Creates a copy with the given fields replaced.
   ChallengeMode copyWith({
     String? id,
@@ -146,6 +153,7 @@ class ChallengeMode {
     bool? trackTime,
     bool? trackStreak,
     bool? isEndless,
+    bool? showAnswerFeedback,
   }) {
     return ChallengeMode(
       id: id ?? this.id,
@@ -162,6 +170,7 @@ class ChallengeMode {
       trackTime: trackTime ?? this.trackTime,
       trackStreak: trackStreak ?? this.trackStreak,
       isEndless: isEndless ?? this.isEndless,
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
     );
   }
 
