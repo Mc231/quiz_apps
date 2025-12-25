@@ -142,17 +142,6 @@ class SettingsService {
     return newSettings.hapticEnabled;
   }
 
-  /// Toggles answer feedback display on/off
-  ///
-  /// Returns the new answer feedback state
-  Future<bool> toggleAnswerFeedback() async {
-    final newSettings = _currentSettings.copyWith(
-      showAnswerFeedback: !_currentSettings.showAnswerFeedback,
-    );
-    await updateSettings(newSettings);
-    return newSettings.showAnswerFeedback;
-  }
-
   /// Sets the theme mode
   ///
   /// [mode] - The theme mode to set (light/dark/system)
