@@ -66,7 +66,12 @@ class FlagsDataProvider extends engine.QuizDataProvider {
         },
       ),
       // Lives mode with 5 hearts and skip button enabled
-      modeConfig: QuizModeConfig.lives(lives: 5, allowSkip: true),
+      // showAnswerFeedback comes from the category
+      modeConfig: QuizModeConfig.lives(
+        showAnswerFeedback: category.showAnswerFeedback,
+        lives: 5,
+        allowSkip: true,
+      ),
     );
   }
 
