@@ -4,6 +4,8 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
 import 'package:shared_services/shared_services.dart' as services show QuizDataProvider;
 
+import '../extensions/app_localizations_extension.dart';
+import '../l10n/app_localizations.dart';
 import '../models/country.dart';
 
 /// Type alias for shared services QuizDataProvider.
@@ -17,14 +19,12 @@ class FlagsPracticeDataProvider extends PracticeDataProvider {
   /// Creates a [FlagsPracticeDataProvider].
   FlagsPracticeDataProvider({
     required PracticeProgressRepository repository,
-    required SharedQuizDataProvider<Country> countryProvider,
-  })  : _repository = repository,
-        _countryProvider = countryProvider;
+  }) : _repository = repository;
 
   final PracticeProgressRepository _repository;
-  final SharedQuizDataProvider<Country> _countryProvider;
 
   /// Cached countries for efficient lookup.
+  /// Note: Cache is per-locale, cleared when locale changes.
   Map<String, Country>? _countriesCache;
 
   @override
@@ -35,7 +35,7 @@ class FlagsPracticeDataProvider extends PracticeDataProvider {
       return PracticeTabData.empty();
     }
 
-    // Load all countries to convert practice questions
+    // Load all countries with proper localization
     final countries = await _loadCountriesMap(context);
 
     // Convert practice questions to quiz format
@@ -78,12 +78,22 @@ class FlagsPracticeDataProvider extends PracticeDataProvider {
   }
 
   /// Loads all countries and creates a map keyed by country code.
+  ///
+  /// Uses the app's localizations to get properly localized country names.
   Future<Map<String, Country>> _loadCountriesMap(BuildContext context) async {
-    if (_countriesCache != null) {
-      return _countriesCache!;
-    }
+    // Always reload to get current locale's names
+    // (Cache could be stale if locale changed)
+    final appLocalizations = AppLocalizations.of(context)!;
 
-    final countries = await _countryProvider.provide();
+    final countryProvider = SharedQuizDataProvider<Country>.standard(
+      'assets/Countries.json',
+      (data) => Country.fromJson(
+        data,
+        (key) => appLocalizations.resolveKey(key.toLowerCase()),
+      ),
+    );
+
+    final countries = await countryProvider.provide();
 
     _countriesCache = {
       for (final country in countries) country.code: country,
@@ -103,20 +113,9 @@ class FlagsPracticeDataProvider extends PracticeDataProvider {
   ///
   /// This factory requires the service locator to be initialized with:
   /// - [PracticeProgressRepository]
-  ///
-  /// [resolveKey] is a function that resolves country codes to localized names.
-  factory FlagsPracticeDataProvider.fromServiceLocator(
-    String Function(String) resolveKey,
-  ) {
-    final repository = sl.get<PracticeProgressRepository>();
-    final countryProvider = SharedQuizDataProvider<Country>.standard(
-      'assets/Countries.json',
-      (data) => Country.fromJson(data, resolveKey),
-    );
-
+  factory FlagsPracticeDataProvider.fromServiceLocator() {
     return FlagsPracticeDataProvider(
-      repository: repository,
-      countryProvider: countryProvider,
+      repository: sl.get<PracticeProgressRepository>(),
     );
   }
 }

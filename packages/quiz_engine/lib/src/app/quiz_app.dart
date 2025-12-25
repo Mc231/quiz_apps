@@ -1041,10 +1041,10 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
   @override
   Widget build(BuildContext context) {
     // Create practice quiz configuration
-    // Practice mode: endless (no lives), no storage, no hints
+    // Practice mode: standard (no lives, no time limit), no storage, no hints
     final practiceConfig = QuizConfig(
       quizId: 'practice',
-      modeConfig: QuizModeConfig.endless(showAnswerFeedback: true),
+      modeConfig: QuizModeConfig.standard(showAnswerFeedback: true),
       hintConfig: const HintConfig.noHints(),
       storageConfig: StorageConfig.disabled,
     );

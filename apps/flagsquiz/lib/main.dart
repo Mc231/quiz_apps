@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
-import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
-import 'package:shared_services/shared_services.dart' as services show QuizDataProvider;
+import 'package:shared_services/shared_services.dart';
 
 import 'achievements/flags_achievements_data_provider.dart';
 import 'data/country_counts.dart';
@@ -9,11 +8,7 @@ import 'data/flags_categories.dart';
 import 'data/flags_challenges.dart';
 import 'data/flags_data_provider.dart';
 import 'l10n/app_localizations.dart';
-import 'models/country.dart';
 import 'practice/flags_practice_data_provider.dart';
-
-/// Type alias for the shared services QuizDataProvider to avoid name collision.
-typedef SharedQuizDataProvider<T> = services.QuizDataProvider<T>;
 
 /// The entry point of the Flags Quiz application.
 ///
@@ -107,18 +102,8 @@ class FlagsQuizApp extends StatelessWidget {
       // Challenges are now configured via this parameter
       challenges: FlagsChallenges.all,
       // Practice data provider for Practice Mistakes mode
-      practiceDataProvider: FlagsPracticeDataProvider(
-        repository: sl.get<PracticeProgressRepository>(),
-        countryProvider: SharedQuizDataProvider<Country>.standard(
-          'assets/Countries.json',
-          (data) => Country.fromJson(
-            data,
-            // Note: This uses English fallback for now
-            // Full localization would require context from a Builder widget
-            (key) => key.toUpperCase(),
-          ),
-        ),
-      ),
+      // Uses localization from context when loading practice data
+      practiceDataProvider: FlagsPracticeDataProvider.fromServiceLocator(),
       config: QuizAppConfig(
         title: 'Flags Quiz',
         appLocalizationDelegates: AppLocalizations.localizationsDelegates,
