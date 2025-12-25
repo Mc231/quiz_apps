@@ -46,7 +46,7 @@ void main() {
     const configManager = ConfigManager(
       defaultConfig: QuizConfig(
         quizId: 'test_quiz',
-        uiBehaviorConfig: UIBehaviorConfig.noFeedback(),
+        modeConfig: StandardMode(showAnswerFeedback: false),
       ),
     );
     bloc = QuizBloc(
@@ -141,7 +141,7 @@ void main() {
       configManager: ConfigManager(
         defaultConfig: QuizConfig(
           quizId: 'test_quiz',
-          modeConfig: QuizModeConfig.standard(),
+          modeConfig: QuizModeConfig.standard(showAnswerFeedback: true),
         ),
       ),
       onQuizCompleted: (results) {
@@ -199,8 +199,7 @@ void main() {
       const configManager = ConfigManager(
         defaultConfig: QuizConfig(
           quizId: 'endless_test',
-          modeConfig: EndlessMode(),
-          uiBehaviorConfig: UIBehaviorConfig.noFeedback(),
+          modeConfig: EndlessMode(showAnswerFeedback: false),
         ),
       );
 
