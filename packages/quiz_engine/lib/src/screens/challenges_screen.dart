@@ -143,8 +143,7 @@ class ChallengesScreen extends StatelessWidget {
       getSettings: () => {
         'soundEnabled': settingsService.currentSettings.soundEnabled,
         'hapticEnabled': settingsService.currentSettings.hapticEnabled,
-        'showAnswerFeedback':
-            challenge.showAnswerFeedback ?? category.showAnswerFeedback ?? true,
+        'showAnswerFeedback': challenge.showAnswerFeedback,
       },
     );
 
@@ -191,10 +190,12 @@ class ChallengesScreen extends StatelessWidget {
     final hasLives = challenge.lives != null;
     final hasPerQuestionTime = challenge.questionTimeSeconds != null;
     final hasTotalTime = challenge.totalTimeSeconds != null;
+    final showFeedback = challenge.showAnswerFeedback;
 
     // Survival: lives + time
     if (hasLives && (hasPerQuestionTime || hasTotalTime)) {
       return QuizModeConfig.survival(
+        showAnswerFeedback: showFeedback,
         lives: challenge.lives!,
         timePerQuestion: challenge.questionTimeSeconds ?? 30,
         totalTimeLimit: challenge.totalTimeSeconds,
@@ -204,6 +205,7 @@ class ChallengesScreen extends StatelessWidget {
     // Lives only
     if (hasLives) {
       return QuizModeConfig.lives(
+        showAnswerFeedback: showFeedback,
         lives: challenge.lives!,
         allowSkip: challenge.allowSkip,
       );
@@ -212,6 +214,7 @@ class ChallengesScreen extends StatelessWidget {
     // Timed only
     if (hasPerQuestionTime || hasTotalTime) {
       return QuizModeConfig.timed(
+        showAnswerFeedback: showFeedback,
         timePerQuestion: challenge.questionTimeSeconds ?? 30,
         totalTimeLimit: challenge.totalTimeSeconds,
         allowSkip: challenge.allowSkip,
@@ -220,11 +223,14 @@ class ChallengesScreen extends StatelessWidget {
 
     // Endless mode
     if (challenge.isEndless) {
-      return QuizModeConfig.endless();
+      return QuizModeConfig.endless(showAnswerFeedback: showFeedback);
     }
 
     // Standard mode
-    return QuizModeConfig.standard(allowSkip: challenge.allowSkip);
+    return QuizModeConfig.standard(
+      showAnswerFeedback: showFeedback,
+      allowSkip: challenge.allowSkip,
+    );
   }
 }
 
