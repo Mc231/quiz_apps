@@ -105,6 +105,10 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get play => 'Play';
   @override
+  String get challenges => 'Challenges';
+  @override
+  String get practice => 'Practice';
+  @override
   String get questions => 'questions';
   @override
   String get exitDialogTitle => 'Exit Quiz?';
@@ -1034,6 +1038,9 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   // Other required overrides
   @override
   String get play => 'Play';
+
+  @override
+  String get challenges => 'Challenges';
   @override
   String get history => 'History';
   @override
