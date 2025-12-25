@@ -2,6 +2,7 @@ import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/app_localizations.dart';
+import '../models/continent.dart';
 import 'flags_achievements.dart';
 
 /// Data provider for the Achievements tab in Flags Quiz.
@@ -9,9 +10,13 @@ import 'flags_achievements.dart';
 /// Uses [AchievementService] to load achievements and their progress.
 class FlagsAchievementsDataProvider {
   final AchievementService _achievementService;
+  final QuizSessionRepository _sessionRepository;
 
   /// All achievements (created lazily).
   List<Achievement>? _cachedAchievements;
+
+  /// Cached category completion data for sync access.
+  Map<String, CategoryCompletionData> _cachedCategoryData = {};
 
   /// Whether the service has been initialized.
   bool _isInitialized = false;
@@ -19,7 +24,9 @@ class FlagsAchievementsDataProvider {
   /// Creates a [FlagsAchievementsDataProvider].
   FlagsAchievementsDataProvider({
     required AchievementService achievementService,
-  }) : _achievementService = achievementService;
+    required QuizSessionRepository sessionRepository,
+  })  : _achievementService = achievementService,
+        _sessionRepository = sessionRepository;
 
   /// Gets all achievements using LocalizedString functions.
   List<Achievement> _getAllAchievements() {
@@ -262,12 +269,67 @@ class FlagsAchievementsDataProvider {
   }
 
   /// Initializes the achievement service with all achievements.
+  ///
+  /// Call this at app startup to ensure achievements can be checked
+  /// even before the Achievements tab is opened.
+  Future<void> initialize() async {
+    _ensureInitialized();
+
+    // Set up category data provider
+    _achievementService.categoryDataProvider = _getCategoryData;
+
+    // Load initial category data
+    await refreshCategoryData();
+  }
+
   void _ensureInitialized() {
     if (_isInitialized) return;
 
     final achievements = _getAllAchievements();
     _achievementService.initialize(achievements);
     _isInitialized = true;
+  }
+
+  /// Returns cached category completion data synchronously.
+  ///
+  /// This is called by [AchievementService] when checking achievements.
+  Map<String, CategoryCompletionData> _getCategoryData() {
+    return _cachedCategoryData;
+  }
+
+  /// Refreshes the cached category completion data from storage.
+  ///
+  /// Call this after quiz completion to update category stats.
+  Future<void> refreshCategoryData() async {
+    final Map<String, CategoryCompletionData> categoryData = {};
+
+    // Get completion counts for each continent category
+    for (final continent in Continent.values) {
+      if (continent == Continent.all) continue;
+
+      final categoryId = continent.name;
+
+      // Get completed sessions for this category
+      final sessions = await _sessionRepository.getSessions(
+        filter: QuizSessionFilter(
+          quizCategory: categoryId,
+          completionStatus: CompletionStatus.completed,
+        ),
+      );
+
+      // Count total and perfect completions
+      int totalCompletions = sessions.length;
+      int perfectCompletions =
+          sessions.where((s) => s.scorePercentage >= 100.0).length;
+
+      categoryData[categoryId] = CategoryCompletionData(
+        categoryId: categoryId,
+        totalCompletions: totalCompletions,
+        perfectCompletions: perfectCompletions,
+      );
+    }
+
+    _cachedCategoryData = categoryData;
   }
 
   /// Loads achievements data for the Achievements tab.
