@@ -7,15 +7,20 @@ import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
 
 import '../achievements/achievement_notification_controller.dart';
 import '../achievements/widgets/achievement_card.dart';
+import '../home/play_screen_tab.dart';
 import '../home/quiz_home_screen.dart';
 import '../l10n/quiz_localizations.dart';
 import '../l10n/quiz_localizations_delegate.dart';
 import '../models/quiz_category.dart';
 import '../models/quiz_data_provider.dart';
+import '../models/achievements_data_provider.dart';
+import '../models/challenge_mode.dart';
 import '../quiz_widget.dart';
 import '../quiz_widget_entry.dart';
+import '../screens/challenges_screen.dart';
 import '../settings/quiz_settings_screen.dart';
 import '../widgets/session_card.dart';
+import 'play_tab_type.dart';
 import 'quiz_tab.dart';
 
 /// Configuration for the QuizApp.
@@ -231,16 +236,42 @@ class QuizApp extends StatefulWidget {
   final Future<StatisticsTabData> Function()? statisticsDataProvider;
 
   /// Data provider for the Achievements tab.
-  final Future<AchievementsTabData> Function()? achievementsDataProvider;
+  ///
+  /// When provided, [QuizApp] will automatically call [onSessionCompleted]
+  /// after a quiz is completed. This integrates achievement checking
+  /// without requiring external callback wiring.
+  final AchievementsDataProvider? achievementsDataProvider;
 
   /// Callback when an achievement is tapped.
   final void Function(AchievementDisplayData achievement)? onAchievementTap;
 
-  /// Callback invoked when a quiz is completed.
+  /// Additional callback invoked when a quiz is completed.
   ///
-  /// Use this to integrate with achievement systems. The callback receives
-  /// the complete [QuizResults] with all session data.
+  /// Use this for app-specific processing like analytics or custom logic.
+  /// Note: Achievement checking is handled automatically via [achievementsDataProvider].
   final void Function(QuizResults results)? onQuizCompleted;
+
+  /// Types of tabs to show in the Play screen.
+  ///
+  /// When provided, [QuizApp] internally builds the tabs based on these types:
+  /// - [PlayTabType.quiz]: Uses [categories] for category selection
+  /// - [PlayTabType.challenges]: Uses [challenges] to build ChallengesScreen
+  /// - [PlayTabType.practice]: Uses [practiceDataLoader] to load practice items
+  ///
+  /// If not provided, falls back to [homeConfig.playScreenTabs].
+  final Set<PlayTabType>? playTabTypes;
+
+  /// List of challenge modes to show in the Challenges tab.
+  ///
+  /// Required when [playTabTypes] contains [PlayTabType.challenges].
+  final List<ChallengeMode>? challenges;
+
+  /// Callback to load practice categories.
+  ///
+  /// Required when [playTabTypes] contains [PlayTabType.practice].
+  /// Should return a list of [QuizCategory] containing questions
+  /// the user previously answered incorrectly.
+  final Future<List<QuizCategory>> Function()? practiceDataLoader;
 
   /// Callback invoked when achievements are unlocked.
   ///
@@ -298,6 +329,9 @@ class QuizApp extends StatefulWidget {
     this.achievementsDataProvider,
     this.onAchievementTap,
     this.onQuizCompleted,
+    this.playTabTypes,
+    this.challenges,
+    this.practiceDataLoader,
     this.onAchievementsUnlocked,
     this.showAchievementNotifications = true,
     this.achievementService,
@@ -450,12 +484,15 @@ class _QuizAppState extends State<QuizApp> {
     // When dataProvider is provided, QuizApp handles navigation internally
     final hasDataProvider = widget.dataProvider != null;
 
+    // Build the config with play tabs if playTabTypes is provided
+    final homeConfig = _buildHomeConfig();
+
     // Use Builder to get a context inside MaterialApp with localizations
     return Builder(
       builder: (innerContext) => QuizHomeScreen(
         categories: widget.categories ?? [],
         storageService: widget.storageService,
-        config: widget.homeConfig,
+        config: homeConfig,
         onCategorySelected: hasDataProvider
             ? (category) => _startQuiz(innerContext, category)
             : widget.callbacks.onCategorySelected,
@@ -466,7 +503,9 @@ class _QuizAppState extends State<QuizApp> {
         onViewAllSessions: widget.callbacks.onViewAllSessions,
         historyDataProvider: widget.historyDataProvider,
         statisticsDataProvider: widget.statisticsDataProvider,
-        achievementsDataProvider: widget.achievementsDataProvider,
+        achievementsDataProvider: widget.achievementsDataProvider != null
+            ? () => widget.achievementsDataProvider!.loadAchievementsData()
+            : null,
         onAchievementTap: widget.onAchievementTap,
         settingsBuilder: _buildSettingsBuilder(),
         formatDate: widget.formatDate,
@@ -474,6 +513,71 @@ class _QuizAppState extends State<QuizApp> {
         formatDuration: widget.formatDuration,
       ),
     );
+  }
+
+  /// Builds the home config, optionally generating play tabs from [playTabTypes].
+  QuizHomeScreenConfig _buildHomeConfig() {
+    // If playTabTypes is not provided, use the original config
+    if (widget.playTabTypes == null) {
+      return widget.homeConfig;
+    }
+
+    // Build play screen tabs from the enum set
+    final playTabs = _buildPlayScreenTabs();
+
+    // Return config with the generated tabs
+    return QuizHomeScreenConfig(
+      tabConfig: widget.homeConfig.tabConfig,
+      playScreenConfig: widget.homeConfig.playScreenConfig,
+      playScreenTabs: playTabs.isNotEmpty ? playTabs : null,
+      initialPlayTabId: widget.homeConfig.initialPlayTabId,
+      tabbedPlayScreenConfig: widget.homeConfig.tabbedPlayScreenConfig,
+      showSettingsInAppBar: widget.homeConfig.showSettingsInAppBar,
+      appBarActions: widget.homeConfig.appBarActions,
+    );
+  }
+
+  /// Builds play screen tabs from [playTabTypes].
+  List<PlayScreenTab> _buildPlayScreenTabs() {
+    final tabs = <PlayScreenTab>[];
+    final types = widget.playTabTypes ?? {};
+
+    for (final type in types) {
+      switch (type) {
+        case PlayTabType.quiz:
+          tabs.add(PlayScreenTab.categories(
+            id: 'quiz',
+            label: 'Play', // TODO: Localize
+            icon: Icons.play_arrow,
+            categories: widget.categories ?? [],
+          ));
+        case PlayTabType.challenges:
+          if (widget.challenges != null && widget.dataProvider != null) {
+            tabs.add(PlayScreenTab.custom(
+              id: 'challenges',
+              label: 'Challenges', // TODO: Localize
+              icon: Icons.emoji_events,
+              builder: (context) => ChallengesScreen(
+                challenges: widget.challenges!,
+                categories: widget.categories ?? [],
+                dataProvider: widget.dataProvider!,
+                settingsService: widget.settingsService,
+                storageService: widget.storageService,
+                onQuizCompleted: _handleQuizCompleted,
+              ),
+            ));
+          }
+        case PlayTabType.practice:
+          tabs.add(PlayScreenTab.practice(
+            id: 'practice',
+            label: 'Practice', // TODO: Localize
+            icon: Icons.school,
+            onLoadWrongAnswers: widget.practiceDataLoader ?? () async => [],
+          ));
+      }
+    }
+
+    return tabs;
   }
 
   Widget Function(BuildContext)? _buildSettingsBuilder() {
@@ -506,6 +610,7 @@ class _QuizAppState extends State<QuizApp> {
   /// - Loading questions from the data provider
   /// - Creating quiz configuration
   /// - Navigating to the QuizWidget
+  /// - Calling [achievementsDataProvider.onSessionCompleted] after quiz ends
   void _startQuiz(BuildContext context, QuizCategory category) async {
     final dataProvider = widget.dataProvider;
     final storageService = widget.storageService;
@@ -561,11 +666,32 @@ class _QuizAppState extends State<QuizApp> {
               dataProvider: () async => questions,
               configManager: configManager,
               storageService: storageAdapter,
-              onQuizCompleted: widget.onQuizCompleted,
+              onQuizCompleted: (results) => _handleQuizCompleted(results),
             ),
           ),
         ),
       );
+    }
+  }
+
+  /// Handles quiz completion by notifying achievements provider and calling callback.
+  Future<void> _handleQuizCompleted(QuizResults results) async {
+    // Call the app's custom callback first
+    widget.onQuizCompleted?.call(results);
+
+    // Handle achievements if provider is available
+    final achievementsProvider = widget.achievementsDataProvider;
+    final storageService = widget.storageService;
+
+    if (achievementsProvider != null && storageService != null) {
+      final sessionId = results.sessionId;
+      if (sessionId != null) {
+        final sessionResult = await storageService.getQuizSession(sessionId);
+        final session = sessionResult.valueOrNull;
+        if (session != null) {
+          await achievementsProvider.onSessionCompleted(session);
+        }
+      }
     }
   }
 
