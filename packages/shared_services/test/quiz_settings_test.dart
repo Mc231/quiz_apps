@@ -10,7 +10,6 @@ void main() {
       expect(settings.soundEnabled, true);
       expect(settings.musicEnabled, true);
       expect(settings.hapticEnabled, true);
-      expect(settings.showAnswerFeedback, true);
       expect(settings.themeMode, AppThemeMode.system);
     });
 
@@ -24,7 +23,6 @@ void main() {
       expect(modified.soundEnabled, false);
       expect(modified.musicEnabled, true); // unchanged
       expect(modified.hapticEnabled, true); // unchanged
-      expect(modified.showAnswerFeedback, true); // unchanged
       expect(modified.themeMode, AppThemeMode.dark);
     });
 
@@ -33,7 +31,6 @@ void main() {
         soundEnabled: false,
         musicEnabled: true,
         hapticEnabled: false,
-        showAnswerFeedback: true,
         themeMode: AppThemeMode.dark,
       );
 
@@ -42,7 +39,6 @@ void main() {
       expect(json['soundEnabled'], false);
       expect(json['musicEnabled'], true);
       expect(json['hapticEnabled'], false);
-      expect(json['showAnswerFeedback'], true);
       expect(json['themeMode'], 'dark');
     });
 
@@ -51,7 +47,6 @@ void main() {
         'soundEnabled': false,
         'musicEnabled': true,
         'hapticEnabled': false,
-        'showAnswerFeedback': true,
         'themeMode': 'dark',
       };
 
@@ -60,7 +55,6 @@ void main() {
       expect(settings.soundEnabled, false);
       expect(settings.musicEnabled, true);
       expect(settings.hapticEnabled, false);
-      expect(settings.showAnswerFeedback, true);
       expect(settings.themeMode, AppThemeMode.dark);
     });
 
@@ -71,7 +65,6 @@ void main() {
       expect(settings.soundEnabled, true);
       expect(settings.musicEnabled, true);
       expect(settings.hapticEnabled, true);
-      expect(settings.showAnswerFeedback, true);
       expect(settings.themeMode, AppThemeMode.system);
     });
 
@@ -80,7 +73,6 @@ void main() {
         'soundEnabled': true,
         'musicEnabled': true,
         'hapticEnabled': true,
-        'showAnswerFeedback': true,
         'themeMode': 'invalid',
       };
 
