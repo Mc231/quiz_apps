@@ -15,9 +15,8 @@ sealed class QuizModeConfig extends BaseConfig {
 
   /// Whether to show answer feedback for this mode.
   ///
-  /// If null, uses the category default or global default.
-  /// This allows mode-specific override of feedback behavior.
-  bool? get showAnswerFeedback => switch (this) {
+  /// This is required and must be explicitly set for each mode.
+  bool get showAnswerFeedback => switch (this) {
     StandardMode(:final showAnswerFeedback) => showAnswerFeedback,
     TimedMode(:final showAnswerFeedback) => showAnswerFeedback,
     LivesMode(:final showAnswerFeedback) => showAnswerFeedback,
@@ -27,60 +26,60 @@ sealed class QuizModeConfig extends BaseConfig {
 
   /// Factory method for standard mode: no time limits, no lives
   factory QuizModeConfig.standard({
+    required bool showAnswerFeedback,
     bool allowSkip = false,
-    bool? showAnswerFeedback,
   }) {
     return StandardMode(
-      allowSkip: allowSkip,
       showAnswerFeedback: showAnswerFeedback,
+      allowSkip: allowSkip,
     );
   }
 
   /// Factory method for timed mode: answer within time limit
   factory QuizModeConfig.timed({
+    required bool showAnswerFeedback,
     int timePerQuestion = 30,
     int? totalTimeLimit,
     bool allowSkip = false,
-    bool? showAnswerFeedback,
   }) {
     return TimedMode(
+      showAnswerFeedback: showAnswerFeedback,
       timePerQuestion: timePerQuestion,
       totalTimeLimit: totalTimeLimit,
       allowSkip: allowSkip,
-      showAnswerFeedback: showAnswerFeedback,
     );
   }
 
   /// Factory method for lives mode: lose lives on mistakes
   factory QuizModeConfig.lives({
+    required bool showAnswerFeedback,
     int lives = 3,
     bool allowSkip = false,
-    bool? showAnswerFeedback,
   }) {
     return LivesMode(
+      showAnswerFeedback: showAnswerFeedback,
       lives: lives,
       allowSkip: allowSkip,
-      showAnswerFeedback: showAnswerFeedback,
     );
   }
 
   /// Factory method for endless mode: keep going until first mistake
-  factory QuizModeConfig.endless({bool? showAnswerFeedback}) {
+  factory QuizModeConfig.endless({required bool showAnswerFeedback}) {
     return EndlessMode(showAnswerFeedback: showAnswerFeedback);
   }
 
   /// Factory method for survival mode: timed + lives combined
   factory QuizModeConfig.survival({
+    required bool showAnswerFeedback,
     int lives = 3,
     int timePerQuestion = 30,
     int? totalTimeLimit,
-    bool? showAnswerFeedback,
   }) {
     return SurvivalMode(
+      showAnswerFeedback: showAnswerFeedback,
       lives: lives,
       timePerQuestion: timePerQuestion,
       totalTimeLimit: totalTimeLimit,
-      showAnswerFeedback: showAnswerFeedback,
     );
   }
 
@@ -108,9 +107,12 @@ class StandardMode extends QuizModeConfig {
   final bool allowSkip;
 
   @override
-  final bool? showAnswerFeedback;
+  final bool showAnswerFeedback;
 
-  const StandardMode({this.allowSkip = false, this.showAnswerFeedback});
+  const StandardMode({
+    required this.showAnswerFeedback,
+    this.allowSkip = false,
+  });
 
   @override
   Map<String, dynamic> toMap() {
@@ -124,15 +126,15 @@ class StandardMode extends QuizModeConfig {
 
   factory StandardMode.fromMap(Map<String, dynamic> map) {
     return StandardMode(
+      showAnswerFeedback: map['showAnswerFeedback'] as bool? ?? true,
       allowSkip: map['allowSkip'] as bool? ?? false,
-      showAnswerFeedback: map['showAnswerFeedback'] as bool?,
     );
   }
 
   StandardMode copyWith({bool? allowSkip, bool? showAnswerFeedback}) {
     return StandardMode(
-      allowSkip: allowSkip ?? this.allowSkip,
       showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
+      allowSkip: allowSkip ?? this.allowSkip,
     );
   }
 }
@@ -148,13 +150,13 @@ class TimedMode extends QuizModeConfig {
   final bool allowSkip;
 
   @override
-  final bool? showAnswerFeedback;
+  final bool showAnswerFeedback;
 
   const TimedMode({
+    required this.showAnswerFeedback,
     this.timePerQuestion = 30,
     this.totalTimeLimit,
     this.allowSkip = false,
-    this.showAnswerFeedback,
   });
 
   @override
@@ -171,10 +173,10 @@ class TimedMode extends QuizModeConfig {
 
   factory TimedMode.fromMap(Map<String, dynamic> map) {
     return TimedMode(
+      showAnswerFeedback: map['showAnswerFeedback'] as bool? ?? true,
       timePerQuestion: map['timePerQuestion'] as int? ?? 30,
       totalTimeLimit: map['totalTimeLimit'] as int?,
       allowSkip: map['allowSkip'] as bool? ?? false,
-      showAnswerFeedback: map['showAnswerFeedback'] as bool?,
     );
   }
 
@@ -185,10 +187,10 @@ class TimedMode extends QuizModeConfig {
     bool? showAnswerFeedback,
   }) {
     return TimedMode(
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
       timePerQuestion: timePerQuestion ?? this.timePerQuestion,
       totalTimeLimit: totalTimeLimit ?? this.totalTimeLimit,
       allowSkip: allowSkip ?? this.allowSkip,
-      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
     );
   }
 }
@@ -202,12 +204,12 @@ class LivesMode extends QuizModeConfig {
   final bool allowSkip;
 
   @override
-  final bool? showAnswerFeedback;
+  final bool showAnswerFeedback;
 
   const LivesMode({
+    required this.showAnswerFeedback,
     this.lives = 3,
     this.allowSkip = false,
-    this.showAnswerFeedback,
   });
 
   @override
@@ -223,17 +225,17 @@ class LivesMode extends QuizModeConfig {
 
   factory LivesMode.fromMap(Map<String, dynamic> map) {
     return LivesMode(
+      showAnswerFeedback: map['showAnswerFeedback'] as bool? ?? true,
       lives: map['lives'] as int? ?? 3,
       allowSkip: map['allowSkip'] as bool? ?? false,
-      showAnswerFeedback: map['showAnswerFeedback'] as bool?,
     );
   }
 
   LivesMode copyWith({int? lives, bool? allowSkip, bool? showAnswerFeedback}) {
     return LivesMode(
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
       lives: lives ?? this.lives,
       allowSkip: allowSkip ?? this.allowSkip,
-      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
     );
   }
 }
@@ -241,9 +243,9 @@ class LivesMode extends QuizModeConfig {
 /// Endless mode - keep answering until wrong answer
 class EndlessMode extends QuizModeConfig {
   @override
-  final bool? showAnswerFeedback;
+  final bool showAnswerFeedback;
 
-  const EndlessMode({this.showAnswerFeedback});
+  const EndlessMode({required this.showAnswerFeedback});
 
   @override
   Map<String, dynamic> toMap() {
@@ -255,7 +257,9 @@ class EndlessMode extends QuizModeConfig {
   }
 
   factory EndlessMode.fromMap(Map<String, dynamic> map) {
-    return EndlessMode(showAnswerFeedback: map['showAnswerFeedback'] as bool?);
+    return EndlessMode(
+      showAnswerFeedback: map['showAnswerFeedback'] as bool? ?? true,
+    );
   }
 
   EndlessMode copyWith({bool? showAnswerFeedback}) {
@@ -278,13 +282,13 @@ class SurvivalMode extends QuizModeConfig {
   final int? totalTimeLimit;
 
   @override
-  final bool? showAnswerFeedback;
+  final bool showAnswerFeedback;
 
   const SurvivalMode({
+    required this.showAnswerFeedback,
     this.lives = 3,
     this.timePerQuestion = 30,
     this.totalTimeLimit,
-    this.showAnswerFeedback,
   });
 
   @override
@@ -301,10 +305,10 @@ class SurvivalMode extends QuizModeConfig {
 
   factory SurvivalMode.fromMap(Map<String, dynamic> map) {
     return SurvivalMode(
+      showAnswerFeedback: map['showAnswerFeedback'] as bool? ?? true,
       lives: map['lives'] as int? ?? 3,
       timePerQuestion: map['timePerQuestion'] as int? ?? 30,
       totalTimeLimit: map['totalTimeLimit'] as int?,
-      showAnswerFeedback: map['showAnswerFeedback'] as bool?,
     );
   }
 
@@ -315,10 +319,10 @@ class SurvivalMode extends QuizModeConfig {
     bool? showAnswerFeedback,
   }) {
     return SurvivalMode(
+      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
       lives: lives ?? this.lives,
       timePerQuestion: timePerQuestion ?? this.timePerQuestion,
       totalTimeLimit: totalTimeLimit ?? this.totalTimeLimit,
-      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
     );
   }
 }
