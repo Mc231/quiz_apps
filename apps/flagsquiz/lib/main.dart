@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
-import 'package:shared_services/shared_services.dart';
+import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
+import 'package:shared_services/shared_services.dart' as services show QuizDataProvider;
 
 import 'achievements/flags_achievements_data_provider.dart';
 import 'data/country_counts.dart';
@@ -8,6 +9,11 @@ import 'data/flags_categories.dart';
 import 'data/flags_challenges.dart';
 import 'data/flags_data_provider.dart';
 import 'l10n/app_localizations.dart';
+import 'models/country.dart';
+import 'practice/flags_practice_data_provider.dart';
+
+/// Type alias for the shared services QuizDataProvider to avoid name collision.
+typedef SharedQuizDataProvider<T> = services.QuizDataProvider<T>;
 
 /// The entry point of the Flags Quiz application.
 ///
@@ -42,7 +48,54 @@ void main() async {
   await achievementService.checkAll();
 
   runApp(
-    QuizApp(
+    FlagsQuizApp(
+      settingsService: settingsService,
+      storageService: storageService,
+      achievementService: achievementService,
+      achievementsProvider: achievementsProvider,
+      dataProvider: dataProvider,
+      categories: categories,
+    ),
+  );
+}
+
+/// The main Flags Quiz application widget.
+///
+/// This widget wraps [QuizApp] and provides the practice data provider
+/// which needs access to the app's localizations.
+class FlagsQuizApp extends StatelessWidget {
+  /// Creates a [FlagsQuizApp].
+  const FlagsQuizApp({
+    super.key,
+    required this.settingsService,
+    required this.storageService,
+    required this.achievementService,
+    required this.achievementsProvider,
+    required this.dataProvider,
+    required this.categories,
+  });
+
+  /// Settings service.
+  final SettingsService settingsService;
+
+  /// Storage service.
+  final StorageService storageService;
+
+  /// Achievement service.
+  final AchievementService achievementService;
+
+  /// Achievements data provider.
+  final FlagsAchievementsDataProvider achievementsProvider;
+
+  /// Data provider for loading quiz questions.
+  final FlagsDataProvider dataProvider;
+
+  /// Quiz categories.
+  final List<QuizCategory> categories;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuizApp(
       settingsService: settingsService,
       categories: categories,
       dataProvider: dataProvider,
@@ -51,18 +104,21 @@ void main() async {
       // AchievementsDataProvider handles both loading data and session completion
       achievementsDataProvider: achievementsProvider,
       // Simplified play tabs configuration using enum set
-      playTabTypes: {
-        PlayTabType.quiz,
-        PlayTabType.challenges,
-        PlayTabType.practice,
-      },
       // Challenges are now configured via this parameter
       challenges: FlagsChallenges.all,
-      // Practice data loader (placeholder for now)
-      practiceDataLoader: () async {
-        // TODO: Load categories from wrong answers
-        return [];
-      },
+      // Practice data provider for Practice Mistakes mode
+      practiceDataProvider: FlagsPracticeDataProvider(
+        repository: sl.get<PracticeProgressRepository>(),
+        countryProvider: SharedQuizDataProvider<Country>.standard(
+          'assets/Countries.json',
+          (data) => Country.fromJson(
+            data,
+            // Note: This uses English fallback for now
+            // Full localization would require context from a Builder widget
+            (key) => key.toUpperCase(),
+          ),
+        ),
+      ),
       config: QuizAppConfig(
         title: 'Flags Quiz',
         appLocalizationDelegates: AppLocalizations.localizationsDelegates,
@@ -84,6 +140,6 @@ void main() async {
         ),
         showSettingsInAppBar: true,
       ),
-    ),
-  );
+    );
+  }
 }
