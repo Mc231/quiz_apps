@@ -185,6 +185,7 @@ abstract class StorageService {
     required int totalFailed,
     required int totalSkipped,
     required double scorePercentage,
+    int bestStreak = 0,
   });
 
   /// Deletes a session and its answers.
@@ -360,6 +361,7 @@ class StorageServiceImpl implements StorageService {
     required int totalFailed,
     required int totalSkipped,
     required double scorePercentage,
+    int bestStreak = 0,
   }) async {
     return _executeWithRetry(() async {
       await _sessionRepository.updateSessionScore(
@@ -369,6 +371,7 @@ class StorageServiceImpl implements StorageService {
         totalFailed: totalFailed,
         totalSkipped: totalSkipped,
         scorePercentage: scorePercentage,
+        bestStreak: bestStreak,
       );
       return const StorageResult.success(null);
     });
