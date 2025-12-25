@@ -484,12 +484,14 @@ class _QuizAppState extends State<QuizApp> {
     // When dataProvider is provided, QuizApp handles navigation internally
     final hasDataProvider = widget.dataProvider != null;
 
-    // Build the config with play tabs if playTabTypes is provided
-    final homeConfig = _buildHomeConfig();
-
     // Use Builder to get a context inside MaterialApp with localizations
     return Builder(
-      builder: (innerContext) => QuizHomeScreen(
+      builder: (innerContext) {
+        // Build the config with play tabs if playTabTypes is provided
+        // Pass context for localization
+        final homeConfig = _buildHomeConfig(innerContext);
+
+        return QuizHomeScreen(
         categories: widget.categories ?? [],
         storageService: widget.storageService,
         config: homeConfig,
@@ -511,19 +513,20 @@ class _QuizAppState extends State<QuizApp> {
         formatDate: widget.formatDate,
         formatStatus: widget.formatStatus,
         formatDuration: widget.formatDuration,
-      ),
+      );
+      },
     );
   }
 
   /// Builds the home config, optionally generating play tabs from [playTabTypes].
-  QuizHomeScreenConfig _buildHomeConfig() {
+  QuizHomeScreenConfig _buildHomeConfig(BuildContext context) {
     // If playTabTypes is not provided, use the original config
     if (widget.playTabTypes == null) {
       return widget.homeConfig;
     }
 
     // Build play screen tabs from the enum set
-    final playTabs = _buildPlayScreenTabs();
+    final playTabs = _buildPlayScreenTabs(context);
 
     // Return config with the generated tabs
     return QuizHomeScreenConfig(
@@ -538,7 +541,8 @@ class _QuizAppState extends State<QuizApp> {
   }
 
   /// Builds play screen tabs from [playTabTypes].
-  List<PlayScreenTab> _buildPlayScreenTabs() {
+  List<PlayScreenTab> _buildPlayScreenTabs(BuildContext context) {
+    final l10n = QuizL10n.of(context);
     final tabs = <PlayScreenTab>[];
     final types = widget.playTabTypes ?? {};
 
@@ -547,7 +551,7 @@ class _QuizAppState extends State<QuizApp> {
         case PlayTabType.quiz:
           tabs.add(PlayScreenTab.categories(
             id: 'quiz',
-            label: 'Play', // TODO: Localize
+            label: l10n.play,
             icon: Icons.play_arrow,
             categories: widget.categories ?? [],
           ));
@@ -555,7 +559,7 @@ class _QuizAppState extends State<QuizApp> {
           if (widget.challenges != null && widget.dataProvider != null) {
             tabs.add(PlayScreenTab.custom(
               id: 'challenges',
-              label: 'Challenges', // TODO: Localize
+              label: l10n.challenges,
               icon: Icons.emoji_events,
               builder: (context) => ChallengesScreen(
                 challenges: widget.challenges!,
@@ -570,7 +574,7 @@ class _QuizAppState extends State<QuizApp> {
         case PlayTabType.practice:
           tabs.add(PlayScreenTab.practice(
             id: 'practice',
-            label: 'Practice', // TODO: Localize
+            label: l10n.practice,
             icon: Icons.school,
             onLoadWrongAnswers: widget.practiceDataLoader ?? () async => [],
           ));
