@@ -285,6 +285,42 @@ feat: add audio question support to quiz engine
 6. **Keep packages focused** - core logic in quiz_engine_core, UI in quiz_engine
 7. **Shared services** should be app-agnostic
 
+## Specialized Agents
+
+Use these specialized agents for specific tasks:
+
+### flutter-architect
+Use for Flutter development tasks including:
+- Creating new widgets and screens
+- Implementing features
+- Architecture decisions
+- SwiftUI/UIKit-style implementations
+- Performance optimization
+
+```
+Use flutter-architect agent for: "Implement the new settings screen with dark mode toggle"
+```
+
+### unit-tester
+Use for writing tests:
+- Unit tests for new code
+- Test coverage for existing code
+- Mock implementations
+- Edge case testing
+
+```
+Use unit-tester agent after implementing new code: "Write unit tests for the new AchievementsDataProvider"
+```
+
+### commiter
+Use for committing changes:
+- Creates individual commits per file
+- Uses conventional commit prefixes
+
+```
+Use commiter agent with prefix='feat' after completing a feature
+```
+
 ## Coding Rules
 
 ### 1. Localization (MANDATORY)
@@ -294,18 +330,63 @@ feat: add audio question support to quiz engine
 - All strings must come from localization (ARB files)
 - Add new strings to the appropriate `.arb` file
 - Use the generated localization class (e.g., `AppLocalizations`, `QuizLocalizations`)
+- Run `flutter gen-l10n` after adding new strings
 
 ```dart
 // ❌ WRONG - Hardcoded string
 Text('Complete your first quiz')
+Text('Play')
+Text('Challenges')
+label: 'Practice',
 
 // ✅ CORRECT - Localized string
 Text(l10n.firstQuizDescription)
+Text(l10n.play)
+Text(l10n.challenges)
+label: l10n.practice,
 ```
 
 **ARB file locations:**
-- `packages/quiz_engine/lib/src/l10n/` - Shared quiz UI strings
-- `apps/flagsquiz/lib/l10n/` - App-specific strings
+- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Shared quiz UI strings
+- `apps/flagsquiz/lib/l10n/intl_en.arb` - App-specific strings
+
+**Adding new strings:**
+1. Add the string to the appropriate `.arb` file:
+```json
+{
+  "play": "Play",
+  "@play": {
+    "description": "Label for play tab/button"
+  },
+  "challenges": "Challenges",
+  "@challenges": {
+    "description": "Label for challenges tab"
+  }
+}
+```
+
+2. Run `flutter gen-l10n` in the package directory
+3. Use the generated class in your code:
+```dart
+final l10n = QuizL10n.of(context);
+Text(l10n.play)
+```
+
+**What must be localized:**
+- All button labels
+- All tab labels
+- All screen titles
+- All dialog messages
+- All error messages
+- All placeholder texts
+- All tooltips
+- All accessibility labels
+
+**What should NOT be localized:**
+- Technical identifiers (IDs, keys)
+- Code comments
+- Log messages (for debugging)
+- API endpoints
 
 ### 2. Sealed Classes (MANDATORY)
 
