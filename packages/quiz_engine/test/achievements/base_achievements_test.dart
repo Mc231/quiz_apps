@@ -233,6 +233,8 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String get play => 'Play';
   @override
+  String get challenges => 'Challenges';
+  @override
   String get history => 'History';
   @override
   String get statistics => 'Statistics';
