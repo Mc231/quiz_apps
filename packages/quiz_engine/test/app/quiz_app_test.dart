@@ -51,15 +51,6 @@ class MockSettingsService implements SettingsService {
   }
 
   @override
-  Future<bool> toggleAnswerFeedback() async {
-    _settings = _settings.copyWith(
-      showAnswerFeedback: !_settings.showAnswerFeedback,
-    );
-    _controller.add(_settings);
-    return _settings.showAnswerFeedback;
-  }
-
-  @override
   Future<void> setThemeMode(AppThemeMode mode) async {
     _settings = _settings.copyWith(themeMode: mode);
     _controller.add(_settings);
