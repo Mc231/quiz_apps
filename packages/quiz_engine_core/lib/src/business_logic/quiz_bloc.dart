@@ -234,8 +234,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       hintUsed: null,
     );
 
-    // Show feedback if enabled in configuration
-    if (_config.uiBehaviorConfig.showAnswerFeedback) {
+    // Show feedback if enabled in mode configuration
+    if (_config.modeConfig.showAnswerFeedback) {
       // Emit feedback state with updated lives and timer info
       var feedbackState = QuizState.answerFeedback(
         currentQuestion,
