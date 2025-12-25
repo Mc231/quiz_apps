@@ -48,15 +48,6 @@ class MockSettingsService implements SettingsService {
   }
 
   @override
-  Future<bool> toggleAnswerFeedback() async {
-    _settings = _settings.copyWith(
-      showAnswerFeedback: !_settings.showAnswerFeedback,
-    );
-    _controller.add(_settings);
-    return _settings.showAnswerFeedback;
-  }
-
-  @override
   Future<void> setThemeMode(AppThemeMode mode) async {
     _settings = _settings.copyWith(themeMode: mode);
     _controller.add(_settings);
@@ -209,37 +200,7 @@ void main() {
     });
   });
 
-  group('Quiz Behavior Section', () {
-    testWidgets('displays answer feedback toggle', (tester) async {
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Show Answer Feedback'), findsOneWidget);
-    });
-
-    testWidgets('hides section when disabled', (tester) async {
-      await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            config: const QuizSettingsConfig(
-              showQuizBehaviorSection: false,
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.text('Quiz Behavior'), findsNothing);
-      expect(find.text('Show Answer Feedback'), findsNothing);
-    });
-  });
+  // Note: Quiz Behavior Section removed - showAnswerFeedback is now per-category/per-mode
 
   group('Appearance Section', () {
     testWidgets('displays theme selector', (tester) async {
@@ -414,8 +375,6 @@ void main() {
       expect(config.showSoundEffects, isTrue);
       expect(config.showBackgroundMusic, isTrue);
       expect(config.showHapticFeedback, isTrue);
-      expect(config.showQuizBehaviorSection, isTrue);
-      expect(config.showAnswerFeedback, isTrue);
       expect(config.showAppearanceSection, isTrue);
       expect(config.showThemeSelector, isTrue);
       expect(config.showAboutSection, isTrue);
@@ -428,7 +387,6 @@ void main() {
 
       expect(config.showAudioHapticsSection, isTrue);
       expect(config.showBackgroundMusic, isFalse);
-      expect(config.showQuizBehaviorSection, isFalse);
       expect(config.showAboutSection, isFalse);
       expect(config.showAdvancedSection, isFalse);
     });
