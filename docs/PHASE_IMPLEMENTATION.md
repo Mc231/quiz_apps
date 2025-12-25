@@ -19,7 +19,8 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements & Core Features | In Progress (11/16 sprints) |
+| Phase 8 | Achievements & Core Features | In Progress (12/16 sprints) |
+| Phase 8.5 | Production Polish | Not Started (0/8 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
@@ -1461,6 +1462,229 @@ score = basePoints + timeBonus
 // StreakScoring
 score = sum(basePoints * (1 + streak * 0.5)) for each correct answer
 ```
+
+---
+
+## Phase 8.5: Production Polish
+
+**Goal:** Ensure all features are polished, consistent, and ready for production before moving to Shared Services integration.
+
+**Note:** Some sprints require design documents to be created before implementation.
+
+---
+
+### Sprint 8.13: Statistics Tabs - Full Implementation
+
+**Goal:** Complete all statistics tabs with full functionality.
+
+**Tabs:**
+- **Overview** - Summary dashboard with key metrics
+- **Progress** - Improvement over time charts
+- **Categories** - Per-category breakdown and accuracy
+- **Leaderboard** - Local leaderboard (Post-MVP: global leaderboard)
+
+**Tasks:**
+- [ ] Audit current statistics implementation for missing functionality
+- [ ] Create `StatisticsOverviewTab` with key metrics summary
+- [ ] Create `StatisticsProgressTab` with improvement charts
+- [ ] Create `StatisticsCategoriesTab` with per-category breakdown
+- [ ] Create `StatisticsLeaderboardTab` (local scores)
+- [ ] Add tab navigation to StatisticsScreen
+- [ ] Integrate with existing statistics data sources
+- [ ] Add localization strings for all new UI elements
+- [ ] Write widget tests for each tab
+- [ ] Mark Leaderboard as "Coming Soon" for global feature (Post-MVP)
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/screens/statistics/statistics_overview_tab.dart`
+- `packages/quiz_engine/lib/src/screens/statistics/statistics_progress_tab.dart`
+- `packages/quiz_engine/lib/src/screens/statistics/statistics_categories_tab.dart`
+- `packages/quiz_engine/lib/src/screens/statistics/statistics_leaderboard_tab.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/screens/statistics_screen.dart`
+- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
+
+---
+
+### Sprint 8.14: Hints & Lives UI Consistency
+
+**Goal:** Update lives widget to match the visual style of skip and 50/50 hints.
+
+**Requirements:**
+- Lives (hearts) should have same visual treatment as hint buttons
+- Consistent styling across all "resource" indicators
+- Create design document before implementation
+
+**Pre-requisite:** Create `docs/HINTS_LIVES_UI_DESIGN.md` with mockups/specifications
+
+**Tasks:**
+- [ ] Create design document with UI specifications
+- [ ] Audit current LivesDisplay widget implementation
+- [ ] Audit current HintsPanel widget implementation
+- [ ] Design unified "ResourceButton" or "GameResourceWidget" component
+- [ ] Update `LivesDisplay` to use new consistent style
+- [ ] Update `HintsPanel` to use new consistent style
+- [ ] Ensure consistent animations (pulse, shake, etc.)
+- [ ] Ensure consistent color schemes and iconography
+- [ ] Test on multiple screen sizes
+- [ ] Write widget tests
+
+**Files to Create:**
+- `docs/HINTS_LIVES_UI_DESIGN.md`
+- `packages/quiz_engine/lib/src/widgets/game_resource_widget.dart` (shared base)
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/widgets/lives_display.dart`
+- `packages/quiz_engine/lib/src/widgets/hints_panel.dart`
+
+---
+
+### Sprint 8.15: Hints & Lives - IAP/Ads Architecture
+
+**Goal:** Prepare hints and lives system for integration with in-app purchases and rewarded ads.
+
+**Requirements:**
+- Daily limits on hints/lives (configurable amount per day)
+- When expired, user can:
+  - Watch rewarded ad to restore 1 hint/life
+  - Purchase packs (e.g., 5 hearts, 5 skips, etc.)
+- Persist remaining counts in database
+- Reset at midnight local time (or configurable)
+
+**Pre-requisite:** Create `docs/HINTS_LIVES_IAP_DESIGN.md` with full architecture
+
+**Tasks:**
+- [ ] Create design document with full IAP/Ads architecture
+- [ ] Define daily limit configuration model
+- [ ] Create `HintsLivesManager` service for tracking counts
+- [ ] Create database table/migration for hint/life inventory
+- [ ] Implement daily reset mechanism
+- [ ] Create `RestoreResourceDialog` (watch ad or purchase options)
+- [ ] Create `PurchaseResourceSheet` for buying packs
+- [ ] Add hooks for rewarded ad integration (interface only)
+- [ ] Add hooks for IAP integration (interface only)
+- [ ] Handle offline scenario (queue actions, show message)
+- [ ] Add localization strings for purchase/restore UI
+- [ ] Write unit tests for manager and reset logic
+- [ ] Write widget tests for dialogs
+
+**Files to Create:**
+- `docs/HINTS_LIVES_IAP_DESIGN.md`
+- `packages/shared_services/lib/src/storage/database/tables/resource_inventory_table.dart`
+- `packages/shared_services/lib/src/storage/database/migrations/migration_v3.dart`
+- `packages/shared_services/lib/src/resources/hints_lives_manager.dart`
+- `packages/shared_services/lib/src/resources/resource_config.dart`
+- `packages/quiz_engine/lib/src/widgets/restore_resource_dialog.dart`
+- `packages/quiz_engine/lib/src/widgets/purchase_resource_sheet.dart`
+
+**Files to Modify:**
+- `packages/shared_services/lib/src/storage/database/database_config.dart` (version bump)
+- `packages/quiz_engine/lib/src/widgets/hints_panel.dart`
+- `packages/quiz_engine/lib/src/widgets/lives_display.dart`
+
+---
+
+### Sprint 8.16: Error, Loading & Empty States
+
+**Goal:** Audit and polish all screens for proper error, loading, and empty states.
+
+**Tasks:**
+- [ ] Audit all screens for missing loading states
+- [ ] Audit all screens for missing error states
+- [ ] Audit all screens for missing empty states
+- [ ] Create consistent `LoadingIndicator` widget
+- [ ] Create consistent `ErrorStateWidget` with retry action
+- [ ] Create consistent `EmptyStateWidget` with illustration and message
+- [ ] Update `StatisticsScreen` with proper states
+- [ ] Update `SessionHistoryScreen` with proper states
+- [ ] Update `AchievementsScreen` with proper states
+- [ ] Update `PlayScreen` with proper states
+- [ ] Add localization strings for all error messages
+- [ ] Write widget tests for state widgets
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/widgets/loading_indicator.dart`
+- `packages/quiz_engine/lib/src/widgets/error_state_widget.dart`
+- `packages/quiz_engine/lib/src/widgets/empty_state_widget.dart`
+
+---
+
+### Sprint 8.17: Animations & Transitions Polish
+
+**Goal:** Review and polish all animations and transitions for consistency.
+
+**Tasks:**
+- [ ] Audit all screen transitions
+- [ ] Audit all widget animations
+- [ ] Ensure consistent animation durations (standardize to 200ms, 300ms, 500ms tiers)
+- [ ] Ensure consistent easing curves
+- [ ] Polish answer feedback animations
+- [ ] Polish achievement unlock animations
+- [ ] Polish hint use animations
+- [ ] Polish life lost animations
+- [ ] Add subtle micro-interactions where appropriate
+- [ ] Test animations on low-end devices for performance
+- [ ] Document animation standards in code comments
+
+---
+
+### Sprint 8.18: Accessibility Audit
+
+**Goal:** Ensure full accessibility support across the app.
+
+**Tasks:**
+- [ ] Audit all widgets for semantic labels
+- [ ] Audit all interactive elements for touch target sizes (min 48x48)
+- [ ] Audit color contrast ratios (WCAG AA compliance)
+- [ ] Test with screen readers (TalkBack, VoiceOver)
+- [ ] Test with font scaling (up to 200%)
+- [ ] Add `Semantics` widgets where missing
+- [ ] Add `ExcludeSemantics` for decorative elements
+- [ ] Ensure focus order is logical
+- [ ] Add accessibility hints for complex interactions
+- [ ] Test keyboard navigation (desktop/web)
+- [ ] Document accessibility patterns
+
+---
+
+### Sprint 8.19: Offline Mode Polish
+
+**Goal:** Define and implement graceful offline behavior.
+
+**Tasks:**
+- [ ] Define offline behavior for each feature
+- [ ] Create `ConnectivityService` for network state monitoring
+- [ ] Create `OfflineBanner` widget for indicating offline state
+- [ ] Quiz play: works fully offline (local data)
+- [ ] Statistics: show cached data with "Last updated" timestamp
+- [ ] Achievements: check with cached data, queue unlocks for sync
+- [ ] Handle ad request failures gracefully (skip, don't block)
+- [ ] Handle IAP verification when offline (pending state)
+- [ ] Add localization strings for offline messages
+- [ ] Write tests for offline scenarios
+
+**Files to Create:**
+- `packages/shared_services/lib/src/connectivity/connectivity_service.dart`
+- `packages/quiz_engine/lib/src/widgets/offline_banner.dart`
+
+---
+
+### Sprint 8.20: Audio & Haptic Polish
+
+**Goal:** Ensure all sound effects and haptic feedback are properly implemented and balanced.
+
+**Tasks:**
+- [ ] Audit all user interactions for sound feedback
+- [ ] Audit all user interactions for haptic feedback
+- [ ] Ensure sounds don't overlap/conflict
+- [ ] Balance sound effect volumes
+- [ ] Ensure haptic patterns are consistent and appropriate
+- [ ] Add missing sounds (if any)
+- [ ] Add missing haptics (if any)
+- [ ] Test with sound on/off settings
+- [ ] Test with haptic on/off settings
+- [ ] Ensure sound assets are optimized (file size)
 
 ---
 
