@@ -137,13 +137,14 @@ class ChallengesScreen extends StatelessWidget {
     }
 
     // Create config manager
+    // Note: showAnswerFeedback comes from challenge mode, falling back to category
     final configManager = ConfigManager(
       defaultConfig: configWithStorage,
       getSettings: () => {
         'soundEnabled': settingsService.currentSettings.soundEnabled,
         'hapticEnabled': settingsService.currentSettings.hapticEnabled,
         'showAnswerFeedback':
-            settingsService.currentSettings.showAnswerFeedback,
+            challenge.showAnswerFeedback ?? category.showAnswerFeedback ?? true,
       },
     );
 
