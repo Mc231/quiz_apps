@@ -45,26 +45,6 @@ class PracticeCompleteScreen extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Result icon
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        color: isAllCorrect
-                            ? theme.colorScheme.primaryContainer
-                            : theme.colorScheme.secondaryContainer,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        isAllCorrect ? Icons.emoji_events : Icons.school,
-                        size: 56,
-                        color: isAllCorrect
-                            ? theme.colorScheme.primary
-                            : theme.colorScheme.secondary,
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-
                     // Title
                     Text(
                       l10n.practiceCompleteTitle,

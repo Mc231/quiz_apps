@@ -1040,8 +1040,6 @@ class _PracticeQuizScreen extends StatefulWidget {
 class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
   @override
   Widget build(BuildContext context) {
-    final l10n = QuizL10n.of(context);
-
     // Create practice quiz configuration
     // Practice mode: endless (no lives), no storage, no hints
     final practiceConfig = QuizConfig(
@@ -1062,7 +1060,7 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
 
     return QuizWidget(
       quizEntry: QuizWidgetEntry(
-        title: l10n.practiceStartTitle,
+        title: '', // Practice mode has no title
         dataProvider: () async => widget.practiceData.questions,
         configManager: configManager,
         storageService: null, // Practice sessions are not stored
