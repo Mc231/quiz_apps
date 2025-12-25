@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
 
+import '../achievements/achievement_notification_controller.dart';
 import '../achievements/widgets/achievement_card.dart';
 import '../home/quiz_home_screen.dart';
 import '../l10n/quiz_localizations.dart';
@@ -241,6 +242,24 @@ class QuizApp extends StatefulWidget {
   /// the complete [QuizResults] with all session data.
   final void Function(QuizResults results)? onQuizCompleted;
 
+  /// Callback invoked when achievements are unlocked.
+  ///
+  /// Returns the list of newly unlocked achievements. Use this to show
+  /// notifications or play sounds when achievements are unlocked.
+  final void Function(List<Achievement> achievements)? onAchievementsUnlocked;
+
+  /// Whether to show achievement notifications automatically.
+  ///
+  /// When true, a banner notification will be shown when achievements
+  /// are unlocked. Defaults to true.
+  final bool showAchievementNotifications;
+
+  /// Optional achievement service for listening to unlock events.
+  ///
+  /// If provided and [showAchievementNotifications] is true, the app
+  /// will automatically show notifications when achievements are unlocked.
+  final AchievementService? achievementService;
+
   /// Builder for the Settings tab content.
   ///
   /// If not provided and Settings tab is in tabs, uses [QuizSettingsScreen].
@@ -279,6 +298,9 @@ class QuizApp extends StatefulWidget {
     this.achievementsDataProvider,
     this.onAchievementTap,
     this.onQuizCompleted,
+    this.onAchievementsUnlocked,
+    this.showAchievementNotifications = true,
+    this.achievementService,
     this.settingsBuilder,
     this.settingsConfig,
     this.locale,
@@ -295,6 +317,8 @@ class _QuizAppState extends State<QuizApp> {
   late QuizSettings _currentSettings;
   late StreamSubscription<QuizSettings> _settingsSubscription;
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  AchievementNotificationController? _notificationController;
+  StreamSubscription<List<Achievement>>? _achievementSubscription;
 
   @override
   void initState() {
@@ -302,6 +326,18 @@ class _QuizAppState extends State<QuizApp> {
     _currentSettings = widget.settingsService.currentSettings;
     _settingsSubscription =
         widget.settingsService.settingsStream.listen(_onSettingsChanged);
+
+    // Create notification controller if notifications are enabled
+    if (widget.showAchievementNotifications) {
+      _notificationController = AchievementNotificationController();
+
+      // Listen to achievement unlocks if service is provided
+      if (widget.achievementService != null) {
+        _achievementSubscription = widget.achievementService!
+            .onAchievementsUnlocked
+            .listen(_showAchievementNotifications);
+      }
+    }
   }
 
   void _onSettingsChanged(QuizSettings settings) {
@@ -315,6 +351,8 @@ class _QuizAppState extends State<QuizApp> {
   @override
   void dispose() {
     _settingsSubscription.cancel();
+    _achievementSubscription?.cancel();
+    _notificationController?.dispose();
     super.dispose();
   }
 
@@ -333,8 +371,32 @@ class _QuizAppState extends State<QuizApp> {
       localeResolutionCallback: widget.config.localeResolutionCallback ??
           _defaultLocaleResolutionCallback,
       navigatorObservers: widget.config.navigatorObservers,
-      home: _buildHome(context),
+      home: _wrapWithNotifications(_buildHome(context)),
     );
+  }
+
+  Widget _wrapWithNotifications(Widget child) {
+    if (_notificationController == null) {
+      return child;
+    }
+
+    return AchievementNotifications(
+      controller: _notificationController,
+      child: child,
+    );
+  }
+
+  /// Shows achievement notifications for the given achievements.
+  void _showAchievementNotifications(List<Achievement> achievements) {
+    final controller = _notificationController;
+    if (controller == null) return;
+
+    for (final achievement in achievements) {
+      controller.show(achievement);
+    }
+
+    // Also call the user's callback
+    widget.onAchievementsUnlocked?.call(achievements);
   }
 
   ThemeData _buildLightTheme() {
