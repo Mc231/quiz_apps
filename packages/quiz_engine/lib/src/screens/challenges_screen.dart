@@ -37,6 +37,7 @@ class ChallengesScreen extends StatelessWidget {
     this.listConfig = const ChallengeListConfig(),
     this.categoryPickerTitle,
     this.onChallengeStarted,
+    this.onQuizCompleted,
   });
 
   /// List of available challenge modes.
@@ -63,6 +64,12 @@ class ChallengesScreen extends StatelessWidget {
   /// Callback when a challenge is started (for analytics, etc.).
   final void Function(ChallengeMode challenge, QuizCategory category)?
       onChallengeStarted;
+
+  /// Callback invoked when a challenge quiz is completed.
+  ///
+  /// Use this to integrate with achievement systems, analytics,
+  /// or any post-quiz processing.
+  final void Function(QuizResults results)? onQuizCompleted;
 
   @override
   Widget build(BuildContext context) {
@@ -150,6 +157,7 @@ class ChallengesScreen extends StatelessWidget {
               dataProvider: () async => questions,
               configManager: configManager,
               storageService: storageAdapter,
+              onQuizCompleted: onQuizCompleted,
             ),
           ),
         ),
