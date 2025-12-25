@@ -9,6 +9,7 @@ void main() {
     description: '1 live, no hints. Can you survive?',
     icon: Icons.favorite,
     difficulty: ChallengeDifficulty.hard,
+    showAnswerFeedback: true,
     lives: 1,
     showHints: false,
     allowSkip: false,
@@ -46,6 +47,7 @@ void main() {
         description: 'Different description',
         icon: Icons.star,
         difficulty: ChallengeDifficulty.easy,
+        showAnswerFeedback: true,
       );
 
       expect(testChallenge, equals(same));
@@ -183,6 +185,7 @@ void main() {
         description: 'Test your limits',
         icon: Icons.favorite,
         difficulty: ChallengeDifficulty.hard,
+        showAnswerFeedback: true,
       ),
       ChallengeMode(
         id: 'marathon',
@@ -190,6 +193,7 @@ void main() {
         description: 'Endless mode',
         icon: Icons.directions_run,
         difficulty: ChallengeDifficulty.easy,
+        showAnswerFeedback: true,
       ),
       ChallengeMode(
         id: 'time_attack',
@@ -197,6 +201,7 @@ void main() {
         description: '60 seconds',
         icon: Icons.timer,
         difficulty: ChallengeDifficulty.medium,
+        showAnswerFeedback: true,
       ),
     ];
 
