@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
-import 'package:quiz_engine_core/quiz_engine_core.dart' show QuizResults;
 import 'package:shared_services/shared_services.dart';
 
 import 'achievements/flags_achievements_data_provider.dart';
@@ -13,7 +12,8 @@ import 'l10n/app_localizations.dart';
 /// The entry point of the Flags Quiz application.
 ///
 /// Uses [QuizApp] from quiz_engine with [FlagsDataProvider] for loading
-/// country quiz data. All navigation is handled automatically by QuizApp.
+/// country quiz data. All navigation and achievement handling is managed
+/// automatically by QuizApp.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedServicesInitializer.initialize();
@@ -41,26 +41,6 @@ void main() async {
   // Sync achievements on app start to catch any missed unlocks
   await achievementService.checkAll();
 
-  // Shared callback for quiz completion (used by both regular quizzes and challenges)
-  Future<void> handleQuizCompleted(QuizResults results) async {
-    // Refresh category and challenge data for achievements
-    await achievementsProvider.refreshCategoryData();
-    await achievementsProvider.refreshChallengeData();
-
-    // Get the completed session to check session-based achievements
-    final sessionId = results.sessionId;
-    if (sessionId != null) {
-      final session = await sessionRepository.getSession(sessionId);
-      if (session != null) {
-        // Check both session-based and cumulative achievements
-        await achievementService.checkAfterSession(session);
-      }
-    } else {
-      // Fallback to checkAll if no session ID
-      await achievementService.checkAll();
-    }
-  }
-
   runApp(
     QuizApp(
       settingsService: settingsService,
@@ -68,9 +48,21 @@ void main() async {
       dataProvider: dataProvider,
       storageService: storageService,
       achievementService: achievementService,
-      achievementsDataProvider: () =>
-          achievementsProvider.loadAchievementsData(),
-      onQuizCompleted: handleQuizCompleted,
+      // AchievementsDataProvider handles both loading data and session completion
+      achievementsDataProvider: achievementsProvider,
+      // Simplified play tabs configuration using enum set
+      playTabTypes: {
+        PlayTabType.quiz,
+        PlayTabType.challenges,
+        PlayTabType.practice,
+      },
+      // Challenges are now configured via this parameter
+      challenges: FlagsChallenges.all,
+      // Practice data loader (placeholder for now)
+      practiceDataLoader: () async {
+        // TODO: Load categories from wrong answers
+        return [];
+      },
       config: QuizAppConfig(
         title: 'Flags Quiz',
         appLocalizationDelegates: AppLocalizations.localizationsDelegates,
@@ -81,7 +73,7 @@ void main() async {
         appBarTheme: const AppBarTheme(elevation: 0),
       ),
       homeConfig: QuizHomeScreenConfig(
-        // Bottom navigation tabs: Play, Achievements, Settings
+        // Bottom navigation tabs: Play, Achievements, History, Statistics
         tabConfig: QuizTabConfig(
           tabs: [
             QuizTab.play(),
@@ -90,42 +82,7 @@ void main() async {
             QuizTab.statistics(),
           ],
         ),
-        showSettingsInAppBar: true, // Settings is in bottom nav now
-        // Configure the 3 tabs within Play: Play, Challenges, Practice
-        playScreenTabs: [
-          // Tab 1: Play - Standard quiz with hints and skip
-          PlayScreenTab.categories(
-            id: 'play',
-            label: 'Play',
-            icon: Icons.play_arrow,
-            categories: categories,
-          ),
-          // Tab 2: Challenges - Different game modes
-          PlayScreenTab.custom(
-            id: 'challenges',
-            label: 'Challenges',
-            icon: Icons.emoji_events,
-            builder: (context) => ChallengesScreen(
-              challenges: FlagsChallenges.all,
-              categories: categories,
-              dataProvider: dataProvider,
-              settingsService: settingsService,
-              storageService: storageService,
-              onQuizCompleted: handleQuizCompleted,
-            ),
-          ),
-          // Tab 3: Practice - Review wrong answers
-          PlayScreenTab.practice(
-            id: 'practice',
-            label: 'Practice',
-            icon: Icons.school,
-            onLoadWrongAnswers: () async {
-              // TODO: Load categories from wrong answers
-              // For now, return empty to show "No practice items" message
-              return [];
-            },
-          ),
-        ],
+        showSettingsInAppBar: true,
       ),
     ),
   );
