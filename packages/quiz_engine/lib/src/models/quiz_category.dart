@@ -68,23 +68,23 @@ class QuizCategory {
 
   /// Whether to show answer feedback for quizzes in this category.
   ///
-  /// If null, uses the global default from UIBehaviorConfig.
+  /// This is required and must be explicitly set for each category.
   /// Can be overridden by mode-specific settings.
-  final bool? showAnswerFeedback;
+  final bool showAnswerFeedback;
 
   /// Creates a [QuizCategory].
   ///
-  /// [id] and [title] are required.
+  /// [id], [title], and [showAnswerFeedback] are required.
   /// Either [imageProvider] or [icon] should typically be provided.
   const QuizCategory({
     required this.id,
     required this.title,
+    required this.showAnswerFeedback,
     this.subtitle,
     this.imageProvider,
     this.icon,
     this.config,
     this.metadata,
-    this.showAnswerFeedback,
   });
 
   /// Creates a copy of this category with the given fields replaced.
