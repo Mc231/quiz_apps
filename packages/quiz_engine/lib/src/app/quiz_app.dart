@@ -547,7 +547,7 @@ class _QuizAppState extends State<QuizApp> {
       getSettings: () => {
         'soundEnabled': widget.settingsService.currentSettings.soundEnabled,
         'hapticEnabled': widget.settingsService.currentSettings.hapticEnabled,
-        'showAnswerFeedback': category.showAnswerFeedback ?? true,
+        'showAnswerFeedback': category.showAnswerFeedback,
       },
     );
 
