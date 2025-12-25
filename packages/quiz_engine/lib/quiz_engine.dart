@@ -1,11 +1,13 @@
 library quiz_engine;
 
 // Models
+export 'src/models/achievements_data_provider.dart';
 export 'src/models/challenge_mode.dart';
 export 'src/models/quiz_category.dart';
 export 'src/models/quiz_data_provider.dart';
 
 // App
+export 'src/app/play_tab_type.dart';
 export 'src/app/quiz_app.dart';
 export 'src/app/quiz_tab.dart';
 
