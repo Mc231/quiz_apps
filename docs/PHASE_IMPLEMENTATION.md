@@ -1830,6 +1830,22 @@ score = sum(basePoints * (1 + streak * 0.5)) for each correct answer
 
 ---
 
+## Known Bugs (Backlog)
+
+### Practice Mode - Single Question Shows Only 1 Option
+
+**Description:** When there is only 1 question left to practice, the quiz shows only 1 answer option instead of the normal 4 options.
+
+**Root Cause:** The `RandomItemPicker` generates wrong answer options from available items. When practicing only 1 question, even though all countries are loaded for option generation, the filter reduces the quiz to 1 question. The options are generated before the filter is applied.
+
+**Expected Behavior:** Practice mode should always show 4 answer options regardless of how many questions are being practiced.
+
+**Workaround:** None currently.
+
+**Priority:** Medium
+
+---
+
 ## Future Sprints (Backlog)
 
 ### Sprint 4.4: UI Testing & Polish

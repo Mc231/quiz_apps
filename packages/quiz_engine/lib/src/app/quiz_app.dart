@@ -260,7 +260,7 @@ class QuizApp extends StatefulWidget {
   /// When provided, [QuizApp] internally builds the tabs based on these types:
   /// - [PlayTabType.quiz]: Uses [categories] for category selection
   /// - [PlayTabType.challenges]: Uses [challenges] to build ChallengesScreen
-  /// - [PlayTabType.practice]: Uses [practiceDataLoader] to load practice items
+  /// - [PlayTabType.practice]: Uses [practiceDataProvider] for practice mode
   ///
   /// If not provided, falls back to [homeConfig.playScreenTabs].
   final Set<PlayTabType>? playTabTypes;
@@ -269,14 +269,6 @@ class QuizApp extends StatefulWidget {
   ///
   /// Required when [playTabTypes] contains [PlayTabType.challenges].
   final List<ChallengeMode>? challenges;
-
-  /// Callback to load practice categories (deprecated, use [practiceDataProvider]).
-  ///
-  /// Required when [playTabTypes] contains [PlayTabType.practice].
-  /// Should return a list of [QuizCategory] containing questions
-  /// the user previously answered incorrectly.
-  @Deprecated('Use practiceDataProvider instead for full practice mode support')
-  final Future<List<QuizCategory>> Function()? practiceDataLoader;
 
   /// Data provider for the Practice tab.
   ///
@@ -347,7 +339,6 @@ class QuizApp extends StatefulWidget {
     this.onQuizCompleted,
     this.playTabTypes = const {...PlayTabType.values},
     this.challenges,
-    this.practiceDataLoader,
     this.practiceDataProvider,
     this.onAchievementsUnlocked,
     this.showAchievementNotifications = true,
@@ -589,7 +580,7 @@ class _QuizAppState extends State<QuizApp> {
             ));
           }
         case PlayTabType.practice:
-          // Use practiceDataProvider if available, otherwise fall back to deprecated loader
+          // Only add practice tab if practiceDataProvider is configured
           if (widget.practiceDataProvider != null) {
             tabs.add(PlayScreenTab.custom(
               id: 'practice',
@@ -602,13 +593,6 @@ class _QuizAppState extends State<QuizApp> {
                 onPracticeCompleted: _handlePracticeCompleted,
                 onStartQuiz: () => _navigateToPlayTab(),
               ),
-            ));
-          } else {
-            tabs.add(PlayScreenTab.practice(
-              id: 'practice',
-              label: l10n.practiceMode,
-              icon: Icons.school,
-              onLoadWrongAnswers: widget.practiceDataLoader ?? () async => [],
             ));
           }
       }
