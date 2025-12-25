@@ -23,14 +23,13 @@ void main() {
       expect(settingsService.currentSettings.soundEnabled, true);
       expect(settingsService.currentSettings.musicEnabled, true);
       expect(settingsService.currentSettings.hapticEnabled, true);
-      expect(settingsService.currentSettings.showAnswerFeedback, true);
       expect(settingsService.currentSettings.themeMode, AppThemeMode.system);
     });
 
     test('initialize loads stored settings', () async {
       SharedPreferences.setMockInitialValues({
         'quiz_settings':
-            '{"soundEnabled":false,"musicEnabled":false,"hapticEnabled":true,"showAnswerFeedback":false,"themeMode":"dark"}',
+            '{"soundEnabled":false,"musicEnabled":false,"hapticEnabled":true,"themeMode":"dark"}',
       });
 
       await settingsService.initialize();
@@ -38,7 +37,6 @@ void main() {
       expect(settingsService.currentSettings.soundEnabled, false);
       expect(settingsService.currentSettings.musicEnabled, false);
       expect(settingsService.currentSettings.hapticEnabled, true);
-      expect(settingsService.currentSettings.showAnswerFeedback, false);
       expect(settingsService.currentSettings.themeMode, AppThemeMode.dark);
     });
 
@@ -49,7 +47,6 @@ void main() {
         soundEnabled: false,
         musicEnabled: true,
         hapticEnabled: false,
-        showAnswerFeedback: true,
         themeMode: AppThemeMode.light,
       );
 
@@ -95,16 +92,6 @@ void main() {
       expect(settingsService.currentSettings.hapticEnabled, newState);
     });
 
-    test('toggleAnswerFeedback toggles answer feedback state', () async {
-      await settingsService.initialize();
-
-      final initialState = settingsService.currentSettings.showAnswerFeedback;
-      final newState = await settingsService.toggleAnswerFeedback();
-
-      expect(newState, !initialState);
-      expect(settingsService.currentSettings.showAnswerFeedback, newState);
-    });
-
     test('setThemeMode updates theme mode', () async {
       await settingsService.initialize();
 
@@ -127,7 +114,6 @@ void main() {
           soundEnabled: false,
           musicEnabled: false,
           hapticEnabled: false,
-          showAnswerFeedback: false,
           themeMode: AppThemeMode.dark,
         ),
       );
