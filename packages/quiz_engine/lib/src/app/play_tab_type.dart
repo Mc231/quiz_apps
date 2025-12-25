@@ -31,5 +31,5 @@ enum PlayTabType {
   ///
   /// Allows users to practice questions they previously answered wrong.
   /// Questions are loaded from recent quiz sessions.
-  practice,
+  practice;
 }
