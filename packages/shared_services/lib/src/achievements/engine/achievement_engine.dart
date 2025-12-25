@@ -78,7 +78,6 @@ class AchievementEngine {
         alreadyUnlocked.add(achievement);
         continue;
       }
-
       final isSatisfied = _evaluator.evaluate(achievement.trigger, context);
       if (isSatisfied) {
         // Unlock the achievement
@@ -135,6 +134,7 @@ class AchievementEngine {
     required AchievementContext context,
     DateTime? unlockedAt,
   }) {
+
     final target = _evaluator.getTarget(achievement.trigger);
     final current = _evaluator.getProgress(achievement.trigger, context);
 
