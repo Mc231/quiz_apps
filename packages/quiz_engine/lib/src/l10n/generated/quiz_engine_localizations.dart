@@ -1003,6 +1003,12 @@ abstract class QuizEngineLocalizations {
   /// **'Practice'**
   String get practice;
 
+  /// Challenges tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges'**
+  String get challenges;
+
   /// Achievements tab/screen title
   ///
   /// In en, this message translates to:

@@ -489,6 +489,9 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String get practice => 'Practice';
 
   @override
+  String get challenges => 'Challenges';
+
+  @override
   String get achievements => 'Achievements';
 
   @override
