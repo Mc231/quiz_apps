@@ -48,6 +48,7 @@ void main() {
       expect(locator.isRegistered<StatisticsRepository>(), isTrue);
       expect(locator.isRegistered<SettingsRepository>(), isTrue);
       expect(locator.isRegistered<AchievementRepository>(), isTrue);
+      expect(locator.isRegistered<PracticeProgressRepository>(), isTrue);
     });
 
     test('registers achievement engine and service', () {
@@ -75,6 +76,7 @@ void main() {
       expect(debugInfo['lazySingletons'], contains('StatisticsRepository'));
       expect(debugInfo['lazySingletons'], contains('SettingsRepository'));
       expect(debugInfo['lazySingletons'], contains('AchievementRepository'));
+      expect(debugInfo['lazySingletons'], contains('PracticeProgressRepository'));
       expect(debugInfo['lazySingletons'], contains('AchievementEngine'));
       expect(debugInfo['lazySingletons'], contains('AchievementService'));
 
@@ -91,8 +93,8 @@ void main() {
           debugInfo['lazySingletons']!.length +
           debugInfo['factories']!.length;
 
-      // 1 database + 5 data sources + 4 repositories + 1 engine + 1 service + 1 StorageService = 13
-      expect(totalRegistrations, 13);
+      // 1 database + 5 data sources + 5 repositories + 1 engine + 1 service + 1 StorageService = 14
+      expect(totalRegistrations, 14);
     });
   });
 
