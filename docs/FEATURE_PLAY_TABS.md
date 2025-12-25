@@ -61,13 +61,13 @@ Play Tab → Select Category → Start Quiz (with hints/skip)
 
 #### Challenge Modes
 
-| Mode | Icon | Difficulty | Description |
-|------|------|------------|-------------|
-| **Survival** | 💀 | 🔴 Hard | 3 lives, no hints, game over on 3 mistakes |
-| **Time Attack** | ⏱️ | 🟡 Medium | 60 seconds, answer as many as possible |
-| **Speed Run** | 🏃 | 🟡 Medium | 20 questions, fastest time wins |
-| **Marathon** | 🏃‍♂️ | 🟢 Easy | Endless mode, track your streak |
-| **Blitz** | ⚡ | 🔴 Hard | 5 seconds per question, 1 life |
+| Mode | Icon | Difficulty | Description                              |
+|------|------|------------|------------------------------------------|
+| **Survival** | 💀 | 🔴 Hard | 1 live, no hints, game over on 1 mistake |
+| **Time Attack** | ⏱️ | 🟡 Medium | 60 seconds, answer as many as possible   |
+| **Speed Run** | 🏃 | 🟡 Medium | 20 questions, fastest time wins          |
+| **Marathon** | 🏃‍♂️ | 🟢 Easy | Endless mode, track your streak          |
+| **Blitz** | ⚡ | 🔴 Hard | 5 seconds per question, 1 life           |
 
 #### Challenge Configurations
 
@@ -211,7 +211,7 @@ QuizHomeScreen(
 ```
 ┌─────────────────────────────────────┐
 │ 💀  Survival                    🔴  │
-│     3 lives, no hints               │
+│     1 live, no hints               │
 │     Can you survive?                │
 └─────────────────────────────────────┘
 ```

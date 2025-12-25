@@ -832,7 +832,8 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String get achievementClutch => 'Clutch Player';
 
   @override
-  String get achievementClutchDesc => 'Complete Survival with 1 life remaining';
+  String get achievementClutchDesc =>
+      'Answer 15+ questions correctly in Survival';
 
   @override
   String get noAchievementsFound => 'No achievements found';

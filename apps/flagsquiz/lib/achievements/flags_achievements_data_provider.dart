@@ -649,10 +649,11 @@ class FlagsAchievementsDataProvider {
         icon: '🎪',
         tier: AchievementTier.rare,
         category: AchievementCategory.skill.name,
+        // Answer at least 15 questions correctly in Survival (clutch performance)
         trigger: AchievementTrigger.custom(
           evaluate: (stats, session) {
             if (session?.quizId != 'survival') return false;
-            return session?.totalFailed == 2;
+            return (session?.totalCorrect ?? 0) >= 15;
           },
           target: 1,
         ),

@@ -6,10 +6,10 @@ void main() {
   final testChallenge = ChallengeMode(
     id: 'survival',
     name: 'Survival',
-    description: '3 lives, no hints. Can you survive?',
+    description: '1 live, no hints. Can you survive?',
     icon: Icons.favorite,
     difficulty: ChallengeDifficulty.hard,
-    lives: 3,
+    lives: 1,
     showHints: false,
     allowSkip: false,
   );
@@ -90,7 +90,7 @@ void main() {
         ),
       );
 
-      expect(find.text('3 lives, no hints. Can you survive?'), findsOneWidget);
+      expect(find.text('1 live, no hints. Can you survive?'), findsOneWidget);
     });
 
     testWidgets('displays difficulty badge', (tester) async {

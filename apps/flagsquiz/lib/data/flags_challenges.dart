@@ -8,14 +8,14 @@ import 'package:quiz_engine/quiz_engine.dart';
 class FlagsChallenges {
   FlagsChallenges._();
 
-  /// Survival mode: 3 lives, no hints, game over on 3 mistakes.
+  /// Survival mode: 1 live, no hints, game over on 1 mistake.
   static const survival = ChallengeMode(
     id: 'survival',
     name: 'Survival',
-    description: '3 lives, no hints. Can you survive?',
+    description: '1 live, no hints. Can you survive?',
     icon: Icons.favorite,
     difficulty: ChallengeDifficulty.hard,
-    lives: 3,
+    lives: 1,
     questionCount: 20,
     showHints: false,
     allowSkip: false,

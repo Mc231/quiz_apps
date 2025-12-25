@@ -835,7 +835,7 @@ class BaseAchievements {
         trigger: AchievementTrigger.custom(
           evaluate: (stats, session) {
             if (session?.quizId != 'survival') return false;
-            // Survival has 3 lives, so 2 lives used means 1 remaining
+            // Survival has 1 lives,
             return session?.totalFailed == 2;
           },
           target: 1,

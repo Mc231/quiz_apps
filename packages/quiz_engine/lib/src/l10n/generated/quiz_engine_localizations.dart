@@ -1672,7 +1672,7 @@ abstract class QuizEngineLocalizations {
   /// Achievement description: clutch
   ///
   /// In en, this message translates to:
-  /// **'Complete Survival with 1 life remaining'**
+  /// **'Answer 15+ questions correctly in Survival'**
   String get achievementClutchDesc;
 
   /// Empty state when no achievements match filter

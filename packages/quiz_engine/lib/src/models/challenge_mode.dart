@@ -61,7 +61,7 @@ extension ChallengeDifficultyExtension on ChallengeDifficulty {
 /// final survivalChallenge = ChallengeMode(
 ///   id: 'survival',
 ///   name: 'Survival',
-///   description: '3 lives, no hints. Can you survive?',
+///   description: '1 livee, no hints. Can you survive?',
 ///   icon: Icons.favorite,
 ///   difficulty: ChallengeDifficulty.hard,
 ///   lives: 3,

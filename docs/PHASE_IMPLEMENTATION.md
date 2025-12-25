@@ -883,7 +883,7 @@ New exports added:
 
 **Challenge Modes Defined:**
 ```dart
-// Survival: 3 lives, 20 questions, no hints
+// Survival: 1 live, 20 questions, no hints
 // Time Attack: 60 seconds total, endless, skip allowed
 // Speed Run: 20 questions, fastest time wins
 // Marathon: Endless mode, track streak

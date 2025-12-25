@@ -1298,7 +1298,7 @@
   "@achievementClutch": {
     "description": "Achievement name: clutch"
   },
-  "achievementClutchDesc": "Complete Survival with 1 life remaining",
+  "achievementClutchDesc": "Answer 15+ questions correctly in Survival",
   "@achievementClutchDesc": {
     "description": "Achievement description: clutch"
   },
