@@ -8,6 +8,7 @@ import 'database_config.dart';
 import 'migrations/migration.dart';
 import 'migrations/migration_v1.dart';
 import 'migrations/migration_v2.dart';
+import 'migrations/migration_v3.dart';
 
 /// The main database class that handles initialization and provides access.
 class AppDatabase {
@@ -26,6 +27,7 @@ class AppDatabase {
   static final List<Migration> _migrations = [
     const MigrationV1(),
     const MigrationV2(),
+    const MigrationV3(),
   ];
 
   /// The migration runner.
