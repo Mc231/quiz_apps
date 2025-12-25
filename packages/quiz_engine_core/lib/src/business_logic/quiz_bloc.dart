@@ -67,6 +67,12 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Count of skip hints used.
   int _hintsUsedSkip = 0;
 
+  /// Current streak of consecutive correct answers.
+  int _currentStreak = 0;
+
+  /// Best streak achieved in this session.
+  int _bestStreak = 0;
+
   /// The list of quiz data items available for the game.
   List<QuestionEntry> _items = [];
 
@@ -201,6 +207,16 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
     var answer = Answer(selectedItem, currentQuestion);
     final isCorrect = answer.isCorrect;
+
+    // Update streak tracking
+    if (isCorrect) {
+      _currentStreak++;
+      if (_currentStreak > _bestStreak) {
+        _bestStreak = _currentStreak;
+      }
+    } else {
+      _currentStreak = 0;
+    }
 
     // Deduct life if answer is wrong and lives are tracked
     if (!isCorrect && _remainingLives != null) {
@@ -368,6 +384,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       totalCorrect: correctAnswers,
       totalFailed: failedAnswers + timedOutAnswers,
       totalSkipped: skippedAnswers,
+      bestStreak: _bestStreak,
     );
 
     // Create quiz results
@@ -417,6 +434,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     required int totalCorrect,
     required int totalFailed,
     required int totalSkipped,
+    int bestStreak = 0,
   }) async {
     if (!_isStorageEnabled || _currentSessionId == null) return;
 
@@ -431,6 +449,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         durationSeconds: _sessionStopwatch.elapsed.inSeconds,
         hintsUsed5050: _hintsUsed5050,
         hintsUsedSkip: _hintsUsedSkip,
+        bestStreak: bestStreak,
       );
     } catch (e) {
       // Storage failure should not affect game over flow
@@ -748,6 +767,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         totalCorrect: correctAnswers,
         totalFailed: failedAnswers + timedOutAnswers,
         totalSkipped: skippedAnswers,
+        bestStreak: _bestStreak,
       );
     }
   }
