@@ -14,11 +14,15 @@ import '../l10n/quiz_localizations_delegate.dart';
 import '../models/quiz_category.dart';
 import '../models/quiz_data_provider.dart';
 import '../models/achievements_data_provider.dart';
+import '../models/practice_data_provider.dart';
 import '../models/challenge_mode.dart';
 import '../quiz_widget.dart';
 import '../quiz_widget_entry.dart';
 import '../screens/challenges_screen.dart';
+import '../screens/practice_start_screen.dart';
+import '../screens/practice_complete_screen.dart';
 import '../settings/quiz_settings_screen.dart';
+import '../widgets/practice_empty_state.dart';
 import '../widgets/session_card.dart';
 import 'play_tab_type.dart';
 import 'quiz_tab.dart';
@@ -266,12 +270,24 @@ class QuizApp extends StatefulWidget {
   /// Required when [playTabTypes] contains [PlayTabType.challenges].
   final List<ChallengeMode>? challenges;
 
-  /// Callback to load practice categories.
+  /// Callback to load practice categories (deprecated, use [practiceDataProvider]).
   ///
   /// Required when [playTabTypes] contains [PlayTabType.practice].
   /// Should return a list of [QuizCategory] containing questions
   /// the user previously answered incorrectly.
+  @Deprecated('Use practiceDataProvider instead for full practice mode support')
   final Future<List<QuizCategory>> Function()? practiceDataLoader;
+
+  /// Data provider for the Practice tab.
+  ///
+  /// When provided, [QuizApp] will:
+  /// - Load practice questions using [PracticeDataProvider.loadPracticeData]
+  /// - Mark questions as practiced after practice session completes
+  /// - Update practice progress when regular quizzes complete
+  ///
+  /// This integrates the full practice mode experience without requiring
+  /// external callback wiring.
+  final PracticeDataProvider? practiceDataProvider;
 
   /// Callback invoked when achievements are unlocked.
   ///
@@ -329,9 +345,10 @@ class QuizApp extends StatefulWidget {
     this.achievementsDataProvider,
     this.onAchievementTap,
     this.onQuizCompleted,
-    this.playTabTypes,
+    this.playTabTypes = const {...PlayTabType.values},
     this.challenges,
     this.practiceDataLoader,
+    this.practiceDataProvider,
     this.onAchievementsUnlocked,
     this.showAchievementNotifications = true,
     this.achievementService,
@@ -572,12 +589,28 @@ class _QuizAppState extends State<QuizApp> {
             ));
           }
         case PlayTabType.practice:
-          tabs.add(PlayScreenTab.practice(
-            id: 'practice',
-            label: l10n.practice,
-            icon: Icons.school,
-            onLoadWrongAnswers: widget.practiceDataLoader ?? () async => [],
-          ));
+          // Use practiceDataProvider if available, otherwise fall back to deprecated loader
+          if (widget.practiceDataProvider != null) {
+            tabs.add(PlayScreenTab.custom(
+              id: 'practice',
+              label: l10n.practiceMode,
+              icon: Icons.school,
+              builder: (ctx) => _PracticeTabContent(
+                practiceDataProvider: widget.practiceDataProvider!,
+                dataProvider: widget.dataProvider,
+                settingsService: widget.settingsService,
+                onPracticeCompleted: _handlePracticeCompleted,
+                onStartQuiz: () => _navigateToPlayTab(),
+              ),
+            ));
+          } else {
+            tabs.add(PlayScreenTab.practice(
+              id: 'practice',
+              label: l10n.practiceMode,
+              icon: Icons.school,
+              onLoadWrongAnswers: widget.practiceDataLoader ?? () async => [],
+            ));
+          }
       }
     }
 
@@ -687,16 +720,50 @@ class _QuizAppState extends State<QuizApp> {
     final achievementsProvider = widget.achievementsDataProvider;
     final storageService = widget.storageService;
 
-    if (achievementsProvider != null && storageService != null) {
+    if (storageService != null) {
       final sessionId = results.sessionId;
       if (sessionId != null) {
         final sessionResult = await storageService.getQuizSession(sessionId);
         final session = sessionResult.valueOrNull;
         if (session != null) {
-          await achievementsProvider.onSessionCompleted(session);
+          // Notify achievements provider
+          if (achievementsProvider != null) {
+            await achievementsProvider.onSessionCompleted(session);
+          }
+
+          // Update practice progress with wrong answers
+          // Get wrong answers from the session repository
+          final practiceProvider = widget.practiceDataProvider;
+          if (practiceProvider != null) {
+            final sessionWithAnswers =
+                await storageService.getSessionWithAnswers(sessionId);
+            final wrongAnswers = sessionWithAnswers.valueOrNull?.wrongAnswers ?? [];
+            if (wrongAnswers.isNotEmpty) {
+              await practiceProvider.updatePracticeProgress(
+                session,
+                wrongAnswers,
+              );
+            }
+          }
         }
       }
     }
+  }
+
+  /// Handles practice session completion.
+  Future<void> _handlePracticeCompleted(List<String> correctQuestionIds) async {
+    final practiceProvider = widget.practiceDataProvider;
+    if (practiceProvider != null && correctQuestionIds.isNotEmpty) {
+      await practiceProvider.onPracticeSessionCompleted(correctQuestionIds);
+    }
+  }
+
+  /// Navigates to the Play (quiz) tab.
+  void _navigateToPlayTab() {
+    // This is a simple implementation - in a more complex app,
+    // you might use a different navigation approach
+    // For now, we just pop back to the home screen
+    _navigatorKey.currentState?.popUntil((route) => route.isFirst);
   }
 
   /// Opens the settings screen.
@@ -817,6 +884,201 @@ class _QuizAppBuilderState extends State<QuizAppBuilder> {
 
         return widget.builder(context, snapshot.data!);
       },
+    );
+  }
+}
+
+/// Internal widget for the Practice tab content.
+///
+/// Handles loading practice data, showing the start screen,
+/// running the practice quiz, and showing completion results.
+class _PracticeTabContent extends StatefulWidget {
+  const _PracticeTabContent({
+    required this.practiceDataProvider,
+    this.dataProvider,
+    this.settingsService,
+    this.onPracticeCompleted,
+    this.onStartQuiz,
+  });
+
+  final PracticeDataProvider practiceDataProvider;
+  final QuizDataProvider? dataProvider;
+  final SettingsService? settingsService;
+  final void Function(List<String> correctQuestionIds)? onPracticeCompleted;
+  final VoidCallback? onStartQuiz;
+
+  @override
+  State<_PracticeTabContent> createState() => _PracticeTabContentState();
+}
+
+class _PracticeTabContentState extends State<_PracticeTabContent> {
+  PracticeTabData? _practiceData;
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadPracticeData();
+  }
+
+  Future<void> _loadPracticeData() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final data = await widget.practiceDataProvider.loadPracticeData(context);
+      if (mounted) {
+        setState(() {
+          _practiceData = data;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _error = e.toString();
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(_error!),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: _loadPracticeData,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final data = _practiceData;
+    if (data == null || !data.hasQuestions) {
+      return PracticeEmptyState(
+        onStartQuiz: widget.onStartQuiz,
+      );
+    }
+
+    // Show practice start screen
+    return PracticeStartScreen(
+      questionCount: data.questionCount,
+      onStartPractice: () => _startPractice(context, data),
+    );
+  }
+
+  void _startPractice(BuildContext context, PracticeTabData data) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => _PracticeQuizScreen(
+          practiceData: data,
+          settingsService: widget.settingsService,
+          onPracticeCompleted: (correctIds, wrongCount) {
+            widget.onPracticeCompleted?.call(correctIds);
+            _showPracticeComplete(ctx, correctIds.length, wrongCount);
+          },
+          onCancel: () => Navigator.of(ctx).pop(),
+        ),
+      ),
+    );
+  }
+
+  void _showPracticeComplete(
+    BuildContext context,
+    int correctCount,
+    int wrongCount,
+  ) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (ctx) => PracticeCompleteScreen(
+          correctCount: correctCount,
+          needMorePracticeCount: wrongCount,
+          onDone: () {
+            Navigator.of(ctx).pop();
+            // Refresh the practice data
+            _loadPracticeData();
+          },
+        ),
+      ),
+    );
+  }
+}
+
+/// Internal widget for the practice quiz itself.
+class _PracticeQuizScreen extends StatefulWidget {
+  const _PracticeQuizScreen({
+    required this.practiceData,
+    this.settingsService,
+    required this.onPracticeCompleted,
+    required this.onCancel,
+  });
+
+  final PracticeTabData practiceData;
+  final SettingsService? settingsService;
+  final void Function(List<String> correctIds, int wrongCount) onPracticeCompleted;
+  final VoidCallback onCancel;
+
+  @override
+  State<_PracticeQuizScreen> createState() => _PracticeQuizScreenState();
+}
+
+class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = QuizL10n.of(context);
+
+    // Create practice quiz configuration
+    // Practice mode: endless (no lives), no storage, no hints
+    final practiceConfig = QuizConfig(
+      quizId: 'practice',
+      modeConfig: QuizModeConfig.endless(showAnswerFeedback: true),
+      hintConfig: const HintConfig.noHints(),
+      storageConfig: StorageConfig.disabled,
+    );
+
+    final configManager = ConfigManager(
+      defaultConfig: practiceConfig,
+      getSettings: () => {
+        'soundEnabled': widget.settingsService?.currentSettings.soundEnabled ?? true,
+        'hapticEnabled': widget.settingsService?.currentSettings.hapticEnabled ?? true,
+        'showAnswerFeedback': true,
+      },
+    );
+
+    return QuizWidget(
+      quizEntry: QuizWidgetEntry(
+        title: l10n.practiceStartTitle,
+        dataProvider: () async => widget.practiceData.questions,
+        configManager: configManager,
+        storageService: null, // Practice sessions are not stored
+        onQuizCompleted: (results) {
+          // Collect correctly answered question IDs
+          // The question ID is stored in the question's answer.otherOptions['id']
+          final correctIds = results.answers
+              .where((a) => a.isCorrect)
+              .map((a) => a.question.answer.otherOptions['id'] as String?)
+              .whereType<String>()
+              .toList();
+          final wrongCount = results.answers.where((a) => !a.isCorrect).length;
+
+          widget.onPracticeCompleted(correctIds, wrongCount);
+        },
+      ),
     );
   }
 }
