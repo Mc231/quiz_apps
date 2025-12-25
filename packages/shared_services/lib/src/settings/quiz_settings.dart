@@ -18,6 +18,9 @@ enum AppThemeMode {
 /// in the settings screen. It's designed to be immutable, with copyWith
 /// for creating modified copies.
 ///
+/// Note: `showAnswerFeedback` has been moved to per-category/per-mode
+/// configuration in QuizCategory and QuizModeConfig.
+///
 /// Example:
 /// ```dart
 /// final settings = QuizSettings.defaultSettings();
@@ -33,9 +36,6 @@ class QuizSettings {
   /// Whether haptic feedback is enabled
   final bool hapticEnabled;
 
-  /// Whether answer feedback animation/display is shown
-  final bool showAnswerFeedback;
-
   /// Selected theme mode (light/dark/system)
   final AppThemeMode themeMode;
 
@@ -44,7 +44,6 @@ class QuizSettings {
     required this.soundEnabled,
     required this.musicEnabled,
     required this.hapticEnabled,
-    required this.showAnswerFeedback,
     required this.themeMode,
   });
 
@@ -54,7 +53,6 @@ class QuizSettings {
       soundEnabled: true,
       musicEnabled: true,
       hapticEnabled: true,
-      showAnswerFeedback: true,
       themeMode: AppThemeMode.system,
     );
   }
@@ -64,14 +62,12 @@ class QuizSettings {
     bool? soundEnabled,
     bool? musicEnabled,
     bool? hapticEnabled,
-    bool? showAnswerFeedback,
     AppThemeMode? themeMode,
   }) {
     return QuizSettings(
       soundEnabled: soundEnabled ?? this.soundEnabled,
       musicEnabled: musicEnabled ?? this.musicEnabled,
       hapticEnabled: hapticEnabled ?? this.hapticEnabled,
-      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
       themeMode: themeMode ?? this.themeMode,
     );
   }
@@ -82,7 +78,6 @@ class QuizSettings {
       'soundEnabled': soundEnabled,
       'musicEnabled': musicEnabled,
       'hapticEnabled': hapticEnabled,
-      'showAnswerFeedback': showAnswerFeedback,
       'themeMode': themeMode.name,
     };
   }
@@ -93,7 +88,6 @@ class QuizSettings {
       soundEnabled: json['soundEnabled'] as bool? ?? true,
       musicEnabled: json['musicEnabled'] as bool? ?? true,
       hapticEnabled: json['hapticEnabled'] as bool? ?? true,
-      showAnswerFeedback: json['showAnswerFeedback'] as bool? ?? true,
       themeMode: _parseThemeMode(json['themeMode'] as String?),
     );
   }
@@ -131,7 +125,6 @@ class QuizSettings {
         other.soundEnabled == soundEnabled &&
         other.musicEnabled == musicEnabled &&
         other.hapticEnabled == hapticEnabled &&
-        other.showAnswerFeedback == showAnswerFeedback &&
         other.themeMode == themeMode;
   }
 
@@ -141,7 +134,6 @@ class QuizSettings {
       soundEnabled,
       musicEnabled,
       hapticEnabled,
-      showAnswerFeedback,
       themeMode,
     );
   }
@@ -152,7 +144,6 @@ class QuizSettings {
         'soundEnabled: $soundEnabled, '
         'musicEnabled: $musicEnabled, '
         'hapticEnabled: $hapticEnabled, '
-        'showAnswerFeedback: $showAnswerFeedback, '
         'themeMode: $themeMode'
         ')';
   }
