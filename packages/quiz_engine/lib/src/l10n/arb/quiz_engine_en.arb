@@ -789,6 +789,11 @@
     "description": "Practice tab label"
   },
 
+  "challenges": "Challenges",
+  "@challenges": {
+    "description": "Challenges tab label"
+  },
+
   "achievements": "Achievements",
   "@achievements": {
     "description": "Achievements tab/screen title"
