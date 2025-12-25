@@ -1342,6 +1342,36 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String get practice => 'Practice';
   @override
+  String get practiceMode => 'Practice';
+  @override
+  String get practiceEmptyTitle => 'No questions';
+  @override
+  String get practiceEmptyMessage => 'Great job!';
+  @override
+  String get practiceStartQuiz => 'Start Quiz';
+  @override
+  String get practiceStartTitle => 'Practice Mode';
+  @override
+  String practiceQuestionCount(int count) => '$count questions';
+  @override
+  String get practiceDescription => 'Questions you got wrong';
+  @override
+  String get startPractice => 'Start Practice';
+  @override
+  String get practiceCompleteTitle => 'Complete!';
+  @override
+  String practiceCorrectCount(int count) => '$count correct';
+  @override
+  String practiceNeedMorePractice(int count) => '$count need practice';
+  @override
+  String get practiceKeepGoing => 'Keep practicing!';
+  @override
+  String get practiceAllCorrect => 'Perfect!';
+  @override
+  String get practiceDone => 'Done';
+  @override
+  String wrongCount(int count) => 'Wrong $count times';
+  @override
   String get achievements => 'Achievements';
   @override
   String get achievementUnlocked => 'Unlocked!';
