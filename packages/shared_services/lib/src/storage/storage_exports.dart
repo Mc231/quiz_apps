@@ -9,6 +9,7 @@ export 'database/database_config.dart';
 
 // Table definitions
 export 'database/tables/daily_statistics_table.dart';
+export 'database/tables/practice_progress_table.dart';
 export 'database/tables/question_answers_table.dart';
 export 'database/tables/quiz_sessions_table.dart';
 export 'database/tables/settings_table.dart';
@@ -17,6 +18,7 @@ export 'database/tables/statistics_tables.dart';
 // Models
 export 'models/daily_statistics.dart';
 export 'models/global_statistics.dart';
+export 'models/practice_question.dart';
 export 'models/question_answer.dart';
 export 'models/quiz_session.dart';
 export 'models/quiz_type_statistics.dart';
