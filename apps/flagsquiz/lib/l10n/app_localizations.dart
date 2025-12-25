@@ -2062,6 +2062,18 @@ abstract class AppLocalizations {
   /// **'Play'**
   String get play;
 
+  /// Challenges tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges'**
+  String get challenges;
+
+  /// Practice tab label
+  ///
+  /// In en, this message translates to:
+  /// **'Practice'**
+  String get practice;
+
   /// Label for questions count
   ///
   /// In en, this message translates to:

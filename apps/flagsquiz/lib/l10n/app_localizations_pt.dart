@@ -941,6 +941,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get play => 'Play';
 
   @override
+  String get challenges => 'Challenges';
+
+  @override
+  String get practice => 'Practice';
+
+  @override
   String get questions => 'questions';
 
   @override
