@@ -50,9 +50,21 @@ void main() async {
       achievementsDataProvider: () =>
           achievementsProvider.loadAchievementsData(),
       onQuizCompleted: (results) async {
-        // Refresh category data and check achievements after quiz completion
+        // Refresh category data for category-based achievements
         await achievementsProvider.refreshCategoryData();
-        await achievementService.checkAll();
+
+        // Get the completed session to check session-based achievements
+        final sessionId = results.sessionId;
+        if (sessionId != null) {
+          final session = await sessionRepository.getSession(sessionId);
+          if (session != null) {
+            // Check both session-based and cumulative achievements
+            await achievementService.checkAfterSession(session);
+          }
+        } else {
+          // Fallback to checkAll if no session ID
+          await achievementService.checkAll();
+        }
       },
       config: QuizAppConfig(
         title: 'Flags Quiz',
