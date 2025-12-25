@@ -9,6 +9,7 @@ class FlagsChallenges {
   FlagsChallenges._();
 
   /// Survival mode: 1 live, no hints, game over on 1 mistake.
+  /// No answer feedback for faster gameplay.
   static const survival = ChallengeMode(
     id: 'survival',
     name: 'Survival',
@@ -19,9 +20,11 @@ class FlagsChallenges {
     questionCount: 20,
     showHints: false,
     allowSkip: false,
+    showAnswerFeedback: false,
   );
 
   /// Time Attack: 60 seconds to answer as many as possible.
+  /// No answer feedback for maximum speed.
   static const timeAttack = ChallengeMode(
     id: 'time_attack',
     name: 'Time Attack',
@@ -32,9 +35,11 @@ class FlagsChallenges {
     showHints: false,
     allowSkip: true,
     isEndless: true,
+    showAnswerFeedback: false,
   );
 
   /// Speed Run: 20 questions, fastest time wins.
+  /// No answer feedback for fastest completion.
   static const speedRun = ChallengeMode(
     id: 'speed_run',
     name: 'Speed Run',
@@ -45,9 +50,11 @@ class FlagsChallenges {
     showHints: false,
     allowSkip: false,
     trackTime: true,
+    showAnswerFeedback: false,
   );
 
   /// Marathon: Endless mode, track your streak.
+  /// Shows answer feedback for learning during long sessions.
   static const marathon = ChallengeMode(
     id: 'marathon',
     name: 'Marathon',
@@ -58,9 +65,11 @@ class FlagsChallenges {
     allowSkip: false,
     isEndless: true,
     trackStreak: true,
+    showAnswerFeedback: true,
   );
 
   /// Blitz: 5 seconds per question, 1 life, 20 questions.
+  /// No answer feedback for lightning-fast gameplay.
   static const blitz = ChallengeMode(
     id: 'blitz',
     name: 'Blitz',
@@ -72,6 +81,7 @@ class FlagsChallenges {
     questionCount: 20,
     showHints: false,
     allowSkip: false,
+    showAnswerFeedback: false,
   );
 
   /// All available challenges in display order.
