@@ -41,6 +41,7 @@ void main() {
   final testCategory = QuizCategory(
     id: 'test',
     title: (context) => 'Test',
+    showAnswerFeedback: true,
     config: const QuizConfig(quizId: 'category_config'),
   );
 
