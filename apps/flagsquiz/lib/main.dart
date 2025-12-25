@@ -37,6 +37,9 @@ void main() async {
   );
   await achievementsProvider.initialize();
 
+  // Sync achievements on app start to catch any missed unlocks
+  await achievementService.checkAll();
+
   runApp(
     QuizApp(
       settingsService: settingsService,
