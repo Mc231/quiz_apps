@@ -1284,7 +1284,7 @@ New exports added:
 
 ---
 
-### Sprint 8.10.2: Refactor showAnswerFeedback Settings
+### Sprint 8.10.2: Refactor showAnswerFeedback Settings ✅
 
 **Goal:** Move `showAnswerFeedback` from global settings to per-category/per-mode configuration.
 
@@ -1295,25 +1295,31 @@ New exports added:
 - Priority: mode override > category default > global default
 
 **Tasks:**
-- [ ] Add `showAnswerFeedback` field to `QuizCategory` model
-- [ ] Add `showAnswerFeedback` field to `QuizModeConfig` sealed class
-- [ ] Update `QuizBloc` to use category/mode feedback setting instead of global
-- [ ] Keep `soundEffect` and `hapticFeedback` as independent global settings
-- [ ] Remove `showAnswerFeedback` from `QuizSettings` (or mark deprecated)
-- [ ] Update `QuizSettingsScreen` to remove answer feedback toggle
-- [ ] Update `FlagsCategories` with default feedback settings
-- [ ] Update `FlagsChallenges` with mode-specific feedback settings
-- [ ] Write unit tests for new feedback configuration
-- [ ] Update existing tests
+- [x] Add `showAnswerFeedback` field to `QuizCategory` model
+- [x] Add `showAnswerFeedback` field to `QuizModeConfig` sealed class
+- [x] Update `QuizBloc` to use category/mode feedback setting instead of global
+- [x] Keep `soundEffect` and `hapticFeedback` as independent global settings
+- [x] Remove `showAnswerFeedback` from `QuizSettings` (or mark deprecated)
+- [x] Update `QuizSettingsScreen` to remove answer feedback toggle
+- [x] Update `FlagsCategories` with default feedback settings
+- [x] Update `FlagsChallenges` with mode-specific feedback settings
+- [x] Write unit tests for new feedback configuration
+- [x] Update existing tests
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/models/quiz_category.dart`
-- `packages/quiz_engine_core/lib/src/model/config/quiz_mode_config.dart`
-- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart`
-- `packages/shared_services/lib/src/settings/quiz_settings.dart`
-- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
-- `apps/flagsquiz/lib/data/flags_categories.dart`
-- `apps/flagsquiz/lib/data/flags_challenges.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/models/quiz_category.dart` - Added `showAnswerFeedback` field
+- ✅ `packages/quiz_engine/lib/src/models/challenge_mode.dart` - Added `showAnswerFeedback` field
+- ✅ `packages/quiz_engine_core/lib/src/model/config/quiz_mode_config.dart` - Added `showAnswerFeedback` to sealed class and all subclasses
+- ✅ `packages/shared_services/lib/src/settings/quiz_settings.dart` - Removed `showAnswerFeedback` field
+- ✅ `packages/shared_services/lib/src/settings/settings_service.dart` - Removed `toggleAnswerFeedback` method
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart` - Removed Quiz Behavior section
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Updated to use category feedback setting
+- ✅ `packages/quiz_engine/lib/src/screens/challenges_screen.dart` - Updated to use mode/category feedback setting
+- ✅ `apps/flagsquiz/lib/data/flags_challenges.dart` - Added mode-specific feedback settings
+- ✅ `packages/shared_services/test/quiz_settings_test.dart` - Updated tests
+- ✅ `packages/shared_services/test/settings_service_test.dart` - Updated tests
+- ✅ `packages/quiz_engine/test/settings/quiz_settings_screen_test.dart` - Updated tests
+- ✅ `packages/quiz_engine/test/app/quiz_app_test.dart` - Updated tests
 
 ---
 
