@@ -14,12 +14,14 @@ void main() {
       title: (context) => 'Europe',
       subtitle: (context) => '50 countries',
       icon: Icons.flag,
+      showAnswerFeedback: true,
     ),
     QuizCategory(
       id: 'asia',
       title: (context) => 'Asia',
       subtitle: (context) => '48 countries',
       icon: Icons.public,
+      showAnswerFeedback: true,
     ),
   ];
 
