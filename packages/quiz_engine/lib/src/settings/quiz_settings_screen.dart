@@ -5,6 +5,10 @@ import 'package:shared_services/shared_services.dart';
 import '../l10n/quiz_localizations.dart';
 
 /// Configuration for which sections to show in the settings screen.
+///
+/// Note: The Quiz Behavior section with `showAnswerFeedback` toggle has been
+/// removed. Answer feedback is now configured per-category/per-mode in
+/// QuizCategory and QuizModeConfig.
 class QuizSettingsConfig {
   /// Whether to show the Audio & Haptics section.
   final bool showAudioHapticsSection;
@@ -17,12 +21,6 @@ class QuizSettingsConfig {
 
   /// Whether to show the haptic feedback toggle.
   final bool showHapticFeedback;
-
-  /// Whether to show the Quiz Behavior section.
-  final bool showQuizBehaviorSection;
-
-  /// Whether to show the answer feedback toggle.
-  final bool showAnswerFeedback;
 
   /// Whether to show the Appearance section.
   final bool showAppearanceSection;
@@ -66,8 +64,6 @@ class QuizSettingsConfig {
     this.showSoundEffects = true,
     this.showBackgroundMusic = true,
     this.showHapticFeedback = true,
-    this.showQuizBehaviorSection = true,
-    this.showAnswerFeedback = true,
     this.showAppearanceSection = true,
     this.showThemeSelector = true,
     this.showAboutSection = true,
@@ -88,8 +84,6 @@ class QuizSettingsConfig {
         showSoundEffects = true,
         showBackgroundMusic = false,
         showHapticFeedback = true,
-        showQuizBehaviorSection = false,
-        showAnswerFeedback = false,
         showAppearanceSection = true,
         showThemeSelector = true,
         showAboutSection = false,
@@ -109,8 +103,6 @@ class QuizSettingsConfig {
     bool? showSoundEffects,
     bool? showBackgroundMusic,
     bool? showHapticFeedback,
-    bool? showQuizBehaviorSection,
-    bool? showAnswerFeedback,
     bool? showAppearanceSection,
     bool? showThemeSelector,
     bool? showAboutSection,
@@ -130,9 +122,6 @@ class QuizSettingsConfig {
       showSoundEffects: showSoundEffects ?? this.showSoundEffects,
       showBackgroundMusic: showBackgroundMusic ?? this.showBackgroundMusic,
       showHapticFeedback: showHapticFeedback ?? this.showHapticFeedback,
-      showQuizBehaviorSection:
-          showQuizBehaviorSection ?? this.showQuizBehaviorSection,
-      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
       showAppearanceSection:
           showAppearanceSection ?? this.showAppearanceSection,
       showThemeSelector: showThemeSelector ?? this.showThemeSelector,
@@ -289,26 +278,6 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
       widgets.add(const Divider());
     }
 
-    // Quiz Behavior Section
-    if (widget.config.showQuizBehaviorSection && _hasQuizBehaviorItems()) {
-      widgets.add(_buildSectionHeader(l10n.quizBehavior));
-
-      if (widget.config.showAnswerFeedback) {
-        widgets.add(
-          SwitchListTile(
-            title: Text(l10n.showAnswerFeedback),
-            subtitle: Text(l10n.showAnswerFeedbackDescription),
-            value: _currentSettings.showAnswerFeedback,
-            onChanged: (value) async {
-              await widget.settingsService.toggleAnswerFeedback();
-            },
-          ),
-        );
-      }
-
-      widgets.add(const Divider());
-    }
-
     // Appearance Section
     if (widget.config.showAppearanceSection && _hasAppearanceItems()) {
       widgets.add(_buildSectionHeader(l10n.appearance));
@@ -400,10 +369,6 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
     return widget.config.showSoundEffects ||
         widget.config.showBackgroundMusic ||
         widget.config.showHapticFeedback;
-  }
-
-  bool _hasQuizBehaviorItems() {
-    return widget.config.showAnswerFeedback;
   }
 
   bool _hasAppearanceItems() {
