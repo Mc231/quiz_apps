@@ -4,7 +4,7 @@
 
 **Reference:** See [CORE_ARCHITECTURE_GUIDE.md](./CORE_ARCHITECTURE_GUIDE.md) for architectural details and design patterns.
 
-**Last Updated:** 2025-12-24
+**Last Updated:** 2025-12-25
 
 ---
 
@@ -19,7 +19,7 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements & Core Features | In Progress (10/12 sprints) |
+| Phase 8 | Achievements & Core Features | In Progress (11/16 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
@@ -1265,6 +1265,112 @@ New exports added:
 - Edge cases - composite triggers (2 tests)
 - Edge cases - threshold triggers (3 tests)
 - Sorting and display (3 tests)
+
+---
+
+### Sprint 8.10.1: Achievement Testing Documentation ✅
+
+**Goal:** Create comprehensive testing guide for all 67 achievements.
+
+**Tasks:**
+- [x] Create `docs/ACHIEVEMENTS_TESTING.md` with all achievements listed
+- [x] Group achievements by category (Beginner, Progress, Mastery, Speed, Streak, Challenge, Dedication, Skill, Flags-specific)
+- [x] Add checkbox for each achievement to track manual testing
+- [x] Include testing instructions for each achievement type
+- [x] Add expected trigger conditions for each achievement
+
+**Files Created:**
+- ✅ `docs/ACHIEVEMENTS_TESTING.md`
+
+---
+
+### Sprint 8.10.2: Refactor showAnswerFeedback Settings
+
+**Goal:** Move `showAnswerFeedback` from global settings to per-category/per-mode configuration.
+
+**Requirements:**
+- `showAnswerFeedback` configurable per quiz category (default: true)
+- `showAnswerFeedback` configurable per quiz mode (can override category)
+- `soundEffect` and `hapticFeedback` remain global settings (not tied to answerFeedback)
+- Priority: mode override > category default > global default
+
+**Tasks:**
+- [ ] Add `showAnswerFeedback` field to `QuizCategory` model
+- [ ] Add `showAnswerFeedback` field to `QuizModeConfig` sealed class
+- [ ] Update `QuizBloc` to use category/mode feedback setting instead of global
+- [ ] Keep `soundEffect` and `hapticFeedback` as independent global settings
+- [ ] Remove `showAnswerFeedback` from `QuizSettings` (or mark deprecated)
+- [ ] Update `QuizSettingsScreen` to remove answer feedback toggle
+- [ ] Update `FlagsCategories` with default feedback settings
+- [ ] Update `FlagsChallenges` with mode-specific feedback settings
+- [ ] Write unit tests for new feedback configuration
+- [ ] Update existing tests
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/models/quiz_category.dart`
+- `packages/quiz_engine_core/lib/src/model/config/quiz_mode_config.dart`
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart`
+- `packages/shared_services/lib/src/settings/quiz_settings.dart`
+- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+- `apps/flagsquiz/lib/data/flags_categories.dart`
+- `apps/flagsquiz/lib/data/flags_challenges.dart`
+
+---
+
+### Sprint 8.10.3: Refactor QuizApp & Main.dart
+
+**Goal:** Simplify flagsquiz main.dart by moving achievement completion logic into QuizApp and using enums for play tabs.
+
+**Requirements:**
+- Move `handleQuizCompleted` logic into `AchievementsDataProvider.onSessionCompleted()`
+- Remove `onQuizCompletedCallback` from `QuizApp` (use `achievementsDataProvider` only)
+- `QuizApp` internally calls `achievementsDataProvider.onSessionCompleted()` when quiz ends
+- Replace play tabs configuration with simple enum set (e.g., `{PlayTab.quiz, PlayTab.challenges, PlayTab.achievements}`)
+- Main.dart should only provide data and configuration, no business logic
+
+**Tasks:**
+- [ ] Add `onSessionCompleted(QuizSession session)` method to `AchievementsDataProvider` interface
+- [ ] Implement `onSessionCompleted` in `FlagsAchievementsDataProvider`
+- [ ] Update `QuizApp` to call `achievementsDataProvider?.onSessionCompleted()` on quiz completion
+- [ ] Remove `onQuizCompletedCallback` parameter from `QuizApp`
+- [ ] Create `PlayTabType` enum (quiz, challenges, achievements, practice)
+- [ ] Update `QuizApp` to accept `Set<PlayTabType>` instead of complex tab builders
+- [ ] Simplify `flagsquiz/main.dart` to use new API
+- [ ] Update `ChallengesScreen` to use internal callback (no external wiring needed)
+- [ ] Write unit tests for new interfaces
+- [ ] Update existing tests
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/models/quiz_data_provider.dart` - Add `onSessionCompleted`
+- `packages/quiz_engine/lib/src/app/quiz_app.dart` - Remove callback, call provider method
+- `packages/quiz_engine/lib/src/screens/challenges_screen.dart` - Remove external callback
+- `apps/flagsquiz/lib/achievements/flags_achievements_data_provider.dart` - Implement method
+- `apps/flagsquiz/lib/main.dart` - Simplify significantly
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/app/play_tab_type.dart` - PlayTabType enum
+
+---
+
+### Sprint 8.10.4: Localize Hardcoded UI Strings
+
+**Goal:** Move all hardcoded UI-related strings to ARB files for proper localization.
+
+**Tasks:**
+- [ ] Audit quiz_engine package for hardcoded strings
+- [ ] Audit quiz_engine_core package for hardcoded strings
+- [ ] Audit shared_services package for hardcoded strings
+- [ ] Audit flagsquiz app for hardcoded strings
+- [ ] Add missing strings to appropriate ARB files
+- [ ] Replace hardcoded strings with localization calls
+- [ ] Verify all user-facing strings are localized
+- [ ] Run `flutter gen-l10n` in affected packages
+- [ ] Test with different locales if available
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
+- `apps/flagsquiz/lib/l10n/intl_en.arb`
+- Various widget files with hardcoded strings
 
 ---
 
