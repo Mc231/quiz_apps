@@ -18,6 +18,25 @@ class FlagsAchievementsDataProvider {
   /// Cached category completion data for sync access.
   Map<String, CategoryCompletionData> _cachedCategoryData = {};
 
+  /// Cached challenge completion data for sync access.
+  Map<String, ChallengeCompletionData> _cachedChallengeData = {};
+
+  /// Challenge IDs used in Flags Quiz.
+  static const _challengeIds = [
+    'survival',
+    'time_attack',
+    'speed_run',
+    'marathon',
+    'blitz',
+  ];
+
+  /// Checks if a quiz ID matches a challenge ID.
+  ///
+  /// quizId format is '${category}_${challenge}' (e.g., 'eu_survival')
+  static bool _isChallengeQuiz(String quizId, String challengeId) {
+    return quizId.endsWith('_$challengeId') || quizId == challengeId;
+  }
+
   /// Whether the service has been initialized.
   bool _isInitialized = false;
 
@@ -69,14 +88,12 @@ class FlagsAchievementsDataProvider {
         category: AchievementCategory.beginner.name,
         trigger: AchievementTrigger.custom(
           evaluate: (stats, session) {
-            final challengeIds = [
-              'survival',
-              'time_attack',
-              'speed_run',
-              'marathon',
-              'blitz',
-            ];
-            return session != null && challengeIds.contains(session.quizId);
+            if (session == null) return false;
+            // quizId format is '${category}_${challenge}' (e.g., 'eu_survival')
+            final quizId = session.quizId;
+            return _challengeIds.any(
+              (id) => quizId.endsWith('_$id') || quizId == id,
+            );
           },
           target: 1,
         ),
@@ -404,8 +421,9 @@ class FlagsAchievementsDataProvider {
         category: AchievementCategory.challenge.name,
         trigger: AchievementTrigger.custom(
           evaluate: (stats, session) {
-            if (session?.quizId != 'time_attack') return false;
-            return (session?.totalCorrect ?? 0) >= 20;
+            if (session == null) return false;
+            if (!_isChallengeQuiz(session.quizId, 'time_attack')) return false;
+            return session.totalCorrect >= 20;
           },
           target: 1,
         ),
@@ -419,8 +437,9 @@ class FlagsAchievementsDataProvider {
         category: AchievementCategory.challenge.name,
         trigger: AchievementTrigger.custom(
           evaluate: (stats, session) {
-            if (session?.quizId != 'time_attack') return false;
-            return (session?.totalCorrect ?? 0) >= 30;
+            if (session == null) return false;
+            if (!_isChallengeQuiz(session.quizId, 'time_attack')) return false;
+            return session.totalCorrect >= 30;
           },
           target: 1,
         ),
@@ -434,8 +453,9 @@ class FlagsAchievementsDataProvider {
         category: AchievementCategory.challenge.name,
         trigger: AchievementTrigger.custom(
           evaluate: (stats, session) {
-            if (session?.quizId != 'marathon') return false;
-            return (session?.totalAnswered ?? 0) >= 50;
+            if (session == null) return false;
+            if (!_isChallengeQuiz(session.quizId, 'marathon')) return false;
+            return session.totalAnswered >= 50;
           },
           target: 1,
         ),
@@ -449,8 +469,9 @@ class FlagsAchievementsDataProvider {
         category: AchievementCategory.challenge.name,
         trigger: AchievementTrigger.custom(
           evaluate: (stats, session) {
-            if (session?.quizId != 'marathon') return false;
-            return (session?.totalAnswered ?? 0) >= 100;
+            if (session == null) return false;
+            if (!_isChallengeQuiz(session.quizId, 'marathon')) return false;
+            return session.totalAnswered >= 100;
           },
           target: 1,
         ),
@@ -464,8 +485,9 @@ class FlagsAchievementsDataProvider {
         category: AchievementCategory.challenge.name,
         trigger: AchievementTrigger.custom(
           evaluate: (stats, session) {
-            if (session?.quizId != 'speed_run') return false;
-            return (session?.durationSeconds ?? 999) < 120;
+            if (session == null) return false;
+            if (!_isChallengeQuiz(session.quizId, 'speed_run')) return false;
+            return (session.durationSeconds ?? 999) < 120;
           },
           target: 1,
         ),
@@ -652,8 +674,9 @@ class FlagsAchievementsDataProvider {
         // Answer at least 15 questions correctly in Survival (clutch performance)
         trigger: AchievementTrigger.custom(
           evaluate: (stats, session) {
-            if (session?.quizId != 'survival') return false;
-            return (session?.totalCorrect ?? 0) >= 15;
+            if (session == null) return false;
+            if (!_isChallengeQuiz(session.quizId, 'survival')) return false;
+            return session.totalCorrect >= 15;
           },
           target: 1,
         ),
@@ -895,8 +918,12 @@ class FlagsAchievementsDataProvider {
     // Set up category data provider
     _achievementService.categoryDataProvider = _getCategoryData;
 
-    // Load initial category data
+    // Set up challenge data provider
+    _achievementService.challengeDataProvider = _getChallengeData;
+
+    // Load initial category and challenge data
     await refreshCategoryData();
+    await refreshChallengeData();
   }
 
   void _ensureInitialized() {
@@ -912,6 +939,60 @@ class FlagsAchievementsDataProvider {
   /// This is called by [AchievementService] when checking achievements.
   Map<String, CategoryCompletionData> _getCategoryData() {
     return _cachedCategoryData;
+  }
+
+  /// Returns cached challenge completion data synchronously.
+  ///
+  /// This is called by [AchievementService] when checking achievements.
+  Map<String, ChallengeCompletionData> _getChallengeData() {
+    return _cachedChallengeData;
+  }
+
+  /// Refreshes the cached challenge completion data from storage.
+  ///
+  /// Call this after quiz completion to update challenge stats.
+  Future<void> refreshChallengeData() async {
+    final Map<String, ChallengeCompletionData> challengeData = {};
+
+    // Get all completed sessions (filter in Dart since filter doesn't support quizId)
+    final allSessions = await _sessionRepository.getSessions(
+      filter: const QuizSessionFilter(
+        completionStatus: CompletionStatus.completed,
+      ),
+    );
+
+    // Get completion counts for each challenge type
+    for (final challengeId in _challengeIds) {
+      // Filter sessions for this challenge
+      // quizId format is '${category}_${challenge}' (e.g., 'eu_survival')
+      final sessions = allSessions
+          .where((s) => s.quizId.endsWith('_$challengeId') || s.quizId == challengeId)
+          .toList();
+
+      // Count completions
+      int totalCompletions = sessions.length;
+      int perfectCompletions = sessions
+          .where((s) => s.scorePercentage >= 100.0)
+          .length;
+      int noLivesLostCompletions = sessions
+          .where((s) => s.livesUsed == 0)
+          .length;
+      double bestScore = sessions.isEmpty
+          ? 0.0
+          : sessions.map((s) => s.scorePercentage).reduce(
+              (max, score) => score > max ? score : max,
+            );
+
+      challengeData[challengeId] = ChallengeCompletionData(
+        challengeId: challengeId,
+        totalCompletions: totalCompletions,
+        perfectCompletions: perfectCompletions,
+        noLivesLostCompletions: noLivesLostCompletions,
+        bestScore: bestScore,
+      );
+    }
+
+    _cachedChallengeData = challengeData;
   }
 
   /// Refreshes the cached category completion data from storage.
@@ -952,6 +1033,14 @@ class FlagsAchievementsDataProvider {
   /// Loads achievements data for the Achievements tab.
   Future<AchievementsTabData> loadAchievementsData() async {
     _ensureInitialized();
+
+    // Refresh data providers to ensure we have latest stats
+    await refreshCategoryData();
+    await refreshChallengeData();
+
+    // Check all achievements to catch any missed unlocks
+    // This is a defensive measure in case checkAfterSession missed any
+    await _achievementService.checkAll();
 
     final allAchievements = _getAllAchievements();
 
