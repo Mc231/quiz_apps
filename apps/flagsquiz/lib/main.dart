@@ -24,15 +24,18 @@ void main() async {
   final settingsService = sl.get<SettingsService>();
   final storageService = sl.get<StorageService>();
   final achievementService = sl.get<AchievementService>();
+  final sessionRepository = sl.get<QuizSessionRepository>();
 
   // Create categories and data provider
   final categories = createFlagsCategories(countryCounts);
   const dataProvider = FlagsDataProvider();
 
-  // Create achievements data provider
+  // Create achievements data provider and initialize at startup
   final achievementsProvider = FlagsAchievementsDataProvider(
     achievementService: achievementService,
+    sessionRepository: sessionRepository,
   );
+  await achievementsProvider.initialize();
 
   runApp(
     QuizApp(
@@ -40,10 +43,12 @@ void main() async {
       categories: categories,
       dataProvider: dataProvider,
       storageService: storageService,
+      achievementService: achievementService,
       achievementsDataProvider: () =>
           achievementsProvider.loadAchievementsData(),
       onQuizCompleted: (results) async {
-        // Check and unlock achievements after quiz completion
+        // Refresh category data and check achievements after quiz completion
+        await achievementsProvider.refreshCategoryData();
         await achievementService.checkAll();
       },
       config: QuizAppConfig(
@@ -61,10 +66,11 @@ void main() async {
           tabs: [
             QuizTab.play(),
             QuizTab.achievements(),
-            QuizTab.settings(),
+            QuizTab.history(),
+            QuizTab.statistics(),
           ],
         ),
-        showSettingsInAppBar: false, // Settings is in bottom nav now
+        showSettingsInAppBar: true, // Settings is in bottom nav now
         // Configure the 3 tabs within Play: Play, Challenges, Practice
         playScreenTabs: [
           // Tab 1: Play - Standard quiz with hints and skip
