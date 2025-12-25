@@ -8,7 +8,8 @@ import 'flags_achievements.dart';
 /// Data provider for the Achievements tab in Flags Quiz.
 ///
 /// Uses [AchievementService] to load achievements and their progress.
-class FlagsAchievementsDataProvider {
+/// Implements [AchievementsDataProvider] for integration with [QuizApp].
+class FlagsAchievementsDataProvider implements AchievementsDataProvider {
   final AchievementService _achievementService;
   final QuizSessionRepository _sessionRepository;
 
@@ -1030,7 +1031,7 @@ class FlagsAchievementsDataProvider {
     _cachedCategoryData = categoryData;
   }
 
-  /// Loads achievements data for the Achievements tab.
+  @override
   Future<AchievementsTabData> loadAchievementsData() async {
     _ensureInitialized();
 
@@ -1077,5 +1078,15 @@ class FlagsAchievementsDataProvider {
         totalPoints: summary.totalPoints,
       ),
     );
+  }
+
+  @override
+  Future<void> onSessionCompleted(QuizSession session) async {
+    // Refresh category and challenge data for achievements
+    await refreshCategoryData();
+    await refreshChallengeData();
+
+    // Check both session-based and cumulative achievements
+    await _achievementService.checkAfterSession(session);
   }
 }
