@@ -23,7 +23,7 @@ void main() {
       expect(testChallenge.id, 'survival');
       expect(testChallenge.name, 'Survival');
       expect(testChallenge.difficulty, ChallengeDifficulty.hard);
-      expect(testChallenge.lives, 3);
+      expect(testChallenge.lives, 1);
       expect(testChallenge.showHints, false);
     });
 
