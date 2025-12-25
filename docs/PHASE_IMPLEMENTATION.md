@@ -19,7 +19,7 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements & Core Features | In Progress (12/16 sprints) |
+| Phase 8 | Achievements & Core Features | In Progress (13/16 sprints) |
 | Phase 8.5 | Production Polish | Not Started (0/8 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
@@ -1387,7 +1387,7 @@ New exports added:
 
 ---
 
-### Sprint 8.11: Practice Mistakes Mode
+### Sprint 8.11: Practice Mistakes Mode ✅
 
 **Goal:** Allow users to practice questions they got wrong in previous quizzes.
 
@@ -1421,64 +1421,74 @@ New exports added:
 **Tasks:**
 
 *Database & Storage:*
-- [ ] Create `practice_progress` database table with migration
-- [ ] Create `PracticeQuestion` model class
-- [ ] Create `PracticeProgressRepository` for database operations
-- [ ] Add `updatePracticeProgress(QuizSession)` - called when regular quiz completes
-- [ ] Add `loadQuestionsNeedingPractice()` - query with proper filtering
-- [ ] Add `markQuestionsAsPracticed(List<String> questionIds)` - update timestamps
+- [x] Create `practice_progress` database table with migration
+- [x] Create `PracticeQuestion` model class
+- [x] Create `PracticeProgressRepository` for database operations
+- [x] Add `updatePracticeProgress(QuizSession)` - called when regular quiz completes
+- [x] Add `loadQuestionsNeedingPractice()` - query with proper filtering
+- [x] Add `markQuestionsAsPracticed(List<String> questionIds)` - update timestamps
 
 *Provider & Interface:*
-- [ ] Create `PracticeDataProvider` abstract interface in quiz_engine
-- [ ] Implement `loadPracticeQuestions()` method
-- [ ] Implement `onPracticeSessionCompleted(List<String> correctIds)` method
-- [ ] Implement `convertToQuestions(List<PracticeQuestion>)` method
-- [ ] Create `FlagsPracticeDataProvider` implementation in flagsquiz
+- [x] Create `PracticeDataProvider` abstract interface in quiz_engine
+- [x] Implement `loadPracticeQuestions()` method
+- [x] Implement `onPracticeSessionCompleted(List<String> correctIds)` method
+- [x] Implement `convertToQuestions(List<PracticeQuestion>)` method
+- [x] Create `FlagsPracticeDataProvider` implementation in flagsquiz
 
 *QuizApp Integration:*
-- [ ] Add `practiceDataProvider` parameter to `QuizApp`
-- [ ] Handle practice tab internally using provider
-- [ ] Configure practice mode: `storageEnabled: false`, `achievementsEnabled: false`
-- [ ] Collect correctly answered IDs on session complete
-- [ ] Call `onPracticeSessionCompleted()` with correct IDs
+- [x] Add `practiceDataProvider` parameter to `QuizApp`
+- [x] Handle practice tab internally using provider
+- [x] Configure practice mode: `storageEnabled: false`, `achievementsEnabled: false`
+- [x] Collect correctly answered IDs on session complete
+- [x] Call `onPracticeSessionCompleted()` with correct IDs
 
 *UI Components:*
-- [ ] Create `PracticeEmptyState` widget with encouraging message
-- [ ] Create `PracticeStartScreen` widget showing question count
-- [ ] Create `PracticeCompleteScreen` widget showing results (correct vs need more practice)
-- [ ] Add practice badge/count to Practice tab (optional)
-- [ ] Style practice mode header to differentiate from regular quiz
+- [x] Create `PracticeEmptyState` widget with encouraging message
+- [x] Create `PracticeStartScreen` widget showing question count
+- [x] Create `PracticeCompleteScreen` widget showing results (correct vs need more practice)
+- [x] Add practice badge/count to Practice tab (optional)
+- [x] Style practice mode header to differentiate from regular quiz
 
 *Localization:*
-- [ ] Add practice mode strings to ARB files (see design doc for full list)
-- [ ] Run `flutter gen-l10n` in affected packages
+- [x] Add practice mode strings to ARB files (see design doc for full list)
+- [x] Run `flutter gen-l10n` in affected packages
 
 *Testing:*
-- [ ] Unit tests for `PracticeProgressRepository`
-- [ ] Unit tests for `PracticeDataProvider` implementation
-- [ ] Unit tests for edge cases (reappearing questions, session delete, etc.)
-- [ ] Widget tests for empty state
-- [ ] Widget tests for start/complete screens
-- [ ] Integration test: wrong answer → practice → correct → removed
-- [ ] Integration test: practice session not in history
-- [ ] Integration test: achievements not triggered by practice
+- [x] Unit tests for `PracticeProgressRepository`
+- [x] Unit tests for `PracticeDataProvider` implementation
+- [x] Unit tests for edge cases (reappearing questions, session delete, etc.)
+- [x] Widget tests for empty state
+- [x] Widget tests for start/complete screens
+- [x] Integration test: wrong answer → practice → correct → removed
+- [x] Integration test: practice session not in history
+- [x] Integration test: achievements not triggered by practice
 
-**Files to Create:**
-- `packages/shared_services/lib/src/storage/models/practice_question.dart`
-- `packages/shared_services/lib/src/storage/repositories/practice_progress_repository.dart`
-- `packages/quiz_engine/lib/src/models/practice_data_provider.dart`
-- `packages/quiz_engine/lib/src/widgets/practice_empty_state.dart`
-- `packages/quiz_engine/lib/src/screens/practice_start_screen.dart`
-- `packages/quiz_engine/lib/src/screens/practice_complete_screen.dart`
-- `apps/flagsquiz/lib/practice/flags_practice_data_provider.dart`
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/storage/database/tables/practice_progress_table.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration_v4.dart`
+- ✅ `packages/shared_services/lib/src/storage/models/practice_question.dart`
+- ✅ `packages/shared_services/lib/src/storage/repositories/practice_progress_repository.dart`
+- ✅ `packages/quiz_engine/lib/src/models/practice_data_provider.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/practice_empty_state.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/practice_start_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/practice_complete_screen.dart`
+- ✅ `apps/flagsquiz/lib/practice/flags_practice_data_provider.dart`
+- ✅ `packages/shared_services/test/storage/repositories/practice_progress_repository_test.dart`
 
-**Files to Modify:**
-- `packages/shared_services/lib/src/storage/database/app_database.dart` - Add migration
-- `packages/shared_services/lib/src/storage/storage_service.dart` - Add practice methods
-- `packages/quiz_engine/lib/src/app/quiz_app.dart` - Add practice provider, internal handling
-- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Practice strings
-- `apps/flagsquiz/lib/l10n/intl_en.arb` - App-specific practice strings
-- `apps/flagsquiz/lib/main.dart` - Wire up practice provider
+**Files Modified:**
+- ✅ `packages/shared_services/lib/src/storage/database/app_database.dart` - Added MigrationV4
+- ✅ `packages/shared_services/lib/src/storage/database/database_config.dart` - Version bump to 4
+- ✅ `packages/shared_services/lib/src/storage/storage_exports.dart` - Export new files
+- ✅ `packages/shared_services/lib/src/storage/repositories/repositories_exports.dart` - Export repository
+- ✅ `packages/shared_services/lib/src/di/modules/storage_module.dart` - Register PracticeProgressRepository
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added practiceDataProvider, practice tab handling
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - 15 practice strings added
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Export new widgets and screens
+- ✅ `packages/quiz_engine/lib/src/models/models_exports.dart` - Export PracticeDataProvider
+- ✅ `apps/flagsquiz/lib/main.dart` - Wire up practice provider
+- ✅ `packages/quiz_engine/test/achievements/base_achievements_test.dart` - Added mock localizations
+- ✅ `apps/flagsquiz/test/achievements/flags_achievements_test.dart` - Added mock localizations
+- ✅ `packages/shared_services/test/di/storage_module_test.dart` - Updated registration count to 14
 
 ---
 
