@@ -1324,38 +1324,41 @@ New exports added:
 
 ---
 
-### Sprint 8.10.3: Refactor QuizApp & Main.dart
+### Sprint 8.10.3: Refactor QuizApp & Main.dart ✅
 
 **Goal:** Simplify flagsquiz main.dart by moving achievement completion logic into QuizApp and using enums for play tabs.
 
 **Requirements:**
 - Move `handleQuizCompleted` logic into `AchievementsDataProvider.onSessionCompleted()`
-- Remove `onQuizCompletedCallback` from `QuizApp` (use `achievementsDataProvider` only)
+- Keep `onQuizCompleted` callback for additional app-specific processing, but QuizApp internally handles achievements
 - `QuizApp` internally calls `achievementsDataProvider.onSessionCompleted()` when quiz ends
-- Replace play tabs configuration with simple enum set (e.g., `{PlayTab.quiz, PlayTab.challenges, PlayTab.achievements}`)
+- Replace play tabs configuration with simple enum set `{PlayTabType.quiz, PlayTabType.challenges, PlayTabType.practice}`
 - Main.dart should only provide data and configuration, no business logic
 
 **Tasks:**
-- [ ] Add `onSessionCompleted(QuizSession session)` method to `AchievementsDataProvider` interface
-- [ ] Implement `onSessionCompleted` in `FlagsAchievementsDataProvider`
-- [ ] Update `QuizApp` to call `achievementsDataProvider?.onSessionCompleted()` on quiz completion
-- [ ] Remove `onQuizCompletedCallback` parameter from `QuizApp`
-- [ ] Create `PlayTabType` enum (quiz, challenges, achievements, practice)
-- [ ] Update `QuizApp` to accept `Set<PlayTabType>` instead of complex tab builders
-- [ ] Simplify `flagsquiz/main.dart` to use new API
-- [ ] Update `ChallengesScreen` to use internal callback (no external wiring needed)
-- [ ] Write unit tests for new interfaces
-- [ ] Update existing tests
+- [x] Add `onSessionCompleted(QuizSession session)` method to `AchievementsDataProvider` interface
+- [x] Implement `onSessionCompleted` in `FlagsAchievementsDataProvider`
+- [x] Update `QuizApp` to call `achievementsDataProvider?.onSessionCompleted()` on quiz completion
+- [x] Change `achievementsDataProvider` from callback to `AchievementsDataProvider?` interface
+- [x] Create `PlayTabType` enum (quiz, challenges, practice)
+- [x] Update `QuizApp` to accept `Set<PlayTabType>` and build tabs internally
+- [x] Add `challenges` and `practiceDataLoader` parameters to `QuizApp`
+- [x] Simplify `flagsquiz/main.dart` to use new API (removed 43 lines of boilerplate)
+- [x] Update `ChallengesScreen` to use internal callback (QuizApp wires it internally)
+- [x] Write unit tests for new interfaces
+- [x] Update existing tests (all tests pass)
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/models/quiz_data_provider.dart` - Add `onSessionCompleted`
-- `packages/quiz_engine/lib/src/app/quiz_app.dart` - Remove callback, call provider method
-- `packages/quiz_engine/lib/src/screens/challenges_screen.dart` - Remove external callback
-- `apps/flagsquiz/lib/achievements/flags_achievements_data_provider.dart` - Implement method
-- `apps/flagsquiz/lib/main.dart` - Simplify significantly
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/app/play_tab_type.dart` - PlayTabType enum
+- ✅ `packages/quiz_engine/lib/src/models/achievements_data_provider.dart` - AchievementsDataProvider interface
+- ✅ `packages/quiz_engine/test/app/play_tab_type_test.dart` - Unit tests for PlayTabType
+- ✅ `packages/quiz_engine/test/models/achievements_data_provider_test.dart` - Unit tests for AchievementsDataProvider
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/app/play_tab_type.dart` - PlayTabType enum
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Export new files
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added new parameters, internal achievement handling
+- ✅ `apps/flagsquiz/lib/achievements/flags_achievements_data_provider.dart` - Implement AchievementsDataProvider interface
+- ✅ `apps/flagsquiz/lib/main.dart` - Simplified significantly using new API
 
 ---
 
