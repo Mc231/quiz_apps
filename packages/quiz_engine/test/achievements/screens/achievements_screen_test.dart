@@ -149,7 +149,7 @@ void main() {
 
       await tester.pumpWidget(
         wrapWithLocalizations(
-          AchievementsScreen(data: data),
+          AchievementsScreen(data: data, showScaffold: true),
         ),
       );
 
@@ -278,8 +278,8 @@ void main() {
       // Initially shows all
       expect(find.text('Unlocked 0'), findsOneWidget);
 
-      // Tap on Locked filter
-      await tester.tap(find.textContaining('Locked'));
+      // Tap on Locked filter chip (format is "Locked (count)")
+      await tester.tap(find.text('Locked (4)'));
       await tester.pumpAndSettle();
 
       // Unlocked achievements should no longer be visible
@@ -353,6 +353,7 @@ void main() {
         wrapWithLocalizations(
           AchievementsScreen(
             data: data,
+            showScaffold: true,
             appBar: AppBar(title: const Text('Custom Title')),
           ),
         ),
