@@ -541,13 +541,13 @@ class _QuizAppState extends State<QuizApp> {
     }
 
     // Create config manager that applies user settings
+    // Note: showAnswerFeedback now comes from category/mode, not global settings
     final configManager = ConfigManager(
       defaultConfig: configWithStorage,
       getSettings: () => {
         'soundEnabled': widget.settingsService.currentSettings.soundEnabled,
         'hapticEnabled': widget.settingsService.currentSettings.hapticEnabled,
-        'showAnswerFeedback':
-            widget.settingsService.currentSettings.showAnswerFeedback,
+        'showAnswerFeedback': category.showAnswerFeedback ?? true,
       },
     );
 
