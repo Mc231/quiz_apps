@@ -20,7 +20,7 @@
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
 | Phase 8 | Achievements & Core Features | In Progress (13/16 sprints) |
-| Phase 8.5 | Production Polish | Not Started (0/8 sprints) |
+| Phase 8.5 | Production Polish | Not Started (0/7 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
@@ -1726,29 +1726,7 @@ score = sum(basePoints * (1 + streak * 0.5)) for each correct answer
 
 ---
 
-### Sprint 8.19: Offline Mode Polish
-
-**Goal:** Define and implement graceful offline behavior.
-
-**Tasks:**
-- [ ] Define offline behavior for each feature
-- [ ] Create `ConnectivityService` for network state monitoring
-- [ ] Create `OfflineBanner` widget for indicating offline state
-- [ ] Quiz play: works fully offline (local data)
-- [ ] Statistics: show cached data with "Last updated" timestamp
-- [ ] Achievements: check with cached data, queue unlocks for sync
-- [ ] Handle ad request failures gracefully (skip, don't block)
-- [ ] Handle IAP verification when offline (pending state)
-- [ ] Add localization strings for offline messages
-- [ ] Write tests for offline scenarios
-
-**Files to Create:**
-- `packages/shared_services/lib/src/connectivity/connectivity_service.dart`
-- `packages/quiz_engine/lib/src/widgets/offline_banner.dart`
-
----
-
-### Sprint 8.20: Audio & Haptic Polish
+### Sprint 8.19: Audio & Haptic Polish
 
 **Goal:** Ensure all sound effects and haptic feedback are properly implemented and balanced.
 
