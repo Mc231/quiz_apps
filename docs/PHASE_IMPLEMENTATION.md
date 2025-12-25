@@ -1362,25 +1362,28 @@ New exports added:
 
 ---
 
-### Sprint 8.10.4: Localize Hardcoded UI Strings
+### Sprint 8.10.4: Localize Hardcoded UI Strings ✅
 
 **Goal:** Move all hardcoded UI-related strings to ARB files for proper localization.
 
 **Tasks:**
-- [ ] Audit quiz_engine package for hardcoded strings
-- [ ] Audit quiz_engine_core package for hardcoded strings
-- [ ] Audit shared_services package for hardcoded strings
-- [ ] Audit flagsquiz app for hardcoded strings
-- [ ] Add missing strings to appropriate ARB files
-- [ ] Replace hardcoded strings with localization calls
-- [ ] Verify all user-facing strings are localized
-- [ ] Run `flutter gen-l10n` in affected packages
-- [ ] Test with different locales if available
+- [x] Audit quiz_engine package for hardcoded strings
+- [x] Audit quiz_engine_core package for hardcoded strings
+- [x] Audit shared_services package for hardcoded strings
+- [x] Audit flagsquiz app for hardcoded strings
+- [x] Add missing strings to appropriate ARB files
+- [x] Replace hardcoded strings with localization calls
+- [x] Verify all user-facing strings are localized
+- [x] Run `flutter gen-l10n` in affected packages
+- [x] Test with different locales if available
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
-- `apps/flagsquiz/lib/l10n/intl_en.arb`
-- Various widget files with hardcoded strings
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added `challenges` string
+- ✅ `apps/flagsquiz/lib/l10n/intl_en.arb` - Added `challenges` and `practice` strings
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Using localized strings for Play, Challenges, Practice tabs
+- ✅ `packages/quiz_engine/test/achievements/base_achievements_test.dart` - Updated mock localizations
+- ✅ `apps/flagsquiz/test/achievements/flags_achievements_test.dart` - Updated mock localizations
+- ✅ `packages/quiz_engine/test/app/play_tab_type_test.dart` - Fixed set uniqueness test
 
 ---
 
