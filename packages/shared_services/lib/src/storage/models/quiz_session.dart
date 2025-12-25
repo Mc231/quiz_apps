@@ -83,6 +83,7 @@ class QuizSession {
     this.timeLimitSeconds,
     this.hintsUsed5050 = 0,
     this.hintsUsedSkip = 0,
+    this.bestStreak = 0,
     required this.appVersion,
     required this.createdAt,
     required this.updatedAt,
@@ -148,6 +149,9 @@ class QuizSession {
   /// Number of skip hints used.
   final int hintsUsedSkip;
 
+  /// Best streak of consecutive correct answers in this session.
+  final int bestStreak;
+
   /// App version when the quiz was played.
   final String appVersion;
 
@@ -194,6 +198,7 @@ class QuizSession {
       timeLimitSeconds: map[QuizSessionsColumns.timeLimitSeconds] as int?,
       hintsUsed5050: (map[QuizSessionsColumns.hintsUsed5050] as int?) ?? 0,
       hintsUsedSkip: (map[QuizSessionsColumns.hintsUsedSkip] as int?) ?? 0,
+      bestStreak: (map[QuizSessionsColumns.bestStreak] as int?) ?? 0,
       appVersion: map[QuizSessionsColumns.appVersion] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(
         (map[QuizSessionsColumns.createdAt] as int) * 1000,
@@ -228,6 +233,7 @@ class QuizSession {
       QuizSessionsColumns.timeLimitSeconds: timeLimitSeconds,
       QuizSessionsColumns.hintsUsed5050: hintsUsed5050,
       QuizSessionsColumns.hintsUsedSkip: hintsUsedSkip,
+      QuizSessionsColumns.bestStreak: bestStreak,
       QuizSessionsColumns.appVersion: appVersion,
       QuizSessionsColumns.createdAt: createdAt.millisecondsSinceEpoch ~/ 1000,
       QuizSessionsColumns.updatedAt: updatedAt.millisecondsSinceEpoch ~/ 1000,
@@ -256,6 +262,7 @@ class QuizSession {
     int? timeLimitSeconds,
     int? hintsUsed5050,
     int? hintsUsedSkip,
+    int? bestStreak,
     String? appVersion,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -281,6 +288,7 @@ class QuizSession {
       timeLimitSeconds: timeLimitSeconds ?? this.timeLimitSeconds,
       hintsUsed5050: hintsUsed5050 ?? this.hintsUsed5050,
       hintsUsedSkip: hintsUsedSkip ?? this.hintsUsedSkip,
+      bestStreak: bestStreak ?? this.bestStreak,
       appVersion: appVersion ?? this.appVersion,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
