@@ -931,4 +931,85 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String accessibilityPointsBadge(int points) {
     return '$points points';
   }
+
+  @override
+  String get practiceMode => 'Practice';
+
+  @override
+  String get practiceEmptyTitle => 'No questions to practice';
+
+  @override
+  String get practiceEmptyMessage =>
+      'Great job! You\'ve mastered all the questions you got wrong. Keep playing to challenge yourself!';
+
+  @override
+  String get practiceStartQuiz => 'Start a Quiz';
+
+  @override
+  String get practiceStartTitle => 'Practice Mode';
+
+  @override
+  String practiceQuestionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count questions to practice',
+      one: '1 question to practice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get practiceDescription =>
+      'These are questions you\'ve answered incorrectly before.';
+
+  @override
+  String get startPractice => 'Start Practice';
+
+  @override
+  String get practiceCompleteTitle => 'Practice Complete!';
+
+  @override
+  String practiceCorrectCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count correct',
+      one: '1 correct',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String practiceNeedMorePractice(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count need more practice',
+      one: '1 needs more practice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get practiceKeepGoing =>
+      'Keep practicing to master all the questions!';
+
+  @override
+  String get practiceAllCorrect =>
+      'Perfect! You\'ve mastered all the questions!';
+
+  @override
+  String get practiceDone => 'Done';
+
+  @override
+  String wrongCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count times',
+      one: '1 time',
+    );
+    return 'Wrong $_temp0';
+  }
 }

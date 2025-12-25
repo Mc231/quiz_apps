@@ -1815,6 +1815,96 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'{points} points'**
   String accessibilityPointsBadge(int points);
+
+  /// Practice mode label
+  ///
+  /// In en, this message translates to:
+  /// **'Practice'**
+  String get practiceMode;
+
+  /// Title when there are no practice questions
+  ///
+  /// In en, this message translates to:
+  /// **'No questions to practice'**
+  String get practiceEmptyTitle;
+
+  /// Message when there are no practice questions
+  ///
+  /// In en, this message translates to:
+  /// **'Great job! You\'ve mastered all the questions you got wrong. Keep playing to challenge yourself!'**
+  String get practiceEmptyMessage;
+
+  /// Button to start a quiz from empty practice state
+  ///
+  /// In en, this message translates to:
+  /// **'Start a Quiz'**
+  String get practiceStartQuiz;
+
+  /// Practice start screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Practice Mode'**
+  String get practiceStartTitle;
+
+  /// Number of questions to practice
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 question to practice} other{{count} questions to practice}}'**
+  String practiceQuestionCount(int count);
+
+  /// Description on practice start screen
+  ///
+  /// In en, this message translates to:
+  /// **'These are questions you\'ve answered incorrectly before.'**
+  String get practiceDescription;
+
+  /// Button to start practice session
+  ///
+  /// In en, this message translates to:
+  /// **'Start Practice'**
+  String get startPractice;
+
+  /// Title when practice session is complete
+  ///
+  /// In en, this message translates to:
+  /// **'Practice Complete!'**
+  String get practiceCompleteTitle;
+
+  /// Number of correct answers in practice
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 correct} other{{count} correct}}'**
+  String practiceCorrectCount(int count);
+
+  /// Number of questions needing more practice
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 needs more practice} other{{count} need more practice}}'**
+  String practiceNeedMorePractice(int count);
+
+  /// Encouragement message after practice
+  ///
+  /// In en, this message translates to:
+  /// **'Keep practicing to master all the questions!'**
+  String get practiceKeepGoing;
+
+  /// Message when all practice answers are correct
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect! You\'ve mastered all the questions!'**
+  String get practiceAllCorrect;
+
+  /// Button to finish practice
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get practiceDone;
+
+  /// How many times a question was answered incorrectly
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong {count, plural, =1{1 time} other{{count} times}}'**
+  String wrongCount(int count);
 }
 
 class _QuizEngineLocalizationsDelegate
