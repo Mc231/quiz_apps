@@ -1391,32 +1391,94 @@ New exports added:
 
 **Goal:** Allow users to practice questions they got wrong in previous quizzes.
 
+**Design Doc:** See `docs/PRACTICE_MISTAKES_MODE.md` for full specification.
+
 **Requirements:**
-- Load wrong answers from last 10 sessions (`isCorrect == false`)
-- Show exact questions user got wrong (same image, same options)
-- Display as a single combined "Practice" category (not grouped by continent)
-- Clear practiced questions from list only after practice session ends
-- Only clear questions that were answered correctly during practice
+- Load wrong answers from ALL sessions (no limit)
+- Deduplicate by question ID - same question wrong multiple times appears once
+- Track wrong count - show how many times each question was answered incorrectly
+- Clear only after practice session completes (not during)
+- Only clear correctly answered questions - wrong during practice stays in list
+- Practice sessions are NOT stored in history
+- Practice has NO influence on achievements
+- Show empty state when no questions to practice (don't hide tab)
+
+**Data Model:**
+- Create `practice_progress` table with: `question_id`, `wrong_count`, `first_wrong_at`, `last_wrong_at`, `last_practiced_correctly_at`
+- Create `PracticeQuestion` model to represent aggregated wrong answers
+- Create `PracticeDataProvider` interface (similar to `AchievementsDataProvider`)
+
+**Edge Cases Handled:**
+- Same question wrong in multiple sessions → appears once with count
+- Correct before, wrong later → appears in practice
+- Practiced correctly, then wrong again → reappears in practice
+- Practice session cancelled → nothing marked as practiced
+- No wrong answers → show empty state
+- Session deleted → remove from practice progress
+- Wrong during practice → stays in list
+- Question removed from app → orphaned entries ignored
 
 **Tasks:**
-- [ ] Add `getWrongAnswersFromRecentSessions(int sessionLimit)` to StorageService
-- [ ] Add `getRecentSessionIds(int limit)` helper method to QuizSessionRepository
-- [ ] Add `clearPracticedAnswers(List<String> answerIds)` to StorageService
-- [ ] Create `PracticeDataProvider` to convert `QuestionAnswer` to `QuizCategory`
-- [ ] Implement `onLoadWrongAnswers` callback in flagsquiz main.dart
-- [ ] Add `onPracticeSessionComplete` callback to handle clearing correct answers
-- [ ] Add localization strings for practice mode
-- [ ] Write unit tests for new storage methods
-- [ ] Write integration tests for practice flow
+
+*Database & Storage:*
+- [ ] Create `practice_progress` database table with migration
+- [ ] Create `PracticeQuestion` model class
+- [ ] Create `PracticeProgressRepository` for database operations
+- [ ] Add `updatePracticeProgress(QuizSession)` - called when regular quiz completes
+- [ ] Add `loadQuestionsNeedingPractice()` - query with proper filtering
+- [ ] Add `markQuestionsAsPracticed(List<String> questionIds)` - update timestamps
+
+*Provider & Interface:*
+- [ ] Create `PracticeDataProvider` abstract interface in quiz_engine
+- [ ] Implement `loadPracticeQuestions()` method
+- [ ] Implement `onPracticeSessionCompleted(List<String> correctIds)` method
+- [ ] Implement `convertToQuestions(List<PracticeQuestion>)` method
+- [ ] Create `FlagsPracticeDataProvider` implementation in flagsquiz
+
+*QuizApp Integration:*
+- [ ] Add `practiceDataProvider` parameter to `QuizApp`
+- [ ] Handle practice tab internally using provider
+- [ ] Configure practice mode: `storageEnabled: false`, `achievementsEnabled: false`
+- [ ] Collect correctly answered IDs on session complete
+- [ ] Call `onPracticeSessionCompleted()` with correct IDs
+
+*UI Components:*
+- [ ] Create `PracticeEmptyState` widget with encouraging message
+- [ ] Create `PracticeStartScreen` widget showing question count
+- [ ] Create `PracticeCompleteScreen` widget showing results (correct vs need more practice)
+- [ ] Add practice badge/count to Practice tab (optional)
+- [ ] Style practice mode header to differentiate from regular quiz
+
+*Localization:*
+- [ ] Add practice mode strings to ARB files (see design doc for full list)
+- [ ] Run `flutter gen-l10n` in affected packages
+
+*Testing:*
+- [ ] Unit tests for `PracticeProgressRepository`
+- [ ] Unit tests for `PracticeDataProvider` implementation
+- [ ] Unit tests for edge cases (reappearing questions, session delete, etc.)
+- [ ] Widget tests for empty state
+- [ ] Widget tests for start/complete screens
+- [ ] Integration test: wrong answer → practice → correct → removed
+- [ ] Integration test: practice session not in history
+- [ ] Integration test: achievements not triggered by practice
 
 **Files to Create:**
-- `packages/shared_services/lib/src/storage/services/practice_service.dart`
-- `apps/flagsquiz/lib/practice/flags_practice_provider.dart`
+- `packages/shared_services/lib/src/storage/models/practice_question.dart`
+- `packages/shared_services/lib/src/storage/repositories/practice_progress_repository.dart`
+- `packages/quiz_engine/lib/src/models/practice_data_provider.dart`
+- `packages/quiz_engine/lib/src/widgets/practice_empty_state.dart`
+- `packages/quiz_engine/lib/src/screens/practice_start_screen.dart`
+- `packages/quiz_engine/lib/src/screens/practice_complete_screen.dart`
+- `apps/flagsquiz/lib/practice/flags_practice_data_provider.dart`
 
 **Files to Modify:**
-- `packages/shared_services/lib/src/storage/storage_service.dart`
-- `packages/shared_services/lib/src/storage/repositories/quiz_session_repository.dart`
-- `apps/flagsquiz/lib/main.dart`
+- `packages/shared_services/lib/src/storage/database/app_database.dart` - Add migration
+- `packages/shared_services/lib/src/storage/storage_service.dart` - Add practice methods
+- `packages/quiz_engine/lib/src/app/quiz_app.dart` - Add practice provider, internal handling
+- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Practice strings
+- `apps/flagsquiz/lib/l10n/intl_en.arb` - App-specific practice strings
+- `apps/flagsquiz/lib/main.dart` - Wire up practice provider
 
 ---
 
