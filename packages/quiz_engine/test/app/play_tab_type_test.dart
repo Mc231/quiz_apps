@@ -23,11 +23,10 @@ void main() {
     });
 
     test('Set maintains uniqueness', () {
-      final tabs = {
-        PlayTabType.quiz,
-        PlayTabType.challenges,
-        PlayTabType.quiz, // Duplicate
-      };
+      final tabs = <PlayTabType>{};
+      tabs.add(PlayTabType.quiz);
+      tabs.add(PlayTabType.challenges);
+      tabs.add(PlayTabType.quiz); // Duplicate
       expect(tabs.length, 2);
     });
 
