@@ -9,6 +9,7 @@ void main() {
       final category = QuizCategory(
         id: 'europe',
         title: (context) => 'Europe',
+        showAnswerFeedback: true,
       );
 
       expect(category.id, 'europe');
@@ -28,6 +29,7 @@ void main() {
         title: (context) => 'Europe',
         subtitle: (context) => '50 countries',
         icon: Icons.flag,
+        showAnswerFeedback: true,
         config: config,
         metadata: metadata,
       );
@@ -43,6 +45,7 @@ void main() {
         id: 'europe',
         title: (context) => 'Europe',
         icon: Icons.flag,
+        showAnswerFeedback: true,
       );
 
       final copied = original.copyWith(
@@ -63,6 +66,7 @@ void main() {
         id: 'europe',
         title: (context) => 'Europe',
         icon: Icons.flag,
+        showAnswerFeedback: true,
         config: config,
       );
 
@@ -77,17 +81,20 @@ void main() {
       final category1 = QuizCategory(
         id: 'europe',
         title: (context) => 'Europe',
+        showAnswerFeedback: true,
       );
 
       final category2 = QuizCategory(
         id: 'europe',
         title: (context) => 'Different Title',
         icon: Icons.flag,
+        showAnswerFeedback: true,
       );
 
       final category3 = QuizCategory(
         id: 'asia',
         title: (context) => 'Asia',
+        showAnswerFeedback: true,
       );
 
       expect(category1 == category2, isTrue);
@@ -98,11 +105,13 @@ void main() {
       final category1 = QuizCategory(
         id: 'europe',
         title: (context) => 'Europe',
+        showAnswerFeedback: true,
       );
 
       final category2 = QuizCategory(
         id: 'europe',
         title: (context) => 'Different',
+        showAnswerFeedback: true,
       );
 
       expect(category1.hashCode, category2.hashCode);
@@ -112,6 +121,7 @@ void main() {
       final category = QuizCategory(
         id: 'europe',
         title: (context) => 'Europe',
+        showAnswerFeedback: true,
       );
 
       expect(category.toString(), 'QuizCategory(id: europe)');
@@ -122,6 +132,7 @@ void main() {
         id: 'europe',
         title: (context) => 'Localized Europe',
         subtitle: (context) => '50 countries',
+        showAnswerFeedback: true,
       );
 
       String? resolvedTitle;
