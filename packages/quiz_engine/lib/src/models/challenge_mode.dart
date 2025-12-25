@@ -77,6 +77,7 @@ class ChallengeMode {
     required this.description,
     required this.icon,
     required this.difficulty,
+    required this.showAnswerFeedback,
     this.lives,
     this.totalTimeSeconds,
     this.questionTimeSeconds,
@@ -86,7 +87,6 @@ class ChallengeMode {
     this.trackTime = false,
     this.trackStreak = false,
     this.isEndless = false,
-    this.showAnswerFeedback,
   });
 
   /// Unique identifier for this challenge.
@@ -133,9 +133,8 @@ class ChallengeMode {
 
   /// Whether to show answer feedback for this challenge mode.
   ///
-  /// If null, uses the category default or global default.
-  /// This allows mode-specific override of feedback behavior.
-  final bool? showAnswerFeedback;
+  /// This is required and must be explicitly set for each challenge.
+  final bool showAnswerFeedback;
 
   /// Creates a copy with the given fields replaced.
   ChallengeMode copyWith({
