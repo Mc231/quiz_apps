@@ -1043,4 +1043,62 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String scorePlusBonus(int base, int bonus) {
     return '$base + $bonus bonus';
   }
+
+  @override
+  String get livesLabel => 'Lives';
+
+  @override
+  String get livesTooltip =>
+      'Lives remaining. Lose a life when you answer incorrectly.';
+
+  @override
+  String livesAccessibilityLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lives remaining',
+      one: '1 life remaining',
+      zero: 'No lives remaining',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get fiftyFiftyTooltip => '50/50 hint. Eliminates two wrong answers.';
+
+  @override
+  String fiftyFiftyAccessibilityLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count fifty-fifty hints remaining',
+      one: '1 fifty-fifty hint remaining',
+      zero: 'No 50/50 hints remaining',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get skipTooltip => 'Skip hint. Skip this question without penalty.';
+
+  @override
+  String skipAccessibilityLabel(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count skip hints remaining',
+      one: '1 skip hint remaining',
+      zero: 'No skip hints remaining',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get resourceDepleted => 'No more available';
+
+  @override
+  String get getMoreLives => 'Get More Lives';
+
+  @override
+  String get getMoreHints => 'Get More Hints';
 }

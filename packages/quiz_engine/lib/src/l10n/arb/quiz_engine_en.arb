@@ -1586,5 +1586,64 @@
       "base": {"type": "int"},
       "bonus": {"type": "int"}
     }
+  },
+
+  "livesLabel": "Lives",
+  "@livesLabel": {
+    "description": "Lives resource label"
+  },
+
+  "livesTooltip": "Lives remaining. Lose a life when you answer incorrectly.",
+  "@livesTooltip": {
+    "description": "Lives tooltip explaining the resource"
+  },
+
+  "livesAccessibilityLabel": "{count, plural, =0{No lives remaining} =1{1 life remaining} other{{count} lives remaining}}",
+  "@livesAccessibilityLabel": {
+    "description": "Accessibility label for lives count",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "fiftyFiftyTooltip": "50/50 hint. Eliminates two wrong answers.",
+  "@fiftyFiftyTooltip": {
+    "description": "50/50 hint tooltip explaining the resource"
+  },
+
+  "fiftyFiftyAccessibilityLabel": "{count, plural, =0{No 50/50 hints remaining} =1{1 fifty-fifty hint remaining} other{{count} fifty-fifty hints remaining}}",
+  "@fiftyFiftyAccessibilityLabel": {
+    "description": "Accessibility label for 50/50 count",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "skipTooltip": "Skip hint. Skip this question without penalty.",
+  "@skipTooltip": {
+    "description": "Skip hint tooltip explaining the resource"
+  },
+
+  "skipAccessibilityLabel": "{count, plural, =0{No skip hints remaining} =1{1 skip hint remaining} other{{count} skip hints remaining}}",
+  "@skipAccessibilityLabel": {
+    "description": "Accessibility label for skip count",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "resourceDepleted": "No more available",
+  "@resourceDepleted": {
+    "description": "Message when a resource is depleted"
+  },
+
+  "getMoreLives": "Get More Lives",
+  "@getMoreLives": {
+    "description": "Button/dialog title to get more lives"
+  },
+
+  "getMoreHints": "Get More Hints",
+  "@getMoreHints": {
+    "description": "Button/dialog title to get more hints"
   }
 }

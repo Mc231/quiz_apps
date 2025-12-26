@@ -1959,6 +1959,66 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'{base} + {bonus} bonus'**
   String scorePlusBonus(int base, int bonus);
+
+  /// Lives resource label
+  ///
+  /// In en, this message translates to:
+  /// **'Lives'**
+  String get livesLabel;
+
+  /// Lives tooltip explaining the resource
+  ///
+  /// In en, this message translates to:
+  /// **'Lives remaining. Lose a life when you answer incorrectly.'**
+  String get livesTooltip;
+
+  /// Accessibility label for lives count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No lives remaining} =1{1 life remaining} other{{count} lives remaining}}'**
+  String livesAccessibilityLabel(int count);
+
+  /// 50/50 hint tooltip explaining the resource
+  ///
+  /// In en, this message translates to:
+  /// **'50/50 hint. Eliminates two wrong answers.'**
+  String get fiftyFiftyTooltip;
+
+  /// Accessibility label for 50/50 count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No 50/50 hints remaining} =1{1 fifty-fifty hint remaining} other{{count} fifty-fifty hints remaining}}'**
+  String fiftyFiftyAccessibilityLabel(int count);
+
+  /// Skip hint tooltip explaining the resource
+  ///
+  /// In en, this message translates to:
+  /// **'Skip hint. Skip this question without penalty.'**
+  String get skipTooltip;
+
+  /// Accessibility label for skip count
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No skip hints remaining} =1{1 skip hint remaining} other{{count} skip hints remaining}}'**
+  String skipAccessibilityLabel(int count);
+
+  /// Message when a resource is depleted
+  ///
+  /// In en, this message translates to:
+  /// **'No more available'**
+  String get resourceDepleted;
+
+  /// Button/dialog title to get more lives
+  ///
+  /// In en, this message translates to:
+  /// **'Get More Lives'**
+  String get getMoreLives;
+
+  /// Button/dialog title to get more hints
+  ///
+  /// In en, this message translates to:
+  /// **'Get More Hints'**
+  String get getMoreHints;
 }
 
 class _QuizEngineLocalizationsDelegate
