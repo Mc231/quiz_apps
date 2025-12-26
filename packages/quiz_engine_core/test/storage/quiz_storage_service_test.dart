@@ -144,6 +144,7 @@ void main() {
           required hintsUsed5050,
           required hintsUsedSkip,
           bestStreak = 0,
+          score = 0,
         }) async {
           completeSessionCalled = true;
         },
