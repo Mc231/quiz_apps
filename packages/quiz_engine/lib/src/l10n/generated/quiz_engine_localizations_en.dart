@@ -58,6 +58,25 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String get videoLoadError => 'Failed to load video';
 
   @override
+  String get retry => 'Retry';
+
+  @override
+  String get errorTitle => 'Something Went Wrong';
+
+  @override
+  String get errorGeneric => 'An unexpected error occurred. Please try again.';
+
+  @override
+  String get errorNetwork => 'Unable to connect. Please check your connection.';
+
+  @override
+  String get errorServer =>
+      'Something went wrong on our end. Please try again later.';
+
+  @override
+  String get loadingData => 'Loading...';
+
+  @override
   String get hint5050Label => '50/50';
 
   @override
