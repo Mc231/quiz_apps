@@ -2319,6 +2319,84 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Question {current} of {total}'**
   String accessibilityQuestionNumber(int current, int total);
+
+  /// Export data menu item title
+  ///
+  /// In en, this message translates to:
+  /// **'Export Data'**
+  String get exportData;
+
+  /// Export data menu item subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Download all your data (GDPR)'**
+  String get exportDataDescription;
+
+  /// Message explaining what data export does
+  ///
+  /// In en, this message translates to:
+  /// **'Export all your data to a JSON file. This includes your complete quiz history, statistics, and settings.'**
+  String get exportDataDialogMessage;
+
+  /// Header for export includes list
+  ///
+  /// In en, this message translates to:
+  /// **'This export includes:'**
+  String get exportDataIncludes;
+
+  /// Export includes quiz history
+  ///
+  /// In en, this message translates to:
+  /// **'All quiz sessions and results'**
+  String get exportIncludesQuizHistory;
+
+  /// Export includes answers
+  ///
+  /// In en, this message translates to:
+  /// **'Your answers to all questions'**
+  String get exportIncludesAnswers;
+
+  /// Export includes statistics
+  ///
+  /// In en, this message translates to:
+  /// **'Performance statistics'**
+  String get exportIncludesStatistics;
+
+  /// Export includes settings
+  ///
+  /// In en, this message translates to:
+  /// **'App preferences and settings'**
+  String get exportIncludesSettings;
+
+  /// Export button label
+  ///
+  /// In en, this message translates to:
+  /// **'Export'**
+  String get export;
+
+  /// Subject line when sharing export file
+  ///
+  /// In en, this message translates to:
+  /// **'My Quiz Data Export'**
+  String get exportDataSubject;
+
+  /// Success message after export
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully exported {count} items'**
+  String exportDataSuccess(int count);
+
+  /// Error message when export fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to export data. Please try again.'**
+  String get exportDataError;
+
+  /// Data & Privacy section header in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Data & Privacy'**
+  String get dataAndPrivacy;
 }
 
 class _QuizEngineLocalizationsDelegate

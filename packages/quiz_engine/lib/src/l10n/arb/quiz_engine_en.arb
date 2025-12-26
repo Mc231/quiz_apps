@@ -1960,5 +1960,73 @@
       "current": {"type": "int"},
       "total": {"type": "int"}
     }
+  },
+
+  "exportData": "Export Data",
+  "@exportData": {
+    "description": "Export data menu item title"
+  },
+
+  "exportDataDescription": "Download all your data (GDPR)",
+  "@exportDataDescription": {
+    "description": "Export data menu item subtitle"
+  },
+
+  "exportDataDialogMessage": "Export all your data to a JSON file. This includes your complete quiz history, statistics, and settings.",
+  "@exportDataDialogMessage": {
+    "description": "Message explaining what data export does"
+  },
+
+  "exportDataIncludes": "This export includes:",
+  "@exportDataIncludes": {
+    "description": "Header for export includes list"
+  },
+
+  "exportIncludesQuizHistory": "All quiz sessions and results",
+  "@exportIncludesQuizHistory": {
+    "description": "Export includes quiz history"
+  },
+
+  "exportIncludesAnswers": "Your answers to all questions",
+  "@exportIncludesAnswers": {
+    "description": "Export includes answers"
+  },
+
+  "exportIncludesStatistics": "Performance statistics",
+  "@exportIncludesStatistics": {
+    "description": "Export includes statistics"
+  },
+
+  "exportIncludesSettings": "App preferences and settings",
+  "@exportIncludesSettings": {
+    "description": "Export includes settings"
+  },
+
+  "export": "Export",
+  "@export": {
+    "description": "Export button label"
+  },
+
+  "exportDataSubject": "My Quiz Data Export",
+  "@exportDataSubject": {
+    "description": "Subject line when sharing export file"
+  },
+
+  "exportDataSuccess": "Successfully exported {count} items",
+  "@exportDataSuccess": {
+    "description": "Success message after export",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "exportDataError": "Failed to export data. Please try again.",
+  "@exportDataError": {
+    "description": "Error message when export fails"
+  },
+
+  "dataAndPrivacy": "Data & Privacy",
+  "@dataAndPrivacy": {
+    "description": "Data & Privacy section header in settings"
   }
 }

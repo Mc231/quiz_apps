@@ -1296,4 +1296,46 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String accessibilityQuestionNumber(int current, int total) {
     return 'Question $current of $total';
   }
+
+  @override
+  String get exportData => 'Export Data';
+
+  @override
+  String get exportDataDescription => 'Download all your data (GDPR)';
+
+  @override
+  String get exportDataDialogMessage =>
+      'Export all your data to a JSON file. This includes your complete quiz history, statistics, and settings.';
+
+  @override
+  String get exportDataIncludes => 'This export includes:';
+
+  @override
+  String get exportIncludesQuizHistory => 'All quiz sessions and results';
+
+  @override
+  String get exportIncludesAnswers => 'Your answers to all questions';
+
+  @override
+  String get exportIncludesStatistics => 'Performance statistics';
+
+  @override
+  String get exportIncludesSettings => 'App preferences and settings';
+
+  @override
+  String get export => 'Export';
+
+  @override
+  String get exportDataSubject => 'My Quiz Data Export';
+
+  @override
+  String exportDataSuccess(int count) {
+    return 'Successfully exported $count items';
+  }
+
+  @override
+  String get exportDataError => 'Failed to export data. Please try again.';
+
+  @override
+  String get dataAndPrivacy => 'Data & Privacy';
 }
