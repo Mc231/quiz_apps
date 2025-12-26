@@ -1492,7 +1492,7 @@ New exports added:
 
 ---
 
-### Sprint 8.12: Scoring System
+### Sprint 8.12: Scoring System ✅
 
 **Goal:** Display session score during and after quizzes using `TimedScoring` strategy.
 
@@ -1503,42 +1503,57 @@ New exports added:
 - Show score breakdown: base points + time bonus
 
 **Tasks:**
-- [ ] Implement `calculateScore()` method in `ScoringStrategy` classes
-- [ ] Create `ScoreCalculator` service for score calculation
-- [ ] Add `sessionScore` field to `QuizSession` model
-- [ ] Save score when session completes
-- [ ] Create `ScoreDisplay` widget for result screen
-- [ ] Create `ScoreBreakdown` widget showing base + bonus
-- [ ] Update `QuizResultsScreen` to display score
-- [ ] Add `ScoringConfig` to `QuizConfig` for strategy selection
-- [ ] Add localization strings for score display
-- [ ] Write unit tests for score calculation
-- [ ] Write widget tests for score display
+- [x] Implement `calculateScore()` method in `ScoringStrategy` classes
+- [x] Add `ScoreBreakdownData` class for score breakdown data
+- [x] Add `score` and `scoreBreakdown` fields to `QuizResults` model
+- [x] Add `score` field to `QuizSession` model
+- [x] Create database migration v5 for score column
+- [x] Save score when session completes via `QuizBloc`
+- [x] Create `ScoreDisplay` widget for result screen (with animation)
+- [x] Create `ScoreBreakdown` widget showing base + bonus
+- [x] Update `QuizResultsScreen` to display score
+- [x] `ScoringConfig` already exists in `QuizConfig` (scoringStrategy field)
+- [x] Add localization strings for score display
+- [x] Write unit tests for score calculation
+- [x] Configure `TimedScoring` in flagsquiz app
 
-**Files to Create:**
-- `packages/quiz_engine_core/lib/src/scoring/score_calculator.dart`
-- `packages/quiz_engine/lib/src/widgets/score_display.dart`
-- `packages/quiz_engine/lib/src/widgets/score_breakdown.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/widgets/score_display.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/score_breakdown.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration_v5.dart`
+- ✅ `packages/quiz_engine_core/test/model/scoring_strategy_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine_core/lib/src/model/config/scoring_strategy.dart` - Uncomment and implement `calculateScore()`
-- `packages/shared_services/lib/src/storage/models/quiz_session.dart` - Add `score` field
-- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Display score
-- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Calculate score on completion
-- `apps/flagsquiz/lib/main.dart` - Configure TimedScoring
+**Files Modified:**
+- ✅ `packages/quiz_engine_core/lib/src/model/config/scoring_strategy.dart` - Added `ScoreBreakdownData` and `calculateScore()` methods
+- ✅ `packages/quiz_engine_core/lib/src/model/quiz_results.dart` - Added `score` and `scoreBreakdown` fields
+- ✅ `packages/shared_services/lib/src/storage/models/quiz_session.dart` - Added `score` field
+- ✅ `packages/shared_services/lib/src/storage/database/tables/quiz_sessions_table.dart` - Added `score` column
+- ✅ `packages/shared_services/lib/src/storage/database/database_config.dart` - Bumped version to 5
+- ✅ `packages/shared_services/lib/src/storage/database/app_database.dart` - Added MigrationV5
+- ✅ `packages/quiz_engine_core/lib/src/storage/quiz_storage_service.dart` - Added `score` parameter to `completeSession`
+- ✅ `packages/shared_services/lib/src/storage/quiz_storage_adapter.dart` - Pass score to storage
+- ✅ `packages/shared_services/lib/src/storage/storage_service.dart` - Added `score` parameter
+- ✅ `packages/shared_services/lib/src/storage/repositories/quiz_session_repository.dart` - Handle score updates
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Calculate score on completion
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Display score with breakdown
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added score display strings
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Export score widgets
+- ✅ `apps/flagsquiz/lib/data/flags_data_provider.dart` - Configure TimedScoring
 
 **Scoring Formulas:**
 ```dart
 // SimpleScoring
-score = correctAnswers * 1
+score = correctAnswers * pointsPerCorrect (default: 1)
 
 // TimedScoring
-basePoints = correctAnswers * 100
-timeBonus = max(0, (30 - avgSecondsPerQuestion)) * 5 * correctAnswers
+basePoints = correctAnswers * basePointsPerQuestion (default: 100)
+timeBonus = max(0, (timeThresholdSeconds - avgSecondsPerQuestion)) * bonusPerSecondSaved * correctAnswers
 score = basePoints + timeBonus
 
 // StreakScoring
-score = sum(basePoints * (1 + streak * 0.5)) for each correct answer
+basePoints = correctAnswers * basePointsPerQuestion
+streakBonus = sum of (basePoints * (streakMultiplier - 1) * streakPosition) for each correct answer in streak
+score = basePoints + streakBonus
 ```
 
 ---
