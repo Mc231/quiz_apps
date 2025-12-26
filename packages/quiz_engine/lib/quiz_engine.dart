@@ -85,6 +85,7 @@ export 'src/screens/quiz_results_screen.dart';
 
 // Settings
 export 'src/settings/quiz_settings_screen.dart';
+export 'src/settings/export_data_tile.dart';
 
 // Theme
 export 'src/theme/quiz_theme_data.dart';
