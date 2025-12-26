@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/quiz_localizations.dart';
 import '../models/challenge_mode.dart';
 
 /// Style configuration for [ChallengeCard].
@@ -85,37 +86,52 @@ class ChallengeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = QuizL10n.of(context);
 
-    return Card(
-      elevation: style.elevation,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(style.borderRadius),
-      ),
-      color: style.backgroundColor,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(style.borderRadius),
-        child: Padding(
-          padding: style.padding,
-          child: Row(
-            children: [
-              _buildIcon(theme),
-              const SizedBox(width: 16),
-              Expanded(child: _buildContent(theme)),
-              if (style.showDifficultyBadge) ...[
+    final semanticLabel = l10n.accessibilityChallengeButton(
+      challenge.name,
+      challenge.difficulty.label,
+    );
+
+    return Semantics(
+      label: semanticLabel,
+      hint: l10n.accessibilityDoubleTapToStart,
+      button: true,
+      enabled: onTap != null,
+      child: Card(
+        elevation: style.elevation,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(style.borderRadius),
+        ),
+        color: style.backgroundColor,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(style.borderRadius),
+          excludeFromSemantics: true,
+          child: Padding(
+            padding: style.padding,
+            child: Row(
+              children: [
+                ExcludeSemantics(child: _buildIcon(theme)),
+                const SizedBox(width: 16),
+                Expanded(child: _buildContent(theme)),
+                if (style.showDifficultyBadge) ...[
+                  const SizedBox(width: 8),
+                  ExcludeSemantics(child: _buildDifficultyBadge(theme)),
+                ],
+                if (trailing != null) ...[
+                  const SizedBox(width: 8),
+                  trailing!,
+                ],
                 const SizedBox(width: 8),
-                _buildDifficultyBadge(theme),
+                ExcludeSemantics(
+                  child: Icon(
+                    Icons.chevron_right,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
               ],
-              if (trailing != null) ...[
-                const SizedBox(width: 8),
-                trailing!,
-              ],
-              const SizedBox(width: 8),
-              Icon(
-                Icons.chevron_right,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ],
+            ),
           ),
         ),
       ),
