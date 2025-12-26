@@ -116,6 +116,7 @@ abstract class QuizSessionRepository {
     required int totalSkipped,
     required double scorePercentage,
     int bestStreak = 0,
+    int score = 0,
   });
 
   // ===========================================================================
@@ -369,6 +370,7 @@ class QuizSessionRepositoryImpl implements QuizSessionRepository {
     required int totalSkipped,
     required double scorePercentage,
     int bestStreak = 0,
+    int score = 0,
   }) async {
     final session = await getSession(sessionId);
     if (session == null) return;
@@ -380,6 +382,7 @@ class QuizSessionRepositoryImpl implements QuizSessionRepository {
       totalSkipped: totalSkipped,
       scorePercentage: scorePercentage,
       bestStreak: bestStreak,
+      score: score,
       updatedAt: DateTime.now(),
     );
 
