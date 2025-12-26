@@ -246,6 +246,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         remainingLives: _remainingLives,
         questionTimeRemaining: _questionTimeRemaining,
         totalTimeRemaining: _totalTimeRemaining,
+        hintState: _hintState,
       );
       dispatchState(feedbackState);
 
