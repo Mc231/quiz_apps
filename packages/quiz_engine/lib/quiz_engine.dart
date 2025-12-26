@@ -68,6 +68,11 @@ export 'src/widgets/challenge_list.dart';
 // Practice Widgets
 export 'src/widgets/practice_empty_state.dart';
 
+// State Widgets
+export 'src/widgets/loading_indicator.dart';
+export 'src/widgets/error_state_widget.dart';
+export 'src/widgets/empty_state_widget.dart';
+
 // Screens
 export 'src/screens/challenges_screen.dart';
 export 'src/screens/practice_complete_screen.dart';
