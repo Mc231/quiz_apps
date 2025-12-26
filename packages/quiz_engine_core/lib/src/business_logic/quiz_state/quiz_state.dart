@@ -28,6 +28,7 @@ sealed class QuizState {
     int? remainingLives,
     int? questionTimeRemaining,
     int? totalTimeRemaining,
+    HintState? hintState,
   }) = AnswerFeedbackState;
   factory QuizState.completed(QuizResults results) = QuizCompletedState;
   const QuizState();
@@ -109,6 +110,9 @@ class AnswerFeedbackState extends QuizState {
   /// The remaining total time for the entire quiz in seconds (null if no total time limit).
   final int? totalTimeRemaining;
 
+  /// The current state of available hints (preserved from question state).
+  final HintState? hintState;
+
   /// Computes the percentage of progress made through the quiz.
   double get percentageProgress =>
       total == 0 ? 0 : (progress / total).toDouble();
@@ -123,6 +127,7 @@ class AnswerFeedbackState extends QuizState {
     this.remainingLives,
     this.questionTimeRemaining,
     this.totalTimeRemaining,
+    this.hintState,
   });
 }
 
