@@ -1475,6 +1475,62 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get getMoreLives => 'Get More Lives';
   @override
   String get getMoreHints => 'Get More Hints';
+  @override
+  String get fiftyFiftyLabel => '50/50';
+  @override
+  String get skipLabel => 'Skip';
+  @override
+  String get needMoreLives => 'Need More Lives?';
+  @override
+  String get needMoreHints => 'Need More Hints?';
+  @override
+  String get needMoreSkips => 'Need More Skips?';
+  @override
+  String resourceRemaining(int count) => '$count remaining';
+  @override
+  String watchAdForResource(int count, String resource) =>
+      'Watch Ad for +$count $resource';
+  @override
+  String buyResource(String resource) => 'Buy $resource...';
+  @override
+  String get noThanks => 'No Thanks';
+  @override
+  String get buyLives => 'Buy Lives';
+  @override
+  String get buyHints => 'Buy Hints';
+  @override
+  String get buySkips => 'Buy Skips';
+  @override
+  String get bestValue => 'Best Value';
+  @override
+  String get restorePurchases => 'Restore Purchases';
+  @override
+  String get noConnection => 'No Connection';
+  @override
+  String get connectToRestore => 'Connect to restore';
+  @override
+  String get ok => 'OK';
+  @override
+  String purchaseSuccess(int count, String resource) =>
+      'Purchase successful! +$count $resource';
+  @override
+  String get purchaseFailed => 'Purchase failed';
+  @override
+  String get purchaseCancelled => 'Purchase cancelled';
+  @override
+  String get purchasePending => 'Purchase pending';
+  @override
+  String get purchasesRestored => 'Purchases restored';
+  @override
+  String adWatchSuccess(int count, String resource) =>
+      '+$count $resource added!';
+  @override
+  String get adNotAvailable => 'Ad not available';
+  @override
+  String get dailyLimitReset => 'Daily resources reset!';
+  @override
+  String freeResourcesInfo(int count, String resource) =>
+      '$count free $resource per day';
 }
 
 void main() {
