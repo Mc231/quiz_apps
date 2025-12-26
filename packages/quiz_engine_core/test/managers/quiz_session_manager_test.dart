@@ -35,7 +35,7 @@ class MockQuizStorageService implements QuizStorageService {
     if (shouldThrowOnCreate) {
       throw Exception('Storage error');
     }
-    lastCreatedSessionId = 'test-session-${createSessionCallCount}';
+    lastCreatedSessionId = 'test-session-$createSessionCallCount';
     return lastCreatedSessionId!;
   }
 
