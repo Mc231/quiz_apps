@@ -1,7 +1,11 @@
 import 'package:shared_services/shared_services.dart';
 
 import '../home/quiz_home_screen.dart';
+import '../screens/statistics_dashboard_screen.dart';
 import '../screens/statistics_screen.dart';
+import '../widgets/category_statistics_widget.dart';
+import '../widgets/leaderboard_widget.dart';
+import '../widgets/progress_chart_widget.dart';
 import '../widgets/session_card.dart';
 import '../widgets/trends_widget.dart';
 
@@ -191,5 +195,159 @@ class DefaultDataLoader {
     } else {
       return TrendType.stable;
     }
+  }
+
+  /// Loads complete dashboard data including all tabs.
+  ///
+  /// Returns [StatisticsDashboardData] with all statistics, progress,
+  /// categories, and leaderboard data.
+  Future<StatisticsDashboardData> loadDashboardData({
+    int recentSessionsLimit = 3,
+    int trendDays = 30,
+    int leaderboardLimit = 10,
+  }) async {
+    try {
+      // Load all data in parallel
+      final results = await Future.wait([
+        _storageService.getGlobalStatistics(),
+        _storageService.getRecentSessions(limit: recentSessionsLimit),
+        _storageService.getStatisticsTrend(trendDays),
+        _storageService.getAllQuizTypeStatistics(),
+        _storageService.getRecentSessions(limit: leaderboardLimit * 2),
+      ]);
+
+      // Extract results
+      GlobalStatistics? statistics;
+      List<QuizSession> recentSessions = [];
+      StatisticsTrend? trend;
+      List<QuizTypeStatistics> quizTypeStats = [];
+      List<QuizSession> allSessions = [];
+
+      (results[0] as StorageResult<GlobalStatistics>)
+          .ifSuccess((stats) => statistics = stats);
+      (results[1] as StorageResult<List<QuizSession>>)
+          .ifSuccess((sessions) => recentSessions = sessions);
+      (results[2] as StorageResult<StatisticsTrend>)
+          .ifSuccess((t) => trend = t);
+      (results[3] as StorageResult<List<QuizTypeStatistics>>)
+          .ifSuccess((stats) => quizTypeStats = stats);
+      (results[4] as StorageResult<List<QuizSession>>)
+          .ifSuccess((sessions) => allSessions = sessions);
+
+      return StatisticsDashboardData(
+        globalStatistics: _convertStatistics(statistics, trend),
+        recentSessions: recentSessions.map(_convertSessionToCardData).toList(),
+        weeklyTrend: _buildWeeklyTrend(trend),
+        trendDirection: _calculateTrendDirection(trend),
+        progressDataPoints: _buildProgressDataPoints(trend),
+        categoryStatistics: _convertCategoryStatistics(quizTypeStats),
+        leaderboardEntries: _buildLeaderboardEntries(allSessions, leaderboardLimit),
+        progressImprovement: trend?.trend,
+      );
+    } catch (e) {
+      return StatisticsDashboardData.empty;
+    }
+  }
+
+  /// Builds progress data points from trend statistics.
+  List<ProgressDataPoint> _buildProgressDataPoints(StatisticsTrend? trend) {
+    if (trend == null || trend.dailyStats.isEmpty) {
+      return [];
+    }
+
+    // Sort by date and convert to data points
+    final sortedStats = List<DailyStatistics>.from(trend.dailyStats)
+      ..sort((a, b) => a.date.compareTo(b.date));
+
+    return sortedStats.map((day) {
+      // Parse date string (format: YYYY-MM-DD)
+      final parts = day.date.split('-');
+      final date = DateTime(
+        int.parse(parts[0]),
+        int.parse(parts[1]),
+        int.parse(parts[2]),
+      );
+
+      return ProgressDataPoint(
+        date: date,
+        value: day.averageScorePercentage,
+        sessions: day.sessionsPlayed,
+        questionsAnswered: day.questionsAnswered,
+      );
+    }).toList();
+  }
+
+  /// Converts quiz type statistics to category statistics for display.
+  List<CategoryStatisticsData> _convertCategoryStatistics(
+    List<QuizTypeStatistics> stats,
+  ) {
+    if (stats.isEmpty) {
+      return [];
+    }
+
+    return stats
+        .where((s) => s.totalSessions > 0) // Only show categories with data
+        .map((stat) {
+      return CategoryStatisticsData(
+        categoryId: stat.id,
+        categoryName: _formatCategoryName(stat.quizType, stat.quizCategory),
+        totalSessions: stat.totalSessions,
+        averageScore: stat.averageScorePercentage,
+        bestScore: stat.bestScorePercentage,
+        accuracy: stat.accuracy,
+        totalQuestions: stat.totalQuestions,
+        lastPlayedAt: stat.lastPlayedAt,
+      );
+    }).toList()
+      ..sort((a, b) => b.totalSessions.compareTo(a.totalSessions));
+  }
+
+  /// Formats category name for display.
+  String _formatCategoryName(String quizType, String? category) {
+    // Capitalize first letter
+    String capitalize(String s) =>
+        s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}';
+
+    if (category != null && category.isNotEmpty) {
+      return '${capitalize(quizType)} - ${capitalize(category)}';
+    }
+    return capitalize(quizType);
+  }
+
+  /// Builds leaderboard entries from sessions.
+  List<LeaderboardEntry> _buildLeaderboardEntries(
+    List<QuizSession> sessions,
+    int limit,
+  ) {
+    if (sessions.isEmpty) {
+      return [];
+    }
+
+    // Sort by score percentage (descending), then by date (newest first)
+    final sortedSessions = List<QuizSession>.from(sessions)
+      ..sort((a, b) {
+        final scoreCompare = b.scorePercentage.compareTo(a.scorePercentage);
+        if (scoreCompare != 0) return scoreCompare;
+        return b.startTime.compareTo(a.startTime);
+      });
+
+    // Take top N and assign ranks
+    return sortedSessions.take(limit).toList().asMap().entries.map((entry) {
+      final rank = entry.key + 1;
+      final session = entry.value;
+
+      return LeaderboardEntry(
+        rank: rank,
+        sessionId: session.id,
+        quizName: session.quizName,
+        score: session.scorePercentage,
+        date: session.startTime,
+        categoryName: session.quizCategory,
+        totalQuestions: session.totalQuestions,
+        correctAnswers: session.totalCorrect,
+        durationSeconds: session.durationSeconds ?? 0,
+        isPerfect: session.scorePercentage >= 100,
+      );
+    }).toList();
   }
 }

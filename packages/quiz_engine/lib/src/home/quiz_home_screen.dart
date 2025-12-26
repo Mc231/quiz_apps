@@ -276,6 +276,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   late int _currentIndex;
   HistoryTabData _historyData = const HistoryTabData();
   StatisticsTabData _statisticsData = StatisticsTabData.empty();
+  StatisticsDashboardData? _dashboardData;
+  bool _dashboardLoading = false;
   AchievementsTabData _achievementsData = AchievementsTabData.empty();
   DefaultDataLoader? _dataLoader;
 
@@ -385,6 +387,13 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   }
 
   Future<void> _loadStatisticsData() async {
+    // Use dashboard data loading when using default data loader
+    if (_useDefaults && _dataLoader != null) {
+      await _loadDashboardData();
+      return;
+    }
+
+    // Fall back to legacy statistics provider
     final provider = _effectiveStatisticsProvider;
     if (provider == null) return;
 
@@ -406,6 +415,37 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     } catch (e) {
       if (mounted) {
         setState(() {
+          _statisticsData = StatisticsTabData.empty();
+        });
+      }
+    }
+  }
+
+  Future<void> _loadDashboardData() async {
+    if (_dataLoader == null) return;
+
+    setState(() {
+      _dashboardLoading = true;
+    });
+
+    try {
+      final data = await _dataLoader!.loadDashboardData();
+      if (mounted) {
+        setState(() {
+          _dashboardData = data;
+          _dashboardLoading = false;
+          // Also update legacy statistics data for compatibility
+          _statisticsData = StatisticsTabData(
+            statistics: data.globalStatistics,
+            recentSessions: data.recentSessions,
+          );
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _dashboardData = StatisticsDashboardData.empty;
+          _dashboardLoading = false;
           _statisticsData = StatisticsTabData.empty();
         });
       }
@@ -728,17 +768,18 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   }
 
   Widget _buildStatisticsTab(BuildContext context) {
-    // Convert to dashboard data format
-    final dashboardData = StatisticsDashboardData(
-      globalStatistics: _statisticsData.statistics,
-      recentSessions: _statisticsData.recentSessions,
-      weeklyTrend: _statisticsData.statistics.weeklyTrend,
-      trendDirection: _statisticsData.statistics.trendDirection,
-    );
+    // Use full dashboard data when available
+    final dashboardData = _dashboardData ??
+        StatisticsDashboardData(
+          globalStatistics: _statisticsData.statistics,
+          recentSessions: _statisticsData.recentSessions,
+          weeklyTrend: _statisticsData.statistics.weeklyTrend,
+          trendDirection: _statisticsData.statistics.trendDirection,
+        );
 
     return StatisticsDashboardScreen(
       data: dashboardData,
-      isLoading: _statisticsData.isLoading,
+      isLoading: _dashboardLoading || _statisticsData.isLoading,
       onSessionTap: _handleSessionTap,
       onViewAllSessions: widget.onViewAllSessions,
       // Show tabs for enhanced UI - can be disabled with showTabs: false
