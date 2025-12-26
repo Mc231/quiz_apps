@@ -34,8 +34,13 @@ class GameResourceButton extends StatefulWidget {
   /// The type of resource (determines color from theme).
   final GameResourceType resourceType;
 
-  /// Called when button is tapped.
+  /// Called when button is tapped (only when count > 0).
   final VoidCallback? onTap;
+
+  /// Called when button is tapped while depleted (count == 0).
+  ///
+  /// Use this to show a restore dialog or purchase options.
+  final VoidCallback? onDepletedTap;
 
   /// Called when button is long-pressed.
   final VoidCallback? onLongPress;
@@ -61,6 +66,7 @@ class GameResourceButton extends StatefulWidget {
     required this.count,
     required this.resourceType,
     this.onTap,
+    this.onDepletedTap,
     this.onLongPress,
     this.activeColor,
     this.theme,
@@ -214,7 +220,15 @@ class _GameResourceButtonState extends State<GameResourceButton>
   }
 
   void _handleTap() {
-    if (!widget.enabled || widget.count == 0) return;
+    if (!widget.enabled) return;
+
+    if (widget.count == 0) {
+      // Trigger depleted callback for showing restore dialog
+      widget.onDepletedTap?.call();
+      HapticFeedback.lightImpact();
+      return;
+    }
+
     widget.onTap?.call();
     HapticFeedback.mediumImpact();
   }
