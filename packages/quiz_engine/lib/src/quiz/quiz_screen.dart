@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:shared_services/shared_services.dart';
 import '../../quiz_engine.dart';
 import 'quiz_layout.dart';
 
@@ -43,11 +42,8 @@ class QuizScreenState extends State<QuizScreen> {
   /// The BLoC managing the quiz logic and state transitions.
   late QuizBloc _bloc;
 
-  /// Audio service for playing sound effects
-  final AudioService _audioService = AudioService();
-
-  /// Haptic service for providing haptic feedback
-  final HapticService _hapticService = HapticService();
+  /// Combined feedback service for audio and haptic feedback.
+  late QuizFeedbackService _feedbackService;
 
   /// Flag to track if the quiz is over
   bool _isQuizOver = false;
@@ -56,7 +52,7 @@ class QuizScreenState extends State<QuizScreen> {
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<QuizBloc>(context);
-    _initializeServices();
+    _initializeFeedbackService();
     _bloc.performInitialLoad();
   }
 
@@ -70,23 +66,16 @@ class QuizScreenState extends State<QuizScreen> {
     }
   }
 
-  /// Initialize audio and haptic services and set up feedback listeners
-  Future<void> _initializeServices() async {
-    // Initialize audio service
-    await _audioService.initialize();
-
-    // Configure services based on quiz config
+  /// Initialize the feedback service and set up state listeners.
+  Future<void> _initializeFeedbackService() async {
     final config = _bloc.config.uiBehaviorConfig;
-    _audioService.setMuted(!config.playSounds);
-    _hapticService.setEnabled(config.hapticFeedback);
 
-    // Preload frequently used sounds
-    if (config.playSounds) {
-      await _audioService.preloadMultiple([
-        QuizSoundEffect.correctAnswer,
-        QuizSoundEffect.incorrectAnswer,
-      ]);
-    }
+    // Create and initialize feedback service with user preferences
+    _feedbackService = QuizFeedbackService(
+      soundsEnabled: config.playSounds,
+      hapticsEnabled: config.hapticFeedback,
+    );
+    await _feedbackService.initialize();
 
     // Listen to quiz states and provide feedback
     _bloc.stream.listen((state) {
@@ -94,38 +83,24 @@ class QuizScreenState extends State<QuizScreen> {
         _provideFeedback(state);
       } else if (state is QuizCompletedState) {
         _isQuizOver = true;
+        _feedbackService.trigger(QuizFeedbackPattern.quizComplete);
       }
     });
   }
 
-  /// Provide audio and haptic feedback based on answer correctness
+  /// Provide audio and haptic feedback based on answer correctness.
   Future<void> _provideFeedback(AnswerFeedbackState state) async {
     if (!mounted) return;
 
-    final config = _bloc.config.uiBehaviorConfig;
-
-    // Play sound effect
-    if (config.playSounds) {
-      final sound =
-          state.isCorrect
-              ? QuizSoundEffect.correctAnswer
-              : QuizSoundEffect.incorrectAnswer;
-      await _audioService.playSoundEffect(sound);
-    }
-
-    // Trigger haptic feedback
-    if (config.hapticFeedback) {
-      if (state.isCorrect) {
-        await _hapticService.correctAnswer();
-      } else {
-        await _hapticService.incorrectAnswer();
-      }
-    }
+    final pattern = state.isCorrect
+        ? QuizFeedbackPattern.correctAnswer
+        : QuizFeedbackPattern.incorrectAnswer;
+    await _feedbackService.trigger(pattern);
   }
 
   @override
   void dispose() {
-    _audioService.dispose();
+    _feedbackService.dispose();
     super.dispose();
   }
 
@@ -174,22 +149,25 @@ class QuizScreenState extends State<QuizScreen> {
               }
             }
           },
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(widget.title),
-              actions: [
-                // Only show actions if not loading
-                if (state is! LoadingState)
-                  QuizAppBarActions(
-                    state: state,
-                    config: _bloc.config,
-                    resourceData: resourceData,
-                  ),
-              ],
-            ),
-            body: Container(
-              padding: getContainerPadding(context),
-              child: SafeArea(child: _buildBody(state, resourceData)),
+          child: QuizFeedbackProvider(
+            feedbackService: _feedbackService,
+            child: Scaffold(
+              appBar: AppBar(
+                title: Text(widget.title),
+                actions: [
+                  // Only show actions if not loading
+                  if (state is! LoadingState)
+                    QuizAppBarActions(
+                      state: state,
+                      config: _bloc.config,
+                      resourceData: resourceData,
+                    ),
+                ],
+              ),
+              body: Container(
+                padding: getContainerPadding(context),
+                child: SafeArea(child: _buildBody(state, resourceData)),
+              ),
             ),
           ),
         );
