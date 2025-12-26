@@ -64,6 +64,7 @@ abstract class QuizStorageService {
     required int hintsUsed5050,
     required int hintsUsedSkip,
     int bestStreak = 0,
+    int score = 0,
   });
 
   /// Checks if there's a recoverable session for the quiz.
@@ -220,6 +221,7 @@ class CallbackQuizStorageService implements QuizStorageService {
     required int hintsUsed5050,
     required int hintsUsedSkip,
     int bestStreak,
+    int score,
   }) onCompleteSession;
 
   /// Callback to check for recoverable session.
@@ -297,6 +299,7 @@ class CallbackQuizStorageService implements QuizStorageService {
     required int hintsUsed5050,
     required int hintsUsedSkip,
     int bestStreak = 0,
+    int score = 0,
   }) {
     return onCompleteSession(
       sessionId: sessionId,
@@ -309,6 +312,7 @@ class CallbackQuizStorageService implements QuizStorageService {
       hintsUsed5050: hintsUsed5050,
       hintsUsedSkip: hintsUsedSkip,
       bestStreak: bestStreak,
+      score: score,
     );
   }
 
@@ -391,6 +395,7 @@ class NoOpQuizStorageService implements QuizStorageService {
     required int hintsUsed5050,
     required int hintsUsedSkip,
     int bestStreak = 0,
+    int score = 0,
   }) async {
     // No-op
   }
