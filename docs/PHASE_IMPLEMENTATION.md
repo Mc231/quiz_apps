@@ -1692,7 +1692,7 @@ score = basePoints + streakBonus
 
 ---
 
-### Sprint 8.15: Hints & Lives - IAP/Ads Architecture
+### Sprint 8.15: Hints & Lives - IAP/Ads Architecture ✅
 
 **Goal:** Prepare hints and lives system for integration with in-app purchases and rewarded ads.
 
@@ -1707,33 +1707,52 @@ score = basePoints + streakBonus
 **Pre-requisite:** Create `docs/HINTS_LIVES_IAP_DESIGN.md` with full architecture
 
 **Tasks:**
-- [ ] Create design document with full IAP/Ads architecture
-- [ ] Define daily limit configuration model
-- [ ] Create `HintsLivesManager` service for tracking counts
-- [ ] Create database table/migration for hint/life inventory
-- [ ] Implement daily reset mechanism
-- [ ] Create `RestoreResourceDialog` (watch ad or purchase options)
-- [ ] Create `PurchaseResourceSheet` for buying packs
-- [ ] Add hooks for rewarded ad integration (interface only)
-- [ ] Add hooks for IAP integration (interface only)
-- [ ] Handle offline scenario (queue actions, show message)
-- [ ] Add localization strings for purchase/restore UI
-- [ ] Write unit tests for manager and reset logic
-- [ ] Write widget tests for dialogs
+- [x] Create design document with full IAP/Ads architecture
+- [x] Define daily limit configuration model
+- [x] Create `ResourceManager` service for tracking counts
+- [x] Create in-memory repository for development/testing
+- [x] Create SQLite repository for persistent storage
+- [x] Add database migration V6 for resource_inventory table
+- [x] Implement daily reset mechanism
+- [x] Create `RestoreResourceDialog` (watch ad or purchase options)
+- [x] Create `PurchaseResourceSheet` for buying packs
+- [x] Add hooks for rewarded ad integration (AdRewardProvider interface)
+- [x] Add hooks for IAP integration (IAPProvider interface)
+- [x] Handle offline scenario (show message in dialog)
+- [x] Add localization strings for purchase/restore UI
+- [x] Write unit tests for manager and reset logic
+- [ ] Write widget tests for dialogs (future work)
 
-**Files to Create:**
-- `docs/HINTS_LIVES_IAP_DESIGN.md`
-- `packages/shared_services/lib/src/storage/database/tables/resource_inventory_table.dart`
-- `packages/shared_services/lib/src/storage/database/migrations/migration_v3.dart`
-- `packages/shared_services/lib/src/resources/hints_lives_manager.dart`
-- `packages/shared_services/lib/src/resources/resource_config.dart`
-- `packages/quiz_engine/lib/src/widgets/restore_resource_dialog.dart`
-- `packages/quiz_engine/lib/src/widgets/purchase_resource_sheet.dart`
+**Files Created:**
+- ✅ `docs/HINTS_LIVES_IAP_DESIGN.md`
+- ✅ `packages/shared_services/lib/src/resources/resource_type.dart`
+- ✅ `packages/shared_services/lib/src/resources/resource_config.dart`
+- ✅ `packages/shared_services/lib/src/resources/resource_inventory.dart`
+- ✅ `packages/shared_services/lib/src/resources/resource_repository.dart`
+- ✅ `packages/shared_services/lib/src/resources/resource_manager.dart`
+- ✅ `packages/shared_services/lib/src/resources/providers/ad_reward_provider.dart`
+- ✅ `packages/shared_services/lib/src/resources/providers/iap_provider.dart`
+- ✅ `packages/shared_services/lib/src/resources/resources.dart`
+- ✅ `packages/shared_services/lib/src/resources/sqlite_resource_repository.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/tables/resource_inventory_table.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration_v6.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/restore_resource_dialog.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/purchase_resource_sheet.dart`
+- ✅ `packages/shared_services/test/resources/resource_type_test.dart`
+- ✅ `packages/shared_services/test/resources/resource_config_test.dart`
+- ✅ `packages/shared_services/test/resources/resource_inventory_test.dart`
+- ✅ `packages/shared_services/test/resources/resource_manager_test.dart`
 
-**Files to Modify:**
-- `packages/shared_services/lib/src/storage/database/database_config.dart` (version bump)
-- `packages/quiz_engine/lib/src/widgets/hints_panel.dart`
-- `packages/quiz_engine/lib/src/widgets/lives_display.dart`
+**Files Modified:**
+- ✅ `packages/shared_services/lib/shared_services.dart` (added resources export)
+- ✅ `packages/shared_services/lib/src/storage/database/database_config.dart` (version 5 → 6)
+- ✅ `packages/shared_services/lib/src/storage/database/app_database.dart` (registered MigrationV6)
+- ✅ `packages/quiz_engine/lib/src/widgets/game_resource_button.dart` (added onDepletedTap callback)
+- ✅ `packages/quiz_engine/lib/src/widgets/game_resource_panel.dart` (added onDepletedTap to config)
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` (added IAP/Ads strings)
+- ✅ `packages/quiz_engine/test/widgets/game_resource_button_test.dart` (added onDepletedTap test)
+- ✅ `packages/quiz_engine/test/achievements/base_achievements_test.dart` (mock updates)
+- ✅ `apps/flagsquiz/test/achievements/flags_achievements_test.dart` (mock updates)
 
 ---
 
