@@ -1932,7 +1932,90 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 
 ---
 
-## Phase 9: Shared Services (Not Started)
+## Completed Technical Improvements
+
+### QuizBloc Refactoring ✅
+
+**Description:** Refactored `QuizBloc` from 789 lines to 459 lines (~42% reduction) by extracting functionality into 6 focused managers for better separation of concerns and testability.
+
+**Architecture:**
+```
+QuizBloc (Orchestrator ~460 lines)
+    ├── QuizProgressTracker   (~160 lines) - Tracks answers, progress, streaks, lives
+    ├── QuizTimerManager      (~290 lines) - Question/total timers, pause/resume, stopwatches
+    ├── QuizHintManager       (~182 lines) - Hint state, 50/50 logic, disabled options
+    ├── QuizSessionManager    (~265 lines) - Storage integration, session lifecycle
+    ├── QuizAnswerProcessor   (~118 lines) - Answer creation, timeout/skip answers
+    └── QuizGameFlowManager   (~182 lines) - Question picking, game over detection
+```
+
+**Files Created:**
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/managers.dart` (barrel export)
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_progress_tracker.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_timer_manager.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_hint_manager.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_session_manager.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_answer_processor.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_game_flow_manager.dart`
+
+**Test Files Created:**
+- ✅ `packages/quiz_engine_core/test/managers/quiz_progress_tracker_test.dart` (21 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_timer_manager_test.dart` (25 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_hint_manager_test.dart` (22 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_session_manager_test.dart` (19 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_answer_processor_test.dart` (13 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_game_flow_manager_test.dart` (17 tests)
+
+**Total: 117 new manager tests**
+
+---
+
+### Sprint 5.6: Pagination, Export & Optimization ✅
+
+**Goal:** Add pagination for large datasets, GDPR-compliant data export, and query optimization.
+
+**Tasks:**
+- [x] Implement pagination support in data sources/repositories
+- [x] Add pagination to session history screen
+- [x] Add pagination to achievements list (if needed) - Not needed (small dataset)
+- [x] Implement data export service (JSON format, GDPR compliance)
+- [x] Add export UI to settings screen
+- [x] Optimize queries with proper database indexes - Already exist from Sprint 5.1
+- [x] Write tests for pagination and export
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/storage/models/paginated_result.dart`
+- ✅ `packages/shared_services/lib/src/storage/services/data_export_service.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/export_data_tile.dart`
+
+---
+
+### Sprint 6.2: Advanced Statistics UI ✅
+
+**Tasks:**
+- [x] Create Statistics Dashboard UI
+- [x] Add charts/graphs for trends
+- [x] Display aggregate statistics
+- [x] Show improvement over time
+- [x] Add category breakdown views
+- [x] Create leaderboards (local)
+- [x] Test statistics screens
+
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/widgets/category_statistics_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/progress_chart_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/leaderboard_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
+
+---
+
+---
+
+# BACKLOG (Not Started / In Progress)
+
+---
+
+## Phase 9: Shared Services
 
 ### Sprint 9.1: Analytics
 
@@ -1970,7 +2053,7 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 
 ---
 
-## Phase 10: Polish & Integration (Not Started)
+## Phase 10: Polish & Integration
 
 **Tasks:**
 - [ ] Review all animations
@@ -1984,7 +2067,7 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 
 ---
 
-## Phase 11: Second App Validation (Not Started)
+## Phase 11: Second App Validation
 
 **Tasks:**
 - [ ] Create second quiz app (e.g., capitals_quiz)
@@ -1996,7 +2079,7 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 
 ---
 
-## Known Bugs (Backlog)
+## Known Bugs
 
 ### Practice Mode - Single Question Shows Only 1 Option
 
@@ -2036,65 +2119,7 @@ QuizFeedbackService _feedbackService = QuizFeedbackService();
 
 ---
 
-### QuizBloc Refactoring ✅ (Completed)
-
-**Description:** Refactored `QuizBloc` from 789 lines to 459 lines (~42% reduction) by extracting functionality into 6 focused managers for better separation of concerns and testability.
-
-**Architecture:**
-```
-QuizBloc (Orchestrator ~460 lines)
-    ├── QuizProgressTracker   (~160 lines) - Tracks answers, progress, streaks, lives
-    ├── QuizTimerManager      (~290 lines) - Question/total timers, pause/resume, stopwatches
-    ├── QuizHintManager       (~182 lines) - Hint state, 50/50 logic, disabled options
-    ├── QuizSessionManager    (~265 lines) - Storage integration, session lifecycle
-    ├── QuizAnswerProcessor   (~118 lines) - Answer creation, timeout/skip answers
-    └── QuizGameFlowManager   (~182 lines) - Question picking, game over detection
-```
-
-**Communication Pattern:**
-| Manager | Pattern | Reason |
-|---------|---------|--------|
-| QuizTimerManager | Callbacks | Async timer events (timeout, tick) |
-| QuizHintManager | Direct | Sync logic, returns disabled options |
-| QuizSessionManager | Direct (async) | Already async storage operations |
-| QuizProgressTracker | Direct | Pure state, no async |
-| QuizAnswerProcessor | Direct | Sync answer creation |
-| QuizGameFlowManager | Callbacks | Game over events |
-
-**Files Created:**
-- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/managers.dart` (barrel export)
-- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_progress_tracker.dart`
-- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_timer_manager.dart`
-- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_hint_manager.dart`
-- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_session_manager.dart`
-- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_answer_processor.dart`
-- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_game_flow_manager.dart`
-
-**Test Files Created:**
-- ✅ `packages/quiz_engine_core/test/managers/quiz_progress_tracker_test.dart` (21 tests)
-- ✅ `packages/quiz_engine_core/test/managers/quiz_timer_manager_test.dart` (25 tests)
-- ✅ `packages/quiz_engine_core/test/managers/quiz_hint_manager_test.dart` (22 tests)
-- ✅ `packages/quiz_engine_core/test/managers/quiz_session_manager_test.dart` (19 tests)
-- ✅ `packages/quiz_engine_core/test/managers/quiz_answer_processor_test.dart` (13 tests)
-- ✅ `packages/quiz_engine_core/test/managers/quiz_game_flow_manager_test.dart` (17 tests)
-
-**Total: 117 new manager tests**
-
-**Files Modified:**
-- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Refactored to use managers
-
-**Benefits:**
-1. **Better testability** - Each manager can be tested independently
-2. **Single responsibility** - Each manager handles one concern
-3. **Easier maintenance** - Smaller, focused classes
-4. **Reusability** - Managers can be reused in other contexts
-5. **Public API preserved** - All existing tests pass unchanged
-
-**Priority:** Completed
-
----
-
-## Future Features (Backlog)
+## Future Features
 
 ### Score-Based Achievements
 
@@ -2110,7 +2135,7 @@ QuizBloc (Orchestrator ~460 lines)
 
 ---
 
-## Future Sprints (Backlog)
+## Future Sprints
 
 ### Sprint 4.4: UI Testing & Polish
 
@@ -2122,54 +2147,6 @@ QuizBloc (Orchestrator ~460 lines)
 - [ ] Accessibility testing (screen reader, contrast, font scaling)
 - [ ] Edge cases (long text, special characters, RTL)
 - [ ] Polish (transitions, loading states, error states)
-
----
-
-### Sprint 5.6: Pagination, Export & Optimization ✅
-
-**Goal:** Add pagination for large datasets, GDPR-compliant data export, and query optimization.
-
-**Tasks:**
-- [x] Implement pagination support in data sources/repositories
-- [x] Add pagination to session history screen
-- [x] Add pagination to achievements list (if needed) - Not needed (small dataset)
-- [x] Implement data export service (JSON format, GDPR compliance)
-- [x] Add export UI to settings screen
-- [x] Optimize queries with proper database indexes - Already exist from Sprint 5.1
-- [x] Write tests for pagination and export
-
-**Files Created:**
-- ✅ `packages/shared_services/lib/src/storage/models/paginated_result.dart`
-- ✅ `packages/shared_services/lib/src/storage/services/data_export_service.dart`
-- ✅ `packages/quiz_engine/lib/src/settings/export_data_tile.dart`
-
-**Files Modified:**
-- ✅ `packages/shared_services/lib/src/storage/data_sources/quiz_session_data_source.dart` - Added getSessionsCount()
-- ✅ `packages/shared_services/lib/src/storage/repositories/quiz_session_repository.dart` - Added getPaginatedSessions()
-- ✅ `packages/quiz_engine/lib/src/screens/session_history_screen.dart` - Added infinite scroll support
-- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added export localization strings
-
----
-
-### Sprint 6.2: Advanced Statistics UI ✅
-
-**Tasks:**
-- [x] Create Statistics Dashboard UI
-- [x] Add charts/graphs for trends
-- [x] Display aggregate statistics
-- [x] Show improvement over time
-- [x] Add category breakdown views
-- [x] Create leaderboards (local)
-- [x] Test statistics screens
-
-**Files Created:**
-- ✅ `packages/quiz_engine/lib/src/widgets/category_statistics_widget.dart`
-- ✅ `packages/quiz_engine/lib/src/widgets/progress_chart_widget.dart`
-- ✅ `packages/quiz_engine/lib/src/widgets/leaderboard_widget.dart`
-- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
-- ✅ `packages/quiz_engine/test/widgets/category_statistics_widget_test.dart`
-- ✅ `packages/quiz_engine/test/widgets/progress_chart_widget_test.dart`
-- ✅ `packages/quiz_engine/test/widgets/leaderboard_widget_test.dart`
 
 ---
 
