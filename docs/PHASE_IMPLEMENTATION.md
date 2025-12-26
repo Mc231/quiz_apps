@@ -2036,6 +2036,64 @@ QuizFeedbackService _feedbackService = QuizFeedbackService();
 
 ---
 
+### QuizBloc Refactoring ✅ (Completed)
+
+**Description:** Refactored `QuizBloc` from 789 lines to 459 lines (~42% reduction) by extracting functionality into 6 focused managers for better separation of concerns and testability.
+
+**Architecture:**
+```
+QuizBloc (Orchestrator ~460 lines)
+    ├── QuizProgressTracker   (~160 lines) - Tracks answers, progress, streaks, lives
+    ├── QuizTimerManager      (~290 lines) - Question/total timers, pause/resume, stopwatches
+    ├── QuizHintManager       (~182 lines) - Hint state, 50/50 logic, disabled options
+    ├── QuizSessionManager    (~265 lines) - Storage integration, session lifecycle
+    ├── QuizAnswerProcessor   (~118 lines) - Answer creation, timeout/skip answers
+    └── QuizGameFlowManager   (~182 lines) - Question picking, game over detection
+```
+
+**Communication Pattern:**
+| Manager | Pattern | Reason |
+|---------|---------|--------|
+| QuizTimerManager | Callbacks | Async timer events (timeout, tick) |
+| QuizHintManager | Direct | Sync logic, returns disabled options |
+| QuizSessionManager | Direct (async) | Already async storage operations |
+| QuizProgressTracker | Direct | Pure state, no async |
+| QuizAnswerProcessor | Direct | Sync answer creation |
+| QuizGameFlowManager | Callbacks | Game over events |
+
+**Files Created:**
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/managers.dart` (barrel export)
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_progress_tracker.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_timer_manager.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_hint_manager.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_session_manager.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_answer_processor.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_game_flow_manager.dart`
+
+**Test Files Created:**
+- ✅ `packages/quiz_engine_core/test/managers/quiz_progress_tracker_test.dart` (21 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_timer_manager_test.dart` (25 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_hint_manager_test.dart` (22 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_session_manager_test.dart` (19 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_answer_processor_test.dart` (13 tests)
+- ✅ `packages/quiz_engine_core/test/managers/quiz_game_flow_manager_test.dart` (17 tests)
+
+**Total: 117 new manager tests**
+
+**Files Modified:**
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Refactored to use managers
+
+**Benefits:**
+1. **Better testability** - Each manager can be tested independently
+2. **Single responsibility** - Each manager handles one concern
+3. **Easier maintenance** - Smaller, focused classes
+4. **Reusability** - Managers can be reused in other contexts
+5. **Public API preserved** - All existing tests pass unchanged
+
+**Priority:** Completed
+
+---
+
 ## Future Features (Backlog)
 
 ### Score-Based Achievements
