@@ -1531,6 +1531,93 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String freeResourcesInfo(int count, String resource) =>
       '$count free $resource per day';
+
+  // Missing accessibility methods
+  @override
+  String accessibilityCategoryButton(String category) => 'Category: $category';
+  @override
+  String accessibilityCategoryWithQuestions(String category, int count) =>
+      '$category, $count questions';
+  @override
+  String get accessibilityDoubleTapToSelect => 'Double tap to select';
+  @override
+  String get accessibilityDoubleTapToStart => 'Double tap to start';
+  @override
+  String accessibilityChallengeButton(String name, String difficulty) =>
+      '$name, $difficulty';
+  @override
+  String accessibilityAnswerOption(String answer) => 'Answer: $answer';
+  @override
+  String accessibilityAnswerDisabled(String answer) => '$answer, disabled';
+  @override
+  String accessibilitySessionCard(String date, int score, int total) =>
+      '$date, $score of $total';
+  @override
+  String accessibilityStatistic(String label, String value) => '$label: $value';
+  @override
+  String accessibilityProgress(int percent) => '$percent percent complete';
+  @override
+  String accessibilityLivesRemaining(int count) => '$count lives remaining';
+  @override
+  String accessibilityHintsRemaining(int count, String type) =>
+      '$count $type hints remaining';
+  @override
+  String accessibilityTimer(int seconds) => '$seconds seconds remaining';
+  @override
+  String get accessibilityCorrectAnswer => 'Correct answer';
+  @override
+  String get accessibilityIncorrectAnswer => 'Incorrect answer';
+  @override
+  String accessibilityQuestionNumber(int current, int total) =>
+      'Question $current of $total';
+
+  // Missing error/state methods
+  @override
+  String get retry => 'Retry';
+  @override
+  String get errorTitle => 'Error';
+  @override
+  String get errorGeneric => 'Something went wrong';
+  @override
+  String get errorNetwork => 'Network error';
+  @override
+  String get errorServer => 'Server error';
+  @override
+  String get loadingData => 'Loading...';
+
+  // Missing export methods
+  @override
+  String get exportData => 'Export Data';
+  @override
+  String get exportDataDescription => 'Export your quiz data';
+  @override
+  String get exportDataDialogMessage => 'Export?';
+  @override
+  String get exportDataIncludes => 'Includes:';
+  @override
+  String get exportIncludesQuizHistory => 'Quiz history';
+  @override
+  String get exportIncludesAnswers => 'Answer details';
+  @override
+  String get exportIncludesStatistics => 'Statistics';
+  @override
+  String get exportIncludesSettings => 'Settings';
+  @override
+  String get export => 'Export';
+  @override
+  String get exportDataSubject => 'Quiz Data Export';
+  @override
+  String exportDataSuccess(int count) => 'Exported $count sessions';
+  @override
+  String get exportDataError => 'Export failed';
+  @override
+  String get dataAndPrivacy => 'Data & Privacy';
+
+  // Missing leaderboard methods
+  @override
+  String get globalLeaderboard => 'Global Leaderboard';
+  @override
+  String get globalLeaderboardComingSoon => 'Coming soon';
 }
 
 void main() {
