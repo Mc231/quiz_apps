@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+
+import '../l10n/quiz_localizations.dart';
 import '../theme/quiz_theme_data.dart';
 
 /// A customizable button widget used for displaying options in the app.
@@ -44,35 +46,45 @@ class OptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = themeData;
+    final l10n = QuizL10n.of(context);
 
-    return SizedBox.expand(
-      child: ElevatedButton(
-        onPressed: isDisabled ? null : onClickListener,
-        style: ElevatedButton.styleFrom(
-          textStyle: TextStyle(color: theme.buttonTextColor),
-          shape: RoundedRectangleBorder(
-            borderRadius: theme.buttonBorderRadius,
-            side: BorderSide(
-              color: isDisabled ? Colors.grey : theme.buttonBorderColor,
-              width: theme.buttonBorderWidth,
+    final semanticLabel = isDisabled
+        ? l10n.accessibilityAnswerDisabled(title)
+        : l10n.accessibilityAnswerOption(title);
+
+    return Semantics(
+      label: semanticLabel,
+      button: true,
+      enabled: !isDisabled,
+      child: SizedBox.expand(
+        child: ElevatedButton(
+          onPressed: isDisabled ? null : onClickListener,
+          style: ElevatedButton.styleFrom(
+            textStyle: TextStyle(color: theme.buttonTextColor),
+            shape: RoundedRectangleBorder(
+              borderRadius: theme.buttonBorderRadius,
+              side: BorderSide(
+                color: isDisabled ? Colors.grey : theme.buttonBorderColor,
+                width: theme.buttonBorderWidth,
+              ),
             ),
+            backgroundColor: isDisabled ? Colors.grey[300] : theme.buttonColor,
+            foregroundColor:
+                isDisabled ? Colors.grey[600] : theme.buttonTextColor,
+            padding: theme.buttonPadding,
+            disabledBackgroundColor: Colors.grey[300],
+            disabledForegroundColor: Colors.grey[600],
           ),
-          backgroundColor: isDisabled ? Colors.grey[300] : theme.buttonColor,
-          foregroundColor:
-              isDisabled ? Colors.grey[600] : theme.buttonTextColor,
-          padding: theme.buttonPadding,
-          disabledBackgroundColor: Colors.grey[300],
-          disabledForegroundColor: Colors.grey[600],
-        ),
-        child: Text(
-          title,
-          maxLines: theme.buttonMaxLines,
-          overflow: TextOverflow.ellipsis,
-          style: theme.buttonTextStyle.copyWith(
-            fontSize: _getFontSize(context, theme),
-            decoration: isDisabled ? TextDecoration.lineThrough : null,
+          child: Text(
+            title,
+            maxLines: theme.buttonMaxLines,
+            overflow: TextOverflow.ellipsis,
+            style: theme.buttonTextStyle.copyWith(
+              fontSize: _getFontSize(context, theme),
+              decoration: isDisabled ? TextDecoration.lineThrough : null,
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
         ),
       ),
     );
