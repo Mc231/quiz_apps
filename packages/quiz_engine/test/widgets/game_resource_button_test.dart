@@ -104,6 +104,29 @@ void main() {
         expect(tapped, isFalse);
       });
 
+      testWidgets('calls onDepletedTap when count is zero', (tester) async {
+        var depletedTapped = false;
+        await tester.pumpWidget(
+          MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: GameResourceButton(
+                  icon: Icons.favorite,
+                  count: 0,
+                  resourceType: GameResourceType.lives,
+                  onDepletedTap: () => depletedTapped = true,
+                ),
+              ),
+            ),
+          ),
+        );
+
+        await tester.tap(find.byType(GameResourceButton));
+        await tester.pump();
+
+        expect(depletedTapped, isTrue);
+      });
+
       testWidgets('calls onLongPress when long pressed', (tester) async {
         var longPressed = false;
         await tester.pumpWidget(buildTestWidget(
