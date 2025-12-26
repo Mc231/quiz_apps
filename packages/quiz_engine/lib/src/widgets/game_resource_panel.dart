@@ -8,8 +8,13 @@ class GameResourceConfig {
   /// The current count of this resource.
   final int count;
 
-  /// Called when this resource is tapped.
+  /// Called when this resource is tapped (only when count > 0).
   final VoidCallback? onTap;
+
+  /// Called when this resource is tapped while depleted (count == 0).
+  ///
+  /// Use this to show a restore dialog or purchase options.
+  final VoidCallback? onDepletedTap;
 
   /// Called when this resource is long-pressed.
   final VoidCallback? onLongPress;
@@ -26,6 +31,7 @@ class GameResourceConfig {
   const GameResourceConfig({
     required this.count,
     this.onTap,
+    this.onDepletedTap,
     this.onLongPress,
     this.enabled = true,
     this.tooltip,
@@ -36,6 +42,7 @@ class GameResourceConfig {
   GameResourceConfig copyWith({
     int? count,
     VoidCallback? onTap,
+    VoidCallback? onDepletedTap,
     VoidCallback? onLongPress,
     bool? enabled,
     String? tooltip,
@@ -44,6 +51,7 @@ class GameResourceConfig {
     return GameResourceConfig(
       count: count ?? this.count,
       onTap: onTap ?? this.onTap,
+      onDepletedTap: onDepletedTap ?? this.onDepletedTap,
       onLongPress: onLongPress ?? this.onLongPress,
       enabled: enabled ?? this.enabled,
       tooltip: tooltip ?? this.tooltip,
@@ -194,6 +202,7 @@ class GameResourcePanel extends StatelessWidget {
       count: config.count,
       resourceType: type,
       onTap: config.onTap,
+      onDepletedTap: config.onDepletedTap,
       onLongPress: config.onLongPress,
       enabled: config.enabled,
       tooltip: config.tooltip,
