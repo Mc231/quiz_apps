@@ -774,6 +774,12 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get accessibilityCorrectAnswer => 'Correct answer';
   @override
   String get accessibilityIncorrectAnswer => 'Incorrect answer';
+  @override
+  String accessibilityCategoryWithQuestions(String category, int count) =>
+      '$category, $count questions';
+  @override
+  String accessibilityHintsRemaining(int count, String type) =>
+      '$count $type hints remaining';
 }
 
 void main() {
