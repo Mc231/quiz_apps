@@ -1224,4 +1224,76 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String freeResourcesInfo(int count, String resource) {
     return '$count free $resource per day';
   }
+
+  @override
+  String accessibilityCategoryButton(String category) {
+    return '$category quiz category';
+  }
+
+  @override
+  String accessibilityCategoryWithQuestions(String category, int count) {
+    return '$category, $count questions';
+  }
+
+  @override
+  String get accessibilityDoubleTapToSelect => 'Double tap to select';
+
+  @override
+  String get accessibilityDoubleTapToStart => 'Double tap to start';
+
+  @override
+  String accessibilityChallengeButton(String name, String difficulty) {
+    return '$name challenge, $difficulty difficulty';
+  }
+
+  @override
+  String accessibilityAnswerOption(String answer) {
+    return 'Answer option: $answer';
+  }
+
+  @override
+  String accessibilityAnswerDisabled(String answer) {
+    return 'Answer option $answer, eliminated';
+  }
+
+  @override
+  String accessibilitySessionCard(String date, int score, int total) {
+    return 'Quiz session from $date, score $score out of $total';
+  }
+
+  @override
+  String accessibilityStatistic(String label, String value) {
+    return '$label: $value';
+  }
+
+  @override
+  String accessibilityProgress(int percent) {
+    return 'Progress: $percent percent';
+  }
+
+  @override
+  String accessibilityLivesRemaining(int count) {
+    return '$count lives remaining';
+  }
+
+  @override
+  String accessibilityHintsRemaining(int count, String type) {
+    return '$count $type hints remaining';
+  }
+
+  @override
+  String accessibilityTimer(int seconds) {
+    return '$seconds seconds remaining';
+  }
+
+  @override
+  String get accessibilityCorrectAnswer => 'Correct answer';
+
+  @override
+  String get accessibilityIncorrectAnswer => 'Incorrect answer';
+
+  @override
+  String accessibilityQuestionNumber(int current, int total) {
+    return 'Question $current of $total';
+  }
 }

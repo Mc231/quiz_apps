@@ -2223,6 +2223,102 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'{count} free {resource} per day'**
   String freeResourcesInfo(int count, String resource);
+
+  /// Accessibility label for category card button
+  ///
+  /// In en, this message translates to:
+  /// **'{category} quiz category'**
+  String accessibilityCategoryButton(String category);
+
+  /// Accessibility label for category with question count
+  ///
+  /// In en, this message translates to:
+  /// **'{category}, {count} questions'**
+  String accessibilityCategoryWithQuestions(String category, int count);
+
+  /// Accessibility hint for selectable items
+  ///
+  /// In en, this message translates to:
+  /// **'Double tap to select'**
+  String get accessibilityDoubleTapToSelect;
+
+  /// Accessibility hint for start actions
+  ///
+  /// In en, this message translates to:
+  /// **'Double tap to start'**
+  String get accessibilityDoubleTapToStart;
+
+  /// Accessibility label for challenge card
+  ///
+  /// In en, this message translates to:
+  /// **'{name} challenge, {difficulty} difficulty'**
+  String accessibilityChallengeButton(String name, String difficulty);
+
+  /// Accessibility label for quiz answer option
+  ///
+  /// In en, this message translates to:
+  /// **'Answer option: {answer}'**
+  String accessibilityAnswerOption(String answer);
+
+  /// Accessibility label for disabled answer option
+  ///
+  /// In en, this message translates to:
+  /// **'Answer option {answer}, eliminated'**
+  String accessibilityAnswerDisabled(String answer);
+
+  /// Accessibility label for session card
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz session from {date}, score {score} out of {total}'**
+  String accessibilitySessionCard(String date, int score, int total);
+
+  /// Accessibility label for statistic value
+  ///
+  /// In en, this message translates to:
+  /// **'{label}: {value}'**
+  String accessibilityStatistic(String label, String value);
+
+  /// Accessibility label for progress indicator
+  ///
+  /// In en, this message translates to:
+  /// **'Progress: {percent} percent'**
+  String accessibilityProgress(int percent);
+
+  /// Accessibility label for lives count
+  ///
+  /// In en, this message translates to:
+  /// **'{count} lives remaining'**
+  String accessibilityLivesRemaining(int count);
+
+  /// Accessibility label for hints count
+  ///
+  /// In en, this message translates to:
+  /// **'{count} {type} hints remaining'**
+  String accessibilityHintsRemaining(int count, String type);
+
+  /// Accessibility label for timer
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} seconds remaining'**
+  String accessibilityTimer(int seconds);
+
+  /// Accessibility announcement for correct answer
+  ///
+  /// In en, this message translates to:
+  /// **'Correct answer'**
+  String get accessibilityCorrectAnswer;
+
+  /// Accessibility announcement for incorrect answer
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect answer'**
+  String get accessibilityIncorrectAnswer;
+
+  /// Accessibility label for question progress
+  ///
+  /// In en, this message translates to:
+  /// **'Question {current} of {total}'**
+  String accessibilityQuestionNumber(int current, int total);
 }
 
 class _QuizEngineLocalizationsDelegate
