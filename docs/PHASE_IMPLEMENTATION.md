@@ -2150,19 +2150,21 @@ QuizFeedbackService _feedbackService = QuizFeedbackService();
 
 ---
 
-### Sprint 6.3: Session Detail Improvements
+### Sprint 6.3: Session Detail Improvements ✅
 
 **Tasks:**
 - [x] Add question filter toggle (All/Wrong Only) to SessionDetailScreen
-- [ ] Implement "Train Wrong Answers" action - start new quiz with only wrong questions from session
-- [ ] Add session navigation (previous/next session)
-- [ ] Add question jump/navigation within session
+
+**Removed (not needed):**
+- ~~Implement "Train Wrong Answers" action~~ - Practice mode already covers this use case
+- ~~Add session navigation (previous/next session)~~ - Users navigate from list, no need for swipe
+- ~~Add question jump/navigation within session~~ - Scrollable list is sufficient
 
 **Files Modified:**
-- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
 
 **Files Created:**
-- `packages/quiz_engine/test/screens/session_detail_screen_test.dart`
+- ✅ `packages/quiz_engine/test/screens/session_detail_screen_test.dart`
 
 ---
 
