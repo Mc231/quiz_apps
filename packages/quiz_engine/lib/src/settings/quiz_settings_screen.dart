@@ -3,6 +3,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
+import 'export_data_tile.dart';
 
 /// Configuration for which sections to show in the settings screen.
 ///
@@ -46,6 +47,13 @@ class QuizSettingsConfig {
   /// Whether to show the reset to defaults item.
   final bool showResetToDefaults;
 
+  /// Whether to show the Data Export section.
+  ///
+  /// When enabled, shows a tile that allows users to export all their data
+  /// to a JSON file (GDPR compliance). The service is created internally
+  /// using the service locator.
+  final bool showDataExport;
+
   /// Whether to show the app bar.
   final bool showAppBar;
 
@@ -72,6 +80,7 @@ class QuizSettingsConfig {
     this.showLicenses = true,
     this.showAdvancedSection = true,
     this.showResetToDefaults = true,
+    this.showDataExport = true,
     this.showAppBar = true,
     this.title,
     this.customSections,
@@ -92,6 +101,7 @@ class QuizSettingsConfig {
         showLicenses = false,
         showAdvancedSection = false,
         showResetToDefaults = false,
+        showDataExport = false,
         showAppBar = true,
         title = null,
         customSections = null,
@@ -111,6 +121,7 @@ class QuizSettingsConfig {
     bool? showLicenses,
     bool? showAdvancedSection,
     bool? showResetToDefaults,
+    bool? showDataExport,
     bool? showAppBar,
     String? title,
     List<Widget> Function(BuildContext context)? customSections,
@@ -131,6 +142,7 @@ class QuizSettingsConfig {
       showLicenses: showLicenses ?? this.showLicenses,
       showAdvancedSection: showAdvancedSection ?? this.showAdvancedSection,
       showResetToDefaults: showResetToDefaults ?? this.showResetToDefaults,
+      showDataExport: showDataExport ?? this.showDataExport,
       showAppBar: showAppBar ?? this.showAppBar,
       title: title ?? this.title,
       customSections: customSections ?? this.customSections,
@@ -296,6 +308,13 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
       widgets.add(const Divider());
     }
 
+    // Data Export section
+    if (widget.config.showDataExport) {
+      widgets.add(_buildSectionHeader(l10n.dataAndPrivacy));
+      widgets.add(_buildExportDataTile());
+      widgets.add(const Divider());
+    }
+
     // Custom sections before About
     if (widget.config.customSectionsBeforeAbout != null) {
       widgets.addAll(widget.config.customSectionsBeforeAbout!(context));
@@ -395,6 +414,21 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
               fontWeight: FontWeight.bold,
             ),
       ),
+    );
+  }
+
+  Widget _buildExportDataTile() {
+    // Create DataExportService using service locator
+    final exportService = DataExportService(
+      sessionDataSource: sl.get<QuizSessionDataSource>(),
+      answerDataSource: sl.get<QuestionAnswerDataSource>(),
+      statisticsDataSource: sl.get<StatisticsDataSource>(),
+      settingsDataSource: sl.get<SettingsDataSource>(),
+    );
+
+    return ExportDataTile(
+      exportService: exportService,
+      config: const ExportDataTileConfig(showIcon: false),
     );
   }
 
