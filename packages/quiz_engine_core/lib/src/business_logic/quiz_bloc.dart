@@ -1,14 +1,11 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:quiz_engine_core/src/business_logic/quiz_state/quiz_state.dart';
 import 'package:quiz_engine_core/src/model/question_entry.dart';
 
 import '../bloc/single_subscription_bloc.dart';
-import '../model/answer.dart';
 import '../model/question.dart';
 import '../model/quiz_results.dart';
-import '../model/random_pick_result.dart';
 import '../random_item_picker.dart';
 import '../model/config/quiz_config.dart';
 import '../model/config/quiz_mode_config.dart';
@@ -16,15 +13,20 @@ import '../model/config/hint_config.dart';
 import '../storage/quiz_storage_service.dart';
 import 'config_manager/config_manager.dart';
 import 'config_manager/config_source.dart';
+import 'managers/managers.dart';
 
 /// A business logic component (BLoC) that manages the state of a quiz game.
 ///
-/// The `QuizBloc` class no longer depends on a specific `QuizDataProvider`.
-/// Instead, the user must provide a function that supplies quiz data.
+/// The `QuizBloc` class orchestrates various managers to handle different
+/// aspects of quiz functionality:
+/// - [QuizProgressTracker] - Tracks answers, progress, streaks, lives
+/// - [QuizTimerManager] - Manages question and total timers
+/// - [QuizHintManager] - Handles hint state and 50/50 logic
+/// - [QuizSessionManager] - Manages storage integration
+/// - [QuizAnswerProcessor] - Creates answer objects
+/// - [QuizGameFlowManager] - Manages question picking and game flow
 class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Function to fetch quiz data.
-  ///
-  /// This function should return a `Future<List<QuestionEntry>>`.
   final Future<List<QuestionEntry>> Function() dataProvider;
 
   /// The random item picker used to select random items for questions.
@@ -34,83 +36,36 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   final bool Function(QuestionEntry)? filter;
 
   /// Callback invoked when the quiz is completed with detailed results.
-  ///
-  /// Use this callback to integrate with achievement systems, analytics,
-  /// or any post-quiz processing. The callback receives the complete
-  /// [QuizResults] with all session data.
   final void Function(QuizResults results)? onQuizCompleted;
 
   /// Configuration manager for loading quiz configuration.
   final ConfigManager configManager;
 
-  /// Optional storage service for persisting quiz sessions.
-  final QuizStorageService? storageService;
-
   /// Human-readable name of the quiz (for display in results).
   final String quizName;
 
-  /// The loaded configuration (initialized with default, can be updated from configManager).
+  /// The loaded configuration.
   late final QuizConfig _config;
 
-  /// The current session ID (null if storage is disabled).
-  String? _currentSessionId;
+  // ============ Managers ============
 
-  /// Stopwatch for tracking quiz duration.
-  final Stopwatch _sessionStopwatch = Stopwatch();
+  /// Tracks quiz progress and statistics.
+  final QuizProgressTracker _progressTracker = QuizProgressTracker();
 
-  /// Stopwatch for tracking individual question duration.
-  final Stopwatch _questionStopwatch = Stopwatch();
+  /// Manages timers and stopwatches.
+  late final QuizTimerManager _timerManager;
 
-  /// Count of 50/50 hints used.
-  int _hintsUsed5050 = 0;
+  /// Manages hint state and usage.
+  final QuizHintManager _hintManager = QuizHintManager();
 
-  /// Count of skip hints used.
-  int _hintsUsedSkip = 0;
+  /// Manages storage session lifecycle.
+  final QuizSessionManager _sessionManager;
 
-  /// Current streak of consecutive correct answers.
-  int _currentStreak = 0;
+  /// Processes answers.
+  final QuizAnswerProcessor _answerProcessor = QuizAnswerProcessor();
 
-  /// Best streak achieved in this session.
-  int _bestStreak = 0;
-
-  /// The list of quiz data items available for the game.
-  List<QuestionEntry> _items = [];
-
-  /// The current progress indicating how many questions have been answered.
-  int _currentProgress = 0;
-
-  /// The total number of questions in the game.
-  int _totalCount = 0;
-
-  /// The current question being asked to the player.
-  late Question currentQuestion;
-
-  /// The list of answers provided by the player.
-  final List<Answer> _answers = [];
-
-  /// The number of remaining lives (only used in lives/survival modes).
-  int? _remainingLives;
-
-  /// Timer for tracking question time limit.
-  Timer? _questionTimer;
-
-  /// Timer for tracking total quiz time limit.
-  Timer? _totalTimer;
-
-  /// Remaining time for the current question in seconds.
-  int? _questionTimeRemaining;
-
-  /// Remaining total time for the entire quiz in seconds.
-  int? _totalTimeRemaining;
-
-  /// Whether the timers are currently paused.
-  bool _timersPaused = false;
-
-  /// The current hint state tracking which hints have been used.
-  late HintState _hintState;
-
-  /// Options disabled for the current question (e.g., from 50/50 hint).
-  Set<QuestionEntry> _disabledOptions = {};
+  /// Manages game flow and question picking.
+  late final QuizGameFlowManager _gameFlowManager;
 
   /// Creates a `QuizBloc` with a provided data fetch function.
   ///
@@ -127,9 +82,23 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     this.filter,
     this.onQuizCompleted,
     required this.configManager,
-    this.storageService,
+    QuizStorageService? storageService,
     this.quizName = 'Quiz',
-  });
+  }) : _sessionManager = QuizSessionManager(storageService: storageService) {
+    // Initialize timer manager with callbacks
+    _timerManager = QuizTimerManager(
+      onTick: _handleTimerTick,
+      onQuestionTimeout: _handleQuestionTimeout,
+      onTotalTimeExpired: _handleTotalTimeExpired,
+    );
+
+    // Initialize game flow manager with callbacks
+    _gameFlowManager = QuizGameFlowManager(
+      randomItemPicker: randomItemPicker,
+      onNewQuestion: _handleNewQuestion,
+      onGameOver: _handleGameOver,
+    );
+  }
 
   /// The initial state of the game, set to loading.
   @override
@@ -138,651 +107,352 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Getter for the loaded configuration.
   QuizConfig get config => _config;
 
+  /// Gets the current session ID (for external use if needed).
+  String? get currentSessionId => _sessionManager.currentSessionId;
+
+  /// The current question being asked to the player.
+  Question get currentQuestion => _gameFlowManager.currentQuestion!;
+
+  /// Setter for current question (needed for tests).
+  set currentQuestion(Question question) {
+    // This is only used in tests - the game flow manager handles this internally
+    _gameFlowManager.currentQuestion = question;
+  }
+
+  // ============ Initialization ============
+
   /// Performs the initial data load when the screen is loaded.
-  ///
-  /// This method loads the configuration, retrieves quiz data using the
-  /// provided `dataProvider` function, applies the optional filter,
-  /// and initializes the random picker.
   Future<void> performInitialLoad() async {
     // Load configuration first
     _config = await configManager.getConfig(source: const DefaultSource());
 
-    // Initialize lives from mode config
-    _remainingLives = _config.modeConfig.lives;
+    // Initialize managers
+    _progressTracker.initialize(
+      totalCount: 0, // Will be set after loading items
+      initialLives: _config.modeConfig.lives,
+    );
 
-    // Initialize hint state from config
-    _hintState = HintState.fromConfig(_config.hintConfig);
+    _timerManager.initialize(_config.modeConfig);
+    _hintManager.initialize(_config.hintConfig);
 
-    // Initialize timers from mode config
-    _initializeTimers();
-
+    // Load quiz data
     var items = await dataProvider();
+    final filteredItems = filter != null ? items.where(filter!).toList() : items;
 
-    // Apply filter if provided, otherwise keep all items
-    _items = filter != null ? items.where(filter!).toList() : items;
+    // Update progress tracker with actual count
+    _progressTracker.resetAll();
+    _progressTracker.initialize(
+      totalCount: filteredItems.length,
+      initialLives: _config.modeConfig.lives,
+    );
 
-    _totalCount = _items.length;
-    randomItemPicker.replaceItems(_items);
+    // Initialize game flow
+    _gameFlowManager.initialize(
+      items: filteredItems,
+      modeConfig: _config.modeConfig,
+    );
 
-    // Create storage session if storage is enabled
-    await _initializeStorageSession();
+    // Create storage session
+    await _sessionManager.initializeSession(
+      config: _config,
+      totalQuestions: filteredItems.length,
+    );
 
     // Start tracking session duration
-    _sessionStopwatch.start();
+    _timerManager.startSession();
 
+    // Start total timer if configured
+    _timerManager.startTotalTimer();
+
+    // Pick the first question
     _pickQuestion();
   }
 
-  /// Initializes the storage session if storage is enabled.
-  Future<void> _initializeStorageSession() async {
-    if (!_isStorageEnabled) return;
-
-    try {
-      _currentSessionId = await storageService!.createSession(
-        config: _config,
-        totalQuestions: _totalCount,
-      );
-    } catch (e) {
-      // Storage failure should not block quiz from starting
-      _currentSessionId = null;
-    }
-  }
-
-  /// Whether storage is enabled for this quiz.
-  bool get _isStorageEnabled =>
-      storageService != null && _config.storageConfig.enabled;
+  // ============ Answer Processing ============
 
   /// Processes the player's answer to the current question.
-  ///
-  /// If answer feedback is enabled in configuration, this will emit an
-  /// [AnswerFeedbackState] showing whether the answer was correct/incorrect
-  /// before moving to the next question.
   Future<void> processAnswer(QuestionEntry selectedItem) async {
-    // Cancel question timer when answer is submitted
-    _cancelQuestionTimer();
+    _timerManager.cancelQuestionTimer();
+    final timeSpentSeconds = _timerManager.stopQuestionStopwatch();
 
-    // Stop question timer and get elapsed time
-    _questionStopwatch.stop();
-    final timeSpentSeconds = _questionStopwatch.elapsed.inSeconds;
+    // Process the answer
+    final result = _answerProcessor.processUserAnswer(selectedItem, currentQuestion);
 
-    var answer = Answer(selectedItem, currentQuestion);
-    final isCorrect = answer.isCorrect;
+    // Update progress
+    _progressTracker.recordAnswer(result.answer);
 
-    // Update streak tracking
-    if (isCorrect) {
-      _currentStreak++;
-      if (_currentStreak > _bestStreak) {
-        _bestStreak = _currentStreak;
-      }
-    } else {
-      _currentStreak = 0;
-    }
-
-    // Deduct life if answer is wrong and lives are tracked
-    if (!isCorrect && _remainingLives != null) {
-      _remainingLives = _remainingLives! - 1;
-    }
-
-    // Save answer to storage if enabled
-    await _saveAnswerToStorage(
-      questionNumber: _currentProgress + 1,
+    // Save to storage
+    await _sessionManager.saveAnswer(
+      questionNumber: _progressTracker.currentProgress,
       question: currentQuestion,
       selectedAnswer: selectedItem,
-      isCorrect: isCorrect,
-      status: isCorrect ? AnswerStatus.correct : AnswerStatus.incorrect,
+      isCorrect: result.isCorrect,
+      status: result.status,
       timeSpentSeconds: timeSpentSeconds,
       hintUsed: null,
+      disabledOptions: _hintManager.disabledOptions,
     );
 
-    // Show feedback if enabled in mode configuration
+    // Show feedback if enabled
     if (_config.modeConfig.showAnswerFeedback) {
-      // Emit feedback state with updated lives and timer info
-      var feedbackState = QuizState.answerFeedback(
-        currentQuestion,
-        selectedItem,
-        isCorrect,
-        _currentProgress,
-        _totalCount,
-        remainingLives: _remainingLives,
-        questionTimeRemaining: _questionTimeRemaining,
-        totalTimeRemaining: _totalTimeRemaining,
-        hintState: _hintState,
-      );
-      dispatchState(feedbackState);
-
-      // Wait for feedback duration before proceeding
+      _emitFeedbackState(selectedItem, result.isCorrect);
       await Future.delayed(
         Duration(milliseconds: _config.uiBehaviorConfig.answerFeedbackDuration),
       );
     }
 
-    // Record the answer and move to next question
-    _answers.add(answer);
-    _currentProgress++;
     _pickQuestion();
   }
 
-  /// Saves an answer to storage if enabled.
-  Future<void> _saveAnswerToStorage({
-    required int questionNumber,
-    required Question question,
-    required QuestionEntry? selectedAnswer,
-    required bool isCorrect,
-    required AnswerStatus status,
-    required int? timeSpentSeconds,
-    required HintType? hintUsed,
-  }) async {
-    if (!_isStorageEnabled ||
-        _currentSessionId == null ||
-        !_config.storageConfig.saveAnswersDuringQuiz) {
+  // ============ Hints ============
+
+  /// Uses the 50/50 hint to disable 2 incorrect options.
+  void use50_50Hint() {
+    final disabled = _hintManager.use5050Hint(currentQuestion);
+    if (disabled.isNotEmpty) {
+      _emitQuestionState();
+    }
+  }
+
+  /// Skips the current question.
+  Future<void> skipQuestion() async {
+    if (!_hintManager.useSkipHint()) return;
+
+    _timerManager.cancelQuestionTimer();
+    final timeSpentSeconds = _timerManager.stopQuestionStopwatch();
+
+    // Process the skip
+    final result = _answerProcessor.processSkip(currentQuestion);
+
+    // Record without deducting life (skipped answers don't deduct lives)
+    _progressTracker.recordAnswer(result.answer);
+
+    // Save to storage
+    await _sessionManager.saveAnswer(
+      questionNumber: _progressTracker.currentProgress,
+      question: currentQuestion,
+      selectedAnswer: null,
+      isCorrect: false,
+      status: result.status,
+      timeSpentSeconds: timeSpentSeconds,
+      hintUsed: HintType.skip,
+      disabledOptions: _hintManager.disabledOptions,
+    );
+
+    _pickQuestion();
+  }
+
+  // ============ Timer Control ============
+
+  /// Pauses both question and total timers.
+  void pauseTimers() {
+    _timerManager.pauseTimers();
+  }
+
+  /// Resumes both question and total timers.
+  void resumeTimers() {
+    _timerManager.resumeTimers();
+  }
+
+  // ============ Quiz Cancellation ============
+
+  /// Cancels the current quiz and marks it as cancelled in storage.
+  Future<void> cancelQuiz() async {
+    _timerManager.cancelQuestionTimer();
+    _timerManager.cancelTotalTimer();
+    _timerManager.stopSession();
+
+    await _sessionManager.cancelSession(
+      hasAnswers: _progressTracker.answers.isNotEmpty,
+      totalCorrect: _progressTracker.correctAnswers,
+      totalFailed: _progressTracker.totalFailedAnswers,
+      totalSkipped: _progressTracker.skippedAnswers,
+      durationSeconds: _timerManager.sessionDurationSeconds,
+      hintsUsed5050: _hintManager.hintsUsed5050,
+      hintsUsedSkip: _hintManager.hintsUsedSkip,
+      bestStreak: _progressTracker.bestStreak,
+    );
+  }
+
+  // ============ Private Methods - Question Flow ============
+
+  void _pickQuestion() {
+    _hintManager.resetForNewQuestion();
+
+    final question = _gameFlowManager.pickNextQuestion(
+      remainingLives: _progressTracker.remainingLives,
+      totalTimeRemaining: _timerManager.totalTimeRemaining,
+    );
+
+    if (question == null) {
+      // Game over is handled by the callback
       return;
     }
 
-    try {
-      await storageService!.saveAnswer(
-        sessionId: _currentSessionId!,
-        questionNumber: questionNumber,
-        question: question,
-        selectedAnswer: selectedAnswer,
-        isCorrect: isCorrect,
-        status: status,
-        timeSpentSeconds: timeSpentSeconds,
-        hintUsed: hintUsed,
-        disabledOptions: _disabledOptions,
-      );
-    } catch (e) {
-      // Storage failure should not block quiz progression
-    }
+    // Start timers for new question
+    _timerManager.startQuestionTimer();
+    _timerManager.startQuestionStopwatch();
+
+    _emitQuestionState();
   }
 
-  /// Picks the next question or ends the game if no more items are available.
-  void _pickQuestion() {
-    // For endless mode, replenish questions from answered items when exhausted
-    if (_config.modeConfig is EndlessMode && randomItemPicker.items.isEmpty) {
-      randomItemPicker.replenishFromAnswered();
-    }
+  // ============ Private Methods - Timer Callbacks ============
 
-    var randomResult = randomItemPicker.pick();
-    if (_isGameOver(randomResult)) {
-      _cancelQuestionTimer();
-      _cancelTotalTimer();
-      var state = QuizState.question(
-        currentQuestion,
-        _currentProgress,
-        _totalCount,
-        remainingLives: _remainingLives,
-        questionTimeRemaining: _questionTimeRemaining,
-        totalTimeRemaining: _totalTimeRemaining,
-        hintState: _hintState,
-        disabledOptions: _disabledOptions,
-      );
-      dispatchState(state);
-      _notifyGameOver();
-    } else {
-      var question = Question.fromRandomResult(randomResult!);
-      currentQuestion = question;
-
-      // Reset disabled options for new question
-      _disabledOptions = {};
-
-      // Reset question timer for new question (unless paused)
-      if (!_timersPaused) {
-        _questionTimeRemaining = null;
-      }
-
-      // Start question timer for new question
-      _startQuestionTimer();
-
-      // Reset and start question stopwatch for tracking time spent
-      _questionStopwatch.reset();
-      _questionStopwatch.start();
-
-      var state = QuizState.question(
-        question,
-        _currentProgress,
-        _totalCount,
-        remainingLives: _remainingLives,
-        questionTimeRemaining: _questionTimeRemaining,
-        totalTimeRemaining: _totalTimeRemaining,
-        hintState: _hintState,
-        disabledOptions: _disabledOptions,
-      );
-      dispatchState(state);
-    }
+  void _handleTimerTick({int? questionTimeRemaining, int? totalTimeRemaining}) {
+    _emitQuestionState();
   }
 
-  /// Determines if the game is over based on the random picker result, lives, or time.
-  bool _isGameOver(RandomPickResult? result) {
-    // Game over if no more questions
-    if (result == null) return true;
+  void _handleQuestionTimeout(int timeSpentSeconds) {
+    final mode = _config.modeConfig;
+    if (mode is! TimedMode && mode is! SurvivalMode) return;
 
-    // Game over if lives reach 0
-    if (_remainingLives != null && _remainingLives! <= 0) return true;
+    // Create timeout answer
+    final result = _answerProcessor.processTimeout(currentQuestion);
 
-    // Game over if total time has expired
-    if (_totalTimeRemaining != null && _totalTimeRemaining! <= 0) return true;
+    // Deduct life for timeout
+    _progressTracker.deductLife();
 
-    return false;
-  }
+    // Record the timeout answer
+    _progressTracker.recordAnswer(result.answer);
 
-  /// Notifies the game-over state and invokes the callback with the final result.
-  Future<void> _notifyGameOver() async {
-    _cancelQuestionTimer();
-    _cancelTotalTimer();
-
-    // Stop tracking session duration
-    _sessionStopwatch.stop();
-
-    var correctAnswers = _answers.where((answer) => answer.isCorrect).length;
-    var failedAnswers = _answers.where((answer) => !answer.isCorrect && !answer.isSkipped && !answer.isTimeout).length;
-    var skippedAnswers = _answers.where((answer) => answer.isSkipped).length;
-    var timedOutAnswers = _answers.where((answer) => answer.isTimeout).length;
-
-    // Calculate score using the configured scoring strategy
-    final scoreBreakdown = _config.scoringStrategy.calculateScore(
-      correctAnswers: correctAnswers,
-      totalQuestions: _totalCount,
-      durationSeconds: _sessionStopwatch.elapsed.inSeconds,
-      streaks: _bestStreak > 0 ? [_bestStreak] : null,
+    // Save to storage
+    _sessionManager.saveAnswer(
+      questionNumber: _progressTracker.currentProgress,
+      question: currentQuestion,
+      selectedAnswer: null,
+      isCorrect: false,
+      status: result.status,
+      timeSpentSeconds: timeSpentSeconds,
+      hintUsed: null,
+      disabledOptions: _hintManager.disabledOptions,
     );
 
-    // Complete the session in storage (await to ensure stats are updated
-    // before onQuizCompleted callback, which may check achievements)
-    await _completeStorageSession(
+    _pickQuestion();
+  }
+
+  void _handleTotalTimeExpired() {
+    _emitQuestionState();
+    _notifyGameOver();
+  }
+
+  // ============ Private Methods - Game Flow Callbacks ============
+
+  void _handleNewQuestion(Question question) {
+    // Question is already set in the manager
+  }
+
+  void _handleGameOver() {
+    // Emit final state and notify
+    _emitQuestionState();
+    _notifyGameOver();
+  }
+
+  // ============ Private Methods - Game Over ============
+
+  Future<void> _notifyGameOver() async {
+    _timerManager.cancelQuestionTimer();
+    _timerManager.cancelTotalTimer();
+    _timerManager.stopSession();
+
+    // Calculate score
+    final scoreBreakdown = _config.scoringStrategy.calculateScore(
+      correctAnswers: _progressTracker.correctAnswers,
+      totalQuestions: _progressTracker.totalCount,
+      durationSeconds: _timerManager.sessionDurationSeconds,
+      streaks: _progressTracker.bestStreak > 0 ? [_progressTracker.bestStreak] : null,
+    );
+
+    // Complete storage session
+    await _sessionManager.completeSession(
       status: _determineCompletionStatus(),
-      totalCorrect: correctAnswers,
-      totalFailed: failedAnswers + timedOutAnswers,
-      totalSkipped: skippedAnswers,
-      bestStreak: _bestStreak,
+      totalAnswered: _progressTracker.answers.length,
+      totalCorrect: _progressTracker.correctAnswers,
+      totalFailed: _progressTracker.totalFailedAnswers,
+      totalSkipped: _progressTracker.skippedAnswers,
+      durationSeconds: _timerManager.sessionDurationSeconds,
+      hintsUsed5050: _hintManager.hintsUsed5050,
+      hintsUsedSkip: _hintManager.hintsUsedSkip,
+      bestStreak: _progressTracker.bestStreak,
       score: scoreBreakdown.totalScore,
     );
 
     // Create quiz results
     final results = QuizResults(
-      sessionId: _currentSessionId,
+      sessionId: _sessionManager.currentSessionId,
       quizId: _config.quizId,
       quizName: quizName,
       completedAt: DateTime.now(),
-      totalQuestions: _totalCount,
-      correctAnswers: correctAnswers,
-      incorrectAnswers: failedAnswers,
-      skippedAnswers: skippedAnswers,
-      timedOutAnswers: timedOutAnswers,
-      durationSeconds: _sessionStopwatch.elapsed.inSeconds,
+      totalQuestions: _progressTracker.totalCount,
+      correctAnswers: _progressTracker.correctAnswers,
+      incorrectAnswers: _progressTracker.incorrectAnswers,
+      skippedAnswers: _progressTracker.skippedAnswers,
+      timedOutAnswers: _progressTracker.timedOutAnswers,
+      durationSeconds: _timerManager.sessionDurationSeconds,
       modeConfig: _config.modeConfig,
-      answers: List.unmodifiable(_answers),
-      hintsUsed5050: _hintsUsed5050,
-      hintsUsedSkip: _hintsUsedSkip,
+      answers: _progressTracker.answers,
+      hintsUsed5050: _hintManager.hintsUsed5050,
+      hintsUsedSkip: _hintManager.hintsUsedSkip,
       score: scoreBreakdown.totalScore,
       scoreBreakdown: scoreBreakdown,
     );
 
-    // Emit completed state with results
     dispatchState(QuizState.completed(results));
-
-    // Call the completion callback (for achievement integration)
     onQuizCompleted?.call(results);
   }
 
-  /// Determines the completion status based on how the quiz ended.
   SessionCompletionStatus _determineCompletionStatus() {
-    // Check if game ended due to time
-    if (_totalTimeRemaining != null && _totalTimeRemaining! <= 0) {
+    if (_timerManager.totalTimeRemaining != null &&
+        _timerManager.totalTimeRemaining! <= 0) {
       return SessionCompletionStatus.timeout;
     }
 
-    // Check if game ended due to running out of lives
-    if (_remainingLives != null && _remainingLives! <= 0) {
+    if (_progressTracker.isOutOfLives) {
       return SessionCompletionStatus.failed;
     }
 
-    // Normal completion
     return SessionCompletionStatus.completed;
   }
 
-  /// Completes the session in storage.
-  Future<void> _completeStorageSession({
-    required SessionCompletionStatus status,
-    required int totalCorrect,
-    required int totalFailed,
-    required int totalSkipped,
-    int bestStreak = 0,
-    int score = 0,
-  }) async {
-    if (!_isStorageEnabled || _currentSessionId == null) return;
+  // ============ Private Methods - State Emission ============
 
-    try {
-      await storageService!.completeSession(
-        sessionId: _currentSessionId!,
-        status: status,
-        totalAnswered: _answers.length,
-        totalCorrect: totalCorrect,
-        totalFailed: totalFailed,
-        totalSkipped: totalSkipped,
-        durationSeconds: _sessionStopwatch.elapsed.inSeconds,
-        hintsUsed5050: _hintsUsed5050,
-        hintsUsedSkip: _hintsUsedSkip,
-        bestStreak: bestStreak,
-        score: score,
-      );
-    } catch (e) {
-      // Storage failure should not affect game over flow
-    }
-  }
-
-  /// Initializes timer settings from mode configuration.
-  void _initializeTimers() {
-    final mode = _config.modeConfig;
-
-    // Initialize total timer if the mode has a total time limit
-    if (mode is TimedMode && mode.totalTimeLimit != null) {
-      _totalTimeRemaining = mode.totalTimeLimit;
-      _startTotalTimer();
-    } else if (mode is SurvivalMode && mode.totalTimeLimit != null) {
-      _totalTimeRemaining = mode.totalTimeLimit;
-      _startTotalTimer();
-    }
-  }
-
-  /// Starts the question timer based on mode configuration.
-  void _startQuestionTimer() {
-    // Don't start timer if paused
-    if (_timersPaused) return;
-
-    final mode = _config.modeConfig;
-    int? timePerQuestion;
-
-    // Get time per question from mode config
-    if (mode is TimedMode) {
-      timePerQuestion = mode.timePerQuestion;
-    } else if (mode is SurvivalMode) {
-      timePerQuestion = mode.timePerQuestion;
-    }
-
-    if (timePerQuestion == null) return;
-
-    // Only reset time if this is a fresh question (not a resume)
-    if (_questionTimeRemaining == null || _questionTimeRemaining! <= 0) {
-      _questionTimeRemaining = timePerQuestion;
-    }
-
-    _questionTimer?.cancel();
-    _questionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_questionTimeRemaining != null && _questionTimeRemaining! > 0) {
-        _questionTimeRemaining = _questionTimeRemaining! - 1;
-
-        // Emit updated state with new timer value
-        var state = QuizState.question(
-          currentQuestion,
-          _currentProgress,
-          _totalCount,
-          remainingLives: _remainingLives,
-          questionTimeRemaining: _questionTimeRemaining,
-          totalTimeRemaining: _totalTimeRemaining,
-          hintState: _hintState,
-          disabledOptions: _disabledOptions,
-        );
-        dispatchState(state);
-      } else {
-        _handleQuestionTimeExpired();
-      }
-    });
-  }
-
-  /// Starts the total quiz timer.
-  void _startTotalTimer() {
-    // Don't start timer if paused
-    if (_timersPaused) return;
-
-    if (_totalTimeRemaining == null) return;
-
-    _totalTimer?.cancel();
-    _totalTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (_totalTimeRemaining != null && _totalTimeRemaining! > 0) {
-        _totalTimeRemaining = _totalTimeRemaining! - 1;
-
-        // Total timer updates are reflected in the next question state emission
-        // We don't need to emit state here as the question timer will handle it
-      } else {
-        _handleTotalTimeExpired();
-      }
-    });
-  }
-
-  /// Pauses both question and total timers.
-  ///
-  /// Call this when the app goes to background or becomes inactive.
-  /// Timers will stop counting down but preserve their current values.
-  void pauseTimers() {
-    if (_timersPaused) return;
-
-    _timersPaused = true;
-    _questionTimer?.cancel();
-    _totalTimer?.cancel();
-  }
-
-  /// Resumes both question and total timers.
-  ///
-  /// Call this when the app returns to foreground.
-  /// Timers will continue from where they were paused.
-  void resumeTimers() {
-    if (!_timersPaused) return;
-
-    _timersPaused = false;
-
-    // Restart question timer if there's remaining time
-    if (_questionTimeRemaining != null && _questionTimeRemaining! > 0) {
-      _startQuestionTimer();
-    }
-
-    // Restart total timer if there's remaining time
-    if (_totalTimeRemaining != null && _totalTimeRemaining! > 0) {
-      _startTotalTimer();
-    }
-  }
-
-  /// Cancels the question timer.
-  void _cancelQuestionTimer() {
-    _questionTimer?.cancel();
-    _questionTimer = null;
-  }
-
-  /// Cancels the total timer.
-  void _cancelTotalTimer() {
-    _totalTimer?.cancel();
-    _totalTimer = null;
-  }
-
-  /// Handles when the question time expires.
-  void _handleQuestionTimeExpired() {
-    _cancelQuestionTimer();
-
-    // Stop question timer
-    _questionStopwatch.stop();
-    final timeSpentSeconds = _questionStopwatch.elapsed.inSeconds;
-
-    // Treat time expiration as a wrong answer
-    final mode = _config.modeConfig;
-    if (mode is TimedMode || mode is SurvivalMode) {
-      // For timed modes, time expiration means wrong answer
-      if (_remainingLives != null) {
-        _remainingLives = _remainingLives! - 1;
-      }
-
-      // Create a dummy wrong answer
-      final dummyAnswer = Answer(
-        currentQuestion.answer,
-        currentQuestion,
-        isTimeout: true,
-      );
-
-      // Save timeout answer to storage
-      _saveAnswerToStorage(
-        questionNumber: _currentProgress + 1,
-        question: currentQuestion,
-        selectedAnswer: null,
-        isCorrect: false,
-        status: AnswerStatus.timeout,
-        timeSpentSeconds: timeSpentSeconds,
-        hintUsed: null,
-      );
-
-      _answers.add(dummyAnswer);
-      _currentProgress++;
-      _pickQuestion();
-    }
-  }
-
-  /// Handles when the total quiz time expires.
-  void _handleTotalTimeExpired() {
-    _cancelQuestionTimer();
-    _cancelTotalTimer();
-    _totalTimeRemaining = 0;
-
-    // End the game
-    var state = QuizState.question(
+  void _emitQuestionState() {
+    final state = QuizState.question(
       currentQuestion,
-      _currentProgress,
-      _totalCount,
-      remainingLives: _remainingLives,
-      questionTimeRemaining: _questionTimeRemaining,
-      totalTimeRemaining: _totalTimeRemaining,
-      hintState: _hintState,
-      disabledOptions: _disabledOptions,
-    );
-    dispatchState(state);
-    _notifyGameOver();
-  }
-
-  /// Uses the 50/50 hint to disable 2 incorrect options.
-  ///
-  /// Randomly selects and disables 2 incorrect options from the current question,
-  /// making it easier for the player to identify the correct answer.
-  void use50_50Hint() {
-    // Check if hint is available
-    if (!_hintState.canUseHint(HintType.fiftyFifty)) return;
-
-    // Mark hint as used and track for storage
-    _hintState.useHint(HintType.fiftyFifty);
-    _hintsUsed5050++;
-
-    // Find all incorrect options
-    final incorrectOptions =
-        currentQuestion.options
-            .where((option) => option != currentQuestion.answer)
-            .toList();
-
-    // If there are less than 2 incorrect options, can't use this hint
-    if (incorrectOptions.length < 2) return;
-
-    // Randomly select 2 incorrect options to disable
-    final random = Random();
-    incorrectOptions.shuffle(random);
-    _disabledOptions = incorrectOptions.take(2).toSet();
-
-    // Emit updated state with disabled options
-    var state = QuizState.question(
-      currentQuestion,
-      _currentProgress,
-      _totalCount,
-      remainingLives: _remainingLives,
-      questionTimeRemaining: _questionTimeRemaining,
-      totalTimeRemaining: _totalTimeRemaining,
-      hintState: _hintState,
-      disabledOptions: _disabledOptions,
+      _progressTracker.currentProgress,
+      _progressTracker.totalCount,
+      remainingLives: _progressTracker.remainingLives,
+      questionTimeRemaining: _timerManager.questionTimeRemaining,
+      totalTimeRemaining: _timerManager.totalTimeRemaining,
+      hintState: _hintManager.hintState,
+      disabledOptions: _hintManager.disabledOptions,
     );
     dispatchState(state);
   }
 
-  /// Skips the current question.
-  ///
-  /// Marks the current question as skipped and moves to the next question.
-  Future<void> skipQuestion() async {
-    // Check if hint is available
-    if (!_hintState.canUseHint(HintType.skip)) return;
-
-    // Cancel question timer
-    _cancelQuestionTimer();
-
-    // Stop question timer and get elapsed time
-    _questionStopwatch.stop();
-    final timeSpentSeconds = _questionStopwatch.elapsed.inSeconds;
-
-    // Mark hint as used and track for storage
-    _hintState.useHint(HintType.skip);
-    _hintsUsedSkip++;
-
-    // Create a skipped answer
-    final skippedAnswer = Answer(
-      currentQuestion.answer,
+  void _emitFeedbackState(QuestionEntry selectedItem, bool isCorrect) {
+    final state = QuizState.answerFeedback(
       currentQuestion,
-      isSkipped: true,
+      selectedItem,
+      isCorrect,
+      _progressTracker.currentProgress - 1, // Progress was already incremented
+      _progressTracker.totalCount,
+      remainingLives: _progressTracker.remainingLives,
+      questionTimeRemaining: _timerManager.questionTimeRemaining,
+      totalTimeRemaining: _timerManager.totalTimeRemaining,
+      hintState: _hintManager.hintState,
     );
-
-    // Save skipped answer to storage
-    await _saveAnswerToStorage(
-      questionNumber: _currentProgress + 1,
-      question: currentQuestion,
-      selectedAnswer: null,
-      isCorrect: false,
-      status: AnswerStatus.skipped,
-      timeSpentSeconds: timeSpentSeconds,
-      hintUsed: HintType.skip,
-    );
-
-    // Record the skipped answer and move to next question
-    _answers.add(skippedAnswer);
-    _currentProgress++;
-    _pickQuestion();
+    dispatchState(state);
   }
+
+  // ============ Cleanup ============
 
   @override
   void dispose() {
-    _timersPaused = false;
-    _cancelQuestionTimer();
-    _cancelTotalTimer();
-    _sessionStopwatch.stop();
-    _questionStopwatch.stop();
-    storageService?.dispose();
+    _timerManager.dispose();
+    _sessionManager.dispose();
+    _gameFlowManager.reset();
+    _progressTracker.resetAll();
+    _hintManager.reset();
     super.dispose();
-  }
-
-  /// Gets the current session ID (for external use if needed).
-  String? get currentSessionId => _currentSessionId;
-
-  /// Cancels the current quiz and marks it as cancelled in storage.
-  ///
-  /// If no answers were given, the session is deleted entirely.
-  /// Otherwise, it is marked as cancelled with the current progress.
-  Future<void> cancelQuiz() async {
-    _cancelQuestionTimer();
-    _cancelTotalTimer();
-    _sessionStopwatch.stop();
-
-    if (_isStorageEnabled && _currentSessionId != null) {
-      // If no answers were given, delete the session entirely
-      if (_answers.isEmpty) {
-        try {
-          await storageService!.deleteSession(_currentSessionId!);
-        } catch (e) {
-          // Storage failure should not block cancellation
-        }
-        return;
-      }
-
-      // Otherwise, complete the session as cancelled with progress
-      var correctAnswers = _answers.where((answer) => answer.isCorrect).length;
-      var failedAnswers = _answers.where((answer) => !answer.isCorrect && !answer.isSkipped && !answer.isTimeout).length;
-      var skippedAnswers = _answers.where((answer) => answer.isSkipped).length;
-      var timedOutAnswers = _answers.where((answer) => answer.isTimeout).length;
-
-      await _completeStorageSession(
-        status: SessionCompletionStatus.cancelled,
-        totalCorrect: correctAnswers,
-        totalFailed: failedAnswers + timedOutAnswers,
-        totalSkipped: skippedAnswers,
-        bestStreak: _bestStreak,
-      );
-    }
   }
 }
