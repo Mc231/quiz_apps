@@ -719,6 +719,16 @@
     "description": "Empty state for leaderboard"
   },
 
+  "globalLeaderboard": "Global Leaderboard",
+  "@globalLeaderboard": {
+    "description": "Global leaderboard title"
+  },
+
+  "globalLeaderboardComingSoon": "Compete with players worldwide",
+  "@globalLeaderboardComingSoon": {
+    "description": "Global leaderboard coming soon description"
+  },
+
   "progress": "Progress",
   "@progress": {
     "description": "Progress tab label"
