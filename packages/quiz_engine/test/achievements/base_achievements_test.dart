@@ -741,6 +741,39 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String freeResourcesInfo(int count, String resource) =>
       '$count free $resource per day';
+
+  // Additional accessibility methods
+  @override
+  String accessibilityCategoryButton(String title) => 'Category: $title';
+  @override
+  String accessibilityChallengeButton(String name, String difficulty) =>
+      '$name, $difficulty challenge';
+  @override
+  String accessibilityAnswerOption(String answer) => 'Answer option: $answer';
+  @override
+  String accessibilityAnswerDisabled(String answer) => '$answer, disabled';
+  @override
+  String accessibilitySessionCard(String date, int score, int total) =>
+      'Quiz session from $date, score $score out of $total';
+  @override
+  String get accessibilityDoubleTapToSelect => 'Double tap to select';
+  @override
+  String get accessibilityDoubleTapToStart => 'Double tap to start';
+  @override
+  String accessibilityProgress(int percent) => '$percent percent complete';
+  @override
+  String accessibilityTimer(int seconds) => '$seconds seconds remaining';
+  @override
+  String accessibilityLivesRemaining(int count) => '$count lives remaining';
+  @override
+  String accessibilityStatistic(String label, String value) => '$label: $value';
+  @override
+  String accessibilityQuestionNumber(int current, int total) =>
+      'Question $current of $total';
+  @override
+  String get accessibilityCorrectAnswer => 'Correct answer';
+  @override
+  String get accessibilityIncorrectAnswer => 'Incorrect answer';
 }
 
 void main() {
