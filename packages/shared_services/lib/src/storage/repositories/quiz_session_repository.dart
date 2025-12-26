@@ -9,6 +9,7 @@ import 'dart:async';
 import '../data_sources/question_answer_data_source.dart';
 import '../data_sources/quiz_session_data_source.dart';
 import '../data_sources/statistics_data_source.dart';
+import '../models/paginated_result.dart';
 import '../models/question_answer.dart';
 import '../models/quiz_session.dart';
 
@@ -66,6 +67,19 @@ abstract class QuizSessionRepository {
     int? limit,
     int? offset,
   });
+
+  /// Gets paginated sessions with total count for UI pagination.
+  ///
+  /// Returns a [PaginatedResult] containing sessions and metadata
+  /// for implementing infinite scroll or page-based navigation.
+  Future<PaginatedResult<QuizSession>> getPaginatedSessions({
+    QuizSessionFilter? filter,
+    required int limit,
+    int offset = 0,
+  });
+
+  /// Gets the count of sessions matching the filter.
+  Future<int> getSessionsCount({QuizSessionFilter? filter});
 
   // ===========================================================================
   // Session with Answers
@@ -246,6 +260,38 @@ class QuizSessionRepositoryImpl implements QuizSessionRepository {
       limit: limit,
       offset: offset,
     );
+  }
+
+  @override
+  Future<PaginatedResult<QuizSession>> getPaginatedSessions({
+    QuizSessionFilter? filter,
+    required int limit,
+    int offset = 0,
+  }) async {
+    // Fetch items and count in parallel for efficiency
+    final results = await Future.wait([
+      _sessionDataSource.getAllSessions(
+        filter: filter,
+        limit: limit,
+        offset: offset,
+      ),
+      _sessionDataSource.getSessionsCount(filter: filter),
+    ]);
+
+    final sessions = results[0] as List<QuizSession>;
+    final totalCount = results[1] as int;
+
+    return PaginatedResult<QuizSession>(
+      items: sessions,
+      totalCount: totalCount,
+      offset: offset,
+      limit: limit,
+    );
+  }
+
+  @override
+  Future<int> getSessionsCount({QuizSessionFilter? filter}) async {
+    return _sessionDataSource.getSessionsCount(filter: filter);
   }
 
   // ===========================================================================
