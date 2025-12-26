@@ -1101,4 +1101,102 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get getMoreHints => 'Get More Hints';
+
+  @override
+  String get fiftyFiftyLabel => '50/50';
+
+  @override
+  String get skipLabel => 'Skip';
+
+  @override
+  String get needMoreLives => 'Need More Lives?';
+
+  @override
+  String get needMoreHints => 'Need More Hints?';
+
+  @override
+  String get needMoreSkips => 'Need More Skips?';
+
+  @override
+  String resourceRemaining(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count remaining',
+      one: '1 remaining',
+      zero: '0 remaining',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String watchAdForResource(int count, String resource) {
+    return 'Watch Ad for +$count $resource';
+  }
+
+  @override
+  String buyResource(String resource) {
+    return 'Buy $resource...';
+  }
+
+  @override
+  String get noThanks => 'No Thanks';
+
+  @override
+  String get buyLives => 'Buy Lives';
+
+  @override
+  String get buyHints => 'Buy Hints';
+
+  @override
+  String get buySkips => 'Buy Skips';
+
+  @override
+  String get bestValue => 'Best Value';
+
+  @override
+  String get restorePurchases => 'Restore Purchases';
+
+  @override
+  String get noConnection => 'No Connection';
+
+  @override
+  String get connectToRestore =>
+      'Connect to the internet to restore your resources.';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String purchaseSuccess(int count, String resource) {
+    return 'Purchase successful! +$count $resource';
+  }
+
+  @override
+  String get purchaseFailed => 'Purchase failed. Please try again.';
+
+  @override
+  String get purchaseCancelled => 'Purchase cancelled.';
+
+  @override
+  String get purchasePending => 'Purchase pending. Please wait.';
+
+  @override
+  String get purchasesRestored => 'Purchases restored successfully.';
+
+  @override
+  String adWatchSuccess(int count, String resource) {
+    return '+$count $resource added!';
+  }
+
+  @override
+  String get adNotAvailable => 'Ad not available. Please try again later.';
+
+  @override
+  String get dailyLimitReset => 'Daily resources reset!';
+
+  @override
+  String freeResourcesInfo(int count, String resource) {
+    return '$count free $resource per day';
+  }
 }
