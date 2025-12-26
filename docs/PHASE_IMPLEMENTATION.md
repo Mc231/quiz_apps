@@ -1566,7 +1566,7 @@ score = basePoints + streakBonus
 
 ---
 
-### Sprint 8.13: Statistics Tabs - Full Implementation
+### Sprint 8.13: Statistics Tabs - Full Implementation ✅
 
 **Goal:** Complete all statistics tabs with full functionality.
 
@@ -1577,26 +1577,41 @@ score = basePoints + streakBonus
 - **Leaderboard** - Local leaderboard (Post-MVP: global leaderboard)
 
 **Tasks:**
-- [ ] Audit current statistics implementation for missing functionality
-- [ ] Create `StatisticsOverviewTab` with key metrics summary
-- [ ] Create `StatisticsProgressTab` with improvement charts
-- [ ] Create `StatisticsCategoriesTab` with per-category breakdown
-- [ ] Create `StatisticsLeaderboardTab` (local scores)
-- [ ] Add tab navigation to StatisticsScreen
-- [ ] Integrate with existing statistics data sources
-- [ ] Add localization strings for all new UI elements
-- [ ] Write widget tests for each tab
-- [ ] Mark Leaderboard as "Coming Soon" for global feature (Post-MVP)
+- [x] Audit current statistics implementation for missing functionality
+- [x] Create `StatisticsOverviewTab` with key metrics summary (implemented inline in StatisticsDashboardScreen)
+- [x] Create `StatisticsProgressTab` with improvement charts (implemented inline in StatisticsDashboardScreen)
+- [x] Create `StatisticsCategoriesTab` with per-category breakdown (implemented inline in StatisticsDashboardScreen)
+- [x] Create `StatisticsLeaderboardTab` (local scores) (implemented inline in StatisticsDashboardScreen)
+- [x] Add tab navigation to StatisticsScreen (already implemented with TabBar/TabBarView)
+- [x] Integrate with existing statistics data sources (uses StatisticsDashboardData)
+- [x] Add localization strings for all new UI elements
+- [x] Write widget tests for each tab (23 tests in statistics_dashboard_screen_test.dart)
+- [x] Mark Leaderboard as "Coming Soon" for global feature (Post-MVP)
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/screens/statistics/statistics_overview_tab.dart`
-- `packages/quiz_engine/lib/src/screens/statistics/statistics_progress_tab.dart`
-- `packages/quiz_engine/lib/src/screens/statistics/statistics_categories_tab.dart`
-- `packages/quiz_engine/lib/src/screens/statistics/statistics_leaderboard_tab.dart`
+**Implementation Notes:**
+All four tabs are implemented inline within `StatisticsDashboardScreen` using the existing widget architecture:
+- Overview tab: Uses `StatisticsGrid`, `StatisticsCard`, `TrendsWidget`, and `SessionCard`
+- Progress tab: Uses `ProgressTimeRangeSelector` and `ProgressChartWidget`
+- Categories tab: Uses `CategoryStatisticsWidget` and `CategoryStatisticsGrid`
+- Leaderboard tab: Uses `LeaderboardTypeSelector`, `LeaderboardWidget`, and "Coming Soon" global leaderboard banner
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/screens/statistics_screen.dart`
-- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart` - Added global leaderboard "Coming Soon" banner
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added globalLeaderboard and globalLeaderboardComingSoon strings
+
+**Files Created:**
+- ✅ `packages/quiz_engine/test/screens/statistics_dashboard_screen_test.dart` - 23 comprehensive widget tests
+
+**Test Coverage:**
+- StatisticsDashboardTab enum tests
+- StatisticsDashboardData model tests
+- Loading state tests
+- Empty state tests
+- Tab navigation tests
+- Tab content rendering tests
+- Global leaderboard coming soon banner tests
+- Callback tests (onSessionTap, onCategoryTap, onViewAllSessions)
+- Widget interaction tests (time range selector, leaderboard type selector)
 
 ---
 
