@@ -446,6 +446,12 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
       'No leaderboard entries yet. Complete some quizzes to see your best scores!';
 
   @override
+  String get globalLeaderboard => 'Global Leaderboard';
+
+  @override
+  String get globalLeaderboardComingSoon => 'Compete with players worldwide';
+
+  @override
   String get progress => 'Progress';
 
   @override
