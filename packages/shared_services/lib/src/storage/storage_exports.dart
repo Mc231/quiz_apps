@@ -18,6 +18,7 @@ export 'database/tables/statistics_tables.dart';
 // Models
 export 'models/daily_statistics.dart';
 export 'models/global_statistics.dart';
+export 'models/paginated_result.dart';
 export 'models/practice_question.dart';
 export 'models/question_answer.dart';
 export 'models/quiz_session.dart';
@@ -36,5 +37,6 @@ export 'storage_service.dart';
 // Quiz Storage Adapter
 export 'quiz_storage_adapter.dart';
 
-// Export Service
+// Export Services
+export 'services/data_export_service.dart';
 export 'services/session_export_service.dart';
