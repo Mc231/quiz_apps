@@ -9,6 +9,18 @@ import '../l10n/quiz_localizations.dart';
 /// remaining counts. Buttons are disabled when hints are not available.
 ///
 /// This widget integrates with QuizBloc to trigger hint actions.
+///
+/// @deprecated Use [GameResourcePanel] or [GameResourceButton] instead.
+/// This widget will be removed in a future version. The new components provide:
+/// - Single icon with count badge (consistent with lives display)
+/// - Animations (pulse on last hint, shake on depletion)
+/// - Adaptive layout via [AdaptiveResourcePanel]
+/// - Long-press tooltips for hint explanation
+/// - Better theming support via [GameResourceTheme]
+@Deprecated(
+  'Use GameResourcePanel or GameResourceButton instead. '
+  'This widget will be removed in a future version.',
+)
 class HintsPanel extends StatelessWidget {
   /// The current hint state showing available hints
   final HintState? hintState;
