@@ -4,6 +4,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import '../theme/quiz_theme_data.dart';
 import '../quiz/quiz_layout.dart';
 import '../l10n/quiz_localizations.dart';
+import 'game_resource_panel.dart';
 
 /// A widget that displays visual feedback after the user answers a question.
 ///
@@ -18,8 +19,8 @@ class AnswerFeedbackWidget extends StatefulWidget {
   /// Callback to process the user's answer selection
   final Function(QuestionEntry answer) processAnswer;
 
-  /// The quiz bloc for accessing hint methods
-  final QuizBloc quizBloc;
+  /// Game resource panel data (lives, 50/50, skip).
+  final GameResourcePanelData? resourceData;
 
   /// Theme configuration for styling the feedback
   final QuizThemeData themeData;
@@ -31,7 +32,7 @@ class AnswerFeedbackWidget extends StatefulWidget {
     super.key,
     required this.feedbackState,
     required this.processAnswer,
-    required this.quizBloc,
+    this.resourceData,
     required this.themeData,
     required this.information,
   });
@@ -92,7 +93,7 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
               ),
               information: widget.information,
               processAnswer: widget.processAnswer,
-              quizBloc: widget.quizBloc,
+              resourceData: widget.resourceData,
               themeData: widget.themeData,
             ),
           ),
