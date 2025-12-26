@@ -1534,5 +1534,57 @@
     "placeholders": {
       "count": {"type": "int"}
     }
+  },
+
+  "pointsLabel": "pts",
+  "@pointsLabel": {
+    "description": "Points abbreviation label"
+  },
+
+  "totalScore": "Total Score",
+  "@totalScore": {
+    "description": "Total score label"
+  },
+
+  "basePoints": "Base Points",
+  "@basePoints": {
+    "description": "Base points label in score breakdown"
+  },
+
+  "timeBonus": "Time Bonus",
+  "@timeBonus": {
+    "description": "Time bonus label in score breakdown"
+  },
+
+  "streakBonus": "Streak Bonus",
+  "@streakBonus": {
+    "description": "Streak bonus label in score breakdown"
+  },
+
+  "bonus": "Bonus",
+  "@bonus": {
+    "description": "Generic bonus label"
+  },
+
+  "scoreBreakdown": "Score Breakdown",
+  "@scoreBreakdown": {
+    "description": "Score breakdown section title"
+  },
+
+  "pointsEarned": "{points} pts",
+  "@pointsEarned": {
+    "description": "Points earned display",
+    "placeholders": {
+      "points": {"type": "int"}
+    }
+  },
+
+  "scorePlusBonus": "{base} + {bonus} bonus",
+  "@scorePlusBonus": {
+    "description": "Score plus bonus display",
+    "placeholders": {
+      "base": {"type": "int"},
+      "bonus": {"type": "int"}
+    }
   }
 }
