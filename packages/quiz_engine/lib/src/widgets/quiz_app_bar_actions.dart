@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
-import 'lives_display.dart';
+import 'adaptive_resource_panel.dart';
+import 'game_resource_panel.dart';
 import 'timer_display.dart';
 
 /// A flexible widget for displaying action items in the quiz app bar.
 ///
 /// This widget provides a container for multiple action items that can be
-/// displayed in the app bar, such as lives, timer, hints counter, etc.
+/// displayed in the app bar, such as game resources (lives, hints), timer, etc.
 ///
-/// Currently supports:
-/// - Lives display (when lives mode is enabled)
+/// Supports:
+/// - Game resource panel (lives, 50/50, skip) with adaptive placement
+/// - Timer display (question timer, total timer)
 ///
-/// Future additions can include:
-/// - Timer display
-/// - Hints counter
-/// - Score display
-/// - Pause button
+/// The game resources use [AdaptiveResourcePanel] which only shows in the
+/// AppBar when the screen is in landscape mode or on tablet/desktop.
 class QuizAppBarActions extends StatelessWidget {
   /// The current quiz state containing progress and lives information
   final QuizState? state;
@@ -23,11 +22,9 @@ class QuizAppBarActions extends StatelessWidget {
   /// The quiz configuration for determining which actions to show
   final QuizConfig? config;
 
-  /// Color for the lives icons
-  final Color livesColor;
-
-  /// Color for empty/lost lives
-  final Color lostLivesColor;
+  /// Game resource panel data (lives, 50/50, skip).
+  /// If null, resources are not shown.
+  final GameResourcePanelData? resourceData;
 
   /// Color for the timer when time is normal
   final Color timerNormalColor;
@@ -42,8 +39,7 @@ class QuizAppBarActions extends StatelessWidget {
     super.key,
     this.state,
     this.config,
-    this.livesColor = Colors.red,
-    this.lostLivesColor = Colors.grey,
+    this.resourceData,
     this.timerNormalColor = Colors.blue,
     this.timerWarningColor = Colors.orange,
     this.timerCriticalColor = Colors.red,
@@ -58,20 +54,16 @@ class QuizAppBarActions extends StatelessWidget {
 
     final actions = <Widget>[];
 
-    // Add lives display if applicable
-    final livesWidget = _buildLivesDisplay();
-    if (livesWidget != null) {
-      actions.add(livesWidget);
+    // Add game resource panel if applicable (adaptive - shows only on landscape/tablet/desktop)
+    if (resourceData != null && resourceData!.hasResources) {
+      actions.add(
+        AdaptiveResourcePanel.forAppBar(data: resourceData!),
+      );
     }
 
     // Add timer displays if applicable
     final timerWidgets = _buildTimerDisplays();
     actions.addAll(timerWidgets);
-
-    // Future: Add hints counter
-    // if (config?.hintConfig.initialHints.isNotEmpty == true) {
-    //   actions.add(_buildHintsDisplay());
-    // }
 
     // If no actions, return empty widget
     if (actions.isEmpty) {
@@ -83,33 +75,8 @@ class QuizAppBarActions extends StatelessWidget {
       padding: const EdgeInsets.only(right: 8.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: _intersperse(actions, const SizedBox(width: 16)),
+        children: _intersperse(actions, const SizedBox(width: 12)),
       ),
-    );
-  }
-
-  /// Builds the lives display widget if lives tracking is enabled
-  Widget? _buildLivesDisplay() {
-    int? remainingLives;
-    int? totalLives = config?.modeConfig.lives;
-
-    // Extract remaining lives from state
-    if (state is QuestionState) {
-      remainingLives = (state as QuestionState).remainingLives;
-    } else if (state is AnswerFeedbackState) {
-      remainingLives = (state as AnswerFeedbackState).remainingLives;
-    }
-
-    // Only show if lives are tracked
-    if (remainingLives == null || totalLives == null) {
-      return null;
-    }
-
-    return LivesDisplay(
-      remainingLives: remainingLives,
-      totalLives: totalLives,
-      filledColor: livesColor,
-      emptyColor: lostLivesColor,
     );
   }
 
