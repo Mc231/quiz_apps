@@ -4,6 +4,9 @@
 /// that can be reused across multiple quiz apps.
 library;
 
+// Analytics (Event tracking and analytics)
+export 'src/analytics/analytics_exports.dart';
+
 // Dependency Injection
 export 'src/di/di_exports.dart';
 
