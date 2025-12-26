@@ -919,6 +919,18 @@ abstract class QuizEngineLocalizations {
   /// **'No leaderboard entries yet. Complete some quizzes to see your best scores!'**
   String get noLeaderboardData;
 
+  /// Global leaderboard title
+  ///
+  /// In en, this message translates to:
+  /// **'Global Leaderboard'**
+  String get globalLeaderboard;
+
+  /// Global leaderboard coming soon description
+  ///
+  /// In en, this message translates to:
+  /// **'Compete with players worldwide'**
+  String get globalLeaderboardComingSoon;
+
   /// Progress tab label
   ///
   /// In en, this message translates to:
