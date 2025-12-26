@@ -24,8 +24,6 @@ class QuizGameFlowManager {
   /// The quiz mode configuration.
   QuizModeConfig? _modeConfig;
 
-  /// The current question.
-  Question? _currentQuestion;
 
   /// Total number of questions.
   int _totalCount = 0;
@@ -49,13 +47,8 @@ class QuizGameFlowManager {
 
   // ============ Getters ============
 
-  /// The current question.
-  Question? get currentQuestion => _currentQuestion;
-
-  /// Sets the current question (used for tests).
-  set currentQuestion(Question? question) {
-    _currentQuestion = question;
-  }
+  /// The current question (public for tests).
+  Question? currentQuestion;
 
   /// Total number of questions.
   int get totalCount => _totalCount;
@@ -118,7 +111,7 @@ class QuizGameFlowManager {
 
     // Create the question from the pick result
     final question = Question.fromRandomResult(randomResult!);
-    _currentQuestion = question;
+    currentQuestion = question;
 
     onNewQuestion?.call(question);
     return question;
@@ -173,7 +166,7 @@ class QuizGameFlowManager {
 
   /// Resets the game flow for a new game.
   void reset() {
-    _currentQuestion = null;
+    currentQuestion = null;
     _totalCount = 0;
     _modeConfig = null;
     // Clear items by replacing with empty list
