@@ -81,6 +81,36 @@
     "description": "Video load error message"
   },
 
+  "retry": "Retry",
+  "@retry": {
+    "description": "Retry button label"
+  },
+
+  "errorTitle": "Something Went Wrong",
+  "@errorTitle": {
+    "description": "Generic error title"
+  },
+
+  "errorGeneric": "An unexpected error occurred. Please try again.",
+  "@errorGeneric": {
+    "description": "Generic error message"
+  },
+
+  "errorNetwork": "Unable to connect. Please check your connection.",
+  "@errorNetwork": {
+    "description": "Network error message"
+  },
+
+  "errorServer": "Something went wrong on our end. Please try again later.",
+  "@errorServer": {
+    "description": "Server error message"
+  },
+
+  "loadingData": "Loading...",
+  "@loadingData": {
+    "description": "Generic loading message"
+  },
+
   "hint5050Label": "50/50",
   "@hint5050Label": {
     "description": "50/50 hint label"
