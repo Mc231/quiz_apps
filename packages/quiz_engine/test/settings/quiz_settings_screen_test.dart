@@ -94,6 +94,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -108,7 +109,10 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
-            config: const QuizSettingsConfig(title: 'My Settings'),
+            config: const QuizSettingsConfig(
+              title: 'My Settings',
+              showDataExport: false,
+            ),
           ),
         ),
       );
@@ -123,7 +127,10 @@ void main() {
           child: Scaffold(
             body: QuizSettingsScreen(
               settingsService: settingsService,
-              config: const QuizSettingsConfig(showAppBar: false),
+              config: const QuizSettingsConfig(
+                showAppBar: false,
+                showDataExport: false,
+              ),
             ),
           ),
         ),
@@ -141,6 +148,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -156,6 +164,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -174,6 +183,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -189,6 +199,7 @@ void main() {
             settingsService: settingsService,
             config: const QuizSettingsConfig(
               showAudioHapticsSection: false,
+              showDataExport: false,
             ),
           ),
         ),
@@ -208,6 +219,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -222,6 +234,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -241,6 +254,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -262,6 +276,7 @@ void main() {
             settingsService: settingsService,
             config: const QuizSettingsConfig(
               showAppearanceSection: false,
+              showDataExport: false,
             ),
           ),
         ),
@@ -279,6 +294,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -299,6 +315,7 @@ void main() {
             settingsService: settingsService,
             config: const QuizSettingsConfig(
               showAboutSection: false,
+              showDataExport: false,
             ),
           ),
         ),
@@ -315,6 +332,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -332,6 +350,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
       );
@@ -356,6 +375,7 @@ void main() {
             settingsService: settingsService,
             config: const QuizSettingsConfig(
               showAdvancedSection: false,
+              showDataExport: false,
             ),
           ),
         ),
@@ -415,6 +435,7 @@ void main() {
           child: QuizSettingsScreen(
             settingsService: settingsService,
             config: QuizSettingsConfig(
+              showDataExport: false,
               customSections: (context) => [
                 const ListTile(
                   title: Text('Custom Item'),
@@ -439,6 +460,7 @@ void main() {
           child: QuizSettingsScreen(
             settingsService: settingsService,
             config: QuizSettingsConfig(
+              showDataExport: false,
               customSectionsBeforeAbout: (context) => [
                 SettingsSection(
                   header: 'Custom Section',
