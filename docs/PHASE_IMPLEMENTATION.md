@@ -2012,6 +2012,30 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 
 ---
 
+### QuizFeedbackService Initialization - Technical Debt
+
+**Description:** The `QuizFeedbackService` in `QuizScreenState` is currently initialized with defaults at declaration time to prevent `LateInitializationError`. This is a workaround, not an ideal solution.
+
+**Current Implementation:**
+```dart
+// quiz_screen.dart
+QuizFeedbackService _feedbackService = QuizFeedbackService();
+```
+
+**Problem:** The service is created twice - once with defaults, then potentially replaced in `_updateFeedbackServiceFromConfig()`. This is wasteful and the initialization pattern could be cleaner.
+
+**Suggested Improvements:**
+1. Refactor `QuizBloc` to make config available synchronously (non-late)
+2. Use a factory pattern or dependency injection to provide the feedback service
+3. Consider making `QuizFeedbackService` a singleton or provided via `InheritedWidget`
+4. Use `didChangeDependencies()` instead of `initState()` for proper context access
+
+**Location:** `packages/quiz_engine/lib/src/quiz/quiz_screen.dart:47`
+
+**Priority:** Low
+
+---
+
 ## Future Features (Backlog)
 
 ### Score-Based Achievements
