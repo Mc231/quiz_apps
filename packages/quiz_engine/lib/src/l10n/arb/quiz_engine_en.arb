@@ -1837,5 +1837,128 @@
       "count": {"type": "int"},
       "resource": {"type": "String"}
     }
+  },
+
+  "accessibilityCategoryButton": "{category} quiz category",
+  "@accessibilityCategoryButton": {
+    "description": "Accessibility label for category card button",
+    "placeholders": {
+      "category": {"type": "String"}
+    }
+  },
+
+  "accessibilityCategoryWithQuestions": "{category}, {count} questions",
+  "@accessibilityCategoryWithQuestions": {
+    "description": "Accessibility label for category with question count",
+    "placeholders": {
+      "category": {"type": "String"},
+      "count": {"type": "int"}
+    }
+  },
+
+  "accessibilityDoubleTapToSelect": "Double tap to select",
+  "@accessibilityDoubleTapToSelect": {
+    "description": "Accessibility hint for selectable items"
+  },
+
+  "accessibilityDoubleTapToStart": "Double tap to start",
+  "@accessibilityDoubleTapToStart": {
+    "description": "Accessibility hint for start actions"
+  },
+
+  "accessibilityChallengeButton": "{name} challenge, {difficulty} difficulty",
+  "@accessibilityChallengeButton": {
+    "description": "Accessibility label for challenge card",
+    "placeholders": {
+      "name": {"type": "String"},
+      "difficulty": {"type": "String"}
+    }
+  },
+
+  "accessibilityAnswerOption": "Answer option: {answer}",
+  "@accessibilityAnswerOption": {
+    "description": "Accessibility label for quiz answer option",
+    "placeholders": {
+      "answer": {"type": "String"}
+    }
+  },
+
+  "accessibilityAnswerDisabled": "Answer option {answer}, eliminated",
+  "@accessibilityAnswerDisabled": {
+    "description": "Accessibility label for disabled answer option",
+    "placeholders": {
+      "answer": {"type": "String"}
+    }
+  },
+
+  "accessibilitySessionCard": "Quiz session from {date}, score {score} out of {total}",
+  "@accessibilitySessionCard": {
+    "description": "Accessibility label for session card",
+    "placeholders": {
+      "date": {"type": "String"},
+      "score": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+
+  "accessibilityStatistic": "{label}: {value}",
+  "@accessibilityStatistic": {
+    "description": "Accessibility label for statistic value",
+    "placeholders": {
+      "label": {"type": "String"},
+      "value": {"type": "String"}
+    }
+  },
+
+  "accessibilityProgress": "Progress: {percent} percent",
+  "@accessibilityProgress": {
+    "description": "Accessibility label for progress indicator",
+    "placeholders": {
+      "percent": {"type": "int"}
+    }
+  },
+
+  "accessibilityLivesRemaining": "{count} lives remaining",
+  "@accessibilityLivesRemaining": {
+    "description": "Accessibility label for lives count",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "accessibilityHintsRemaining": "{count} {type} hints remaining",
+  "@accessibilityHintsRemaining": {
+    "description": "Accessibility label for hints count",
+    "placeholders": {
+      "count": {"type": "int"},
+      "type": {"type": "String"}
+    }
+  },
+
+  "accessibilityTimer": "{seconds} seconds remaining",
+  "@accessibilityTimer": {
+    "description": "Accessibility label for timer",
+    "placeholders": {
+      "seconds": {"type": "int"}
+    }
+  },
+
+  "accessibilityCorrectAnswer": "Correct answer",
+  "@accessibilityCorrectAnswer": {
+    "description": "Accessibility announcement for correct answer"
+  },
+
+  "accessibilityIncorrectAnswer": "Incorrect answer",
+  "@accessibilityIncorrectAnswer": {
+    "description": "Accessibility announcement for incorrect answer"
+  },
+
+  "accessibilityQuestionNumber": "Question {current} of {total}",
+  "@accessibilityQuestionNumber": {
+    "description": "Accessibility label for question progress",
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
   }
 }
