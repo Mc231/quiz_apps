@@ -780,6 +780,34 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String accessibilityHintsRemaining(int count, String type) =>
       '$count $type hints remaining';
+
+  // Export data methods
+  @override
+  String get exportData => 'Export Data';
+  @override
+  String get exportDataDescription => 'Export your quiz data';
+  @override
+  String get exportDataDialogMessage => 'Export?';
+  @override
+  String get exportDataIncludes => 'Includes:';
+  @override
+  String get exportIncludesQuizHistory => 'Quiz history';
+  @override
+  String get exportIncludesAnswers => 'Answer details';
+  @override
+  String get exportIncludesStatistics => 'Statistics';
+  @override
+  String get exportIncludesSettings => 'Settings';
+  @override
+  String get export => 'Export';
+  @override
+  String get exportDataSubject => 'Quiz Data Export';
+  @override
+  String exportDataSuccess(int count) => 'Exported $count sessions';
+  @override
+  String get exportDataError => 'Export failed';
+  @override
+  String get dataAndPrivacy => 'Data & Privacy';
 }
 
 void main() {
