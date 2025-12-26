@@ -72,6 +72,12 @@ class FlagsDataProvider extends engine.QuizDataProvider {
         lives: 5,
         allowSkip: true,
       ),
+      // Use timed scoring: 100 base points + 5 points per second saved (30s threshold)
+      scoringStrategy: const TimedScoring(
+        basePointsPerQuestion: 100,
+        bonusPerSecondSaved: 5,
+        timeThresholdSeconds: 30,
+      ),
     );
   }
 
