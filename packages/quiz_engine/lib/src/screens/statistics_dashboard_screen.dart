@@ -389,8 +389,82 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
             onEntryTap: widget.onLeaderboardEntryTap,
           ),
 
+          // Coming Soon: Global Leaderboard
+          _buildGlobalLeaderboardComingSoon(context, l10n),
+
           const SizedBox(height: 24),
         ],
+      ),
+    );
+  }
+
+  Widget _buildGlobalLeaderboardComingSoon(
+      BuildContext context, QuizLocalizations l10n) {
+    final theme = Theme.of(context);
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      elevation: 1,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: theme.colorScheme.outline.withValues(alpha: 0.3),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Container(
+              width: 48,
+              height: 48,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.public,
+                color: theme.colorScheme.primary.withValues(alpha: 0.7),
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.globalLeaderboard,
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.globalLeaderboardComingSoon,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Text(
+                l10n.comingSoon,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSecondaryContainer,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
