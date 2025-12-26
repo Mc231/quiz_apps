@@ -19,8 +19,8 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements & Core Features | In Progress (14/16 sprints) |
-| Phase 8.5 | Production Polish | Not Started (0/7 sprints) |
+| Phase 8 | Achievements & Core Features | ✅ Completed (12/12 sprints) |
+| Phase 8.5 | Production Polish | ✅ Completed (7/7 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
