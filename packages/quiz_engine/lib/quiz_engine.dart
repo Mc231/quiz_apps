@@ -49,6 +49,8 @@ export 'src/widgets/quiz_app_bar_actions.dart';
 export 'src/widgets/quiz_lifecycle_handler.dart';
 export 'src/widgets/hints_panel.dart';
 export 'src/widgets/exit_confirmation_dialog.dart';
+export 'src/widgets/score_display.dart';
+export 'src/widgets/score_breakdown.dart';
 
 // History & Statistics Widgets
 export 'src/widgets/session_card.dart';
