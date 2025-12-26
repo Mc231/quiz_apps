@@ -2019,6 +2019,162 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Get More Hints'**
   String get getMoreHints;
+
+  /// Short label for 50/50 hint
+  ///
+  /// In en, this message translates to:
+  /// **'50/50'**
+  String get fiftyFiftyLabel;
+
+  /// Short label for skip hint
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skipLabel;
+
+  /// Dialog title when lives are depleted
+  ///
+  /// In en, this message translates to:
+  /// **'Need More Lives?'**
+  String get needMoreLives;
+
+  /// Dialog title when hints are depleted
+  ///
+  /// In en, this message translates to:
+  /// **'Need More Hints?'**
+  String get needMoreHints;
+
+  /// Dialog title when skips are depleted
+  ///
+  /// In en, this message translates to:
+  /// **'Need More Skips?'**
+  String get needMoreSkips;
+
+  /// Resource count remaining
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{0 remaining} =1{1 remaining} other{{count} remaining}}'**
+  String resourceRemaining(int count);
+
+  /// Button to watch ad for resources
+  ///
+  /// In en, this message translates to:
+  /// **'Watch Ad for +{count} {resource}'**
+  String watchAdForResource(int count, String resource);
+
+  /// Button to open purchase sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Buy {resource}...'**
+  String buyResource(String resource);
+
+  /// Button to dismiss restore dialog
+  ///
+  /// In en, this message translates to:
+  /// **'No Thanks'**
+  String get noThanks;
+
+  /// Purchase sheet title for lives
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Lives'**
+  String get buyLives;
+
+  /// Purchase sheet title for hints
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Hints'**
+  String get buyHints;
+
+  /// Purchase sheet title for skips
+  ///
+  /// In en, this message translates to:
+  /// **'Buy Skips'**
+  String get buySkips;
+
+  /// Badge for best value pack
+  ///
+  /// In en, this message translates to:
+  /// **'Best Value'**
+  String get bestValue;
+
+  /// Button to restore previous purchases
+  ///
+  /// In en, this message translates to:
+  /// **'Restore Purchases'**
+  String get restorePurchases;
+
+  /// Title when device is offline
+  ///
+  /// In en, this message translates to:
+  /// **'No Connection'**
+  String get noConnection;
+
+  /// Message when offline and trying to restore
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to the internet to restore your resources.'**
+  String get connectToRestore;
+
+  /// OK button
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// Success message after purchase
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase successful! +{count} {resource}'**
+  String purchaseSuccess(int count, String resource);
+
+  /// Error message when purchase fails
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase failed. Please try again.'**
+  String get purchaseFailed;
+
+  /// Message when user cancels purchase
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase cancelled.'**
+  String get purchaseCancelled;
+
+  /// Message when purchase is pending approval
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase pending. Please wait.'**
+  String get purchasePending;
+
+  /// Message after restoring purchases
+  ///
+  /// In en, this message translates to:
+  /// **'Purchases restored successfully.'**
+  String get purchasesRestored;
+
+  /// Success message after watching ad
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} {resource} added!'**
+  String adWatchSuccess(int count, String resource);
+
+  /// Message when no ad is available
+  ///
+  /// In en, this message translates to:
+  /// **'Ad not available. Please try again later.'**
+  String get adNotAvailable;
+
+  /// Notification when daily limits reset
+  ///
+  /// In en, this message translates to:
+  /// **'Daily resources reset!'**
+  String get dailyLimitReset;
+
+  /// Info about daily free resources
+  ///
+  /// In en, this message translates to:
+  /// **'{count} free {resource} per day'**
+  String freeResourcesInfo(int count, String resource);
 }
 
 class _QuizEngineLocalizationsDelegate
