@@ -74,6 +74,7 @@ class QuizSession {
     required this.totalFailed,
     required this.totalSkipped,
     required this.scorePercentage,
+    this.score = 0,
     this.livesUsed = 0,
     required this.startTime,
     this.endTime,
@@ -121,6 +122,9 @@ class QuizSession {
 
   /// Score as a percentage (0.0 to 100.0).
   final double scorePercentage;
+
+  /// Total score earned in this session (points-based scoring).
+  final int score;
 
   /// Number of lives/hearts used (for survival mode).
   final int livesUsed;
@@ -181,6 +185,7 @@ class QuizSession {
       totalFailed: map[QuizSessionsColumns.totalFailed] as int,
       totalSkipped: map[QuizSessionsColumns.totalSkipped] as int,
       scorePercentage: (map[QuizSessionsColumns.scorePercentage] as num).toDouble(),
+      score: (map[QuizSessionsColumns.score] as int?) ?? 0,
       livesUsed: (map[QuizSessionsColumns.livesUsed] as int?) ?? 0,
       startTime: DateTime.fromMillisecondsSinceEpoch(
         (map[QuizSessionsColumns.startTime] as int) * 1000,
@@ -223,6 +228,7 @@ class QuizSession {
       QuizSessionsColumns.totalFailed: totalFailed,
       QuizSessionsColumns.totalSkipped: totalSkipped,
       QuizSessionsColumns.scorePercentage: scorePercentage,
+      QuizSessionsColumns.score: score,
       QuizSessionsColumns.livesUsed: livesUsed,
       QuizSessionsColumns.startTime: startTime.millisecondsSinceEpoch ~/ 1000,
       QuizSessionsColumns.endTime:
@@ -253,6 +259,7 @@ class QuizSession {
     int? totalFailed,
     int? totalSkipped,
     double? scorePercentage,
+    int? score,
     int? livesUsed,
     DateTime? startTime,
     DateTime? endTime,
@@ -279,6 +286,7 @@ class QuizSession {
       totalFailed: totalFailed ?? this.totalFailed,
       totalSkipped: totalSkipped ?? this.totalSkipped,
       scorePercentage: scorePercentage ?? this.scorePercentage,
+      score: score ?? this.score,
       livesUsed: livesUsed ?? this.livesUsed,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
