@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 
 import '../data/flags_challenges.dart';
-import '../initialization/flags_quiz_initializer.dart';
+import '../initialization/flags_quiz_app_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../practice/flags_practice_data_provider.dart';
 
@@ -12,10 +12,11 @@ import '../practice/flags_practice_data_provider.dart';
 /// All navigation, achievement handling, and settings are managed
 /// automatically by QuizApp.
 ///
-/// Example:
+/// Use [FlagsQuizAppProvider.provideApp] to create a fully initialized instance:
 /// ```dart
-/// final dependencies = await FlagsQuizInitializer.initialize();
-/// runApp(FlagsQuizApp(dependencies: dependencies));
+/// void main() async {
+///   runApp(await FlagsQuizAppProvider.provideApp());
+/// }
 /// ```
 class FlagsQuizApp extends StatelessWidget {
   /// Creates a [FlagsQuizApp].

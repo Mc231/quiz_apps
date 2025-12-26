@@ -1,17 +1,19 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../achievements/flags_achievements_data_provider.dart';
+import '../app/flags_quiz_app.dart';
 import '../data/country_counts.dart';
 import '../data/flags_categories.dart';
 import '../data/flags_data_provider.dart';
 
 /// Contains all dependencies needed to run the Flags Quiz app.
 ///
-/// Created by [FlagsQuizInitializer.initialize] and passed to [FlagsQuizApp].
+/// This class is internal to the app initialization process.
+/// Use [FlagsQuizAppProvider.provideApp] instead of creating this directly.
 class FlagsQuizDependencies {
-  /// Creates [FlagsQuizDependencies].
+  /// Creates [FlagsQuizDependencies]. Internal use only.
   const FlagsQuizDependencies({
     required this.settingsService,
     required this.storageService,
@@ -21,41 +23,29 @@ class FlagsQuizDependencies {
     required this.categories,
   });
 
-  /// Settings service for app preferences.
   final SettingsService settingsService;
-
-  /// Storage service for quiz data persistence.
   final StorageService storageService;
-
-  /// Achievement service for tracking achievements.
   final AchievementService achievementService;
-
-  /// Achievements data provider for loading achievement definitions.
   final FlagsAchievementsDataProvider achievementsProvider;
-
-  /// Data provider for loading quiz questions.
   final FlagsDataProvider dataProvider;
-
-  /// Quiz categories available in the app.
   final List<QuizCategory> categories;
 }
 
-/// Initializes all dependencies for the Flags Quiz app.
+/// Provides a fully initialized [FlagsQuizApp] instance.
 ///
 /// Handles Flutter binding initialization, shared services setup,
-/// and creation of all app dependencies.
+/// and creation of all app dependencies internally.
 ///
 /// Example:
 /// ```dart
 /// void main() async {
-///   final dependencies = await FlagsQuizInitializer.initialize();
-///   runApp(FlagsQuizApp(dependencies: dependencies));
+///   runApp(await FlagsQuizAppProvider.provideApp());
 /// }
 /// ```
-class FlagsQuizInitializer {
-  FlagsQuizInitializer._();
+class FlagsQuizAppProvider {
+  FlagsQuizAppProvider._();
 
-  /// Initializes the app and returns all required dependencies.
+  /// Provides a fully initialized [FlagsQuizApp].
   ///
   /// This method:
   /// 1. Ensures Flutter bindings are initialized
@@ -63,7 +53,14 @@ class FlagsQuizInitializer {
   /// 3. Loads country data for accurate question counts
   /// 4. Creates and initializes the achievements provider
   /// 5. Syncs achievements to catch any missed unlocks
-  static Future<FlagsQuizDependencies> initialize() async {
+  /// 6. Returns a configured [FlagsQuizApp] widget
+  static Future<Widget> provideApp() async {
+    final dependencies = await _initialize();
+    return FlagsQuizApp(dependencies: dependencies);
+  }
+
+  /// Initializes all dependencies for the Flags Quiz app.
+  static Future<FlagsQuizDependencies> _initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
     await SharedServicesInitializer.initialize();
 
