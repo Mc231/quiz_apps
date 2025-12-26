@@ -1905,6 +1905,60 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Wrong {count, plural, =1{1 time} other{{count} times}}'**
   String wrongCount(int count);
+
+  /// Points abbreviation label
+  ///
+  /// In en, this message translates to:
+  /// **'pts'**
+  String get pointsLabel;
+
+  /// Total score label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Score'**
+  String get totalScore;
+
+  /// Base points label in score breakdown
+  ///
+  /// In en, this message translates to:
+  /// **'Base Points'**
+  String get basePoints;
+
+  /// Time bonus label in score breakdown
+  ///
+  /// In en, this message translates to:
+  /// **'Time Bonus'**
+  String get timeBonus;
+
+  /// Streak bonus label in score breakdown
+  ///
+  /// In en, this message translates to:
+  /// **'Streak Bonus'**
+  String get streakBonus;
+
+  /// Generic bonus label
+  ///
+  /// In en, this message translates to:
+  /// **'Bonus'**
+  String get bonus;
+
+  /// Score breakdown section title
+  ///
+  /// In en, this message translates to:
+  /// **'Score Breakdown'**
+  String get scoreBreakdown;
+
+  /// Points earned display
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String pointsEarned(int points);
+
+  /// Score plus bonus display
+  ///
+  /// In en, this message translates to:
+  /// **'{base} + {bonus} bonus'**
+  String scorePlusBonus(int base, int bonus);
 }
 
 class _QuizEngineLocalizationsDelegate

@@ -1012,4 +1012,35 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
     );
     return 'Wrong $_temp0';
   }
+
+  @override
+  String get pointsLabel => 'pts';
+
+  @override
+  String get totalScore => 'Total Score';
+
+  @override
+  String get basePoints => 'Base Points';
+
+  @override
+  String get timeBonus => 'Time Bonus';
+
+  @override
+  String get streakBonus => 'Streak Bonus';
+
+  @override
+  String get bonus => 'Bonus';
+
+  @override
+  String get scoreBreakdown => 'Score Breakdown';
+
+  @override
+  String pointsEarned(int points) {
+    return '$points pts';
+  }
+
+  @override
+  String scorePlusBonus(int base, int bonus) {
+    return '$base + $bonus bonus';
+  }
 }
