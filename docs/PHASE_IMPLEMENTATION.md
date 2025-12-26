@@ -2015,41 +2015,372 @@ QuizBloc (Orchestrator ~460 lines)
 
 ---
 
-## Phase 9: Shared Services
+## Phase 9: Shared Services (Analytics, Ads, IAP)
 
-### Sprint 9.1: Analytics
-
-**Tasks:**
-- [ ] Create `AnalyticsService` interface
-- [ ] Implement `FirebaseAnalyticsService`
-- [ ] Implement `ConsoleAnalyticsService`
-- [ ] Add analytics calls to `QuizBloc`
-- [ ] Test analytics integration
+**Reference:** See [ANALYTICS_SPECIFICATION.md](./ANALYTICS_SPECIFICATION.md) for comprehensive event definitions and sealed class architecture.
 
 ---
 
-### Sprint 9.2: Ads
+### Sprint 9.1: Analytics Core Infrastructure
+
+**Goal:** Create the analytics foundation with abstract service and sealed event classes.
 
 **Tasks:**
-- [ ] Create `AdsService` interface
-- [ ] Implement `AdMobService`
-- [ ] Implement `NoAdsService`
-- [ ] Create banner ad widget
-- [ ] Add interstitial ad points
-- [ ] Add rewarded ad for hints
-- [ ] Test ads integration
+- [ ] Create `AnalyticsService` abstract class with all methods
+- [ ] Create base `AnalyticsEvent` sealed class
+- [ ] Create `ScreenViewEvent` sealed class (17 screen events)
+- [ ] Create `ConsoleAnalyticsService` implementation (development)
+- [ ] Create `NoOpAnalyticsService` implementation (testing)
+- [ ] Register analytics service in DI container
+- [ ] Write unit tests for all event classes
+- [ ] Write unit tests for ConsoleAnalyticsService
+
+**Files to Create:**
+- `packages/shared_services/lib/src/analytics/analytics_service.dart`
+- `packages/shared_services/lib/src/analytics/analytics_event.dart`
+- `packages/shared_services/lib/src/analytics/events/screen_view_event.dart`
+- `packages/shared_services/lib/src/analytics/console_analytics_service.dart`
+- `packages/shared_services/lib/src/analytics/no_op_analytics_service.dart`
+- `packages/shared_services/lib/src/analytics/analytics_exports.dart`
+- `packages/shared_services/test/analytics/analytics_event_test.dart`
+- `packages/shared_services/test/analytics/console_analytics_service_test.dart`
 
 ---
 
-### Sprint 9.3: IAP
+### Sprint 9.1.1: Quiz Event Classes
+
+**Goal:** Create sealed classes for quiz lifecycle and question events.
 
 **Tasks:**
-- [ ] Create `IAPService` interface
-- [ ] Implement `StoreIAPService`
-- [ ] Add "Remove Ads" product
-- [ ] Create purchase UI
+- [ ] Create `QuizEvent` sealed class (8 events)
+  - `started`, `completed`, `cancelled`, `timeout`, `failed`, `paused`, `resumed`, `challengeStarted`
+- [ ] Create `QuestionEvent` sealed class (8 events)
+  - `displayed`, `answered`, `correct`, `incorrect`, `skipped`, `timeout`, `feedbackShown`, `optionSelected`
+- [ ] Create `HintEvent` sealed class (4 events)
+  - `fiftyFiftyUsed`, `skipUsed`, `unavailableTapped`, `timerWarning`
+- [ ] Create `ResourceEvent` sealed class (4 events)
+  - `lifeLost`, `livesDepleted`, `buttonTapped`, `added`
+- [ ] Write unit tests for all event classes
+
+**Files to Create:**
+- `packages/shared_services/lib/src/analytics/events/quiz_event.dart`
+- `packages/shared_services/lib/src/analytics/events/question_event.dart`
+- `packages/shared_services/lib/src/analytics/events/hint_event.dart`
+- `packages/shared_services/lib/src/analytics/events/resource_event.dart`
+- `packages/shared_services/test/analytics/events/quiz_event_test.dart`
+- `packages/shared_services/test/analytics/events/question_event_test.dart`
+
+---
+
+### Sprint 9.1.2: Interaction & Settings Event Classes
+
+**Goal:** Create sealed classes for user interactions and settings.
+
+**Tasks:**
+- [ ] Create `InteractionEvent` sealed class (12 events)
+  - `categorySelected`, `tabSelected`, `sessionViewed`, `sessionDeleted`, `exitDialogShown`, `exitDialogConfirmed`, `exitDialogCancelled`, `dataExportInitiated`, `dataExportCompleted`, `pullToRefresh`, `viewAllSessions`, `leaderboardViewed`
+- [ ] Create `SettingsEvent` sealed class (8 events)
+  - `changed`, `soundEffectsToggled`, `hapticFeedbackToggled`, `themeChanged`, `answerFeedbackToggled`, `resetConfirmed`, `privacyPolicyViewed`, `termsOfServiceViewed`
+- [ ] Create `AchievementEvent` sealed class (5 events)
+  - `unlocked`, `notificationShown`, `notificationTapped`, `detailViewed`, `filtered`
+- [ ] Write unit tests for all event classes
+
+**Files to Create:**
+- `packages/shared_services/lib/src/analytics/events/interaction_event.dart`
+- `packages/shared_services/lib/src/analytics/events/settings_event.dart`
+- `packages/shared_services/lib/src/analytics/events/achievement_event.dart`
+- `packages/shared_services/test/analytics/events/interaction_event_test.dart`
+- `packages/shared_services/test/analytics/events/settings_event_test.dart`
+
+---
+
+### Sprint 9.1.3: Monetization & Error Event Classes
+
+**Goal:** Create sealed classes for monetization and error tracking.
+
+**Tasks:**
+- [ ] Create `MonetizationEvent` sealed class (10 events)
+  - `purchaseSheetOpened`, `packSelected`, `purchaseInitiated`, `purchaseCompleted`, `purchaseCancelled`, `purchaseFailed`, `restoreInitiated`, `restoreCompleted`, `adWatched`, `adFailed`
+- [ ] Create `ErrorEvent` sealed class (6 events)
+  - `dataLoadFailed`, `saveFailed`, `retryTapped`, `appCrash`, `featureFailure`, `network`
+- [ ] Create `PerformanceEvent` sealed class (5 events)
+  - `appLaunch`, `sessionStart`, `sessionEnd`, `screenRender`, `databaseQuery`
+- [ ] Write unit tests for all event classes
+
+**Files to Create:**
+- `packages/shared_services/lib/src/analytics/events/monetization_event.dart`
+- `packages/shared_services/lib/src/analytics/events/error_event.dart`
+- `packages/shared_services/lib/src/analytics/events/performance_event.dart`
+- `packages/shared_services/test/analytics/events/monetization_event_test.dart`
+- `packages/shared_services/test/analytics/events/error_event_test.dart`
+
+---
+
+### Sprint 9.1.4: Firebase Analytics Implementation
+
+**Goal:** Implement Firebase Analytics provider for production.
+
+**Tasks:**
+- [ ] Add `firebase_analytics` dependency to shared_services
+- [ ] Create `FirebaseAnalyticsService` implementation
+- [ ] Implement event name mapping (custom events → Firebase format)
+- [ ] Implement user properties tracking
+- [ ] Implement screen tracking with `FirebaseAnalyticsObserver`
+- [ ] Add Firebase debug view support (DebugView)
+- [ ] Write integration tests
+- [ ] Test with Firebase Console
+
+**Files to Create:**
+- `packages/shared_services/lib/src/analytics/firebase_analytics_service.dart`
+- `packages/shared_services/test/analytics/firebase_analytics_service_test.dart`
+
+**Dependencies to Add:**
+```yaml
+# packages/shared_services/pubspec.yaml
+dependencies:
+  firebase_analytics: ^11.0.0
+  firebase_core: ^3.0.0
+```
+
+---
+
+### Sprint 9.1.5: Composite Analytics Service
+
+**Goal:** Create composite service for multi-provider analytics.
+
+**Tasks:**
+- [ ] Create `CompositeAnalyticsService` implementation
+- [ ] Support multiple providers (Firebase + Amplitude, etc.)
+- [ ] Implement fan-out event logging
+- [ ] Add provider-specific configuration
+- [ ] Write unit tests
+
+**Files to Create:**
+- `packages/shared_services/lib/src/analytics/composite_analytics_service.dart`
+- `packages/shared_services/test/analytics/composite_analytics_service_test.dart`
+
+---
+
+### Sprint 9.1.6: Analytics Integration - QuizBloc
+
+**Goal:** Integrate analytics into quiz business logic.
+
+**Tasks:**
+- [ ] Add `AnalyticsService` to `QuizBloc` constructor
+- [ ] Track `quiz_started` on quiz initialization
+- [ ] Track `question_displayed` on each new question
+- [ ] Track `answer_submitted` on answer processing
+- [ ] Track `hint_fifty_fifty_used` and `hint_skip_used`
+- [ ] Track `life_lost` and `lives_depleted`
+- [ ] Track `quiz_completed`, `quiz_cancelled`, `quiz_failed`, `quiz_timeout`
+- [ ] Track `quiz_paused` and `quiz_resumed` from lifecycle handler
+- [ ] Write integration tests
+
+**Files to Modify:**
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart`
+- `packages/quiz_engine/lib/src/widgets/quiz_lifecycle_handler.dart`
+
+---
+
+### Sprint 9.1.7: Analytics Integration - UI Screens
+
+**Goal:** Integrate analytics into UI screens and navigation.
+
+**Tasks:**
+- [ ] Create `AnalyticsNavigatorObserver` for automatic screen tracking
+- [ ] Integrate screen views in `QuizHomeScreen`
+- [ ] Integrate screen views in `StatisticsDashboard`
+- [ ] Integrate screen views in `SessionHistoryScreen`
+- [ ] Integrate screen views in `AchievementsScreen`
+- [ ] Integrate screen views in `QuizSettingsScreen`
+- [ ] Integrate screen views in `SessionDetailScreen`
+- [ ] Track `tab_selected` events in bottom navigation
+- [ ] Track `category_selected` events
+- [ ] Write integration tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/analytics/analytics_navigator_observer.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/quiz_app.dart`
+- `packages/quiz_engine/lib/src/screens/quiz_home_screen.dart`
+- `packages/quiz_engine/lib/src/screens/play_screen.dart`
+
+---
+
+### Sprint 9.1.8: Analytics Integration - Settings & Achievements
+
+**Goal:** Integrate analytics into settings and achievements.
+
+**Tasks:**
+- [ ] Track settings changes (sound, haptics, theme, feedback toggle)
+- [ ] Track `achievement_unlocked` from `AchievementEngine`
+- [ ] Track `achievement_notification_shown` and `tapped`
+- [ ] Track `achievement_detail_viewed`
+- [ ] Track `data_export_initiated` and `completed`
+- [ ] Track error events from error handlers
+- [ ] Write integration tests
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+- `packages/shared_services/lib/src/achievements/achievement_engine.dart`
+- `packages/quiz_engine/lib/src/settings/export_data_tile.dart`
+
+---
+
+### Sprint 9.1.9: User Properties & App Lifecycle
+
+**Goal:** Implement user properties and app lifecycle tracking.
+
+**Tasks:**
+- [ ] Implement user property updates after quiz completion
+- [ ] Track `app_launch` event with startup time
+- [ ] Track `app_session_start` and `app_session_end`
+- [ ] Add background time tracking to `QuizLifecycleHandler`
+- [ ] Implement anonymous user ID generation
+- [ ] Write integration tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/analytics/analytics_lifecycle_observer.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/widgets/quiz_lifecycle_handler.dart`
+
+---
+
+### Sprint 9.1.10: Analytics Testing & Documentation
+
+**Goal:** Comprehensive testing and documentation.
+
+**Tasks:**
+- [ ] Write unit tests for all 87 event classes
+- [ ] Write integration tests for QuizBloc analytics
+- [ ] Write integration tests for screen tracking
+- [ ] Verify Firebase DebugView shows all events correctly
+- [ ] Create analytics event documentation for data team
+- [ ] Update CLAUDE.md with analytics patterns
+- [ ] Update shared_services exports
+
+**Files to Create:**
+- `packages/shared_services/test/analytics/integration_test.dart`
+- `docs/ANALYTICS_EVENTS.md` (generated from code)
+
+**Files to Modify:**
+- `packages/shared_services/lib/shared_services.dart`
+- `CLAUDE.md`
+
+---
+
+### Sprint 9.2: Ads Service
+
+**Goal:** Implement ads service with AdMob integration.
+
+**Tasks:**
+- [ ] Create `AdsService` abstract class
+- [ ] Create `AdMobService` implementation
+- [ ] Create `NoAdsService` implementation (premium users/testing)
+- [ ] Create `BannerAdWidget` for displaying banner ads
+- [ ] Add interstitial ad trigger points (after quiz completion)
+- [ ] Add rewarded ad for free resources (lives, hints)
+- [ ] Integrate with `ResourceManager` for ad rewards
+- [ ] Track ad events via analytics
+- [ ] Write unit tests
+- [ ] Test on iOS and Android
+
+**Files to Create:**
+- `packages/shared_services/lib/src/ads/ads_service.dart`
+- `packages/shared_services/lib/src/ads/admob_service.dart`
+- `packages/shared_services/lib/src/ads/no_ads_service.dart`
+- `packages/shared_services/lib/src/ads/ads_exports.dart`
+- `packages/quiz_engine/lib/src/widgets/banner_ad_widget.dart`
+- `packages/shared_services/test/ads/admob_service_test.dart`
+
+**Dependencies to Add:**
+```yaml
+# packages/shared_services/pubspec.yaml
+dependencies:
+  google_mobile_ads: ^5.0.0
+```
+
+---
+
+### Sprint 9.3: In-App Purchases Service
+
+**Goal:** Implement IAP service for premium features.
+
+**Tasks:**
+- [ ] Create `IAPService` abstract class
+- [ ] Create `StoreIAPService` implementation (App Store / Play Store)
+- [ ] Create `MockIAPService` for testing
+- [ ] Define product IDs (remove_ads, lives_pack, hints_pack)
+- [ ] Implement purchase flow
 - [ ] Implement restore purchases
-- [ ] Test IAP flow
+- [ ] Create purchase confirmation dialogs
+- [ ] Integrate with `ResourceManager` for purchased resources
+- [ ] Track IAP events via analytics
+- [ ] Write unit tests
+- [ ] Test on iOS and Android
+
+**Files to Create:**
+- `packages/shared_services/lib/src/iap/iap_service.dart`
+- `packages/shared_services/lib/src/iap/store_iap_service.dart`
+- `packages/shared_services/lib/src/iap/mock_iap_service.dart`
+- `packages/shared_services/lib/src/iap/iap_exports.dart`
+- `packages/shared_services/test/iap/store_iap_service_test.dart`
+
+**Dependencies to Add:**
+```yaml
+# packages/shared_services/pubspec.yaml
+dependencies:
+  in_app_purchase: ^3.1.0
+```
+
+---
+
+### Sprint 9.4: Services Integration & Polish
+
+**Goal:** Final integration and polish of all shared services.
+
+**Tasks:**
+- [ ] Create unified `SharedServicesInitializer` for app startup
+- [ ] Ensure proper service disposal on app termination
+- [ ] Add error handling for all service failures
+- [ ] Create service configuration model for apps
+- [ ] Update flagsquiz app to use all services
+- [ ] Write end-to-end integration tests
+- [ ] Performance testing (service initialization < 500ms)
+- [ ] Update documentation
+
+**Files to Create:**
+- `packages/shared_services/lib/src/shared_services_initializer.dart`
+- `packages/shared_services/lib/src/shared_services_config.dart`
+
+**Files to Modify:**
+- `apps/flagsquiz/lib/main.dart`
+- `packages/shared_services/lib/shared_services.dart`
+
+---
+
+### Phase 9 Summary
+
+| Sprint | Events/Items | Description |
+|--------|--------------|-------------|
+| 9.1 | 17 | Core infrastructure + ScreenViewEvent |
+| 9.1.1 | 24 | QuizEvent, QuestionEvent, HintEvent, ResourceEvent |
+| 9.1.2 | 25 | InteractionEvent, SettingsEvent, AchievementEvent |
+| 9.1.3 | 21 | MonetizationEvent, ErrorEvent, PerformanceEvent |
+| 9.1.4 | - | Firebase Analytics implementation |
+| 9.1.5 | - | Composite Analytics service |
+| 9.1.6 | - | QuizBloc integration |
+| 9.1.7 | - | UI screens integration |
+| 9.1.8 | - | Settings & achievements integration |
+| 9.1.9 | - | User properties & lifecycle |
+| 9.1.10 | - | Testing & documentation |
+| 9.2 | - | Ads service (AdMob) |
+| 9.3 | - | IAP service |
+| 9.4 | - | Final integration |
+
+**Total Analytics Events:** 87 events across 11 sealed classes
 
 ---
 
