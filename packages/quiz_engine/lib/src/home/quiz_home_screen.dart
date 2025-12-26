@@ -8,10 +8,11 @@ import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
 import '../screens/session_detail_screen.dart';
 import '../screens/session_history_screen.dart';
-import '../widgets/question_review_widget.dart';
 import '../screens/statistics_dashboard_screen.dart';
 import '../screens/statistics_screen.dart';
 import '../utils/default_data_loader.dart';
+import '../widgets/loading_indicator.dart';
+import '../widgets/question_review_widget.dart';
 import '../widgets/session_card.dart';
 import 'category_card.dart';
 import 'play_screen.dart';
@@ -684,7 +685,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   Widget _buildPlayTab(BuildContext context) {
     // Show loading indicator if loading
     if (widget.isPlayLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const LoadingIndicator();
     }
 
     final l10n = QuizL10n.of(context);
@@ -774,7 +775,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     // Show loading indicator while loading
     if (_achievementsData.isLoading &&
         _achievementsData.screenData.achievements.isEmpty) {
-      return const Center(child: CircularProgressIndicator());
+      return const LoadingIndicator();
     }
 
     return AchievementsScreen(

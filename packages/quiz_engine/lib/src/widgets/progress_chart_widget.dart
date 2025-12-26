@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/quiz_localizations.dart';
+import 'empty_state_widget.dart';
 
 /// Data point for progress tracking.
 class ProgressDataPoint {
@@ -190,22 +191,9 @@ class ProgressChartWidget extends StatelessWidget {
   }
 
   Widget _buildEmptyState(BuildContext context, QuizLocalizations l10n) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.show_chart,
-            size: 48,
-            color: Colors.grey[400],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            l10n.noProgressData,
-            style: TextStyle(color: Colors.grey[600]),
-          ),
-        ],
-      ),
+    return EmptyStateWidget.compact(
+      icon: Icons.show_chart,
+      title: l10n.noProgressData,
     );
   }
 

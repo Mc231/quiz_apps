@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/challenge_mode.dart';
 import 'challenge_card.dart';
+import 'empty_state_widget.dart';
 
 /// Configuration for [ChallengeListWidget].
 class ChallengeListConfig {
@@ -222,30 +223,9 @@ class ChallengeListWidget extends StatelessWidget {
   }
 
   Widget _buildDefaultEmptyState(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.emoji_events_outlined,
-              size: 64,
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'No challenges available',
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+    return const EmptyStateWidget(
+      icon: Icons.emoji_events_outlined,
+      title: 'No challenges available',
     );
   }
 }

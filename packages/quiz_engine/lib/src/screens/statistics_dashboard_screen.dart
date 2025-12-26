@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../widgets/category_statistics_widget.dart';
+import '../widgets/empty_state_widget.dart';
 import '../widgets/leaderboard_widget.dart';
+import '../widgets/loading_indicator.dart';
 import '../widgets/progress_chart_widget.dart';
 import '../widgets/session_card.dart';
 import '../widgets/statistics_card.dart';
@@ -153,11 +155,15 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
     final l10n = QuizL10n.of(context);
 
     if (widget.isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return LoadingIndicator(message: l10n.loadingData);
     }
 
     if (!widget.data.hasData) {
-      return _buildEmptyState(context, l10n);
+      return EmptyStateWidget(
+        icon: Icons.analytics_outlined,
+        title: l10n.noStatisticsYet,
+        message: l10n.playQuizzesToSee,
+      );
     }
 
     if (!widget.showTabs) {
@@ -194,42 +200,6 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildEmptyState(BuildContext context, QuizLocalizations l10n) {
-    final theme = Theme.of(context);
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.analytics_outlined,
-              size: 80,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 24),
-            Text(
-              l10n.noStatisticsYet,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              l10n.playQuizzesToSee,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[600],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
     );
   }
 

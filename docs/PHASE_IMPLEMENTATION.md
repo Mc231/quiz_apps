@@ -1790,12 +1790,12 @@ All four tabs are implemented inline within `StatisticsDashboardScreen` using th
 - [x] Write widget tests for state widgets (28 tests)
 
 **Implementation Notes:**
-Created three reusable state widgets that can be used throughout the app:
+Created three reusable state widgets that are now integrated throughout the entire app:
 - `LoadingIndicator` - Consistent loading indicator with size variants (small/medium/large) and optional message
 - `ErrorStateWidget` - Error display with icon, message, optional title, and retry button. Includes factory constructors for network and server errors
 - `EmptyStateWidget` - Empty state with icon, title, message, and optional action button. Includes factory constructors for no results and compact variants
 
-Existing screens already have inline loading/empty states. The new widgets are exported and available for gradual migration or new screens.
+**IMPORTANT:** These widgets should be used for ALL future screens and components. See CLAUDE.md for usage examples.
 
 **Files Created:**
 - ✅ `packages/quiz_engine/lib/src/widgets/loading_indicator.dart`
@@ -1803,10 +1803,23 @@ Existing screens already have inline loading/empty states. The new widgets are e
 - ✅ `packages/quiz_engine/lib/src/widgets/empty_state_widget.dart`
 - ✅ `packages/quiz_engine/test/widgets/state_widgets_test.dart` - 28 comprehensive tests
 
-**Files Modified:**
+**Files Modified (Widget Creation):**
 - ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added retry, errorTitle, errorGeneric, errorNetwork, errorServer, loadingData strings
 - ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Exported new state widgets
 - ✅ `packages/quiz_engine/test/achievements/base_achievements_test.dart` - Updated mock localization
+
+**Files Modified (App-Wide Integration):**
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart` - LoadingIndicator + EmptyStateWidget
+- ✅ `packages/quiz_engine/lib/src/screens/session_history_screen.dart` - LoadingIndicator + EmptyStateWidget
+- ✅ `packages/quiz_engine/lib/src/widgets/leaderboard_widget.dart` - EmptyStateWidget.compact
+- ✅ `packages/quiz_engine/lib/src/widgets/category_statistics_widget.dart` - EmptyStateWidget.compact
+- ✅ `packages/quiz_engine/lib/src/widgets/progress_chart_widget.dart` - EmptyStateWidget.compact
+- ✅ `packages/quiz_engine/lib/src/widgets/challenge_list.dart` - EmptyStateWidget
+- ✅ `packages/quiz_engine/lib/src/home/play_screen.dart` - LoadingIndicator + EmptyStateWidget
+- ✅ `packages/quiz_engine/lib/src/home/tabbed_play_screen.dart` - LoadingIndicator
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` - LoadingIndicator
+- ✅ `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart` - LoadingIndicator + ErrorStateWidget
+- ✅ `packages/quiz_engine/lib/src/achievements/widgets/achievements_list.dart` - EmptyStateWidget
 
 ---
 

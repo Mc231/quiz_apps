@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/quiz_localizations.dart';
+import 'empty_state_widget.dart';
 
 /// Entry in a leaderboard.
 class LeaderboardEntry {
@@ -187,25 +188,9 @@ class LeaderboardWidget extends StatelessWidget {
   }
 
   Widget _buildEmptyState(BuildContext context, QuizLocalizations l10n) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Center(
-        child: Column(
-          children: [
-            Icon(
-              Icons.leaderboard_outlined,
-              size: 48,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 12),
-            Text(
-              l10n.noLeaderboardData,
-              style: TextStyle(color: Colors.grey[600]),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+    return EmptyStateWidget.compact(
+      icon: Icons.leaderboard_outlined,
+      title: l10n.noLeaderboardData,
     );
   }
 

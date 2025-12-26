@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/quiz_localizations.dart';
+import 'empty_state_widget.dart';
 
 /// Data model for category statistics display.
 class CategoryStatisticsData {
@@ -162,25 +163,9 @@ class CategoryStatisticsWidget extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            Icon(
-              Icons.category_outlined,
-              size: 48,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 12),
-            Text(
-              l10n.noCategoryData,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey[600],
-                  ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+      child: EmptyStateWidget.compact(
+        icon: Icons.category_outlined,
+        title: l10n.noCategoryData,
       ),
     );
   }

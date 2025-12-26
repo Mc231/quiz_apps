@@ -416,6 +416,110 @@ sealed class QuizModeConfig {
 }
 ```
 
+### 3. Reusable State Widgets (MANDATORY)
+
+**Always use the built-in state widgets for loading, error, and empty states:**
+
+These widgets are located in `packages/quiz_engine/lib/src/widgets/` and are exported from `quiz_engine.dart`.
+
+#### LoadingIndicator
+Use for all loading states instead of `CircularProgressIndicator`:
+
+```dart
+import 'package:quiz_engine/quiz_engine.dart';
+
+// ❌ WRONG - Raw CircularProgressIndicator
+return const Center(child: CircularProgressIndicator());
+
+// ✅ CORRECT - Use LoadingIndicator
+return const LoadingIndicator();
+
+// With optional message
+return LoadingIndicator(message: l10n.loadingData);
+
+// Size variants
+return const LoadingIndicator.small();   // 20px - for inline/compact areas
+return const LoadingIndicator.medium();  // 36px - default
+return const LoadingIndicator.large();   // 48px - for full-screen loading
+```
+
+#### EmptyStateWidget
+Use for all empty states with consistent styling:
+
+```dart
+// ❌ WRONG - Inline empty state
+return Center(
+  child: Column(
+    children: [
+      Icon(Icons.category_outlined, size: 64),
+      Text('No items found'),
+    ],
+  ),
+);
+
+// ✅ CORRECT - Use EmptyStateWidget
+return EmptyStateWidget(
+  icon: Icons.category_outlined,
+  title: l10n.noItemsFound,
+  message: l10n.noItemsDescription,  // optional
+);
+
+// With action button
+return EmptyStateWidget(
+  icon: Icons.search,
+  title: l10n.noResults,
+  actionLabel: l10n.clearFilters,
+  onAction: () => clearFilters(),
+);
+
+// Factory constructors for common cases
+return EmptyStateWidget.noResults();  // For search/filter results
+return EmptyStateWidget.noData();     // For missing data
+return EmptyStateWidget.compact(      // For inline/small areas
+  icon: Icons.leaderboard,
+  title: l10n.noLeaderboardData,
+);
+```
+
+#### ErrorStateWidget
+Use for all error states with retry capability:
+
+```dart
+// ❌ WRONG - Inline error display
+return Center(
+  child: Column(
+    children: [
+      Icon(Icons.error, color: Colors.red),
+      Text('Something went wrong'),
+      ElevatedButton(onPressed: retry, child: Text('Retry')),
+    ],
+  ),
+);
+
+// ✅ CORRECT - Use ErrorStateWidget
+return ErrorStateWidget(
+  message: l10n.errorGeneric,
+  onRetry: () => loadData(),
+);
+
+// Factory constructors for common cases
+return ErrorStateWidget.network(onRetry: loadData);  // Network errors
+return ErrorStateWidget.server(onRetry: loadData);   // Server errors
+```
+
+**Widget locations:**
+- `packages/quiz_engine/lib/src/widgets/loading_indicator.dart`
+- `packages/quiz_engine/lib/src/widgets/empty_state_widget.dart`
+- `packages/quiz_engine/lib/src/widgets/error_state_widget.dart`
+
+**Localization strings available:**
+- `l10n.retry` - "Retry" button label
+- `l10n.errorTitle` - "Something Went Wrong"
+- `l10n.errorGeneric` - Generic error message
+- `l10n.errorNetwork` - Network error message
+- `l10n.errorServer` - Server error message
+- `l10n.loadingData` - "Loading..." message
+
 ## Troubleshooting
 
 ### "Package not found" errors

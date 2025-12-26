@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/empty_state_widget.dart';
+import '../widgets/loading_indicator.dart';
 import '../widgets/session_card.dart';
 
 /// Localization texts for SessionHistoryScreen.
@@ -63,13 +65,15 @@ class SessionHistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const LoadingIndicator();
     }
 
     if (sessions.isEmpty) {
-      return _buildEmptyState(context);
+      return EmptyStateWidget(
+        icon: Icons.history,
+        title: texts.emptyTitle,
+        message: texts.emptySubtitle,
+      );
     }
 
     final content = ListView.builder(
@@ -95,41 +99,5 @@ class SessionHistoryScreen extends StatelessWidget {
     }
 
     return content;
-  }
-
-  Widget _buildEmptyState(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.history,
-              size: 80,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 24),
-            Text(
-              texts.emptyTitle,
-              style: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              texts.emptySubtitle,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[600],
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

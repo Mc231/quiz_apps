@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../../l10n/quiz_localizations.dart';
+import '../../widgets/error_state_widget.dart';
+import '../../widgets/loading_indicator.dart';
 import '../widgets/achievement_card.dart';
 import '../widgets/achievements_list.dart';
 
@@ -570,14 +572,11 @@ class AchievementsScreenBuilder extends StatelessWidget {
           AppBar(
             title: Text(l10n.achievements),
           ),
-      body: const Center(
-        child: CircularProgressIndicator(),
-      ),
+      body: const LoadingIndicator(),
     );
   }
 
   Widget _buildError(BuildContext context, Object error) {
-    final theme = Theme.of(context);
     final l10n = QuizL10n.of(context);
 
     return Scaffold(
@@ -585,26 +584,8 @@ class AchievementsScreenBuilder extends StatelessWidget {
           AppBar(
             title: Text(l10n.achievements),
           ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.error_outline,
-                size: 64,
-                color: theme.colorScheme.error,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                l10n.initializationError(error.toString()),
-                style: theme.textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
-        ),
+      body: ErrorStateWidget(
+        message: l10n.initializationError(error.toString()),
       ),
     );
   }

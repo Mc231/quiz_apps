@@ -3,6 +3,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
+import '../widgets/loading_indicator.dart';
 import 'category_card.dart';
 import 'play_screen.dart';
 import 'play_screen_tab.dart';
@@ -342,7 +343,7 @@ class _TabbedPlayScreenState extends State<TabbedPlayScreen>
     // Show loading state
     if (_practiceLoading[tab.id] == true) {
       return widget.config.playScreenConfig.loadingWidget ??
-          const Center(child: CircularProgressIndicator());
+          const LoadingIndicator();
     }
 
     // Get cached data

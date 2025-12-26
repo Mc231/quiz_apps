@@ -3,6 +3,8 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
+import '../widgets/empty_state_widget.dart';
+import '../widgets/loading_indicator.dart';
 import 'category_card.dart';
 
 /// Layout style for the play screen.
@@ -198,8 +200,7 @@ class PlayScreen extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     if (isLoading) {
-      return config.loadingWidget ??
-          const Center(child: CircularProgressIndicator());
+      return config.loadingWidget ?? const LoadingIndicator();
     }
 
     if (categories.isEmpty) {
@@ -302,30 +303,10 @@ class PlayScreen extends StatelessWidget {
 
   Widget _buildDefaultEmptyState(BuildContext context) {
     final l10n = QuizL10n.of(context);
-    final theme = Theme.of(context);
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.category_outlined,
-              size: 64,
-              color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              l10n.noSessionsYet, // Reusing existing string
-              style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+    return EmptyStateWidget(
+      icon: Icons.category_outlined,
+      title: l10n.noSessionsYet, // Reusing existing string
     );
   }
 }
