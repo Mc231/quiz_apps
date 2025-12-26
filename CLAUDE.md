@@ -693,6 +693,107 @@ l10n.accessibilityLives(count)               // "{count} lives remaining"
 l10n.accessibilityScore(points)              // "Score: {points} points"
 ```
 
+### 6. Audio & Haptic Feedback (MANDATORY)
+
+**Use `QuizFeedbackService` for consistent audio and haptic feedback:**
+
+Located at `packages/quiz_engine/lib/src/feedback/quiz_feedback_service.dart`.
+
+#### Basic Usage
+
+```dart
+import 'package:quiz_engine/quiz_engine.dart';
+
+// ❌ WRONG - Direct HapticFeedback calls (ignores user settings)
+HapticFeedback.mediumImpact();
+
+// ✅ CORRECT - Use QuizFeedbackService
+final feedbackService = QuizFeedbackService();
+await feedbackService.initialize();
+await feedbackService.trigger(QuizFeedbackPattern.correctAnswer);
+```
+
+#### Available Feedback Patterns
+
+| Pattern | Audio | Haptic | Use Case |
+|---------|-------|--------|----------|
+| `correctAnswer` | correctAnswer.mp3 | Light | Correct answer |
+| `incorrectAnswer` | incorrectAnswer.mp3 | Medium | Wrong answer |
+| `buttonTap` | buttonClick.mp3 | Selection | UI button clicks |
+| `resourceTap` | - | Selection | Resource button tap |
+| `resourceDepleted` | lifeLost.mp3 | Heavy | Resource ran out |
+| `hintUsed` | hintUsed.mp3 | Light | Hint activated |
+| `lifeLost` | lifeLost.mp3 | Medium | Life lost |
+| `quizStart` | quizStart.mp3 | Light | Quiz begins |
+| `quizComplete` | quizComplete.mp3 | Heavy | Quiz finished |
+| `achievementUnlocked` | achievement.mp3 | Heavy | Achievement earned |
+| `timerWarning` | timerWarning.mp3 | Light | Time running low |
+| `timeout` | timeOut.mp3 | Medium | Time expired |
+| `selectionChange` | - | Selection | Option selected |
+| `error` | - | Vibrate | Invalid action |
+
+#### Using QuizFeedbackProvider
+
+Wrap your widget tree with `QuizFeedbackProvider` to make the service available to child widgets:
+
+```dart
+// In quiz_screen.dart (already done)
+QuizFeedbackProvider(
+  feedbackService: _feedbackService,
+  child: Scaffold(...),
+)
+
+// In any child widget
+final service = QuizFeedbackProvider.of(context);
+await service.trigger(QuizFeedbackPattern.buttonTap);
+
+// Or use the context extension
+await context.triggerFeedback(QuizFeedbackPattern.hintUsed);
+```
+
+#### Widget Integration Pattern
+
+For widgets that need feedback (like GameResourceButton):
+
+```dart
+class MyWidget extends StatelessWidget {
+  final QuizFeedbackService? feedbackService;
+
+  void _handleTap() {
+    // Try to get service from widget, then context, then fallback
+    final service = feedbackService ?? QuizFeedbackProvider.maybeOf(context);
+    if (service != null) {
+      service.triggerHaptic(QuizFeedbackPattern.buttonTap);
+    } else {
+      // Fallback to direct HapticFeedback
+      HapticFeedback.selectionClick();
+    }
+  }
+}
+```
+
+#### Volume Recommendations
+
+From `QuizFeedbackConstants`:
+- UI interactions: 0.5 (subtle)
+- Feedback sounds: 0.8 (standard)
+- Alerts: 0.9 (attention-getting)
+- Celebrations: 1.0 (maximum)
+
+#### Sound Assets
+
+Located in `packages/quiz_engine/assets/sounds/`:
+- `buttonClick.mp3` - UI clicks
+- `correctAnswer.mp3` - Correct answer
+- `incorrectAnswer.mp3` - Wrong answer
+- `achievement.mp3` - Achievement unlocked
+- `quizComplete.mp3` - Quiz finished
+- `quizStart.mp3` - Quiz begins
+- `hintUsed.mp3` - Hint activated
+- `lifeLost.mp3` - Life lost
+- `timerWarning.mp3` - Timer low
+- `timeOut.mp3` - Time expired
+
 ## Troubleshooting
 
 ### "Package not found" errors
