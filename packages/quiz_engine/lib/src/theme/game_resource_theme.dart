@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'quiz_animations.dart';
+
 /// Theme configuration for game resource buttons (Lives, 50/50, Skip).
 ///
 /// Provides customization options for all visual elements of resource buttons,
@@ -153,15 +155,15 @@ class GameResourceTheme {
     this.badgeBorderColor = Colors.white,
     this.badgeBorderWidth = 2,
     this.badgeOffset = const Offset(4, -4),
-    this.tapScaleDuration = const Duration(milliseconds: 100),
-    this.pulseDuration = const Duration(milliseconds: 800),
-    this.shakeDuration = const Duration(milliseconds: 400),
-    this.countChangeDuration = const Duration(milliseconds: 300),
+    this.tapScaleDuration = QuizAnimations.resourceTapDuration,
+    this.pulseDuration = QuizAnimations.resourcePulseDuration,
+    this.shakeDuration = QuizAnimations.resourceShakeDuration,
+    this.countChangeDuration = QuizAnimations.resourceBadgeChangeDuration,
     this.enablePulseOnLastResource = true,
     this.enableShakeOnDepletion = true,
     this.enableGlowOnUse = true,
-    this.pressedScale = 0.95,
-    this.pulseScale = 1.1,
+    this.pressedScale = QuizAnimations.pressedScale,
+    this.pulseScale = QuizAnimations.pulseScale,
     this.spacingBetweenResources = 12,
     // Responsive sizes - defaults
     this.buttonSizeMobile = 48,

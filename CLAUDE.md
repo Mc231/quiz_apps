@@ -520,6 +520,77 @@ return ErrorStateWidget.server(onRetry: loadData);   // Server errors
 - `l10n.errorServer` - Server error message
 - `l10n.loadingData` - "Loading..." message
 
+### 4. Animation Constants (MANDATORY)
+
+**Always use `QuizAnimations` for consistent animations:**
+
+Located at `packages/quiz_engine/lib/src/theme/quiz_animations.dart`.
+
+```dart
+import 'package:quiz_engine/quiz_engine.dart';
+
+// ❌ WRONG - Hardcoded durations and curves
+AnimationController(
+  duration: const Duration(milliseconds: 300),
+  vsync: this,
+);
+CurvedAnimation(parent: controller, curve: Curves.easeOut);
+
+// ✅ CORRECT - Use QuizAnimations constants
+AnimationController(
+  duration: QuizAnimations.durationMedium,
+  vsync: this,
+);
+CurvedAnimation(parent: controller, curve: QuizAnimations.curveEnter);
+```
+
+**Duration Tiers:**
+| Constant | Duration | Use Case |
+|----------|----------|----------|
+| `durationInstant` | 50ms | Immediate feedback |
+| `durationFast` | 100ms | Tap feedback, micro-interactions |
+| `durationQuick` | 200ms | Tooltips, small movements |
+| `durationMedium` | 300ms | Standard transitions |
+| `durationSlow` | 500ms | Important feedback (correct/incorrect) |
+| `durationLong` | 800ms | Celebration effects |
+| `durationExtended` | 1500ms | Counting, continuous effects |
+
+**Curve Categories:**
+| Constant | Curve | Use Case |
+|----------|-------|----------|
+| `curveStandard` | easeInOut | Most transitions |
+| `curveEnter` | easeOut | Elements appearing |
+| `curveExit` | easeIn | Elements disappearing |
+| `curveBounce` | elasticOut | Playful, bouncy effects |
+| `curveDecelerate` | easeOutCubic | Counting/progress |
+| `curveOvershoot` | easeOutBack | Subtle bounce |
+
+**Scale Values:**
+- `pressedScale` (0.95) - Button press
+- `pulseScale` (1.1) - Pulse animation max
+- `bounceOvershoot` (1.2) - Bounce overshoot
+
+**Specific Animation Presets:**
+```dart
+// Answer feedback
+QuizAnimations.answerFeedbackDuration
+QuizAnimations.answerFeedbackScaleCurve
+
+// Achievement notification
+QuizAnimations.achievementSlideDuration
+QuizAnimations.achievementBounceDuration
+QuizAnimations.achievementDisplayDuration
+
+// Game resources
+QuizAnimations.resourceTapDuration
+QuizAnimations.resourcePulseDuration
+QuizAnimations.resourceShakeDuration
+
+// Score display
+QuizAnimations.scoreCountDuration
+QuizAnimations.scoreCountCurve
+```
+
 ## Troubleshooting
 
 ### "Package not found" errors

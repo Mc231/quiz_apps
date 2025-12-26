@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../theme/game_resource_theme.dart';
+import '../theme/quiz_animations.dart';
 
 /// A button displaying a game resource (Lives, 50/50, Skip) with icon and count badge.
 ///
@@ -113,7 +114,7 @@ class _GameResourceButtonState extends State<GameResourceButton>
       end: _theme.pressedScale,
     ).animate(CurvedAnimation(
       parent: _scaleController,
-      curve: Curves.easeOut,
+      curve: QuizAnimations.resourceTapCurve,
     ));
 
     // Pulse animation for last resource warning
@@ -126,7 +127,7 @@ class _GameResourceButtonState extends State<GameResourceButton>
       end: _theme.pulseScale,
     ).animate(CurvedAnimation(
       parent: _pulseController,
-      curve: Curves.easeInOut,
+      curve: QuizAnimations.resourcePulseCurve,
     ));
 
     // Shake animation for depletion
@@ -139,7 +140,7 @@ class _GameResourceButtonState extends State<GameResourceButton>
       end: 1,
     ).animate(CurvedAnimation(
       parent: _shakeController,
-      curve: Curves.elasticOut,
+      curve: QuizAnimations.resourceShakeCurve,
     ));
 
     // Badge count change animation
@@ -152,7 +153,7 @@ class _GameResourceButtonState extends State<GameResourceButton>
       end: 1.3,
     ).animate(CurvedAnimation(
       parent: _badgeController,
-      curve: Curves.elasticOut,
+      curve: QuizAnimations.resourceBadgeCurve,
     ));
 
     // Start pulse if count is 1
@@ -446,19 +447,19 @@ class _TooltipOverlayState extends State<_TooltipOverlay>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 200),
+      duration: QuizAnimations.tooltipDuration,
       vsync: this,
     );
     _opacityAnimation = Tween<double>(begin: 0, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+      CurvedAnimation(parent: _controller, curve: QuizAnimations.tooltipCurve),
     );
     _scaleAnimation = Tween<double>(begin: 0.8, end: 1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
+      CurvedAnimation(parent: _controller, curve: QuizAnimations.tooltipCurve),
     );
     _controller.forward();
 
-    // Auto-dismiss after 3 seconds
-    Future.delayed(const Duration(seconds: 3), () {
+    // Auto-dismiss after configured duration
+    Future.delayed(QuizAnimations.tooltipDisplayDuration, () {
       if (mounted) {
         _dismiss();
       }

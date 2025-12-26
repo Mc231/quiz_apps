@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../../l10n/quiz_localizations.dart';
+import '../../theme/quiz_animations.dart';
 
 /// Style configuration for [AchievementNotification].
 class AchievementNotificationStyle {
@@ -16,8 +17,8 @@ class AchievementNotificationStyle {
     this.iconSize = 48.0,
     this.showConfetti = true,
     this.showGlow = true,
-    this.animationDuration = const Duration(milliseconds: 500),
-    this.displayDuration = const Duration(seconds: 3),
+    this.animationDuration = QuizAnimations.achievementSlideDuration,
+    this.displayDuration = QuizAnimations.achievementDisplayDuration,
   });
 
   /// Background color of the notification.
@@ -115,30 +116,36 @@ class _AchievementNotificationState extends State<AchievementNotification>
       end: Offset.zero,
     ).animate(CurvedAnimation(
       parent: _slideController,
-      curve: Curves.elasticOut,
+      curve: QuizAnimations.achievementSlideCurve,
     ));
 
     // Scale/bounce animation for the icon
     _scaleController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 600),
+      duration: QuizAnimations.achievementBounceDuration,
     );
     _scaleAnimation = TweenSequence<double>([
-      TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.2), weight: 40),
+      TweenSequenceItem(
+        tween: Tween(begin: 0.0, end: QuizAnimations.bounceOvershoot),
+        weight: 40,
+      ),
       TweenSequenceItem(tween: Tween(begin: 1.2, end: 0.9), weight: 20),
       TweenSequenceItem(tween: Tween(begin: 0.9, end: 1.0), weight: 40),
     ]).animate(CurvedAnimation(
       parent: _scaleController,
-      curve: Curves.easeOut,
+      curve: QuizAnimations.achievementScaleCurve,
     ));
 
     // Glow animation
     _glowController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: QuizAnimations.achievementGlowDuration,
     );
     _glowAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _glowController, curve: Curves.easeInOut),
+      CurvedAnimation(
+        parent: _glowController,
+        curve: QuizAnimations.achievementGlowCurve,
+      ),
     );
 
     _startAnimations();
@@ -153,7 +160,7 @@ class _AchievementNotificationState extends State<AchievementNotification>
     widget.audioService?.playSoundEffect(QuizSoundEffect.achievement);
 
     // Start icon animations after a slight delay
-    _animationDelayTimer = Timer(const Duration(milliseconds: 200), () {
+    _animationDelayTimer = Timer(QuizAnimations.durationQuick, () {
       if (mounted) {
         _scaleController.forward();
         if (widget.style.showGlow) {

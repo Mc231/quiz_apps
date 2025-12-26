@@ -4,6 +4,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../l10n/quiz_localizations.dart';
+import '../theme/quiz_animations.dart';
 
 /// Displays the total score with optional animation.
 ///
@@ -103,13 +104,13 @@ class _AnimatedScoreDisplayState extends State<_AnimatedScoreDisplay>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 1500),
+      duration: QuizAnimations.scoreCountDuration,
       vsync: this,
     );
 
     _animation = CurvedAnimation(
       parent: _controller,
-      curve: Curves.easeOutCubic,
+      curve: QuizAnimations.scoreCountCurve,
     );
 
     _controller.forward();

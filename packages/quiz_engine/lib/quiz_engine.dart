@@ -89,6 +89,7 @@ export 'src/settings/quiz_settings_screen.dart';
 // Theme
 export 'src/theme/quiz_theme_data.dart';
 export 'src/theme/game_resource_theme.dart';
+export 'src/theme/quiz_animations.dart';
 
 // Game Resources
 export 'src/widgets/game_resource_button.dart';

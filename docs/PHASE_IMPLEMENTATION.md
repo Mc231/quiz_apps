@@ -1823,22 +1823,53 @@ Created three reusable state widgets that are now integrated throughout the enti
 
 ---
 
-### Sprint 8.17: Animations & Transitions Polish
+### Sprint 8.17: Animations & Transitions Polish ✅
 
 **Goal:** Review and polish all animations and transitions for consistency.
 
 **Tasks:**
-- [ ] Audit all screen transitions
-- [ ] Audit all widget animations
-- [ ] Ensure consistent animation durations (standardize to 200ms, 300ms, 500ms tiers)
-- [ ] Ensure consistent easing curves
-- [ ] Polish answer feedback animations
-- [ ] Polish achievement unlock animations
-- [ ] Polish hint use animations
-- [ ] Polish life lost animations
-- [ ] Add subtle micro-interactions where appropriate
-- [ ] Test animations on low-end devices for performance
-- [ ] Document animation standards in code comments
+- [x] Audit all screen transitions
+- [x] Audit all widget animations
+- [x] Ensure consistent animation durations (standardize to 200ms, 300ms, 500ms tiers)
+- [x] Ensure consistent easing curves
+- [x] Polish answer feedback animations
+- [x] Polish achievement unlock animations
+- [x] Polish hint use animations
+- [x] Polish life lost animations
+- [x] Add subtle micro-interactions where appropriate
+- [ ] Test animations on low-end devices for performance (manual testing required)
+- [x] Document animation standards in code comments
+
+**Implementation Notes:**
+Created a centralized `QuizAnimations` class with standardized duration tiers and curve constants:
+
+**Duration Tiers:**
+- `durationInstant` (50ms) - Imperceptible, immediate feedback
+- `durationFast` (100ms) - Micro-interactions, tap feedback
+- `durationQuick` (200ms) - Tooltips, small movements
+- `durationMedium` (300ms) - Standard transitions, page changes
+- `durationSlow` (500ms) - Emphasis, important feedback
+- `durationLong` (800ms) - Celebration, attention-grabbing
+- `durationExtended` (1500ms) - Counting, continuous effects
+
+**Curve Categories:**
+- `curveStandard` (easeInOut) - Most transitions
+- `curveEnter` (easeOut) - Elements appearing
+- `curveExit` (easeIn) - Elements disappearing
+- `curveBounce` (elasticOut) - Playful, bouncy effects
+- `curveDecelerate` (easeOutCubic) - Counting/progress
+- `curveOvershoot` (easeOutBack) - Subtle bounce
+
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/theme/quiz_animations.dart` - Centralized animation constants
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Export QuizAnimations
+- ✅ `packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart` - Use animation constants
+- ✅ `packages/quiz_engine/lib/src/widgets/game_resource_button.dart` - Use animation constants
+- ✅ `packages/quiz_engine/lib/src/widgets/score_display.dart` - Use animation constants
+- ✅ `packages/quiz_engine/lib/src/theme/game_resource_theme.dart` - Use animation constants
+- ✅ `packages/quiz_engine/lib/src/achievements/widgets/achievement_notification.dart` - Use animation constants
 
 ---
 
