@@ -18,6 +18,7 @@ CREATE TABLE $quizSessionsTable (
   total_failed INTEGER NOT NULL,
   total_skipped INTEGER NOT NULL,
   score_percentage REAL NOT NULL,
+  score INTEGER DEFAULT 0,
   lives_used INTEGER DEFAULT 0,
   start_time INTEGER NOT NULL,
   end_time INTEGER,
@@ -59,6 +60,7 @@ class QuizSessionsColumns {
   static const String totalFailed = 'total_failed';
   static const String totalSkipped = 'total_skipped';
   static const String scorePercentage = 'score_percentage';
+  static const String score = 'score';
   static const String livesUsed = 'lives_used';
   static const String startTime = 'start_time';
   static const String endTime = 'end_time';
