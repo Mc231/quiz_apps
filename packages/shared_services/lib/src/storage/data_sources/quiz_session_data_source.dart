@@ -155,6 +155,11 @@ abstract class QuizSessionDataSource {
   /// Gets the total number of sessions.
   Future<int> getTotalSessionsCount();
 
+  /// Gets the count of sessions matching the filter.
+  ///
+  /// If [filter] is null, returns the total count of all sessions.
+  Future<int> getSessionsCount({QuizSessionFilter? filter});
+
   /// Gets the number of completed sessions.
   Future<int> getCompletedSessionsCount();
 
@@ -321,6 +326,21 @@ class QuizSessionDataSourceImpl implements QuizSessionDataSource {
     final results = await _database.rawQuery(
       'SELECT COUNT(*) as count FROM $quizSessionsTable',
     );
+    return results.first['count'] as int;
+  }
+
+  @override
+  Future<int> getSessionsCount({QuizSessionFilter? filter}) async {
+    String query = 'SELECT COUNT(*) as count FROM $quizSessionsTable';
+    List<dynamic>? args;
+
+    if (filter != null && filter.hasConditions) {
+      final clause = filter.buildWhereClause();
+      query += ' WHERE ${clause.where}';
+      args = clause.args;
+    }
+
+    final results = await _database.rawQuery(query, args ?? []);
     return results.first['count'] as int;
   }
 
