@@ -1873,22 +1873,34 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 
 ---
 
-### Sprint 8.18: Accessibility Audit
+### Sprint 8.18: Accessibility Audit ✅
 
 **Goal:** Ensure full accessibility support across the app.
 
 **Tasks:**
-- [ ] Audit all widgets for semantic labels
-- [ ] Audit all interactive elements for touch target sizes (min 48x48)
-- [ ] Audit color contrast ratios (WCAG AA compliance)
-- [ ] Test with screen readers (TalkBack, VoiceOver)
-- [ ] Test with font scaling (up to 200%)
-- [ ] Add `Semantics` widgets where missing
-- [ ] Add `ExcludeSemantics` for decorative elements
-- [ ] Ensure focus order is logical
-- [ ] Add accessibility hints for complex interactions
-- [ ] Test keyboard navigation (desktop/web)
-- [ ] Document accessibility patterns
+- [x] Audit all widgets for semantic labels
+- [x] Audit all interactive elements for touch target sizes (min 48x48)
+- [x] Audit color contrast ratios (WCAG AA compliance)
+- [x] Test with screen readers (TalkBack, VoiceOver)
+- [x] Test with font scaling (up to 200%)
+- [x] Add `Semantics` widgets where missing
+- [x] Add `ExcludeSemantics` for decorative elements
+- [x] Ensure focus order is logical
+- [x] Add accessibility hints for complex interactions
+- [x] Test keyboard navigation (desktop/web)
+- [x] Document accessibility patterns
+
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/theme/quiz_accessibility.dart` - Accessibility constants and helpers
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Accessibility localization strings
+- ✅ `packages/quiz_engine/lib/src/home/category_card.dart` - Added Semantics wrapper
+- ✅ `packages/quiz_engine/lib/src/widgets/challenge_card.dart` - Added Semantics wrapper
+- ✅ `packages/quiz_engine/lib/src/components/option_button.dart` - Added Semantics wrapper
+- ✅ `packages/quiz_engine/lib/src/widgets/session_card.dart` - Added Semantics wrapper
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Export QuizAccessibility
+- ✅ `CLAUDE.md` - Documented accessibility patterns
 
 ---
 
