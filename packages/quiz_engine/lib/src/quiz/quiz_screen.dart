@@ -139,6 +139,9 @@ class QuizScreenState extends State<QuizScreen> {
       builder: (context, snapshot) {
         var state = snapshot.data;
 
+        // Build resource data from current state
+        final resourceData = _buildResourceData(state);
+
         return PopScope(
           canPop: _isQuizOver || !_showExitConfirmation,
           onPopInvokedWithResult: (bool didPop, dynamic result) async {
@@ -180,16 +183,86 @@ class QuizScreenState extends State<QuizScreen> {
                   QuizAppBarActions(
                     state: state,
                     config: _bloc.config,
+                    resourceData: resourceData,
                   ),
               ],
             ),
             body: Container(
               padding: getContainerPadding(context),
-              child: SafeArea(child: _buildBody(state)),
+              child: SafeArea(child: _buildBody(state, resourceData)),
             ),
           ),
         );
       },
+    );
+  }
+
+  /// Builds the game resource panel data from the current quiz state.
+  GameResourcePanelData? _buildResourceData(QuizState? state) {
+    if (state == null || state is LoadingState || state is QuizCompletedState) {
+      return null;
+    }
+
+    // Extract hint state and lives from state
+    HintState? hintState;
+    int? remainingLives;
+    int? totalLives = _bloc.config.modeConfig.lives;
+
+    if (state is QuestionState) {
+      hintState = state.hintState;
+      remainingLives = state.remainingLives;
+    } else if (state is AnswerFeedbackState) {
+      hintState = state.hintState;
+      remainingLives = state.remainingLives;
+    }
+
+    // Build lives config if lives mode is enabled
+    GameResourceConfig? livesConfig;
+    if (remainingLives != null && totalLives != null) {
+      livesConfig = GameResourceConfig(
+        count: remainingLives,
+        onTap: () {
+          // TODO: Show "Get More Lives" dialog (Sprint 8.15)
+        },
+        enabled: remainingLives > 0,
+      );
+    }
+
+    // Build 50/50 config only if hints are configured (initial count > 0)
+    // This ensures hints don't appear in challenge modes where showHints=false
+    GameResourceConfig? fiftyFiftyConfig;
+    final initialFiftyFifty = _bloc.config.hintConfig.initialHints[HintType.fiftyFifty] ?? 0;
+    if (hintState != null && initialFiftyFifty > 0) {
+      final fiftyFiftyCount = hintState.getRemainingCount(HintType.fiftyFifty);
+      fiftyFiftyConfig = GameResourceConfig(
+        count: fiftyFiftyCount,
+        onTap: () => _bloc.use50_50Hint(),
+        enabled: hintState.canUseHint(HintType.fiftyFifty),
+      );
+    }
+
+    // Build skip config only if hints are configured (initial count > 0)
+    // This ensures skip doesn't appear in challenge modes where showHints=false
+    GameResourceConfig? skipConfig;
+    final initialSkip = _bloc.config.hintConfig.initialHints[HintType.skip] ?? 0;
+    if (hintState != null && initialSkip > 0) {
+      final skipCount = hintState.getRemainingCount(HintType.skip);
+      skipConfig = GameResourceConfig(
+        count: skipCount,
+        onTap: () => _bloc.skipQuestion(),
+        enabled: hintState.canUseHint(HintType.skip),
+      );
+    }
+
+    // Return null if no resources configured
+    if (livesConfig == null && fiftyFiftyConfig == null && skipConfig == null) {
+      return null;
+    }
+
+    return GameResourcePanelData(
+      lives: livesConfig,
+      fiftyFifty: fiftyFiftyConfig,
+      skip: skipConfig,
     );
   }
 
@@ -219,7 +292,7 @@ class QuizScreenState extends State<QuizScreen> {
     );
   }
 
-  Widget _buildBody(QuizState? state) {
+  Widget _buildBody(QuizState? state, GameResourcePanelData? resourceData) {
     if (state is LoadingState) {
       return Center(child: CircularProgressIndicator());
     }
@@ -242,7 +315,7 @@ class QuizScreenState extends State<QuizScreen> {
           return AnswerFeedbackWidget(
             feedbackState: state,
             processAnswer: _bloc.processAnswer,
-            quizBloc: _bloc,
+            resourceData: resourceData,
             themeData: widget.themeData,
             information: information,
           );
@@ -257,7 +330,7 @@ class QuizScreenState extends State<QuizScreen> {
           questionState: questionState,
           information: information,
           processAnswer: _bloc.processAnswer,
-          quizBloc: _bloc,
+          resourceData: resourceData,
           themeData: widget.themeData,
         );
       },
