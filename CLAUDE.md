@@ -591,6 +591,108 @@ QuizAnimations.scoreCountDuration
 QuizAnimations.scoreCountCurve
 ```
 
+### 5. Accessibility (MANDATORY)
+
+**All interactive widgets MUST have proper accessibility support:**
+
+Located at `packages/quiz_engine/lib/src/theme/quiz_accessibility.dart`.
+
+#### Semantics Pattern for Cards/Buttons
+
+```dart
+import 'package:quiz_engine/quiz_engine.dart';
+
+// ❌ WRONG - No accessibility support
+return Card(
+  child: InkWell(
+    onTap: onTap,
+    child: Row(
+      children: [
+        Icon(Icons.category),
+        Text(title),
+        Icon(Icons.chevron_right),
+      ],
+    ),
+  ),
+);
+
+// ✅ CORRECT - With Semantics wrapper
+return Semantics(
+  label: l10n.accessibilityCategoryButton(title),
+  hint: l10n.accessibilityDoubleTapToSelect,
+  button: true,
+  enabled: onTap != null,
+  child: Card(
+    child: InkWell(
+      onTap: onTap,
+      excludeFromSemantics: true,  // Prevent duplicate announcements
+      child: Row(
+        children: [
+          ExcludeSemantics(child: Icon(Icons.category)),  // Decorative
+          Text(title),
+          ExcludeSemantics(child: Icon(Icons.chevron_right)),  // Decorative
+        ],
+      ),
+    ),
+  ),
+);
+```
+
+#### QuizAccessibility Helper Class
+
+```dart
+import 'package:quiz_engine/quiz_engine.dart';
+
+// Minimum touch target (WCAG 2.1 AA)
+QuizAccessibility.minTouchTarget  // 48.0
+
+// Helper for semantic buttons
+QuizAccessibility.semanticButton(
+  label: 'Play Quiz',
+  hint: 'Double tap to start',
+  enabled: true,
+  child: myButton,
+);
+
+// Wrap decorative elements
+QuizAccessibility.decorative(child: Icon(Icons.star));
+
+// Live region for dynamic content
+QuizAccessibility.liveRegion(
+  label: 'Score: 85%',
+  child: scoreWidget,
+);
+
+// Ensure minimum touch target
+QuizAccessibility.ensureMinTouchTarget(child: smallButton);
+```
+
+#### Key Accessibility Rules
+
+1. **Wrap interactive cards with `Semantics`** - Provide label, hint, button=true
+2. **Add `excludeFromSemantics: true` to InkWell** - When parent has Semantics
+3. **Wrap decorative icons with `ExcludeSemantics`** - Icons that don't convey information
+4. **Use localized accessibility strings** - All labels from l10n
+5. **Minimum 48x48 touch targets** - Per WCAG 2.1 AA guidelines
+
+#### Accessibility Localization Strings
+
+Located in `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`:
+
+```dart
+l10n.accessibilityCategoryButton(title)      // "Category: {title}"
+l10n.accessibilityChallengeButton(name, difficulty)  // "{name}, {difficulty}"
+l10n.accessibilityAnswerOption(answer)       // "Answer option: {answer}"
+l10n.accessibilityAnswerDisabled(answer)     // "{answer}, disabled"
+l10n.accessibilitySessionCard(quiz, score)   // "Quiz: {quiz}, Score: {score}"
+l10n.accessibilityDoubleTapToSelect          // "Double tap to select"
+l10n.accessibilityDoubleTapToStart           // "Double tap to start"
+l10n.accessibilityProgress(current, total)   // "Question {current} of {total}"
+l10n.accessibilityTimer(seconds)             // "{seconds} seconds remaining"
+l10n.accessibilityLives(count)               // "{count} lives remaining"
+l10n.accessibilityScore(points)              // "Score: {points} points"
+```
+
 ## Troubleshooting
 
 ### "Package not found" errors
