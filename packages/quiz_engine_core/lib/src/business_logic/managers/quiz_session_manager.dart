@@ -220,7 +220,7 @@ class QuizSessionManager {
     if (_storageService == null) return false;
 
     try {
-      return await _storageService!.hasRecoverableSession(quizId);
+      return await _storageService.hasRecoverableSession(quizId);
     } catch (e) {
       return false;
     }
@@ -231,7 +231,7 @@ class QuizSessionManager {
     if (_storageService == null) return null;
 
     try {
-      return await _storageService!.getRecoverableSession(quizId);
+      return await _storageService.getRecoverableSession(quizId);
     } catch (e) {
       return null;
     }
@@ -242,7 +242,7 @@ class QuizSessionManager {
     if (_storageService == null || _currentSessionId == null) return;
 
     try {
-      await _storageService!.clearRecoverableSession(_currentSessionId!);
+      await _storageService.clearRecoverableSession(_currentSessionId!);
     } catch (e) {
       // Ignore errors
     }
