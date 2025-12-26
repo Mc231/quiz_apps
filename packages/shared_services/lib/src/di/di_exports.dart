@@ -2,6 +2,7 @@
 library;
 
 export 'dependency_module.dart';
+export 'modules/analytics_module.dart';
 export 'modules/settings_module.dart';
 export 'modules/storage_module.dart';
 export 'service_locator.dart';
