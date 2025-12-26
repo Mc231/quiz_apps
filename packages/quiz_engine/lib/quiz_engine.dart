@@ -92,6 +92,10 @@ export 'src/theme/game_resource_theme.dart';
 export 'src/theme/quiz_animations.dart';
 export 'src/theme/quiz_accessibility.dart';
 
+// Feedback
+export 'src/feedback/quiz_feedback_service.dart';
+export 'src/feedback/quiz_feedback_constants.dart';
+
 // Game Resources
 export 'src/widgets/game_resource_button.dart';
 export 'src/widgets/game_resource_panel.dart';
