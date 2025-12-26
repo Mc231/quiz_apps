@@ -1645,5 +1645,157 @@
   "getMoreHints": "Get More Hints",
   "@getMoreHints": {
     "description": "Button/dialog title to get more hints"
+  },
+
+  "fiftyFiftyLabel": "50/50",
+  "@fiftyFiftyLabel": {
+    "description": "Short label for 50/50 hint"
+  },
+
+  "skipLabel": "Skip",
+  "@skipLabel": {
+    "description": "Short label for skip hint"
+  },
+
+  "needMoreLives": "Need More Lives?",
+  "@needMoreLives": {
+    "description": "Dialog title when lives are depleted"
+  },
+
+  "needMoreHints": "Need More Hints?",
+  "@needMoreHints": {
+    "description": "Dialog title when hints are depleted"
+  },
+
+  "needMoreSkips": "Need More Skips?",
+  "@needMoreSkips": {
+    "description": "Dialog title when skips are depleted"
+  },
+
+  "resourceRemaining": "{count, plural, =0{0 remaining} =1{1 remaining} other{{count} remaining}}",
+  "@resourceRemaining": {
+    "description": "Resource count remaining",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "watchAdForResource": "Watch Ad for +{count} {resource}",
+  "@watchAdForResource": {
+    "description": "Button to watch ad for resources",
+    "placeholders": {
+      "count": {"type": "int"},
+      "resource": {"type": "String"}
+    }
+  },
+
+  "buyResource": "Buy {resource}...",
+  "@buyResource": {
+    "description": "Button to open purchase sheet",
+    "placeholders": {
+      "resource": {"type": "String"}
+    }
+  },
+
+  "noThanks": "No Thanks",
+  "@noThanks": {
+    "description": "Button to dismiss restore dialog"
+  },
+
+  "buyLives": "Buy Lives",
+  "@buyLives": {
+    "description": "Purchase sheet title for lives"
+  },
+
+  "buyHints": "Buy Hints",
+  "@buyHints": {
+    "description": "Purchase sheet title for hints"
+  },
+
+  "buySkips": "Buy Skips",
+  "@buySkips": {
+    "description": "Purchase sheet title for skips"
+  },
+
+  "bestValue": "Best Value",
+  "@bestValue": {
+    "description": "Badge for best value pack"
+  },
+
+  "restorePurchases": "Restore Purchases",
+  "@restorePurchases": {
+    "description": "Button to restore previous purchases"
+  },
+
+  "noConnection": "No Connection",
+  "@noConnection": {
+    "description": "Title when device is offline"
+  },
+
+  "connectToRestore": "Connect to the internet to restore your resources.",
+  "@connectToRestore": {
+    "description": "Message when offline and trying to restore"
+  },
+
+  "ok": "OK",
+  "@ok": {
+    "description": "OK button"
+  },
+
+  "purchaseSuccess": "Purchase successful! +{count} {resource}",
+  "@purchaseSuccess": {
+    "description": "Success message after purchase",
+    "placeholders": {
+      "count": {"type": "int"},
+      "resource": {"type": "String"}
+    }
+  },
+
+  "purchaseFailed": "Purchase failed. Please try again.",
+  "@purchaseFailed": {
+    "description": "Error message when purchase fails"
+  },
+
+  "purchaseCancelled": "Purchase cancelled.",
+  "@purchaseCancelled": {
+    "description": "Message when user cancels purchase"
+  },
+
+  "purchasePending": "Purchase pending. Please wait.",
+  "@purchasePending": {
+    "description": "Message when purchase is pending approval"
+  },
+
+  "purchasesRestored": "Purchases restored successfully.",
+  "@purchasesRestored": {
+    "description": "Message after restoring purchases"
+  },
+
+  "adWatchSuccess": "+{count} {resource} added!",
+  "@adWatchSuccess": {
+    "description": "Success message after watching ad",
+    "placeholders": {
+      "count": {"type": "int"},
+      "resource": {"type": "String"}
+    }
+  },
+
+  "adNotAvailable": "Ad not available. Please try again later.",
+  "@adNotAvailable": {
+    "description": "Message when no ad is available"
+  },
+
+  "dailyLimitReset": "Daily resources reset!",
+  "@dailyLimitReset": {
+    "description": "Notification when daily limits reset"
+  },
+
+  "freeResourcesInfo": "{count} free {resource} per day",
+  "@freeResourcesInfo": {
+    "description": "Info about daily free resources",
+    "placeholders": {
+      "count": {"type": "int"},
+      "resource": {"type": "String"}
+    }
   }
 }
