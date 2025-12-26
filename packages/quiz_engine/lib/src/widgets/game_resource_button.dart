@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../feedback/quiz_feedback_service.dart';
 import '../theme/game_resource_theme.dart';
 import '../theme/quiz_animations.dart';
 
@@ -61,6 +62,12 @@ class GameResourceButton extends StatefulWidget {
   /// Tooltip text shown on long-press.
   final String? tooltip;
 
+  /// Optional feedback service for haptic/audio feedback.
+  ///
+  /// If provided, uses the service (respects user settings).
+  /// If null, falls back to direct HapticFeedback calls.
+  final QuizFeedbackService? feedbackService;
+
   const GameResourceButton({
     super.key,
     required this.icon,
@@ -74,6 +81,7 @@ class GameResourceButton extends StatefulWidget {
     this.enabled = true,
     this.semanticLabel,
     this.tooltip,
+    this.feedbackService,
   });
 
   @override
@@ -95,6 +103,32 @@ class _GameResourceButtonState extends State<GameResourceButton>
   int _previousCount = 0;
 
   GameResourceTheme get _theme => widget.theme ?? GameResourceTheme.standard();
+
+  /// Gets feedback service from widget or context.
+  QuizFeedbackService? get _feedbackService =>
+      widget.feedbackService ?? QuizFeedbackProvider.maybeOf(context);
+
+  /// Triggers haptic feedback using service if available, otherwise direct call.
+  void _triggerHaptic(QuizFeedbackPattern pattern) {
+    final service = _feedbackService;
+    if (service != null) {
+      service.triggerHaptic(pattern);
+    } else {
+      // Fallback to direct HapticFeedback
+      switch (pattern) {
+        case QuizFeedbackPattern.selectionChange:
+          HapticFeedback.selectionClick();
+        case QuizFeedbackPattern.resourceTap:
+          HapticFeedback.mediumImpact();
+        case QuizFeedbackPattern.resourceDepleted:
+          HapticFeedback.heavyImpact();
+        case QuizFeedbackPattern.buttonTap:
+          HapticFeedback.lightImpact();
+        default:
+          HapticFeedback.selectionClick();
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -187,7 +221,7 @@ class _GameResourceButtonState extends State<GameResourceButton>
         _shakeController.forward().then((_) {
           _shakeController.reset();
         });
-        HapticFeedback.heavyImpact();
+        _triggerHaptic(QuizFeedbackPattern.resourceDepleted);
       }
 
       _previousCount = widget.count;
@@ -209,7 +243,7 @@ class _GameResourceButtonState extends State<GameResourceButton>
   void _handleTapDown(TapDownDetails details) {
     if (!widget.enabled || widget.count == 0) return;
     _scaleController.forward();
-    HapticFeedback.selectionClick();
+    _triggerHaptic(QuizFeedbackPattern.selectionChange);
   }
 
   void _handleTapUp(TapUpDetails details) {
@@ -226,12 +260,12 @@ class _GameResourceButtonState extends State<GameResourceButton>
     if (widget.count == 0) {
       // Trigger depleted callback for showing restore dialog
       widget.onDepletedTap?.call();
-      HapticFeedback.lightImpact();
+      _triggerHaptic(QuizFeedbackPattern.buttonTap);
       return;
     }
 
     widget.onTap?.call();
-    HapticFeedback.mediumImpact();
+    _triggerHaptic(QuizFeedbackPattern.resourceTap);
   }
 
   void _handleLongPress() {
@@ -239,7 +273,7 @@ class _GameResourceButtonState extends State<GameResourceButton>
       _showTooltip();
     }
     widget.onLongPress?.call();
-    HapticFeedback.mediumImpact();
+    _triggerHaptic(QuizFeedbackPattern.resourceTap);
   }
 
   void _showTooltip() {
