@@ -33,3 +33,6 @@ export 'src/storage/storage_exports.dart';
 
 // Achievements (Achievement system models)
 export 'src/achievements/achievements_exports.dart';
+
+// Resources (Lives, hints, skips management with IAP/Ads support)
+export 'src/resources/resources.dart';
