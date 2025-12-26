@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
 
 /// Configuration for category card appearance and behavior.
@@ -177,6 +178,7 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final l10n = QuizL10n.of(context);
 
     final effectiveTitleStyle = style.titleStyle ??
         theme.textTheme.titleMedium?.copyWith(
@@ -197,34 +199,44 @@ class CategoryCard extends StatelessWidget {
     final effectiveBorderColor =
         style.borderColor ?? colorScheme.outlineVariant;
 
-    return Card(
-      elevation: style.elevation,
-      shape: RoundedRectangleBorder(
-        borderRadius: style.borderRadius,
-        side: style.showBorder
-            ? BorderSide(color: effectiveBorderColor, width: style.borderWidth)
-            : BorderSide.none,
-      ),
-      color: effectiveBackgroundColor,
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        onLongPress: onLongPress,
-        child: Padding(
-          padding: style.padding,
-          child: vertical
-              ? _buildVerticalLayout(
-                  context,
-                  effectiveTitleStyle,
-                  effectiveSubtitleStyle,
-                  effectiveIconColor,
-                )
-              : _buildHorizontalLayout(
-                  context,
-                  effectiveTitleStyle,
-                  effectiveSubtitleStyle,
-                  effectiveIconColor,
-                ),
+    final categoryTitle = category.title(context);
+    final semanticLabel = l10n.accessibilityCategoryButton(categoryTitle);
+
+    return Semantics(
+      label: semanticLabel,
+      hint: l10n.accessibilityDoubleTapToSelect,
+      button: true,
+      enabled: onTap != null,
+      child: Card(
+        elevation: style.elevation,
+        shape: RoundedRectangleBorder(
+          borderRadius: style.borderRadius,
+          side: style.showBorder
+              ? BorderSide(color: effectiveBorderColor, width: style.borderWidth)
+              : BorderSide.none,
+        ),
+        color: effectiveBackgroundColor,
+        clipBehavior: Clip.antiAlias,
+        child: InkWell(
+          onTap: onTap,
+          onLongPress: onLongPress,
+          excludeFromSemantics: true,
+          child: Padding(
+            padding: style.padding,
+            child: vertical
+                ? _buildVerticalLayout(
+                    context,
+                    effectiveTitleStyle,
+                    effectiveSubtitleStyle,
+                    effectiveIconColor,
+                  )
+                : _buildHorizontalLayout(
+                    context,
+                    effectiveTitleStyle,
+                    effectiveSubtitleStyle,
+                    effectiveIconColor,
+                  ),
+          ),
         ),
       ),
     );
@@ -255,7 +267,7 @@ class CategoryCard extends StatelessWidget {
   ) {
     return Row(
       children: [
-        _buildVisual(context, iconColor),
+        ExcludeSemantics(child: _buildVisual(context, iconColor)),
         SizedBox(width: style.spacing),
         Expanded(
           child: _buildTextContent(
@@ -265,9 +277,11 @@ class CategoryCard extends StatelessWidget {
             centered: false,
           ),
         ),
-        Icon(
-          Icons.chevron_right,
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ExcludeSemantics(
+          child: Icon(
+            Icons.chevron_right,
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );
