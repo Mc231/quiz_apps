@@ -1,5 +1,6 @@
 import 'answer.dart';
 import 'config/quiz_mode_config.dart';
+import 'config/scoring_strategy.dart';
 
 /// Represents the results of a completed quiz session.
 ///
@@ -22,6 +23,8 @@ class QuizResults {
     required this.answers,
     this.hintsUsed5050 = 0,
     this.hintsUsedSkip = 0,
+    this.score = 0,
+    this.scoreBreakdown,
   });
 
   /// The unique session ID (from storage).
@@ -65,6 +68,12 @@ class QuizResults {
 
   /// Number of skip hints used.
   final int hintsUsedSkip;
+
+  /// Total score earned in this quiz session.
+  final int score;
+
+  /// Breakdown of the score (base points + bonus points).
+  final ScoreBreakdownData? scoreBreakdown;
 
   /// Total hints used (50/50 + skip).
   int get totalHintsUsed => hintsUsed5050 + hintsUsedSkip;
@@ -127,6 +136,8 @@ class QuizResults {
     List<Answer>? answers,
     int? hintsUsed5050,
     int? hintsUsedSkip,
+    int? score,
+    ScoreBreakdownData? scoreBreakdown,
   }) {
     return QuizResults(
       sessionId: sessionId ?? this.sessionId,
@@ -143,6 +154,8 @@ class QuizResults {
       answers: answers ?? this.answers,
       hintsUsed5050: hintsUsed5050 ?? this.hintsUsed5050,
       hintsUsedSkip: hintsUsedSkip ?? this.hintsUsedSkip,
+      score: score ?? this.score,
+      scoreBreakdown: scoreBreakdown ?? this.scoreBreakdown,
     );
   }
 
@@ -152,7 +165,8 @@ class QuizResults {
         'sessionId: $sessionId, '
         'quizId: $quizId, '
         'quizName: $quizName, '
-        'score: $correctAnswers/$totalQuestions (${scorePercentage.toStringAsFixed(1)}%), '
+        'correct: $correctAnswers/$totalQuestions (${scorePercentage.toStringAsFixed(1)}%), '
+        'score: $score pts, '
         'stars: $starRating, '
         'duration: $formattedDuration'
         ')';
@@ -174,7 +188,8 @@ class QuizResults {
         other.durationSeconds == durationSeconds &&
         other.modeConfig == modeConfig &&
         other.hintsUsed5050 == hintsUsed5050 &&
-        other.hintsUsedSkip == hintsUsedSkip;
+        other.hintsUsedSkip == hintsUsedSkip &&
+        other.score == score;
   }
 
   @override
@@ -193,6 +208,7 @@ class QuizResults {
       modeConfig,
       hintsUsed5050,
       hintsUsedSkip,
+      score,
     );
   }
 }
