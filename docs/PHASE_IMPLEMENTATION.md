@@ -2418,6 +2418,77 @@ dependencies:
 
 ---
 
+## Phase 12: Rate App Dialog
+
+**Goal:** Implement a rate app dialog that prompts users to rate the app on the App Store/Play Store after completing quizzes.
+
+### Sprint 12.1: Rate App Service
+
+**Tasks:**
+- [ ] Add `in_app_review` package to shared_services
+- [ ] Create `RateAppService` class with:
+  - `shouldShowRateDialog()` - Check if conditions are met
+  - `showRateDialog()` - Show native review dialog
+  - `markRateDialogShown()` - Record that dialog was shown
+  - `markRateDialogDeclined()` - User declined to rate
+- [ ] Create `RateAppConfig` model with:
+  - `isEnabled` - Enable/disable rate prompts (from quiz config)
+  - `minCompletedQuizzes` - Minimum quizzes before prompting
+  - `minDaysSinceInstall` - Minimum days since first launch
+  - `cooldownDays` - Days between prompts (default: 7)
+- [ ] Store rate app state in SharedPreferences:
+  - `lastRatePromptDate` - When dialog was last shown
+  - `hasRated` - User completed rating (don't ask again)
+  - `declineCount` - Number of times user declined
+- [ ] Write unit tests
+
+**Files to Create:**
+- `packages/shared_services/lib/src/rate_app/rate_app_service.dart`
+- `packages/shared_services/lib/src/rate_app/rate_app_config.dart`
+- `packages/shared_services/lib/src/rate_app/rate_app_exports.dart`
+- `packages/shared_services/test/rate_app/rate_app_service_test.dart`
+
+---
+
+### Sprint 12.2: Rate App Integration
+
+**Tasks:**
+- [ ] Create `RateAppModule` for DI registration
+- [ ] Integrate rate app check in `QuizResultsScreen`
+- [ ] Add `rateAppConfig` to `QuizConfig` (provided by app)
+- [ ] Add analytics events:
+  - `rate_app_prompt_shown`
+  - `rate_app_accepted`
+  - `rate_app_declined`
+  - `rate_app_dismissed`
+- [ ] Export from shared_services
+- [ ] Write integration tests
+
+**Files to Create:**
+- `packages/shared_services/lib/src/di/modules/rate_app_module.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/config/quiz_config.dart`
+- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
+- `packages/shared_services/lib/shared_services.dart`
+- `packages/shared_services/lib/src/di/di_exports.dart`
+
+---
+
+### Sprint 12.3: Rate App Analytics Events
+
+**Tasks:**
+- [ ] Create `RateAppEvent` sealed class
+- [ ] Add to analytics exports
+- [ ] Track all rate app interactions
+- [ ] Write unit tests
+
+**Files to Create:**
+- `packages/shared_services/lib/src/analytics/events/rate_app_event.dart`
+- `packages/shared_services/test/analytics/rate_app_event_test.dart`
+
+---
+
 ## Known Bugs
 
 ### Practice Mode - Single Question Shows Only 1 Option
