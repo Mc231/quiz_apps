@@ -10,7 +10,8 @@ import 'quiz_text_widget.dart';
 import 'quiz_audio_widget.dart';
 import 'quiz_video_widget.dart';
 import '../theme/quiz_theme_data.dart';
-import '../widgets/hints_panel.dart';
+import '../widgets/adaptive_resource_panel.dart';
+import '../widgets/game_resource_panel.dart';
 
 /// A widget that displays the layout for a quiz screen, including the question image and answer options.
 ///
@@ -26,7 +27,7 @@ import '../widgets/hints_panel.dart';
 /// - `questionState`: The current state of the question, including the question details and progress.
 /// - `information`: The sizing information for the current screen, used to adjust the layout.
 /// - `processAnswer`: The callback function to process an answer when an option is selected.
-/// - `quizBloc`: The quiz bloc for accessing hint methods.
+/// - `resourceData`: Game resource panel data (lives, 50/50, skip) for adaptive display.
 class QuizLayout extends StatelessWidget {
   /// The current state of the question, including the question details and progress.
   final QuestionState questionState;
@@ -37,8 +38,9 @@ class QuizLayout extends StatelessWidget {
   /// The callback function to process an answer when an option is selected.
   final Function(QuestionEntry) processAnswer;
 
-  /// The quiz bloc for accessing hint methods.
-  final QuizBloc quizBloc;
+  /// Game resource panel data (lives, 50/50, skip).
+  /// If null, resources are not shown.
+  final GameResourcePanelData? resourceData;
 
   /// Theme data for customizing quiz UI.
   final QuizThemeData themeData;
@@ -49,14 +51,14 @@ class QuizLayout extends StatelessWidget {
   /// [questionState] provides the current question and progress state.
   /// [information] supplies screen size and orientation information.
   /// [processAnswer] is called to process the selected answer.
-  /// [quizBloc] provides access to quiz operations including hints.
+  /// [resourceData] provides game resource data (lives, hints) for adaptive display.
   /// [themeData] provides theme customization options.
   const QuizLayout({
     super.key,
     required this.questionState,
     required this.information,
     required this.processAnswer,
-    required this.quizBloc,
+    this.resourceData,
     this.themeData = const QuizThemeData(),
   });
 
@@ -65,13 +67,12 @@ class QuizLayout extends StatelessWidget {
     final orientation = information.orientation;
     return Column(
       children: [
-        // Hints Panel at the top
-        HintsPanel(
-          hintState: questionState.hintState,
-          onUse50_50: () => quizBloc.use50_50Hint(),
-          onUseSkip: () => quizBloc.skipQuestion(),
-          primaryColor: themeData.buttonColor,
-        ),
+        // Game Resource Panel (adaptive - shows only on portrait/watch)
+        if (resourceData != null && resourceData!.hasResources)
+          AdaptiveResourcePanel.forBody(
+            data: resourceData!,
+            padding: const EdgeInsets.symmetric(vertical: 8),
+          ),
         if (orientation == Orientation.portrait)
           Expanded(
             child: Column(
