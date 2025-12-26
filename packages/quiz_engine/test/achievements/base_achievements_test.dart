@@ -648,6 +648,26 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String pointsEarned(int points) => '$points pts';
   @override
   String scorePlusBonus(int base, int bonus) => '$base + $bonus bonus';
+  @override
+  String get livesLabel => 'Lives';
+  @override
+  String get livesTooltip => 'Lives remaining.';
+  @override
+  String livesAccessibilityLabel(int count) => '$count lives remaining';
+  @override
+  String get fiftyFiftyTooltip => '50/50 hint.';
+  @override
+  String fiftyFiftyAccessibilityLabel(int count) => '$count 50/50 hints remaining';
+  @override
+  String get skipTooltip => 'Skip hint.';
+  @override
+  String skipAccessibilityLabel(int count) => '$count skip hints remaining';
+  @override
+  String get resourceDepleted => 'No more available';
+  @override
+  String get getMoreLives => 'Get More Lives';
+  @override
+  String get getMoreHints => 'Get More Hints';
 }
 
 void main() {

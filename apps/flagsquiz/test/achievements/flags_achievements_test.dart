@@ -1433,6 +1433,48 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String accessibilityTierBadge(String tier) => '$tier tier';
   @override
   String accessibilityPointsBadge(int points) => '$points points';
+
+  // Score-related strings
+  @override
+  String get pointsLabel => 'pts';
+  @override
+  String get totalScore => 'Total Score';
+  @override
+  String get basePoints => 'Base Points';
+  @override
+  String get timeBonus => 'Time Bonus';
+  @override
+  String get streakBonus => 'Streak Bonus';
+  @override
+  String get bonus => 'Bonus';
+  @override
+  String get scoreBreakdown => 'Score Breakdown';
+  @override
+  String pointsEarned(int points) => '$points pts';
+  @override
+  String scorePlusBonus(int base, int bonus) => '$base + $bonus bonus';
+
+  // Lives and hints strings
+  @override
+  String get livesLabel => 'Lives';
+  @override
+  String get livesTooltip => 'Lives remaining';
+  @override
+  String livesAccessibilityLabel(int count) => '$count lives remaining';
+  @override
+  String get fiftyFiftyTooltip => '50/50 hint';
+  @override
+  String fiftyFiftyAccessibilityLabel(int count) => '$count 50/50 hints remaining';
+  @override
+  String get skipTooltip => 'Skip hint';
+  @override
+  String skipAccessibilityLabel(int count) => '$count skip hints remaining';
+  @override
+  String get resourceDepleted => 'No more available';
+  @override
+  String get getMoreLives => 'Get More Lives';
+  @override
+  String get getMoreHints => 'Get More Hints';
 }
 
 void main() {
