@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../l10n/quiz_localizations.dart';
+
 /// Data model for session card display.
 class SessionCardData {
   /// Creates a [SessionCardData].
@@ -89,8 +91,19 @@ class SessionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final l10n = QuizL10n.of(context);
 
-    return Card(
+    final semanticLabel = l10n.accessibilitySessionCard(
+      formatDate(data.startTime),
+      data.totalCorrect,
+      data.totalQuestions,
+    );
+
+    return Semantics(
+      label: semanticLabel,
+      button: onTap != null,
+      enabled: onTap != null,
+      child: Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 2,
       shape: RoundedRectangleBorder(
@@ -99,6 +112,7 @@ class SessionCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
+        excludeFromSemantics: true,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -112,6 +126,7 @@ class SessionCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }
@@ -234,9 +249,11 @@ class SessionCard extends StatelessWidget {
         ),
         // Arrow indicator
         if (onTap != null)
-          Icon(
-            Icons.chevron_right,
-            color: Colors.grey[400],
+          ExcludeSemantics(
+            child: Icon(
+              Icons.chevron_right,
+              color: Colors.grey[400],
+            ),
           ),
       ],
     );
