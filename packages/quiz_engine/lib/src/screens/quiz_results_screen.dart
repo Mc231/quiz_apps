@@ -3,6 +3,8 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../widgets/question_review_widget.dart';
+import '../widgets/score_breakdown.dart';
+import '../widgets/score_display.dart';
 import 'session_detail_screen.dart';
 
 /// Screen displaying quiz results with star rating and statistics.
@@ -74,7 +76,22 @@ class QuizResultsScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 32),
                     _buildScoreCircle(context, l10n),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
+                    // Show score points if score > 0
+                    if (results.score > 0) ...[
+                      ScoreDisplay(score: results.score),
+                      if (results.scoreBreakdown != null &&
+                          results.scoreBreakdown!.bonusPoints > 0) ...[
+                        const SizedBox(height: 8),
+                        ScoreBreakdownWidget(
+                          breakdown: results.scoreBreakdown!,
+                          compact: true,
+                          showTitle: false,
+                        ),
+                      ],
+                      const SizedBox(height: 24),
+                    ] else
+                      const SizedBox(height: 8),
                     _buildStatisticsGrid(context, l10n),
                     const Spacer(flex: 2),
                     _buildActionButtons(context, l10n),
