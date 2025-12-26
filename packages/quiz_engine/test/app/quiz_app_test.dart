@@ -7,6 +7,7 @@ import 'package:quiz_engine/src/app/quiz_tab.dart';
 import 'package:quiz_engine/src/home/quiz_home_screen.dart';
 import 'package:quiz_engine/src/l10n/quiz_localizations_delegate.dart';
 import 'package:quiz_engine/src/models/quiz_category.dart';
+import 'package:quiz_engine/src/settings/quiz_settings_screen.dart';
 import 'package:shared_services/shared_services.dart';
 
 /// A mock SettingsService for testing.
@@ -515,6 +516,7 @@ void main() {
           homeConfig: QuizHomeScreenConfig(
             tabConfig: QuizTabConfig.allTabs(),
           ),
+          settingsConfig: const QuizSettingsConfig(showDataExport: false),
         ),
       );
       await tester.pumpAndSettle();
