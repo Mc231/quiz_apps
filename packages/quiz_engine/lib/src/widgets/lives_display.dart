@@ -8,6 +8,18 @@ import 'package:responsive_builder/responsive_builder.dart';
 ///
 /// This widget is only visible when the quiz mode supports lives tracking
 /// (LivesMode, SurvivalMode, or EndlessMode).
+///
+/// @deprecated Use [GameResourcePanel] or [GameResourceButton] instead.
+/// This widget will be removed in a future version. The new components provide:
+/// - Single icon with count badge (more space efficient)
+/// - Animations (pulse, shake, scale)
+/// - Adaptive layout via [AdaptiveResourcePanel]
+/// - Long-press tooltips
+/// - Better theming support via [GameResourceTheme]
+@Deprecated(
+  'Use GameResourcePanel or GameResourceButton instead. '
+  'This widget will be removed in a future version.',
+)
 class LivesDisplay extends StatelessWidget {
   /// The number of remaining lives (null if lives are not tracked)
   final int? remainingLives;
