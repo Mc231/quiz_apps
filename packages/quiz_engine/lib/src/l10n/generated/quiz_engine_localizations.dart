@@ -193,6 +193,42 @@ abstract class QuizEngineLocalizations {
   /// **'Failed to load video'**
   String get videoLoadError;
 
+  /// Retry button label
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// Generic error title
+  ///
+  /// In en, this message translates to:
+  /// **'Something Went Wrong'**
+  String get errorTitle;
+
+  /// Generic error message
+  ///
+  /// In en, this message translates to:
+  /// **'An unexpected error occurred. Please try again.'**
+  String get errorGeneric;
+
+  /// Network error message
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to connect. Please check your connection.'**
+  String get errorNetwork;
+
+  /// Server error message
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong on our end. Please try again later.'**
+  String get errorServer;
+
+  /// Generic loading message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loadingData;
+
   /// 50/50 hint label
   ///
   /// In en, this message translates to:
