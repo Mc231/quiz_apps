@@ -377,6 +377,14 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     var skippedAnswers = _answers.where((answer) => answer.isSkipped).length;
     var timedOutAnswers = _answers.where((answer) => answer.isTimeout).length;
 
+    // Calculate score using the configured scoring strategy
+    final scoreBreakdown = _config.scoringStrategy.calculateScore(
+      correctAnswers: correctAnswers,
+      totalQuestions: _totalCount,
+      durationSeconds: _sessionStopwatch.elapsed.inSeconds,
+      streaks: _bestStreak > 0 ? [_bestStreak] : null,
+    );
+
     // Complete the session in storage (await to ensure stats are updated
     // before onQuizCompleted callback, which may check achievements)
     await _completeStorageSession(
@@ -385,6 +393,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       totalFailed: failedAnswers + timedOutAnswers,
       totalSkipped: skippedAnswers,
       bestStreak: _bestStreak,
+      score: scoreBreakdown.totalScore,
     );
 
     // Create quiz results
@@ -403,6 +412,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       answers: List.unmodifiable(_answers),
       hintsUsed5050: _hintsUsed5050,
       hintsUsedSkip: _hintsUsedSkip,
+      score: scoreBreakdown.totalScore,
+      scoreBreakdown: scoreBreakdown,
     );
 
     // Emit completed state with results
@@ -435,6 +446,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     required int totalFailed,
     required int totalSkipped,
     int bestStreak = 0,
+    int score = 0,
   }) async {
     if (!_isStorageEnabled || _currentSessionId == null) return;
 
@@ -450,6 +462,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         hintsUsed5050: _hintsUsed5050,
         hintsUsedSkip: _hintsUsedSkip,
         bestStreak: bestStreak,
+        score: score,
       );
     } catch (e) {
       // Storage failure should not affect game over flow
