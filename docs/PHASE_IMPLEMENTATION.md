@@ -4,7 +4,7 @@
 
 **Reference:** See [CORE_ARCHITECTURE_GUIDE.md](./CORE_ARCHITECTURE_GUIDE.md) for architectural details and design patterns.
 
-**Last Updated:** 2025-12-25
+**Last Updated:** 2025-12-26
 
 ---
 
@@ -19,7 +19,7 @@
 | Phase 5 | Data Persistence & Storage | ✅ Completed |
 | Phase 6 | Results & Statistics UI | ✅ Completed |
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
-| Phase 8 | Achievements & Core Features | In Progress (13/16 sprints) |
+| Phase 8 | Achievements & Core Features | In Progress (14/16 sprints) |
 | Phase 8.5 | Production Polish | Not Started (0/7 sprints) |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | Not Started |
 | Phase 10 | Polish & Integration | Not Started |
@@ -1600,36 +1600,95 @@ score = basePoints + streakBonus
 
 ---
 
-### Sprint 8.14: Hints & Lives UI Consistency
+### Sprint 8.14: Hints & Lives UI Consistency ✅
 
-**Goal:** Update lives widget to match the visual style of skip and 50/50 hints.
+**Goal:** Create a unified visual style for all game resources: Lives, 50/50 hints, and Skip hints with adaptive layout.
+
+**Design Document:** `docs/HINTS_LIVES_UI_DESIGN.md`
+
+**Key Design Decisions:**
+- **Single icon + badge pattern**: All resources show ONE icon with a count badge (e.g., ❤️ with badge "3")
+- **Badges only, no labels**: Icons are self-explanatory, saves space
+- **All resources are tappable**: Lives, 50/50, and Skip all respond to taps
+- **Unified component**: Create `GameResourceButton` as shared base for all three
+- **Unified placement**: All resources shown in ONE location (currently lives in AppBar, hints below)
+- **Adaptive layout**: Different placement based on screen size/orientation
+- **Theming support**: Add `GameResourceTheme` for consistent, customizable styling
+- **Animations**: Pulse on last resource, shake on depletion, scale on tap
+- **Long-press tooltip**: Show explanation of what each resource does
+- **Disabled state**: Show greyed out with "0" badge (not hidden)
+
+**Adaptive Layout Strategy:**
+- **Mobile Portrait**: Resources in dedicated row below AppBar (touch-friendly)
+- **Mobile Landscape**: Resources inline in AppBar (saves vertical space)
+- **Tablet/Desktop**: Resources inline in AppBar
+- **Watch**: Resources in compact row below AppBar
 
 **Requirements:**
-- Lives (hearts) should have same visual treatment as hint buttons
-- Consistent styling across all "resource" indicators
-- Create design document before implementation
-
-**Pre-requisite:** Create `docs/HINTS_LIVES_UI_DESIGN.md` with mockups/specifications
+- Lives: Single heart icon with badge showing remaining count (NOT multiple hearts)
+- 50/50: Single icon with badge showing remaining count
+- Skip: Single icon with badge showing remaining count
+- All three use identical visual treatment (same button style, badge style, animations)
+- All three are interactive (tappable with callbacks)
+- "Get More" dialog: Stub callback only (full implementation in Sprint 8.15)
 
 **Tasks:**
-- [ ] Create design document with UI specifications
-- [ ] Audit current LivesDisplay widget implementation
-- [ ] Audit current HintsPanel widget implementation
-- [ ] Design unified "ResourceButton" or "GameResourceWidget" component
-- [ ] Update `LivesDisplay` to use new consistent style
-- [ ] Update `HintsPanel` to use new consistent style
-- [ ] Ensure consistent animations (pulse, shake, etc.)
-- [ ] Ensure consistent color schemes and iconography
-- [ ] Test on multiple screen sizes
-- [ ] Write widget tests
 
-**Files to Create:**
-- `docs/HINTS_LIVES_UI_DESIGN.md`
-- `packages/quiz_engine/lib/src/widgets/game_resource_widget.dart` (shared base)
+*Design & Audit:*
+- [x] Create design document with UI specifications
+- [x] Audit current LivesDisplay widget implementation
+- [x] Audit current HintsPanel widget implementation
+
+*Core Components:*
+- [x] Create `GameResourceTheme` for theming support
+- [x] Create `GameResourceButton` widget with animations
+- [x] Create `GameResourcePanel` wrapper for all resources
+- [x] Create `AdaptiveResourcePanel` for adaptive placement logic
+
+*Animations:*
+- [x] Implement scale on tap animation
+- [x] Implement pulse animation for last resource warning
+- [x] Implement shake animation on depletion
+- [x] Implement badge count change animation
+
+*Integration:*
+- [x] Update `QuizAppBarActions` to use `GameResourcePanel` (for landscape/tablet/desktop)
+- [x] Update `QuizLayout` to use `GameResourcePanel` (for portrait/watch)
+- [x] Implement adaptive placement logic based on screen size/orientation
+- [x] Add long-press tooltip with resource explanation
+- [x] Deprecate `LivesDisplay` (keep for backward compatibility)
+- [x] Deprecate `HintsPanel` (keep for backward compatibility)
+
+*Polish:*
+- [x] Add accessibility labels
+- [x] Add haptic feedback on actions
+- [x] Add localization strings for tooltips and accessibility
+- [x] Ensure responsive sizing across screen sizes
+
+*Testing:*
+- [x] Write widget tests for `GameResourceButton`
+- [x] Write widget tests for `GameResourcePanel`
+- [x] Write widget tests for `AdaptiveResourcePanel`
+- [x] Write widget tests for `GameResourceTheme`
+
+**Files Created:**
+- ✅ `docs/HINTS_LIVES_UI_DESIGN.md`
+- ✅ `packages/quiz_engine/lib/src/theme/game_resource_theme.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/game_resource_button.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/game_resource_panel.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/adaptive_resource_panel.dart`
+- ✅ `packages/quiz_engine/test/theme/game_resource_theme_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/game_resource_button_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/game_resource_panel_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/adaptive_resource_panel_test.dart`
 
 **Files to Modify:**
-- `packages/quiz_engine/lib/src/widgets/lives_display.dart`
-- `packages/quiz_engine/lib/src/widgets/hints_panel.dart`
+- `packages/quiz_engine/lib/src/widgets/quiz_app_bar_actions.dart`
+- `packages/quiz_engine/lib/src/quiz/quiz_layout.dart`
+- `packages/quiz_engine/lib/src/widgets/lives_display.dart` (deprecate)
+- `packages/quiz_engine/lib/src/widgets/hints_panel.dart` (deprecate)
+- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
+- `packages/quiz_engine/lib/quiz_engine.dart` (exports)
 
 ---
 
