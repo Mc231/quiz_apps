@@ -507,6 +507,10 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String get noLeaderboardData => 'No leaderboard data';
   @override
+  String get globalLeaderboard => 'Global Leaderboard';
+  @override
+  String get globalLeaderboardComingSoon => 'Compete with players worldwide';
+  @override
   String get progress => 'Progress';
   @override
   String get categories => 'Categories';
