@@ -43,7 +43,8 @@ class QuizScreenState extends State<QuizScreen> {
   late QuizBloc _bloc;
 
   /// Combined feedback service for audio and haptic feedback.
-  late QuizFeedbackService _feedbackService;
+  /// Initialized with defaults immediately to prevent LateInitializationError.
+  QuizFeedbackService _feedbackService = QuizFeedbackService();
 
   /// Flag to track if the quiz is over
   bool _isQuizOver = false;
@@ -52,7 +53,8 @@ class QuizScreenState extends State<QuizScreen> {
   void initState() {
     super.initState();
     _bloc = BlocProvider.of<QuizBloc>(context);
-    _initializeFeedbackService();
+    _updateFeedbackServiceFromConfig();
+    _initializeFeedbackServiceAsync();
     _bloc.performInitialLoad();
   }
 
@@ -66,15 +68,21 @@ class QuizScreenState extends State<QuizScreen> {
     }
   }
 
-  /// Initialize the feedback service and set up state listeners.
-  Future<void> _initializeFeedbackService() async {
-    final config = _bloc.config.uiBehaviorConfig;
+  /// Update the feedback service settings from config if available.
+  void _updateFeedbackServiceFromConfig() {
+    try {
+      final config = _bloc.config.uiBehaviorConfig;
+      _feedbackService = QuizFeedbackService(
+        soundsEnabled: config.playSounds,
+        hapticsEnabled: config.hapticFeedback,
+      );
+    } catch (_) {
+      // Config not yet initialized, keep default service
+    }
+  }
 
-    // Create and initialize feedback service with user preferences
-    _feedbackService = QuizFeedbackService(
-      soundsEnabled: config.playSounds,
-      hapticsEnabled: config.hapticFeedback,
-    );
+  /// Initialize the feedback service asynchronously and set up state listeners.
+  Future<void> _initializeFeedbackServiceAsync() async {
     await _feedbackService.initialize();
 
     // Listen to quiz states and provide feedback
