@@ -2090,6 +2090,14 @@ QuizBloc (Orchestrator ~460 lines)
 - Optional parameters only included when provided
 - 86 unit tests covering all event types and edge cases
 
+**Pending Integrations (for Sprint 9.1.6+):**
+- [ ] Integrate `QuizEvent` with `QuizBloc` (fire events during quiz lifecycle)
+- [ ] Integrate `QuestionEvent` with `QuizBloc` (fire events on answer/display)
+- [ ] Integrate `HintEvent` with hint system (fire events on hint usage)
+- [ ] Integrate `ResourceEvent` with lives/resource tracking
+- [ ] Add `AnalyticsService` provider to quiz screens
+- [ ] Create analytics helper/extension for easy event logging from screens
+
 ---
 
 ### Sprint 9.1.2: Interaction & Settings Event Classes
