@@ -76,6 +76,12 @@ export 'src/bloc/settings/settings_builder.dart';
 export 'src/bloc/settings/settings_event.dart';
 export 'src/bloc/settings/settings_state.dart';
 
+// Practice BLoC
+export 'src/bloc/practice/practice_bloc.dart';
+export 'src/bloc/practice/practice_builder.dart';
+export 'src/bloc/practice/practice_event.dart';
+export 'src/bloc/practice/practice_state.dart';
+
 // Extensions
 export 'src/extensions/sizing_information_extension.dart';
 
