@@ -31,6 +31,7 @@ class AchievementNotificationController {
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
+    this.analyticsService,
     this.maxQueueSize = 10,
     this.position = AchievementNotificationPosition.top,
   });
@@ -44,6 +45,9 @@ class AchievementNotificationController {
   /// Optional audio service for sound effects.
   final AudioService? audioService;
 
+  /// Optional analytics service for tracking notification events.
+  final AnalyticsService? analyticsService;
+
   /// Maximum number of achievements to queue.
   final int maxQueueSize;
 
@@ -55,6 +59,7 @@ class AchievementNotificationController {
   final Queue<Achievement> _queue = Queue<Achievement>();
   bool _isShowing = false;
   bool _isDisposed = false;
+  DateTime? _currentNotificationShownAt;
 
   /// Stream of achievement unlock events.
   ///
@@ -142,7 +147,18 @@ class AchievementNotificationController {
 
   void _showAchievement(Achievement achievement) {
     _isShowing = true;
+    _currentNotificationShownAt = DateTime.now();
     _showController.add(achievement);
+
+    // Track notification shown event
+    analyticsService?.logEvent(
+      AchievementEvent.notificationShown(
+        achievementId: achievement.id,
+        achievementName: achievement.id, // Name requires context
+        pointsAwarded: achievement.points,
+        displayDuration: style.displayDuration,
+      ),
+    );
 
     _currentEntry = OverlayEntry(
       builder: (context) => _buildNotificationOverlay(context, achievement),
@@ -165,6 +181,8 @@ class AchievementNotificationController {
             style: style,
             hapticService: hapticService,
             audioService: audioService,
+            analyticsService: analyticsService,
+            shownAt: _currentNotificationShownAt,
             onDismiss: () => _onNotificationDismissed(achievement),
           ),
         ),
@@ -230,6 +248,7 @@ class AchievementNotifications extends StatefulWidget {
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
+    this.analyticsService,
     this.position = AchievementNotificationPosition.top,
   });
 
@@ -247,6 +266,9 @@ class AchievementNotifications extends StatefulWidget {
 
   /// Optional audio service.
   final AudioService? audioService;
+
+  /// Optional analytics service.
+  final AnalyticsService? analyticsService;
 
   /// Position where notifications appear.
   final AchievementNotificationPosition position;
@@ -296,6 +318,7 @@ class _AchievementNotificationsState extends State<AchievementNotifications> {
         style: widget.style,
         hapticService: widget.hapticService,
         audioService: widget.audioService,
+        analyticsService: widget.analyticsService,
         position: widget.position,
       );
       _ownsController = true;
