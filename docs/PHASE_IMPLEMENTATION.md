@@ -2772,24 +2772,29 @@ class MyScreen extends StatelessWidget {
 
 ---
 
-#### Sprint 9.5.5: Home Screen BLoC
+#### Sprint 9.5.5: Home Screen BLoC ✅
 
 **Tasks:**
-- [ ] Create `HomeState` sealed class
-- [ ] Create `HomeBloc` for home screen management
-- [ ] Refactor `QuizHomeScreen` to use BLoC
-- [ ] Move tab switching, data loading, and navigation logic to BLoC
-- [ ] Integrate analytics tracking in BLoC layer
-- [ ] Write unit tests for `HomeBloc`
-- [ ] Write widget tests for refactored screen
+- [x] Create `HomeState` sealed class
+- [x] Create `HomeEvent` sealed class
+- [x] Create `HomeBloc` for home screen management
+- [x] Create `HomeBuilder` widget for BLoC integration
+- [x] Refactor `QuizHomeScreen` to use BLoC with `HomeTabContent`
+- [x] Move tab switching, data loading, and navigation logic to BLoC
+- [x] Write unit tests for `HomeBloc` (49 tests)
+- [ ] Integrate analytics tracking in BLoC layer (pending future sprint)
+- [ ] Write widget tests for refactored screen (pending future sprint)
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/bloc/home/home_state.dart`
-- `packages/quiz_engine/lib/src/bloc/home/home_bloc.dart`
-- `packages/quiz_engine/test/bloc/home/home_bloc_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/bloc/home/home_state.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/home/home_event.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/home/home_bloc.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/home/home_builder.dart`
+- ✅ `packages/quiz_engine/test/bloc/home/home_bloc_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` (added `HomeTabContent`)
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` (added Home BLoC exports)
 
 ---
 
