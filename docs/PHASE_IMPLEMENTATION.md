@@ -2055,28 +2055,40 @@ QuizBloc (Orchestrator ~460 lines)
 
 ---
 
-### Sprint 9.1.1: Quiz Event Classes
+### Sprint 9.1.1: Quiz Event Classes ✅
 
 **Goal:** Create sealed classes for quiz lifecycle and question events.
 
-**Tasks:**
-- [ ] Create `QuizEvent` sealed class (8 events)
-  - `started`, `completed`, `cancelled`, `timeout`, `failed`, `paused`, `resumed`, `challengeStarted`
-- [ ] Create `QuestionEvent` sealed class (8 events)
-  - `displayed`, `answered`, `correct`, `incorrect`, `skipped`, `timeout`, `feedbackShown`, `optionSelected`
-- [ ] Create `HintEvent` sealed class (4 events)
-  - `fiftyFiftyUsed`, `skipUsed`, `unavailableTapped`, `timerWarning`
-- [ ] Create `ResourceEvent` sealed class (4 events)
-  - `lifeLost`, `livesDepleted`, `buttonTapped`, `added`
-- [ ] Write unit tests for all event classes
+**Status:** COMPLETED (2025-12-27)
 
-**Files to Create:**
-- `packages/shared_services/lib/src/analytics/events/quiz_event.dart`
-- `packages/shared_services/lib/src/analytics/events/question_event.dart`
-- `packages/shared_services/lib/src/analytics/events/hint_event.dart`
-- `packages/shared_services/lib/src/analytics/events/resource_event.dart`
-- `packages/shared_services/test/analytics/events/quiz_event_test.dart`
-- `packages/shared_services/test/analytics/events/question_event_test.dart`
+**Tasks:**
+- [x] Create `QuizEvent` sealed class (8 events)
+  - `started`, `completed`, `cancelled`, `timeout`, `failed`, `paused`, `resumed`, `challengeStarted`
+- [x] Create `QuestionEvent` sealed class (8 events)
+  - `displayed`, `answered`, `correct`, `incorrect`, `skipped`, `timeout`, `feedbackShown`, `optionSelected`
+- [x] Create `HintEvent` sealed class (4 events)
+  - `fiftyFiftyUsed`, `skipUsed`, `unavailableTapped`, `timerWarning`
+- [x] Create `ResourceEvent` sealed class (4 events)
+  - `lifeLost`, `livesDepleted`, `buttonTapped`, `added`
+- [x] Write unit tests for all event classes
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/analytics/events/quiz_event.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/question_event.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/hint_event.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/resource_event.dart`
+- ✅ `packages/shared_services/test/analytics/events/quiz_event_test.dart`
+- ✅ `packages/shared_services/test/analytics/events/question_event_test.dart`
+- ✅ `packages/shared_services/test/analytics/events/hint_event_test.dart`
+- ✅ `packages/shared_services/test/analytics/events/resource_event_test.dart`
+
+**Implementation Details:**
+- All event classes follow the sealed class pattern with factory constructors
+- Each event extends `AnalyticsEvent` with proper `eventName` and `parameters`
+- Parameters use snake_case keys for analytics providers
+- Duration values converted to milliseconds/seconds in parameters
+- Optional parameters only included when provided
+- 86 unit tests covering all event types and edge cases
 
 ---
 
