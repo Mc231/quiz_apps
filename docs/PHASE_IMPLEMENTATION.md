@@ -2698,23 +2698,30 @@ class MyScreen extends StatelessWidget {
 
 ---
 
-#### Sprint 9.5.2: Session History BLoC
+#### Sprint 9.5.2: Session History BLoC ✅
 
 **Tasks:**
-- [ ] Create `SessionHistoryState` sealed class
-- [ ] Create `SessionHistoryBloc` for history management
-- [ ] Refactor `SessionHistoryScreen` to use BLoC
-- [ ] Move pagination, filtering, and refresh logic to BLoC
-- [ ] Write unit tests for `SessionHistoryBloc`
-- [ ] Write widget tests for refactored screen
+- [x] Create `SessionHistoryState` sealed class
+- [x] Create `SessionHistoryBloc` for history management
+- [x] Refactor `SessionHistoryScreen` to use BLoC
+- [x] Move pagination, filtering, and refresh logic to BLoC
+- [x] Write unit tests for `SessionHistoryBloc`
+- [x] Create `SessionHistoryEvent` sealed class for BLoC events
+- [x] Create `SessionHistoryDataProvider` abstract interface
+- [x] Create `SessionHistoryBuilder` widget for BLoC integration
+- [x] Create `SessionHistoryContent` widget for BLoC-controlled rendering
+- [x] Create `SessionHistoryPage` model for pagination
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/bloc/session_history/session_history_state.dart`
-- `packages/quiz_engine/lib/src/bloc/session_history/session_history_bloc.dart`
-- `packages/quiz_engine/test/bloc/session_history/session_history_bloc_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/bloc/session_history/session_history_state.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/session_history/session_history_event.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/session_history/session_history_bloc.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/session_history/session_history_builder.dart`
+- ✅ `packages/quiz_engine/test/bloc/session_history/session_history_bloc_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/screens/session_history_screen.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/screens/session_history_screen.dart` - Added `SessionHistoryContent` widget
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Added exports for Session History BLoC
 
 ---
 
