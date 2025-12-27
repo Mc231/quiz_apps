@@ -37,6 +37,7 @@ class FlagsQuizApp extends StatelessWidget {
       storageService: dependencies.storageService,
       achievementService: dependencies.achievementService,
       achievementsDataProvider: dependencies.achievementsProvider,
+      analyticsService: dependencies.analyticsService,
       challenges: FlagsChallenges.all,
       practiceDataProvider: FlagsPracticeDataProvider.fromServiceLocator(),
       config: QuizAppConfig(
