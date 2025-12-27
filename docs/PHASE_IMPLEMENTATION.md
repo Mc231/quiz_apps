@@ -2410,6 +2410,11 @@ await compositeService.logEvent(QuizEvent.started(...));
 - ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Integrated QuizAnalyticsManager
 - ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/managers.dart` - Added export
 - ✅ `packages/quiz_engine_core/lib/quiz_engine_core.dart` - Added analytics export
+- ✅ `packages/quiz_engine/lib/src/quiz_widget_entry.dart` - Added analyticsService, categoryId, categoryName fields
+- ✅ `packages/quiz_engine/lib/src/quiz_widget.dart` - Pass analytics fields to QuizBloc
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added analyticsService field and integration
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Added QuizAnalyticsService to dependencies
+- ✅ `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Wire analyticsService to QuizApp
 
 **Architecture:**
 - `QuizAnalyticsService` - Abstract interface defining all analytics tracking methods
