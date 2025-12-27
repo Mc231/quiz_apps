@@ -4,6 +4,7 @@
 /// for better separation of concerns and testability.
 library;
 
+export 'quiz_analytics_manager.dart';
 export 'quiz_answer_processor.dart';
 export 'quiz_game_flow_manager.dart';
 export 'quiz_hint_manager.dart';
