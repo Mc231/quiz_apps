@@ -10,6 +10,7 @@ import 'theme/quiz_theme_data.dart';
 /// - Quiz configuration (via ConfigManager or defaultConfig)
 /// - Optional theme customization
 /// - Optional storage service for persisting quiz sessions
+/// - Optional analytics service for event tracking
 /// - Optional quiz completion callback for achievements/analytics
 /// - Optional filter for question selection
 ///
@@ -33,6 +34,19 @@ class QuizWidgetEntry {
   /// Optional storage service for persisting quiz sessions.
   final QuizStorageService? storageService;
 
+  /// Optional analytics service for tracking quiz events.
+  final QuizAnalyticsService? analyticsService;
+
+  /// Category ID for analytics tracking.
+  ///
+  /// Used to identify which category the quiz belongs to in analytics.
+  final String categoryId;
+
+  /// Category name for analytics tracking.
+  ///
+  /// Human-readable category name for analytics reporting.
+  final String categoryName;
+
   /// Optional callback invoked when the quiz is completed.
   ///
   /// Use this to integrate with achievement systems, analytics,
@@ -55,6 +69,9 @@ class QuizWidgetEntry {
   /// [configManager] - Configuration manager with settings integration
   /// [themeData] - Theme customization (defaults to QuizThemeData())
   /// [storageService] - Optional storage service for persisting sessions
+  /// [analyticsService] - Optional analytics service for event tracking
+  /// [categoryId] - Category ID for analytics (defaults to empty string)
+  /// [categoryName] - Category name for analytics (defaults to empty string)
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
   /// [filter] - Optional filter for question selection
   QuizWidgetEntry({
@@ -63,6 +80,9 @@ class QuizWidgetEntry {
     required this.configManager,
     this.themeData = const QuizThemeData(),
     this.storageService,
+    this.analyticsService,
+    this.categoryId = '',
+    this.categoryName = '',
     this.onQuizCompleted,
     this.filter,
   });
@@ -77,6 +97,9 @@ class QuizWidgetEntry {
   /// [defaultConfig] - Default quiz configuration
   /// [themeData] - Theme customization (defaults to QuizThemeData())
   /// [storageService] - Optional storage service for persisting sessions
+  /// [analyticsService] - Optional analytics service for event tracking
+  /// [categoryId] - Category ID for analytics (defaults to empty string)
+  /// [categoryName] - Category name for analytics (defaults to empty string)
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
   /// [filter] - Optional filter for question selection
   QuizWidgetEntry.withDefaultConfig({
@@ -85,6 +108,9 @@ class QuizWidgetEntry {
     required QuizConfig defaultConfig,
     this.themeData = const QuizThemeData(),
     this.storageService,
+    this.analyticsService,
+    this.categoryId = '',
+    this.categoryName = '',
     this.onQuizCompleted,
     this.filter,
   }) : configManager = ConfigManager(defaultConfig: defaultConfig);
