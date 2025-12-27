@@ -601,6 +601,453 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   }
 }
 
+/// A stateless content widget for settings screen.
+///
+/// This widget receives all data and callbacks externally, making it
+/// suitable for use with a BLoC pattern via [SettingsBuilder].
+///
+/// Example:
+/// ```dart
+/// SettingsBuilder(
+///   bloc: settingsBloc,
+///   builder: (context, state) => SettingsContent(
+///     settings: state.settings,
+///     packageInfo: state.packageInfo,
+///     config: config,
+///     onToggleSound: () => bloc.add(SettingsEvent.toggleSound()),
+///     onToggleMusic: () => bloc.add(SettingsEvent.toggleMusic()),
+///     onToggleHaptic: () => bloc.add(SettingsEvent.toggleHaptic()),
+///     onChangeTheme: (theme) => bloc.add(SettingsEvent.changeTheme(theme)),
+///     onResetToDefaults: () => bloc.add(SettingsEvent.resetToDefaults()),
+///   ),
+/// )
+/// ```
+class SettingsContent extends StatelessWidget {
+  /// Creates a [SettingsContent].
+  const SettingsContent({
+    super.key,
+    required this.settings,
+    this.packageInfo,
+    this.config = const QuizSettingsConfig(),
+    this.appName,
+    this.analyticsService,
+    this.onToggleSound,
+    this.onToggleMusic,
+    this.onToggleHaptic,
+    this.onChangeTheme,
+    this.onResetToDefaults,
+  });
+
+  /// The current settings.
+  final QuizSettings settings;
+
+  /// Package info for version display.
+  final PackageInfo? packageInfo;
+
+  /// Configuration for which sections to show.
+  final QuizSettingsConfig config;
+
+  /// Optional app name override for about dialog.
+  final String? appName;
+
+  /// Optional analytics service for tracking settings changes.
+  final AnalyticsService? analyticsService;
+
+  /// Callback when sound is toggled.
+  final VoidCallback? onToggleSound;
+
+  /// Callback when music is toggled.
+  final VoidCallback? onToggleMusic;
+
+  /// Callback when haptic is toggled.
+  final VoidCallback? onToggleHaptic;
+
+  /// Callback when theme is changed.
+  final void Function(AppThemeMode theme)? onChangeTheme;
+
+  /// Callback when reset to defaults is confirmed.
+  final VoidCallback? onResetToDefaults;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = QuizL10n.of(context);
+
+    final body = ListView(
+      children: _buildSettingsList(context, l10n),
+    );
+
+    if (!config.showAppBar) {
+      return body;
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(config.title ?? l10n.settings),
+      ),
+      body: body,
+    );
+  }
+
+  List<Widget> _buildSettingsList(
+    BuildContext context,
+    QuizLocalizations l10n,
+  ) {
+    final widgets = <Widget>[];
+
+    // Audio & Haptics Section
+    if (config.showAudioHapticsSection && _hasAudioHapticsItems()) {
+      widgets.add(_buildSectionHeader(context, l10n.audioAndHaptics));
+
+      if (config.showSoundEffects) {
+        widgets.add(
+          SwitchListTile(
+            title: Text(l10n.soundEffects),
+            subtitle: Text(l10n.soundEffectsDescription),
+            value: settings.soundEnabled,
+            onChanged: onToggleSound != null
+                ? (value) {
+                    onToggleSound!();
+                    analyticsService?.logEvent(
+                      SettingsEvent.soundEffectsToggled(
+                        enabled: value,
+                        source: _settingsSource,
+                      ),
+                    );
+                  }
+                : null,
+          ),
+        );
+      }
+
+      if (config.showBackgroundMusic) {
+        widgets.add(
+          SwitchListTile(
+            title: Text(l10n.backgroundMusic),
+            subtitle: Text(l10n.backgroundMusicDescription),
+            value: settings.musicEnabled,
+            onChanged: onToggleMusic != null
+                ? (value) {
+                    final oldValue = settings.musicEnabled;
+                    onToggleMusic!();
+                    analyticsService?.logEvent(
+                      SettingsEvent.changed(
+                        settingName: 'background_music',
+                        oldValue: oldValue.toString(),
+                        newValue: value.toString(),
+                        settingCategory: 'audio',
+                      ),
+                    );
+                  }
+                : null,
+          ),
+        );
+      }
+
+      if (config.showHapticFeedback) {
+        widgets.add(
+          SwitchListTile(
+            title: Text(l10n.hapticFeedback),
+            subtitle: Text(l10n.hapticFeedbackDescription),
+            value: settings.hapticEnabled,
+            onChanged: onToggleHaptic != null
+                ? (value) {
+                    onToggleHaptic!();
+                    analyticsService?.logEvent(
+                      SettingsEvent.hapticFeedbackToggled(
+                        enabled: value,
+                        source: _settingsSource,
+                      ),
+                    );
+                  }
+                : null,
+          ),
+        );
+      }
+
+      widgets.add(const Divider());
+    }
+
+    // Appearance Section
+    if (config.showAppearanceSection && _hasAppearanceItems()) {
+      widgets.add(_buildSectionHeader(context, l10n.appearance));
+
+      if (config.showThemeSelector) {
+        widgets.add(
+          ListTile(
+            title: Text(l10n.theme),
+            subtitle: Text(_getThemeModeText(settings.themeMode, l10n)),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => _showThemeDialog(context, l10n),
+          ),
+        );
+      }
+
+      widgets.add(const Divider());
+    }
+
+    // Data Export section
+    if (config.showDataExport) {
+      widgets.add(_buildSectionHeader(context, l10n.dataAndPrivacy));
+      widgets.add(_buildExportDataTile());
+      widgets.add(const Divider());
+    }
+
+    // Custom sections before About
+    if (config.customSectionsBeforeAbout != null) {
+      widgets.addAll(config.customSectionsBeforeAbout!(context));
+    }
+
+    // About Section
+    if (config.showAboutSection && _hasAboutItems()) {
+      widgets.add(_buildSectionHeader(context, l10n.about));
+
+      if (config.showVersionInfo && packageInfo != null) {
+        widgets.add(
+          ListTile(
+            title: Text(l10n.version),
+            subtitle: Text(
+              '${packageInfo!.version} (${packageInfo!.buildNumber})',
+            ),
+          ),
+        );
+      }
+
+      if (config.showAboutDialog) {
+        widgets.add(
+          ListTile(
+            title: Text(l10n.aboutThisApp),
+            trailing: const Icon(Icons.info_outline),
+            onTap: () => _showAboutDialog(context, l10n),
+          ),
+        );
+      }
+
+      if (config.showLicenses) {
+        widgets.add(
+          ListTile(
+            title: Text(l10n.openSourceLicenses),
+            trailing: const Icon(Icons.description_outlined),
+            onTap: () => _showLicenses(context),
+          ),
+        );
+      }
+
+      widgets.add(const Divider());
+    }
+
+    // Advanced Section
+    if (config.showAdvancedSection && _hasAdvancedItems()) {
+      widgets.add(_buildSectionHeader(context, l10n.advanced));
+
+      if (config.showResetToDefaults) {
+        widgets.add(
+          ListTile(
+            title: Text(l10n.resetToDefaults),
+            subtitle: Text(l10n.resetToDefaultsDescription),
+            trailing: const Icon(Icons.restore),
+            onTap: () => _showResetDialog(context, l10n),
+          ),
+        );
+      }
+
+      widgets.add(const Divider());
+    }
+
+    // Custom sections at the end
+    if (config.customSections != null) {
+      widgets.addAll(config.customSections!(context));
+    }
+
+    return widgets;
+  }
+
+  bool _hasAudioHapticsItems() {
+    return config.showSoundEffects ||
+        config.showBackgroundMusic ||
+        config.showHapticFeedback;
+  }
+
+  bool _hasAppearanceItems() {
+    return config.showThemeSelector;
+  }
+
+  bool _hasAboutItems() {
+    return (config.showVersionInfo && packageInfo != null) ||
+        config.showAboutDialog ||
+        config.showLicenses;
+  }
+
+  bool _hasAdvancedItems() {
+    return config.showResetToDefaults;
+  }
+
+  Widget _buildSectionHeader(BuildContext context, String title) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.bold,
+            ),
+      ),
+    );
+  }
+
+  Widget _buildExportDataTile() {
+    // Create DataExportService using service locator
+    final exportService = DataExportService(
+      sessionDataSource: sl.get<QuizSessionDataSource>(),
+      answerDataSource: sl.get<QuestionAnswerDataSource>(),
+      statisticsDataSource: sl.get<StatisticsDataSource>(),
+      settingsDataSource: sl.get<SettingsDataSource>(),
+    );
+
+    return ExportDataTile(
+      exportService: exportService,
+      config: const ExportDataTileConfig(showIcon: false),
+      analyticsService: analyticsService,
+    );
+  }
+
+  String _getThemeModeText(AppThemeMode mode, QuizLocalizations l10n) {
+    switch (mode) {
+      case AppThemeMode.light:
+        return l10n.themeLight;
+      case AppThemeMode.dark:
+        return l10n.themeDark;
+      case AppThemeMode.system:
+        return l10n.themeSystem;
+    }
+  }
+
+  void _showThemeDialog(BuildContext context, QuizLocalizations l10n) {
+    final previousTheme = settings.themeMode;
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.selectTheme),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RadioGroup<AppThemeMode>(
+              groupValue: settings.themeMode,
+              onChanged: (value) {
+                if (value == null) return;
+                onChangeTheme?.call(value);
+                analyticsService?.logEvent(
+                  SettingsEvent.themeChanged(
+                    newTheme: value.name,
+                    previousTheme: previousTheme.name,
+                    source: _settingsSource,
+                  ),
+                );
+                Navigator.pop(dialogContext);
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RadioListTile<AppThemeMode>(
+                    title: Text(l10n.themeLight),
+                    value: AppThemeMode.light,
+                  ),
+                  RadioListTile<AppThemeMode>(
+                    title: Text(l10n.themeDark),
+                    value: AppThemeMode.dark,
+                  ),
+                  RadioListTile<AppThemeMode>(
+                    title: Text(l10n.themeSystem),
+                    value: AppThemeMode.system,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.cancel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showAboutDialog(BuildContext context, QuizLocalizations l10n) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.about),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (packageInfo != null) ...[
+                Text(
+                  appName ?? packageInfo!.appName,
+                  style: Theme.of(dialogContext).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 8),
+                Text('${l10n.version}: ${packageInfo!.version}'),
+                Text('${l10n.build}: ${packageInfo!.buildNumber}'),
+              ],
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.close),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLicenses(BuildContext context) {
+    showLicensePage(
+      context: context,
+      applicationName: appName ?? packageInfo?.appName,
+      applicationVersion: packageInfo?.version,
+    );
+  }
+
+  void _showResetDialog(BuildContext context, QuizLocalizations l10n) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.resetSettings),
+        content: Text(l10n.resetSettingsMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext),
+            child: Text(l10n.cancel),
+          ),
+          TextButton(
+            onPressed: () {
+              onResetToDefaults?.call();
+              analyticsService?.logEvent(
+                SettingsEvent.resetConfirmed(
+                  resetType: 'settings_only',
+                  sessionsDeleted: 0,
+                  achievementsReset: 0,
+                ),
+              );
+              Navigator.pop(dialogContext);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(l10n.settingsResetToDefaults)),
+              );
+            },
+            child: Text(l10n.reset),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// A helper widget for building custom settings sections.
 ///
 /// Example:
