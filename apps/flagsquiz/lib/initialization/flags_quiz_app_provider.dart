@@ -94,6 +94,20 @@ class FlagsQuizAppProvider {
     // Sync achievements on app start to catch any missed unlocks
     await achievementService.checkAll();
 
+    // Initialize analytics with console logging for debugging
+    final analytics = CompositeAnalyticsService(
+      providers: [
+        AnalyticsProviderConfig(
+          provider: ConsoleAnalyticsService(),
+          name: 'Console',
+        ),
+      ],
+    );
+    await analytics.initialize();
+
+    // Wrap with adapter to implement QuizAnalyticsService interface
+    final quizAnalytics = QuizAnalyticsAdapter(analytics);
+
     return FlagsQuizDependencies(
       settingsService: settingsService,
       storageService: storageService,
@@ -101,6 +115,7 @@ class FlagsQuizAppProvider {
       achievementsProvider: achievementsProvider,
       dataProvider: dataProvider,
       categories: categories,
+      analyticsService: quizAnalytics,
     );
   }
 }
