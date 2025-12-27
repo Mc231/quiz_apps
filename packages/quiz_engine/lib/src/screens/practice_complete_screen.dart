@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../bloc/practice/practice_state.dart';
 import '../l10n/quiz_localizations.dart';
 
 /// Screen displayed when a practice session is complete.
@@ -120,6 +121,46 @@ class PracticeCompleteScreen extends StatelessWidget {
           style: theme.textTheme.titleLarge,
         ),
       ],
+    );
+  }
+}
+
+/// A stateless content widget for practice complete screen.
+///
+/// This widget receives BLoC state directly, making it suitable for use
+/// with [PracticeBuilder].
+///
+/// Example:
+/// ```dart
+/// PracticeBuilder(
+///   bloc: practiceBloc,
+///   readyBuilder: (context, state) => PracticeStartContent(...),
+///   completeBuilder: (context, state) => PracticeCompleteContent(
+///     state: state,
+///     onDone: () => bloc.add(PracticeEvent.reset()),
+///   ),
+/// )
+/// ```
+class PracticeCompleteContent extends StatelessWidget {
+  /// Creates a [PracticeCompleteContent].
+  const PracticeCompleteContent({
+    super.key,
+    required this.state,
+    required this.onDone,
+  });
+
+  /// The practice complete state from BLoC.
+  final PracticeComplete state;
+
+  /// Called when the user taps the "Done" button.
+  final VoidCallback onDone;
+
+  @override
+  Widget build(BuildContext context) {
+    return PracticeCompleteScreen(
+      correctCount: state.correctCount,
+      needMorePracticeCount: state.needMorePracticeCount,
+      onDone: onDone,
     );
   }
 }
