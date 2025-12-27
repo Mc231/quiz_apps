@@ -309,6 +309,11 @@ class QuizApp extends StatefulWidget {
   /// Used when [settingsBuilder] is not provided.
   final QuizSettingsConfig? settingsConfig;
 
+  /// Analytics service for tracking quiz events.
+  ///
+  /// When provided, quiz events will be tracked through this service.
+  final QuizAnalyticsService? analyticsService;
+
   /// Locale override.
   final Locale? locale;
 
@@ -345,6 +350,7 @@ class QuizApp extends StatefulWidget {
     this.achievementService,
     this.settingsBuilder,
     this.settingsConfig,
+    this.analyticsService,
     this.locale,
     this.formatDate,
     this.formatStatus,
@@ -687,6 +693,9 @@ class _QuizAppState extends State<QuizApp> {
               dataProvider: () async => questions,
               configManager: configManager,
               storageService: storageAdapter,
+              analyticsService: widget.analyticsService,
+              categoryId: category.id,
+              categoryName: category.title(context),
               onQuizCompleted: (results) => _handleQuizCompleted(results),
             ),
           ),
