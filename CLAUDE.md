@@ -818,6 +818,167 @@ Located in `packages/quiz_engine/assets/sounds/`:
 - `timerWarning.mp3` - Timer low
 - `timeOut.mp3` - Time expired
 
+### 7. Analytics (MANDATORY)
+
+**Use the analytics system for tracking user behavior and app metrics.**
+
+Located at `packages/shared_services/lib/src/analytics/`.
+
+Full documentation: [`docs/ANALYTICS_EVENTS.md`](./docs/ANALYTICS_EVENTS.md)
+
+#### Available Analytics Services
+
+| Service | Use Case |
+|---------|----------|
+| `FirebaseAnalyticsService` | Production (Firebase Analytics) |
+| `ConsoleAnalyticsService` | Development (logs to console) |
+| `NoOpAnalyticsService` | Testing (silent) |
+| `CompositeAnalyticsService` | Multi-provider (fan-out to multiple) |
+
+#### Event Classes (87 total events)
+
+| Class | Events | Description |
+|-------|--------|-------------|
+| `ScreenViewEvent` | 18 | Screen/page tracking |
+| `QuizEvent` | 8 | Quiz lifecycle |
+| `QuestionEvent` | 8 | Question interactions |
+| `HintEvent` | 4 | Hint usage |
+| `ResourceEvent` | 4 | Lives/resources |
+| `InteractionEvent` | 12 | UI interactions |
+| `SettingsEvent` | 8 | Settings changes |
+| `AchievementEvent` | 5 | Achievements |
+| `MonetizationEvent` | 10 | Purchases/ads |
+| `ErrorEvent` | 6 | Error tracking |
+| `PerformanceEvent` | 5 | App performance |
+
+#### Basic Usage
+
+```dart
+import 'package:shared_services/shared_services.dart';
+
+// Initialize analytics
+final analytics = FirebaseAnalyticsService();
+await analytics.initialize();
+
+// Log quiz started event
+await analytics.logEvent(QuizEvent.started(
+  quizId: 'quiz-123',
+  quizName: 'European Flags',
+  categoryId: 'europe',
+  categoryName: 'Europe',
+  mode: 'standard',
+  totalQuestions: 20,
+));
+
+// Track screen view
+await analytics.setCurrentScreen(
+  screenName: 'quiz',
+  screenClass: 'QuizScreen',
+);
+await analytics.logEvent(ScreenViewEvent.quiz(
+  quizId: 'quiz-123',
+  quizName: 'European Flags',
+  mode: 'standard',
+  totalQuestions: 20,
+));
+
+// Set user property
+await analytics.setUserProperty(
+  name: AnalyticsUserProperties.totalQuizzesTaken,
+  value: '50',
+);
+```
+
+#### Using Composite Analytics (Multi-Provider)
+
+```dart
+final analytics = CompositeAnalyticsService(
+  providers: [
+    AnalyticsProviderConfig(
+      provider: FirebaseAnalyticsService(),
+      name: 'Firebase',
+    ),
+    AnalyticsProviderConfig(
+      provider: ConsoleAnalyticsService(),
+      name: 'Console',
+      enabled: kDebugMode,
+    ),
+    // Send only monetization events to revenue analytics
+    AnalyticsProviderConfig(
+      provider: RevenueAnalyticsService(),
+      name: 'Revenue',
+      eventFilter: (event) => event is MonetizationEvent,
+    ),
+  ],
+);
+```
+
+#### Common Event Patterns
+
+```dart
+// Quiz lifecycle
+await analytics.logEvent(QuizEvent.started(...));
+await analytics.logEvent(QuizEvent.completed(...));
+await analytics.logEvent(QuizEvent.cancelled(...));
+await analytics.logEvent(QuizEvent.failed(...));
+
+// Question interactions
+await analytics.logEvent(QuestionEvent.displayed(...));
+await analytics.logEvent(QuestionEvent.answered(...));
+await analytics.logEvent(QuestionEvent.correct(...));
+await analytics.logEvent(QuestionEvent.incorrect(...));
+
+// Settings changes
+await analytics.logEvent(SettingsEvent.soundEffectsToggled(
+  enabled: false,
+  source: 'settings_screen',
+));
+
+// Achievements
+await analytics.logEvent(AchievementEvent.unlocked(
+  achievementId: 'first_perfect',
+  achievementName: 'Perfectionist',
+  achievementCategory: 'score',
+  pointsAwarded: 100,
+  totalPoints: 500,
+  unlockedCount: 5,
+  totalAchievements: 20,
+));
+
+// Errors
+await analytics.logEvent(ErrorEvent.dataLoadFailed(
+  dataType: 'quiz_data',
+  errorCode: 'NETWORK_ERROR',
+  errorMessage: 'Failed to connect',
+));
+```
+
+#### User Properties
+
+```dart
+// Set user properties for segmentation
+await analytics.setUserProperty(
+  name: AnalyticsUserProperties.totalQuizzesTaken,
+  value: '50',
+);
+await analytics.setUserProperty(
+  name: AnalyticsUserProperties.averageScore,
+  value: '75.5',
+);
+await analytics.setUserProperty(
+  name: AnalyticsUserProperties.isPremiumUser,
+  value: 'false',
+);
+```
+
+#### Firebase DebugView Testing
+
+To verify events appear in Firebase DebugView:
+1. Run app in debug mode
+2. Open Firebase Console > Analytics > DebugView
+3. Perform actions in the app
+4. Events should appear within seconds
+
 ## Troubleshooting
 
 ### "Package not found" errors
