@@ -1,7 +1,7 @@
 /// State classes for the Practice BLoC.
 library;
 
-import '../../models/practice_data_provider.dart';
+import '../models/practice_data_provider.dart';
 
 /// Sealed class representing all possible states for practice screen.
 sealed class PracticeState {

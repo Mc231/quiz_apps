@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../bloc/practice/practice_state.dart';
+import 'practice_state.dart';
 import '../l10n/quiz_localizations.dart';
 import '../models/practice_data_provider.dart';
 

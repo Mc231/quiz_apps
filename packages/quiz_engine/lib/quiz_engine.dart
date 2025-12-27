@@ -34,58 +34,7 @@ export 'src/quiz_widget_entry.dart';
 
 // BLoC Infrastructure
 export 'src/bloc/bloc_provider.dart';
-export 'src/bloc/bloc_builder.dart';
-export 'src/bloc/base/base_bloc_state.dart';
-export 'src/bloc/base/screen_bloc.dart';
-export 'src/bloc/base/bloc_analytics_mixin.dart';
-
-// Statistics BLoC
-export 'src/bloc/statistics/statistics_bloc.dart';
-export 'src/bloc/statistics/statistics_dashboard_builder.dart';
-export 'src/bloc/statistics/statistics_event.dart';
-export 'src/bloc/statistics/statistics_state.dart';
-
-// Session History BLoC
-export 'src/bloc/session_history/session_history_bloc.dart';
-export 'src/bloc/session_history/session_history_builder.dart';
-export 'src/bloc/session_history/session_history_event.dart';
-export 'src/bloc/session_history/session_history_state.dart';
-
-// Session Detail BLoC
-export 'src/bloc/session_detail/session_detail_bloc.dart';
-export 'src/bloc/session_detail/session_detail_builder.dart';
-export 'src/bloc/session_detail/session_detail_event.dart';
-export 'src/bloc/session_detail/session_detail_state.dart';
-
-// Challenges BLoC
-export 'src/bloc/challenges/challenges_bloc.dart';
-export 'src/bloc/challenges/challenges_builder.dart';
-export 'src/bloc/challenges/challenges_event.dart';
-export 'src/bloc/challenges/challenges_state.dart';
-
-// Home BLoC
-export 'src/bloc/home/home_bloc.dart';
-export 'src/bloc/home/home_builder.dart';
-export 'src/bloc/home/home_event.dart';
-export 'src/bloc/home/home_state.dart';
-
-// Achievements BLoC
-export 'src/bloc/achievements/achievements_bloc.dart';
-export 'src/bloc/achievements/achievements_builder.dart';
-export 'src/bloc/achievements/achievements_event.dart';
-export 'src/bloc/achievements/achievements_state.dart';
-
-// Settings BLoC
-export 'src/bloc/settings/settings_bloc.dart';
-export 'src/bloc/settings/settings_builder.dart';
-export 'src/bloc/settings/settings_event.dart';
-export 'src/bloc/settings/settings_state.dart';
-
-// Practice BLoC
-export 'src/bloc/practice/practice_bloc.dart';
-export 'src/bloc/practice/practice_builder.dart';
-export 'src/bloc/practice/practice_event.dart';
-export 'src/bloc/practice/practice_state.dart';
+export 'src/screens/practice_state.dart';
 
 // Extensions
 export 'src/extensions/sizing_information_extension.dart';
