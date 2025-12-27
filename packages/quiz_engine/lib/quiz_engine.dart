@@ -40,6 +40,12 @@ export 'src/bloc/statistics/statistics_dashboard_builder.dart';
 export 'src/bloc/statistics/statistics_event.dart';
 export 'src/bloc/statistics/statistics_state.dart';
 
+// Session History BLoC
+export 'src/bloc/session_history/session_history_bloc.dart';
+export 'src/bloc/session_history/session_history_builder.dart';
+export 'src/bloc/session_history/session_history_event.dart';
+export 'src/bloc/session_history/session_history_state.dart';
+
 // Extensions
 export 'src/extensions/sizing_information_extension.dart';
 
