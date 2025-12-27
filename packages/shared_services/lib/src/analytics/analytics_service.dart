@@ -6,8 +6,8 @@ import 'analytics_event.dart';
 /// Implementations include:
 /// - [ConsoleAnalyticsService] - Development logging
 /// - [NoOpAnalyticsService] - Testing (silent)
-/// - FirebaseAnalyticsService - Production (Sprint 9.1.4)
-/// - CompositeAnalyticsService - Multi-provider (Sprint 9.1.5)
+/// - [FirebaseAnalyticsService] - Production Firebase Analytics
+/// - [CompositeAnalyticsService] - Multi-provider fan-out
 abstract class AnalyticsService {
   /// Whether analytics is enabled.
   bool get isEnabled;
