@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../widgets/category_statistics_widget.dart';
@@ -90,6 +91,7 @@ class StatisticsDashboardScreen extends StatefulWidget {
   const StatisticsDashboardScreen({
     super.key,
     required this.data,
+    required this.analyticsService,
     this.initialTab = StatisticsDashboardTab.overview,
     this.onSessionTap,
     this.onCategoryTap,
@@ -101,6 +103,9 @@ class StatisticsDashboardScreen extends StatefulWidget {
 
   /// Dashboard data.
   final StatisticsDashboardData data;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Initial tab to display.
   final StatisticsDashboardTab initialTab;
@@ -141,6 +146,16 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
       length: 4,
       vsync: this,
       initialIndex: widget.initialTab.index,
+    );
+    _logScreenView();
+  }
+
+  void _logScreenView() {
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.statistics(
+        totalSessions: widget.data.globalStatistics.totalSessions,
+        averageScore: widget.data.globalStatistics.averageScore,
+      ),
     );
   }
 
@@ -705,6 +720,7 @@ class StatisticsDashboardContent extends StatefulWidget {
     required this.onTabChanged,
     required this.onTimeRangeChanged,
     required this.onLeaderboardTypeChanged,
+    required this.analyticsService,
     this.onSessionTap,
     this.onCategoryTap,
     this.onLeaderboardEntryTap,
@@ -733,6 +749,9 @@ class StatisticsDashboardContent extends StatefulWidget {
 
   /// Callback when leaderboard type changes.
   final void Function(LeaderboardType type) onLeaderboardTypeChanged;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Callback when a session is tapped.
   final void Function(SessionCardData session)? onSessionTap;

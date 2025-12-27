@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../widgets/statistics_card.dart';
 import '../widgets/trends_widget.dart';
@@ -174,12 +175,13 @@ class StatisticsTexts {
 }
 
 /// Screen displaying global statistics and trends.
-class StatisticsScreen extends StatelessWidget {
+class StatisticsScreen extends StatefulWidget {
   /// Creates a [StatisticsScreen].
   const StatisticsScreen({
     super.key,
     required this.statistics,
     required this.texts,
+    required this.analyticsService,
     this.recentSessions = const [],
     this.onSessionTap,
     this.onViewAllSessions,
@@ -191,6 +193,9 @@ class StatisticsScreen extends StatelessWidget {
 
   /// Localization texts.
   final StatisticsTexts texts;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Recent sessions for quick access.
   final List<SessionCardData> recentSessions;
@@ -205,12 +210,32 @@ class StatisticsScreen extends StatelessWidget {
   final bool isLoading;
 
   @override
+  State<StatisticsScreen> createState() => _StatisticsScreenState();
+}
+
+class _StatisticsScreenState extends State<StatisticsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _logScreenView();
+  }
+
+  void _logScreenView() {
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.statistics(
+        totalSessions: widget.statistics.totalSessions,
+        averageScore: widget.statistics.averageScore,
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (isLoading) {
+    if (widget.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (!statistics.hasData) {
+    if (!widget.statistics.hasData) {
       return _buildEmptyState(context);
     }
 
@@ -218,16 +243,16 @@ class StatisticsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildSectionHeader(context, texts.overviewLabel),
+          _buildSectionHeader(context, widget.texts.overviewLabel),
           _buildOverviewGrid(context),
-          if (statistics.weeklyTrend != null &&
-              statistics.weeklyTrend!.isNotEmpty) ...[
+          if (widget.statistics.weeklyTrend != null &&
+              widget.statistics.weeklyTrend!.isNotEmpty) ...[
             const SizedBox(height: 8),
             _buildTrendChart(context),
           ],
-          _buildSectionHeader(context, texts.insightsLabel),
+          _buildSectionHeader(context, widget.texts.insightsLabel),
           _buildInsightsGrid(context),
-          if (recentSessions.isNotEmpty) ...[
+          if (widget.recentSessions.isNotEmpty) ...[
             _buildRecentSessionsHeader(context),
             _buildRecentSessions(context),
           ],
@@ -253,7 +278,7 @@ class StatisticsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              texts.emptyTitle,
+              widget.texts.emptyTitle,
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -261,7 +286,7 @@ class StatisticsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              texts.emptySubtitle,
+              widget.texts.emptySubtitle,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: Colors.grey[600],
               ),
@@ -289,27 +314,27 @@ class StatisticsScreen extends StatelessWidget {
     return StatisticsGrid(
       children: [
         StatisticsCard(
-          title: texts.totalSessionsLabel,
-          value: statistics.totalSessions.toString(),
+          title: widget.texts.totalSessionsLabel,
+          value: widget.statistics.totalSessions.toString(),
           icon: Icons.quiz,
           iconColor: Colors.blue,
         ),
         StatisticsCard(
-          title: texts.totalQuestionsLabel,
-          value: statistics.totalQuestions.toString(),
+          title: widget.texts.totalQuestionsLabel,
+          value: widget.statistics.totalQuestions.toString(),
           icon: Icons.help_outline,
           iconColor: Colors.purple,
         ),
         StatisticsCard(
-          title: texts.averageScoreLabel,
-          value: '${statistics.averageScore.round()}%',
+          title: widget.texts.averageScoreLabel,
+          value: '${widget.statistics.averageScore.round()}%',
           icon: Icons.score,
           iconColor: Colors.orange,
-          trend: _getTrendDirection(statistics.trendDirection),
+          trend: _getTrendDirection(widget.statistics.trendDirection),
         ),
         StatisticsCard(
-          title: texts.bestScoreLabel,
-          value: '${statistics.bestScore.round()}%',
+          title: widget.texts.bestScoreLabel,
+          value: '${widget.statistics.bestScore.round()}%',
           icon: Icons.emoji_events,
           iconColor: Colors.amber,
         ),
@@ -318,12 +343,12 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _buildTrendChart(BuildContext context) {
-    final trendLabel = _getTrendLabel(statistics.trendDirection);
+    final trendLabel = _getTrendLabel(widget.statistics.trendDirection);
 
     return TrendsWidget(
-      title: texts.weeklyTrendLabel,
-      dataPoints: statistics.weeklyTrend!,
-      trend: statistics.trendDirection,
+      title: widget.texts.weeklyTrendLabel,
+      dataPoints: widget.statistics.weeklyTrend!,
+      trend: widget.statistics.trendDirection,
       trendLabel: trendLabel,
     );
   }
@@ -332,27 +357,27 @@ class StatisticsScreen extends StatelessWidget {
     return StatisticsGrid(
       children: [
         StatisticsCard(
-          title: texts.accuracyLabel,
-          value: '${statistics.accuracy.round()}%',
+          title: widget.texts.accuracyLabel,
+          value: '${widget.statistics.accuracy.round()}%',
           icon: Icons.adjust,
           iconColor: Colors.teal,
         ),
         StatisticsCard(
-          title: texts.timePlayedLabel,
-          value: texts.formatDuration(statistics.totalTimePlayed),
+          title: widget.texts.timePlayedLabel,
+          value: widget.texts.formatDuration(widget.statistics.totalTimePlayed),
           icon: Icons.timer,
           iconColor: Colors.indigo,
         ),
         StatisticsCard(
-          title: texts.perfectScoresLabel,
-          value: statistics.perfectScores.toString(),
+          title: widget.texts.perfectScoresLabel,
+          value: widget.statistics.perfectScores.toString(),
           icon: Icons.star,
           iconColor: Colors.amber,
         ),
         StatisticsCard(
-          title: texts.currentStreakLabel,
-          value: '${statistics.currentStreak}',
-          subtitle: '${texts.bestStreakLabel}: ${statistics.bestStreak}',
+          title: widget.texts.currentStreakLabel,
+          value: '${widget.statistics.currentStreak}',
+          subtitle: '${widget.texts.bestStreakLabel}: ${widget.statistics.bestStreak}',
           icon: Icons.local_fire_department,
           iconColor: Colors.deepOrange,
         ),
@@ -367,16 +392,16 @@ class StatisticsScreen extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              texts.recentSessionsLabel,
+              widget.texts.recentSessionsLabel,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
             ),
           ),
-          if (onViewAllSessions != null)
+          if (widget.onViewAllSessions != null)
             TextButton(
-              onPressed: onViewAllSessions,
-              child: Text(texts.viewAllLabel),
+              onPressed: widget.onViewAllSessions,
+              child: Text(widget.texts.viewAllLabel),
             ),
         ],
       ),
@@ -385,13 +410,13 @@ class StatisticsScreen extends StatelessWidget {
 
   Widget _buildRecentSessions(BuildContext context) {
     return Column(
-      children: recentSessions.take(3).map((session) {
+      children: widget.recentSessions.take(3).map((session) {
         return SessionCard(
           data: session,
-          questionsLabel: texts.questionsLabel,
-          formatDate: texts.formatDate,
-          formatStatus: texts.formatStatus,
-          onTap: onSessionTap != null ? () => onSessionTap!(session) : null,
+          questionsLabel: widget.texts.questionsLabel,
+          formatDate: widget.texts.formatDate,
+          formatStatus: widget.texts.formatStatus,
+          onTap: widget.onSessionTap != null ? () => widget.onSessionTap!(session) : null,
         );
       }).toList(),
     );
@@ -413,11 +438,11 @@ class StatisticsScreen extends StatelessWidget {
   String? _getTrendLabel(TrendType? type) {
     switch (type) {
       case TrendType.improving:
-        return texts.improvingLabel;
+        return widget.texts.improvingLabel;
       case TrendType.declining:
-        return texts.decliningLabel;
+        return widget.texts.decliningLabel;
       case TrendType.stable:
-        return texts.stableLabel;
+        return widget.texts.stableLabel;
       case null:
         return null;
     }

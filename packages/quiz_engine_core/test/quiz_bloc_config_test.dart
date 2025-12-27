@@ -37,6 +37,7 @@ void main() {
       final bloc = QuizBloc(
         () async => testData,
         RandomItemPicker(testData),
+        analyticsService: NoOpQuizAnalyticsService(),
         configManager: configManager,
       );
 
@@ -54,6 +55,7 @@ void main() {
       final bloc = QuizBloc(
         () async => testData,
         RandomItemPicker(testData),
+        analyticsService: NoOpQuizAnalyticsService(),
         configManager: configManager,
       );
 
@@ -71,6 +73,7 @@ void main() {
       final bloc = QuizBloc(
         () async => testData,
         RandomItemPicker(testData),
+        analyticsService: NoOpQuizAnalyticsService(),
         configManager: configManager,
       );
 
@@ -95,6 +98,7 @@ void main() {
       final bloc = QuizBloc(
         () async => testData,
         RandomItemPicker(testData),
+        analyticsService: NoOpQuizAnalyticsService(),
         configManager: configManager,
       );
 
@@ -123,7 +127,7 @@ void main() {
       final bloc = QuizBloc(
         () async => testData,
         RandomItemPicker(testData),
-        configManager: configManager,
+        configManager: configManager, analyticsService: NoOpQuizAnalyticsService(),
       );
 
       expect(
@@ -158,6 +162,7 @@ void main() {
       final bloc = QuizBloc(
         () async => testData,
         RandomItemPicker(testData),
+        analyticsService: NoOpQuizAnalyticsService(),
         configManager: configManager,
       );
 
@@ -188,6 +193,7 @@ void main() {
       final bloc = QuizBloc(
         () async => testData,
         RandomItemPicker(testData),
+        analyticsService: NoOpQuizAnalyticsService(),
         configManager: configManager,
       );
 
@@ -212,6 +218,7 @@ void main() {
         final bloc = QuizBloc(
           () async => testData,
           RandomItemPicker(testData),
+          analyticsService: NoOpQuizAnalyticsService(),
           configManager: configManager,
         );
 

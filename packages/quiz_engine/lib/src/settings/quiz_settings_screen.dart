@@ -178,15 +178,15 @@ class QuizSettingsScreen extends StatefulWidget {
   final String? appName;
 
   /// Optional analytics service for tracking settings changes.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   /// Creates a [QuizSettingsScreen].
-  const QuizSettingsScreen({
+  QuizSettingsScreen({
     super.key,
     required this.settingsService,
     this.config = const QuizSettingsConfig(),
     this.appName,
-    this.analyticsService,
+    required this.analyticsService,
   });
 
   @override
@@ -263,7 +263,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             value: _currentSettings.soundEnabled,
             onChanged: (value) async {
               await widget.settingsService.toggleSound();
-              widget.analyticsService?.logEvent(
+              widget.analyticsService.logEvent(
                 SettingsEvent.soundEffectsToggled(
                   enabled: value,
                   source: _settingsSource,
@@ -283,7 +283,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             onChanged: (value) async {
               final oldValue = _currentSettings.musicEnabled;
               await widget.settingsService.toggleMusic();
-              widget.analyticsService?.logEvent(
+              widget.analyticsService.logEvent(
                 SettingsEvent.changed(
                   settingName: 'background_music',
                   oldValue: oldValue.toString(),
@@ -304,7 +304,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             value: _currentSettings.hapticEnabled,
             onChanged: (value) async {
               await widget.settingsService.toggleHaptic();
-              widget.analyticsService?.logEvent(
+              widget.analyticsService.logEvent(
                 SettingsEvent.hapticFeedbackToggled(
                   enabled: value,
                   source: _settingsSource,
@@ -486,7 +486,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
               onChanged: (value) async {
                 if (value == null) return;
                 await widget.settingsService.setThemeMode(value);
-                widget.analyticsService?.logEvent(
+                widget.analyticsService.logEvent(
                   SettingsEvent.themeChanged(
                     newTheme: value.name,
                     previousTheme: previousTheme.name,
@@ -579,7 +579,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
           TextButton(
             onPressed: () async {
               await widget.settingsService.resetToDefaults();
-              widget.analyticsService?.logEvent(
+              widget.analyticsService.logEvent(
                 SettingsEvent.resetConfirmed(
                   resetType: 'settings_only',
                   sessionsDeleted: 0,
@@ -630,7 +630,7 @@ class SettingsContent extends StatelessWidget {
     this.packageInfo,
     this.config = const QuizSettingsConfig(),
     this.appName,
-    this.analyticsService,
+    required this.analyticsService,
     this.onToggleSound,
     this.onToggleMusic,
     this.onToggleHaptic,
@@ -651,7 +651,7 @@ class SettingsContent extends StatelessWidget {
   final String? appName;
 
   /// Optional analytics service for tracking settings changes.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   /// Callback when sound is toggled.
   final VoidCallback? onToggleSound;
@@ -707,7 +707,7 @@ class SettingsContent extends StatelessWidget {
             onChanged: onToggleSound != null
                 ? (value) {
                     onToggleSound!();
-                    analyticsService?.logEvent(
+                    analyticsService.logEvent(
                       SettingsEvent.soundEffectsToggled(
                         enabled: value,
                         source: _settingsSource,
@@ -729,7 +729,7 @@ class SettingsContent extends StatelessWidget {
                 ? (value) {
                     final oldValue = settings.musicEnabled;
                     onToggleMusic!();
-                    analyticsService?.logEvent(
+                    analyticsService.logEvent(
                       SettingsEvent.changed(
                         settingName: 'background_music',
                         oldValue: oldValue.toString(),
@@ -752,7 +752,7 @@ class SettingsContent extends StatelessWidget {
             onChanged: onToggleHaptic != null
                 ? (value) {
                     onToggleHaptic!();
-                    analyticsService?.logEvent(
+                    analyticsService.logEvent(
                       SettingsEvent.hapticFeedbackToggled(
                         enabled: value,
                         source: _settingsSource,
@@ -935,7 +935,7 @@ class SettingsContent extends StatelessWidget {
               onChanged: (value) {
                 if (value == null) return;
                 onChangeTheme?.call(value);
-                analyticsService?.logEvent(
+                analyticsService.logEvent(
                   SettingsEvent.themeChanged(
                     newTheme: value.name,
                     previousTheme: previousTheme.name,
@@ -1028,7 +1028,7 @@ class SettingsContent extends StatelessWidget {
           TextButton(
             onPressed: () {
               onResetToDefaults?.call();
-              analyticsService?.logEvent(
+              analyticsService.logEvent(
                 SettingsEvent.resetConfirmed(
                   resetType: 'settings_only',
                   sessionsDeleted: 0,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../widgets/question_review_widget.dart';
@@ -15,12 +16,13 @@ import 'session_detail_screen.dart';
 /// - Score percentage
 /// - Statistics (correct, incorrect, skipped, duration)
 /// - Action buttons for reviewing the session and returning home
-class QuizResultsScreen extends StatelessWidget {
+class QuizResultsScreen extends StatefulWidget {
   /// Creates a [QuizResultsScreen].
   const QuizResultsScreen({
     super.key,
     required this.results,
     required this.onDone,
+    required this.analyticsService,
     this.onReviewSession,
     this.onReviewWrongAnswers,
     this.onPlayAgain,
@@ -32,6 +34,9 @@ class QuizResultsScreen extends StatelessWidget {
 
   /// Callback when user taps "Done" to return home.
   final VoidCallback onDone;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Optional callback when user wants to review the session.
   /// If null, the button will navigate to the session detail screen inline.
@@ -46,6 +51,29 @@ class QuizResultsScreen extends StatelessWidget {
 
   /// Optional image builder for question images in review.
   final Widget Function(String path)? imageBuilder;
+
+  @override
+  State<QuizResultsScreen> createState() => _QuizResultsScreenState();
+}
+
+class _QuizResultsScreenState extends State<QuizResultsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _logScreenView();
+  }
+
+  void _logScreenView() {
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.results(
+        quizId: widget.results.quizId,
+        quizName: widget.results.quizName,
+        scorePercentage: widget.results.scorePercentage,
+        isPerfectScore: widget.results.isPerfectScore,
+        starRating: widget.results.starRating,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,13 +106,13 @@ class QuizResultsScreen extends StatelessWidget {
                     _buildScoreCircle(context, l10n),
                     const SizedBox(height: 24),
                     // Show score points if score > 0
-                    if (results.score > 0) ...[
-                      ScoreDisplay(score: results.score),
-                      if (results.scoreBreakdown != null &&
-                          results.scoreBreakdown!.bonusPoints > 0) ...[
+                    if (widget.results.score > 0) ...[
+                      ScoreDisplay(score: widget.results.score),
+                      if (widget.results.scoreBreakdown != null &&
+                          widget.results.scoreBreakdown!.bonusPoints > 0) ...[
                         const SizedBox(height: 8),
                         ScoreBreakdownWidget(
-                          breakdown: results.scoreBreakdown!,
+                          breakdown: widget.results.scoreBreakdown!,
                           compact: true,
                           showTitle: false,
                         ),
@@ -107,7 +135,7 @@ class QuizResultsScreen extends StatelessWidget {
   }
 
   Widget _buildStarRating(BuildContext context) {
-    final starCount = results.starRating;
+    final starCount = widget.results.starRating;
     final starColor = _getStarColor(starCount);
 
     return Row(
@@ -148,7 +176,7 @@ class QuizResultsScreen extends StatelessWidget {
     QuizEngineLocalizations l10n,
   ) {
     final theme = Theme.of(context);
-    final stars = results.starRating;
+    final stars = widget.results.starRating;
     final message = _getMotivationalMessage(l10n, stars);
     final color = _getStarColor(stars);
 
@@ -177,7 +205,7 @@ class QuizResultsScreen extends StatelessWidget {
   }
 
   Widget _buildScoreCircle(BuildContext context, QuizEngineLocalizations l10n) {
-    final percentage = results.scorePercentage;
+    final percentage = widget.results.scorePercentage;
     final scoreColor = _getScoreColor(percentage);
 
     return SizedBox(
@@ -210,7 +238,7 @@ class QuizResultsScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  l10n.scoreOf(results.correctAnswers, results.totalQuestions),
+                  l10n.scoreOf(widget.results.correctAnswers, widget.results.totalQuestions),
                   style: TextStyle(
                     fontSize: 14,
                     color: Colors.grey[600],
@@ -244,45 +272,45 @@ class QuizResultsScreen extends StatelessWidget {
           context,
           icon: Icons.check_circle,
           color: Colors.green,
-          value: results.correctAnswers.toString(),
+          value: widget.results.correctAnswers.toString(),
           label: l10n.correct,
         ),
         _buildStatItem(
           context,
           icon: Icons.cancel,
           color: Colors.red,
-          value: results.incorrectAnswers.toString(),
+          value: widget.results.incorrectAnswers.toString(),
           label: l10n.incorrect,
         ),
-        if (results.skippedAnswers > 0)
+        if (widget.results.skippedAnswers > 0)
           _buildStatItem(
             context,
             icon: Icons.skip_next,
             color: Colors.orange,
-            value: results.skippedAnswers.toString(),
+            value: widget.results.skippedAnswers.toString(),
             label: l10n.skipped,
           ),
-        if (results.timedOutAnswers > 0)
+        if (widget.results.timedOutAnswers > 0)
           _buildStatItem(
             context,
             icon: Icons.timer_off,
             color: Colors.purple,
-            value: results.timedOutAnswers.toString(),
+            value: widget.results.timedOutAnswers.toString(),
             label: l10n.timedOut,
           ),
         _buildStatItem(
           context,
           icon: Icons.timer,
           color: Colors.blue,
-          value: results.formattedDuration,
+          value: widget.results.formattedDuration,
           label: l10n.duration,
         ),
-        if (results.totalHintsUsed > 0)
+        if (widget.results.totalHintsUsed > 0)
           _buildStatItem(
             context,
             icon: Icons.lightbulb,
             color: Colors.amber,
-            value: results.totalHintsUsed.toString(),
+            value: widget.results.totalHintsUsed.toString(),
             label: l10n.hintsUsed,
           ),
       ],
@@ -350,7 +378,7 @@ class QuizResultsScreen extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         // Review Wrong Answers button (disabled for now)
-        if (results.wrongAnswers.isNotEmpty)
+        if (widget.results.wrongAnswers.isNotEmpty)
           Opacity(
             opacity: 0.5,
             child: OutlinedButton.icon(
@@ -360,7 +388,7 @@ class QuizResultsScreen extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    '${l10n.reviewWrongAnswers} (${results.wrongAnswers.length})',
+                    '${l10n.reviewWrongAnswers} (${widget.results.wrongAnswers.length})',
                   ),
                   const SizedBox(width: 8),
                   Container(
@@ -387,10 +415,10 @@ class QuizResultsScreen extends StatelessWidget {
               ),
             ),
           ),
-        if (results.wrongAnswers.isNotEmpty) const SizedBox(height: 12),
+        if (widget.results.wrongAnswers.isNotEmpty) const SizedBox(height: 12),
         // Done button
         ElevatedButton(
-          onPressed: onDone,
+          onPressed: widget.onDone,
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
@@ -413,8 +441,8 @@ class QuizResultsScreen extends StatelessWidget {
     BuildContext context,
     QuizEngineLocalizations l10n,
   ) {
-    if (onReviewSession != null) {
-      onReviewSession!();
+    if (widget.onReviewSession != null) {
+      widget.onReviewSession!();
       return;
     }
 
@@ -428,7 +456,8 @@ class QuizResultsScreen extends StatelessWidget {
           body: SessionDetailScreen(
             session: _createSessionDetailData(l10n),
             texts: _createSessionDetailTexts(l10n),
-            imageBuilder: imageBuilder,
+            analyticsService: widget.analyticsService,
+            imageBuilder: widget.imageBuilder,
           ),
         ),
       ),
@@ -437,30 +466,30 @@ class QuizResultsScreen extends StatelessWidget {
 
   SessionDetailData _createSessionDetailData(QuizEngineLocalizations l10n) {
     return SessionDetailData(
-      id: results.sessionId ?? '',
-      quizName: results.quizName,
-      totalQuestions: results.totalQuestions,
-      totalCorrect: results.correctAnswers,
-      totalIncorrect: results.incorrectAnswers + results.timedOutAnswers,
-      totalSkipped: results.skippedAnswers,
-      scorePercentage: results.scorePercentage,
+      id: widget.results.sessionId ?? '',
+      quizName: widget.results.quizName,
+      totalQuestions: widget.results.totalQuestions,
+      totalCorrect: widget.results.correctAnswers,
+      totalIncorrect: widget.results.incorrectAnswers + widget.results.timedOutAnswers,
+      totalSkipped: widget.results.skippedAnswers,
+      scorePercentage: widget.results.scorePercentage,
       completionStatus: _getCompletionStatus(l10n),
-      startTime: results.completedAt.subtract(
-        Duration(seconds: results.durationSeconds),
+      startTime: widget.results.completedAt.subtract(
+        Duration(seconds: widget.results.durationSeconds),
       ),
-      durationSeconds: results.durationSeconds,
-      quizCategory: results.quizId,
+      durationSeconds: widget.results.durationSeconds,
+      quizCategory: widget.results.quizId,
       questions: _createReviewedQuestions(),
     );
   }
 
   String _getCompletionStatus(QuizEngineLocalizations l10n) {
-    if (results.isPerfectScore) return l10n.perfectScore;
+    if (widget.results.isPerfectScore) return l10n.perfectScore;
     return l10n.sessionCompleted;
   }
 
   List<ReviewedQuestion> _createReviewedQuestions() {
-    return results.answers.asMap().entries.map((entry) {
+    return widget.results.answers.asMap().entries.map((entry) {
       final index = entry.key;
       final answer = entry.value;
       return ReviewedQuestion(

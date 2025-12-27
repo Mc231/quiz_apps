@@ -33,6 +33,8 @@ void main() {
       categories: createFlagsCategories(CountryCounts.forTest),
       dataProvider: const FlagsDataProvider(),
       storageService: sl.get<StorageService>(),
+      screenAnalyticsService: NoOpAnalyticsService(),
+      quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
       config: QuizAppConfig(
         title: 'Flags Quiz',
         appLocalizationDelegates: AppLocalizations.localizationsDelegates,

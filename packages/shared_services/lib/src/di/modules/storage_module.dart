@@ -1,16 +1,7 @@
 /// Module for registering storage-related dependencies.
 library;
 
-import '../../achievements/data_sources/achievement_data_source.dart';
-import '../../achievements/engine/achievement_engine.dart';
-import '../../achievements/repositories/achievement_repository.dart';
-import '../../achievements/services/achievement_service.dart';
-import '../../storage/data_sources/data_sources_exports.dart';
-import '../../storage/database/app_database.dart';
-import '../../storage/repositories/repositories_exports.dart';
-import '../../storage/storage_service.dart';
-import '../dependency_module.dart';
-import '../service_locator.dart';
+import 'package:shared_services/shared_services.dart';
 
 /// Dependency module for storage-related services.
 ///
@@ -105,6 +96,8 @@ class StorageModule extends DependencyModule {
         repository: sl.get<AchievementRepository>(),
         statisticsDataSource: sl.get<StatisticsDataSource>(),
         engine: sl.get<AchievementEngine>(),
+        analyticsService:
+            sl.getOrNull<AnalyticsService>() ?? NoOpAnalyticsService(),
       ),
     );
 

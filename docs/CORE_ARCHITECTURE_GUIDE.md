@@ -601,7 +601,7 @@ class QuizConfig {
   final AchievementRepository? achievementRepository;
 
   // Services
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
   final AdsService? adsService;
 
   const QuizConfig({

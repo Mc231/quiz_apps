@@ -261,6 +261,7 @@ void main() {
     engine = AchievementEngine(repository: repository);
     service = AchievementService(
       repository: repository,
+      analyticsService: NoOpAnalyticsService(),
       statisticsDataSource: statsDataSource,
       engine: engine,
     );

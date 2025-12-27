@@ -31,7 +31,7 @@ class AchievementNotificationController {
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
-    this.analyticsService,
+    required this.analyticsService,
     this.maxQueueSize = 10,
     this.position = AchievementNotificationPosition.top,
   });
@@ -46,7 +46,7 @@ class AchievementNotificationController {
   final AudioService? audioService;
 
   /// Optional analytics service for tracking notification events.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   /// Maximum number of achievements to queue.
   final int maxQueueSize;
@@ -151,7 +151,7 @@ class AchievementNotificationController {
     _showController.add(achievement);
 
     // Track notification shown event
-    analyticsService?.logEvent(
+    analyticsService.logEvent(
       AchievementEvent.notificationShown(
         achievementId: achievement.id,
         achievementName: achievement.id, // Name requires context
@@ -248,7 +248,7 @@ class AchievementNotifications extends StatefulWidget {
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
-    this.analyticsService,
+    required this.analyticsService,
     this.position = AchievementNotificationPosition.top,
   });
 
@@ -268,7 +268,7 @@ class AchievementNotifications extends StatefulWidget {
   final AudioService? audioService;
 
   /// Optional analytics service.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   /// Position where notifications appear.
   final AchievementNotificationPosition position;

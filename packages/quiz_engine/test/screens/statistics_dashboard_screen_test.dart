@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../test_helpers.dart';
 
@@ -75,8 +76,9 @@ void main() {
         (tester) async {
       await tester.pumpWidget(
         wrapWithLocalizations(
-          const StatisticsDashboardScreen(
+          StatisticsDashboardScreen(
             data: StatisticsDashboardData.empty,
+            analyticsService: NoOpAnalyticsService(),
             isLoading: true,
           ),
         ),
@@ -88,8 +90,9 @@ void main() {
     testWidgets('shows empty state when no data', (tester) async {
       await tester.pumpWidget(
         wrapWithLocalizations(
-          const StatisticsDashboardScreen(
+          StatisticsDashboardScreen(
             data: StatisticsDashboardData.empty,
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -102,6 +105,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -117,6 +121,7 @@ void main() {
           SingleChildScrollView(
             child: StatisticsDashboardScreen(
               data: _createTestData(),
+              analyticsService: NoOpAnalyticsService(),
               showTabs: false,
             ),
           ),
@@ -131,6 +136,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -144,6 +150,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -164,6 +171,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -184,6 +192,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -204,6 +213,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -223,6 +233,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
             initialTab: StatisticsDashboardTab.leaderboard,
           ),
         ),
@@ -243,6 +254,7 @@ void main() {
             height: 1200,
             child: StatisticsDashboardScreen(
               data: data,
+              analyticsService: NoOpAnalyticsService(),
               onSessionTap: (session) {
                 tappedSession = session;
               },
@@ -274,6 +286,7 @@ void main() {
           SizedBox(
             height: 800,
             child: StatisticsDashboardScreen(
+              analyticsService: NoOpAnalyticsService(),
               data: _createTestData(),
               onCategoryTap: (category) {
                 tappedCategory = category;
@@ -306,6 +319,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           StatisticsDashboardScreen(
+            analyticsService: NoOpAnalyticsService(),
             data: data,
           ),
         ),
@@ -324,6 +338,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -348,6 +363,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -381,6 +397,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           StatisticsDashboardScreen(
+            analyticsService: NoOpAnalyticsService(),
             data: data,
           ),
         ),
@@ -399,6 +416,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           StatisticsDashboardScreen(
+            analyticsService: NoOpAnalyticsService(),
             data: data,
           ),
         ),
@@ -413,6 +431,7 @@ void main() {
         wrapWithLocalizations(
           StatisticsDashboardScreen(
             data: _createTestData(),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -430,6 +449,7 @@ void main() {
           SizedBox(
             height: 1200,
             child: StatisticsDashboardScreen(
+              analyticsService: NoOpAnalyticsService(),
               data: _createTestData(),
               onViewAllSessions: () {
                 viewAllCalled = true;

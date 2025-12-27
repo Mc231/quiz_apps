@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:shared_services/shared_services.dart' show AnalyticsService;
+
 import '../../quiz_engine.dart';
 import 'quiz_layout.dart';
 
@@ -25,10 +27,17 @@ class QuizScreen extends StatefulWidget {
   final String title;
   final QuizThemeData themeData;
 
+  /// Analytics service for tracking screen views.
+  ///
+  /// Used for tracking the results screen view.
+  /// If not provided, a no-op service is used.
+  final AnalyticsService screenAnalyticsService;
+
   const QuizScreen({
     super.key,
     required this.title,
     this.themeData = const QuizThemeData(),
+    required this.screenAnalyticsService,
   });
 
   @override
@@ -287,6 +296,7 @@ class QuizScreenState extends State<QuizScreen> {
       // Show results screen when quiz is completed
       return QuizResultsScreen(
         results: state.results,
+        analyticsService: widget.screenAnalyticsService,
         onDone: () {
           Navigator.of(context).pop();
         },

@@ -312,17 +312,17 @@ class QuizApp extends StatefulWidget {
   /// Analytics service for tracking quiz events.
   ///
   /// When provided, quiz events will be tracked through this service.
-  final QuizAnalyticsService? analyticsService;
+  final QuizAnalyticsService quizAnalyticsService;
 
   /// Analytics service for tracking screen views and user interactions.
   ///
-  /// When provided, tracks:
+  /// Tracks:
   /// - Screen views when tabs change
   /// - Tab selection events
   /// - Category selection events
   ///
-  /// This is separate from [analyticsService] which tracks quiz-specific events.
-  final AnalyticsService? screenAnalyticsService;
+  /// This is separate from [quizAnalyticsService] which tracks quiz-specific events.
+  final AnalyticsService screenAnalyticsService;
 
   /// Locale override.
   final Locale? locale;
@@ -340,6 +340,7 @@ class QuizApp extends StatefulWidget {
   const QuizApp({
     super.key,
     required this.settingsService,
+    required this.screenAnalyticsService,
     this.categories,
     this.dataProvider,
     this.storageService,
@@ -360,8 +361,7 @@ class QuizApp extends StatefulWidget {
     this.achievementService,
     this.settingsBuilder,
     this.settingsConfig,
-    this.analyticsService,
-    this.screenAnalyticsService,
+    required this.quizAnalyticsService,
     this.locale,
     this.formatDate,
     this.formatStatus,
@@ -383,16 +383,18 @@ class _QuizAppState extends State<QuizApp> {
   void initState() {
     super.initState();
     _currentSettings = widget.settingsService.currentSettings;
-    _settingsSubscription =
-        widget.settingsService.settingsStream.listen(_onSettingsChanged);
+    _settingsSubscription = widget.settingsService.settingsStream.listen(
+      _onSettingsChanged,
+    );
 
     // Create notification controller if notifications are enabled
     if (widget.showAchievementNotifications) {
-      _notificationController = AchievementNotificationController();
+      _notificationController = AchievementNotificationController(analyticsService: widget.screenAnalyticsService);
 
       // Listen to achievement unlocks if service is provided
       if (widget.achievementService != null) {
-        _achievementSubscription = widget.achievementService!
+        _achievementSubscription = widget
+            .achievementService!
             .onAchievementsUnlocked
             .listen(_showAchievementNotifications);
       }
@@ -427,7 +429,8 @@ class _QuizAppState extends State<QuizApp> {
       localizationsDelegates: _buildLocalizationDelegates(),
       supportedLocales: widget.config.supportedLocales,
       locale: widget.locale,
-      localeResolutionCallback: widget.config.localeResolutionCallback ??
+      localeResolutionCallback:
+          widget.config.localeResolutionCallback ??
           _defaultLocaleResolutionCallback,
       navigatorObservers: widget.config.navigatorObservers,
       home: _wrapWithNotifications(_buildHome(context)),
@@ -442,6 +445,7 @@ class _QuizAppState extends State<QuizApp> {
     return AchievementNotifications(
       controller: _notificationController,
       child: child,
+      analyticsService: widget.screenAnalyticsService,
     );
   }
 
@@ -468,10 +472,7 @@ class _QuizAppState extends State<QuizApp> {
       primaryColor: widget.config.primaryColor ?? Colors.white,
       scaffoldBackgroundColor:
           widget.config.scaffoldBackgroundColor ?? Colors.white,
-      appBarTheme: widget.config.appBarTheme ??
-          const AppBarTheme(
-            elevation: 0,
-          ),
+      appBarTheme: widget.config.appBarTheme ?? const AppBarTheme(elevation: 0),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
   }
@@ -517,34 +518,39 @@ class _QuizAppState extends State<QuizApp> {
         final homeConfig = _buildHomeConfig(innerContext);
 
         return QuizHomeScreen(
-        categories: widget.categories ?? [],
-        storageService: widget.storageService,
-        config: homeConfig,
-        onCategorySelected: hasDataProvider
-            ? (category) => _handleCategorySelected(innerContext, category)
-            : widget.callbacks.onCategorySelected != null
-                ? (category) {
+          categories: widget.categories ?? [],
+          storageService: widget.storageService,
+          config: homeConfig,
+          onCategorySelected:
+              hasDataProvider
+                  ? (category) =>
+                      _handleCategorySelected(innerContext, category)
+                  : widget.callbacks.onCategorySelected != null
+                  ? (category) {
                     _trackCategorySelected(innerContext, category);
                     widget.callbacks.onCategorySelected!(category);
                   }
-                : null,
-        onSettingsPressed: hasDataProvider
-            ? () => _openSettings(innerContext)
-            : widget.callbacks.onSettingsPressed,
-        onSessionTap: widget.callbacks.onSessionTap,
-        onViewAllSessions: widget.callbacks.onViewAllSessions,
-        historyDataProvider: widget.historyDataProvider,
-        statisticsDataProvider: widget.statisticsDataProvider,
-        achievementsDataProvider: widget.achievementsDataProvider != null
-            ? () => widget.achievementsDataProvider!.loadAchievementsData()
-            : null,
-        onAchievementTap: widget.onAchievementTap,
-        settingsBuilder: _buildSettingsBuilder(),
-        formatDate: widget.formatDate,
-        formatStatus: widget.formatStatus,
-        formatDuration: widget.formatDuration,
-        analyticsService: widget.screenAnalyticsService,
-      );
+                  : null,
+          onSettingsPressed:
+              hasDataProvider
+                  ? () => _openSettings(innerContext)
+                  : widget.callbacks.onSettingsPressed,
+          onSessionTap: widget.callbacks.onSessionTap,
+          onViewAllSessions: widget.callbacks.onViewAllSessions,
+          historyDataProvider: widget.historyDataProvider,
+          statisticsDataProvider: widget.statisticsDataProvider,
+          achievementsDataProvider:
+              widget.achievementsDataProvider != null
+                  ? () =>
+                      widget.achievementsDataProvider!.loadAchievementsData()
+                  : null,
+          onAchievementTap: widget.onAchievementTap,
+          settingsBuilder: _buildSettingsBuilder(),
+          formatDate: widget.formatDate,
+          formatStatus: widget.formatStatus,
+          formatDuration: widget.formatDuration,
+          analyticsService: widget.screenAnalyticsService,
+        );
       },
     );
   }
@@ -580,43 +586,54 @@ class _QuizAppState extends State<QuizApp> {
     for (final type in types) {
       switch (type) {
         case PlayTabType.quiz:
-          tabs.add(PlayScreenTab.categories(
-            id: 'quiz',
-            label: l10n.play,
-            icon: Icons.play_arrow,
-            categories: widget.categories ?? [],
-          ));
+          tabs.add(
+            PlayScreenTab.categories(
+              id: 'quiz',
+              label: l10n.play,
+              icon: Icons.play_arrow,
+              categories: widget.categories ?? [],
+            ),
+          );
         case PlayTabType.challenges:
           if (widget.challenges != null && widget.dataProvider != null) {
-            tabs.add(PlayScreenTab.custom(
-              id: 'challenges',
-              label: l10n.challenges,
-              icon: Icons.emoji_events,
-              builder: (context) => ChallengesScreen(
-                challenges: widget.challenges!,
-                categories: widget.categories ?? [],
-                dataProvider: widget.dataProvider!,
-                settingsService: widget.settingsService,
-                storageService: widget.storageService,
-                onQuizCompleted: _handleQuizCompleted,
+            tabs.add(
+              PlayScreenTab.custom(
+                id: 'challenges',
+                label: l10n.challenges,
+                icon: Icons.emoji_events,
+                builder:
+                    (context) => ChallengesScreen(
+                      challenges: widget.challenges!,
+                      categories: widget.categories ?? [],
+                      dataProvider: widget.dataProvider!,
+                      settingsService: widget.settingsService,
+                      analyticsService: widget.screenAnalyticsService,
+                      storageService: widget.storageService,
+                      onQuizCompleted: _handleQuizCompleted,
+                    ),
               ),
-            ));
+            );
           }
         case PlayTabType.practice:
           // Only add practice tab if practiceDataProvider is configured
           if (widget.practiceDataProvider != null) {
-            tabs.add(PlayScreenTab.custom(
-              id: 'practice',
-              label: l10n.practiceMode,
-              icon: Icons.school,
-              builder: (ctx) => _PracticeTabContent(
-                practiceDataProvider: widget.practiceDataProvider!,
-                dataProvider: widget.dataProvider,
-                settingsService: widget.settingsService,
-                onPracticeCompleted: _handlePracticeCompleted,
-                onStartQuiz: () => _navigateToPlayTab(),
+            tabs.add(
+              PlayScreenTab.custom(
+                id: 'practice',
+                label: l10n.practiceMode,
+                icon: Icons.school,
+                builder:
+                    (ctx) => _PracticeTabContent(
+                      practiceDataProvider: widget.practiceDataProvider!,
+                      screenAnalyticsService: widget.screenAnalyticsService,
+                      dataProvider: widget.dataProvider,
+                      settingsService: widget.settingsService,
+                      onPracticeCompleted: _handlePracticeCompleted,
+                      onStartQuiz: () => _navigateToPlayTab(),
+                      quizAnalyticsService: widget.quizAnalyticsService,
+                    ),
               ),
-            ));
+            );
           }
       }
     }
@@ -630,9 +647,10 @@ class _QuizAppState extends State<QuizApp> {
     }
 
     // Check if settings tab is in the tabs
-    final tabs = widget.homeConfig.tabConfig.tabs.isNotEmpty
-        ? widget.homeConfig.tabConfig.tabs
-        : QuizTabConfig.defaultConfig().tabs;
+    final tabs =
+        widget.homeConfig.tabConfig.tabs.isNotEmpty
+            ? widget.homeConfig.tabConfig.tabs
+            : QuizTabConfig.defaultConfig().tabs;
 
     final hasSettingsTab = tabs.any((tab) => tab is SettingsTab);
 
@@ -642,10 +660,11 @@ class _QuizAppState extends State<QuizApp> {
 
     // Provide default settings screen
     return (context) => QuizSettingsScreen(
-          settingsService: widget.settingsService,
-          config: widget.settingsConfig ??
-              const QuizSettingsConfig(showAppBar: false),
-        );
+      settingsService: widget.settingsService,
+      config:
+          widget.settingsConfig ?? const QuizSettingsConfig(showAppBar: false),
+      analyticsService: widget.screenAnalyticsService,
+    );
   }
 
   /// Handles category selection with analytics tracking.
@@ -656,9 +675,6 @@ class _QuizAppState extends State<QuizApp> {
 
   /// Tracks the category_selected analytics event.
   void _trackCategorySelected(BuildContext context, QuizCategory category) {
-    final analyticsService = widget.screenAnalyticsService;
-    if (analyticsService == null) return;
-
     // Get the category index from the categories list
     final categories = widget.categories ?? [];
     final categoryIndex = categories.indexOf(category);
@@ -669,7 +685,7 @@ class _QuizAppState extends State<QuizApp> {
       categoryIndex: categoryIndex >= 0 ? categoryIndex : 0,
     );
 
-    analyticsService.logEvent(event);
+    widget.screenAnalyticsService.logEvent(event);
   }
 
   /// Starts a quiz for the given category.
@@ -696,16 +712,12 @@ class _QuizAppState extends State<QuizApp> {
     final storageConfig = dataProvider.createStorageConfig(context, category);
 
     // Create quiz config
-    final quizConfig = dataProvider.createQuizConfig(context, category) ??
-        QuizConfig(
-          quizId: category.id,
-          hintConfig: HintConfig.noHints(),
-        );
+    final quizConfig =
+        dataProvider.createQuizConfig(context, category) ??
+        QuizConfig(quizId: category.id, hintConfig: HintConfig.noHints());
 
     // Apply storage config to quiz config
-    final configWithStorage = quizConfig.copyWith(
-      storageConfig: storageConfig,
-    );
+    final configWithStorage = quizConfig.copyWith(storageConfig: storageConfig);
 
     // Create storage adapter if storage service is available
     QuizStorageAdapter? storageAdapter;
@@ -717,29 +729,33 @@ class _QuizAppState extends State<QuizApp> {
     // Note: showAnswerFeedback now comes from category/mode, not global settings
     final configManager = ConfigManager(
       defaultConfig: configWithStorage,
-      getSettings: () => {
-        'soundEnabled': widget.settingsService.currentSettings.soundEnabled,
-        'hapticEnabled': widget.settingsService.currentSettings.hapticEnabled,
-        'showAnswerFeedback': category.showAnswerFeedback,
-      },
+      getSettings:
+          () => {
+            'soundEnabled': widget.settingsService.currentSettings.soundEnabled,
+            'hapticEnabled':
+                widget.settingsService.currentSettings.hapticEnabled,
+            'showAnswerFeedback': category.showAnswerFeedback,
+          },
     );
 
     // Navigate to quiz
     if (context.mounted) {
       _navigatorKey.currentState?.push(
         MaterialPageRoute(
-          builder: (ctx) => QuizWidget(
-            quizEntry: QuizWidgetEntry(
-              title: category.title(context),
-              dataProvider: () async => questions,
-              configManager: configManager,
-              storageService: storageAdapter,
-              analyticsService: widget.analyticsService,
-              categoryId: category.id,
-              categoryName: category.title(context),
-              onQuizCompleted: (results) => _handleQuizCompleted(results),
-            ),
-          ),
+          builder:
+              (ctx) => QuizWidget(
+                quizEntry: QuizWidgetEntry(
+                  title: category.title(context),
+                  dataProvider: () async => questions,
+                  configManager: configManager,
+                  storageService: storageAdapter,
+                  quizAnalyticsService: widget.quizAnalyticsService,
+                  categoryId: category.id,
+                  categoryName: category.title(context),
+                  onQuizCompleted: (results) => _handleQuizCompleted(results),
+                  screenAnalyticsService: widget.screenAnalyticsService,
+                ),
+              ),
         ),
       );
     }
@@ -769,9 +785,10 @@ class _QuizAppState extends State<QuizApp> {
           // Get wrong answers from the session repository
           final practiceProvider = widget.practiceDataProvider;
           if (practiceProvider != null) {
-            final sessionWithAnswers =
-                await storageService.getSessionWithAnswers(sessionId);
-            final wrongAnswers = sessionWithAnswers.valueOrNull?.wrongAnswers ?? [];
+            final sessionWithAnswers = await storageService
+                .getSessionWithAnswers(sessionId);
+            final wrongAnswers =
+                sessionWithAnswers.valueOrNull?.wrongAnswers ?? [];
             if (wrongAnswers.isNotEmpty) {
               await practiceProvider.updatePracticeProgress(
                 session,
@@ -804,16 +821,16 @@ class _QuizAppState extends State<QuizApp> {
   ///
   /// Uses [settingsBuilder] if provided, otherwise shows [QuizSettingsScreen].
   void _openSettings(BuildContext context) {
-    final settingsWidget = widget.settingsBuilder?.call(context) ??
+    final settingsWidget =
+        widget.settingsBuilder?.call(context) ??
         QuizSettingsScreen(
           settingsService: widget.settingsService,
           config: widget.settingsConfig ?? const QuizSettingsConfig(),
+          analyticsService: widget.screenAnalyticsService,
         );
 
     _navigatorKey.currentState?.push(
-      MaterialPageRoute(
-        builder: (context) => settingsWidget,
-      ),
+      MaterialPageRoute(builder: (context) => settingsWidget),
     );
   }
 }
@@ -845,7 +862,7 @@ class QuizAppBuilder extends StatefulWidget {
 
   /// Builder for the QuizApp once services are initialized.
   final Widget Function(BuildContext context, SettingsService settingsService)
-      builder;
+  builder;
 
   /// Widget to show while initializing.
   final Widget? loadingWidget;
@@ -892,15 +909,16 @@ class _QuizAppBuilderState extends State<QuizAppBuilder> {
             ],
             supportedLocales: const [Locale('en')],
             home: Builder(
-              builder: (ctx) => Scaffold(
-                body: Center(
-                  child: Text(
-                    QuizL10n.of(ctx).initializationError(
-                      snapshot.error.toString(),
+              builder:
+                  (ctx) => Scaffold(
+                    body: Center(
+                      child: Text(
+                        QuizL10n.of(
+                          ctx,
+                        ).initializationError(snapshot.error.toString()),
+                      ),
                     ),
                   ),
-                ),
-              ),
             ),
           );
         }
@@ -909,9 +927,7 @@ class _QuizAppBuilderState extends State<QuizAppBuilder> {
           return widget.loadingWidget ??
               const MaterialApp(
                 home: Scaffold(
-                  body: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  body: Center(child: CircularProgressIndicator()),
                 ),
               );
         }
@@ -929,6 +945,8 @@ class _QuizAppBuilderState extends State<QuizAppBuilder> {
 class _PracticeTabContent extends StatefulWidget {
   const _PracticeTabContent({
     required this.practiceDataProvider,
+    required this.screenAnalyticsService,
+    required this.quizAnalyticsService,
     this.dataProvider,
     this.settingsService,
     this.onPracticeCompleted,
@@ -936,6 +954,8 @@ class _PracticeTabContent extends StatefulWidget {
   });
 
   final PracticeDataProvider practiceDataProvider;
+  final AnalyticsService screenAnalyticsService;
+  final QuizAnalyticsService quizAnalyticsService;
   final QuizDataProvider? dataProvider;
   final SettingsService? settingsService;
   final void Function(List<String> correctQuestionIds)? onPracticeCompleted;
@@ -1011,21 +1031,25 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
     return PracticeStartScreen(
       questionCount: data.questionCount,
       onStartPractice: () => _startPractice(context, data),
+      analyticsService: widget.screenAnalyticsService,
     );
   }
 
   void _startPractice(BuildContext context, PracticeTabData data) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => _PracticeQuizScreen(
-          practiceData: data,
-          settingsService: widget.settingsService,
-          onPracticeCompleted: (correctIds, wrongCount) {
-            widget.onPracticeCompleted?.call(correctIds);
-            _showPracticeComplete(ctx, correctIds.length, wrongCount);
-          },
-          onCancel: () => Navigator.of(ctx).pop(),
-        ),
+        builder:
+            (ctx) => _PracticeQuizScreen(
+              practiceData: data,
+              screenAnalyticsService: widget.screenAnalyticsService,
+              settingsService: widget.settingsService,
+              onPracticeCompleted: (correctIds, wrongCount) {
+                widget.onPracticeCompleted?.call(correctIds);
+                _showPracticeComplete(ctx, correctIds.length, wrongCount);
+              },
+              onCancel: () => Navigator.of(ctx).pop(),
+              quizAnalyticsService: widget.quizAnalyticsService,
+            ),
       ),
     );
   }
@@ -1037,15 +1061,17 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
   ) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (ctx) => PracticeCompleteScreen(
-          correctCount: correctCount,
-          needMorePracticeCount: wrongCount,
-          onDone: () {
-            Navigator.of(ctx).pop();
-            // Refresh the practice data
-            _loadPracticeData();
-          },
-        ),
+        builder:
+            (ctx) => PracticeCompleteScreen(
+              correctCount: correctCount,
+              needMorePracticeCount: wrongCount,
+              analyticsService: widget.screenAnalyticsService,
+              onDone: () {
+                Navigator.of(ctx).pop();
+                // Refresh the practice data
+                _loadPracticeData();
+              },
+            ),
       ),
     );
   }
@@ -1055,14 +1081,19 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
 class _PracticeQuizScreen extends StatefulWidget {
   const _PracticeQuizScreen({
     required this.practiceData,
+    required this.quizAnalyticsService,
     this.settingsService,
     required this.onPracticeCompleted,
     required this.onCancel,
+    required this.screenAnalyticsService,
   });
 
   final PracticeTabData practiceData;
+  final QuizAnalyticsService quizAnalyticsService;
+  final AnalyticsService screenAnalyticsService;
   final SettingsService? settingsService;
-  final void Function(List<String> correctIds, int wrongCount) onPracticeCompleted;
+  final void Function(List<String> correctIds, int wrongCount)
+  onPracticeCompleted;
   final VoidCallback onCancel;
 
   @override
@@ -1085,34 +1116,41 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
 
     final configManager = ConfigManager(
       defaultConfig: practiceConfig,
-      getSettings: () => {
-        'soundEnabled': widget.settingsService?.currentSettings.soundEnabled ?? true,
-        'hapticEnabled': widget.settingsService?.currentSettings.hapticEnabled ?? true,
-        'showAnswerFeedback': true,
-      },
+      getSettings:
+          () => {
+            'soundEnabled':
+                widget.settingsService?.currentSettings.soundEnabled ?? true,
+            'hapticEnabled':
+                widget.settingsService?.currentSettings.hapticEnabled ?? true,
+            'showAnswerFeedback': true,
+          },
     );
 
     return QuizWidget(
       quizEntry: QuizWidgetEntry(
-        title: l10n.practice, // Localized practice title
+        title: l10n.practice,
+        // Localized practice title
         // Use ALL questions for option generation
         dataProvider: () async => widget.practiceData.allQuestions,
         configManager: configManager,
-        storageService: null, // Practice sessions are not stored
+        storageService: null,
+        screenAnalyticsService: widget.screenAnalyticsService,
+        // Practice sessions are not stored
         // Filter to only ask practice questions
         filter: widget.practiceData.filter,
         onQuizCompleted: (results) {
           // Collect correctly answered question IDs
           // The question ID is stored in the question's answer.otherOptions['id']
-          final correctIds = results.answers
-              .where((a) => a.isCorrect)
-              .map((a) => a.question.answer.otherOptions['id'] as String?)
-              .whereType<String>()
-              .toList();
+          final correctIds =
+              results.answers
+                  .where((a) => a.isCorrect)
+                  .map((a) => a.question.answer.otherOptions['id'] as String?)
+                  .whereType<String>()
+                  .toList();
           final wrongCount = results.answers.where((a) => !a.isCorrect).length;
 
           widget.onPracticeCompleted(correctIds, wrongCount);
-        },
+        }, quizAnalyticsService: widget.quizAnalyticsService,
       ),
     );
   }

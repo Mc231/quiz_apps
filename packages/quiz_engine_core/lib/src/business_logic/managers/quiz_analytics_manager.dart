@@ -15,7 +15,7 @@ import '../../storage/quiz_storage_service.dart';
 /// - Handling analytics errors gracefully (analytics should never block quiz)
 class QuizAnalyticsManager {
   /// The analytics service (optional - may be null).
-  final QuizAnalyticsService? _analyticsService;
+  final QuizAnalyticsService _analyticsService;
 
   /// The quiz configuration.
   QuizConfig? _config;
@@ -33,13 +33,13 @@ class QuizAnalyticsManager {
   ///
   /// [analyticsService] - Optional analytics service for tracking events
   QuizAnalyticsManager({
-    QuizAnalyticsService? analyticsService,
+    required QuizAnalyticsService analyticsService,
   }) : _analyticsService = analyticsService;
 
   // ============ Getters ============
 
   /// Whether analytics is enabled.
-  bool get isEnabled => _analyticsService != null;
+  bool get isEnabled => true;
 
   /// The current quiz ID.
   String? get quizId => _config?.quizId;
@@ -69,7 +69,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackQuizStarted(
+      await _analyticsService.trackQuizStarted(
         quizId: _config!.quizId,
         quizName: quizName,
         categoryId: _categoryId!,
@@ -91,7 +91,7 @@ class QuizAnalyticsManager {
     if (!isEnabled) return;
 
     try {
-      await _analyticsService!.trackQuizCompleted(results: results);
+      await _analyticsService.trackQuizCompleted(results: results);
     } catch (e) {
       // Analytics failure should not block game over flow
     }
@@ -107,7 +107,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackQuizCancelled(
+      await _analyticsService.trackQuizCancelled(
         quizId: _config!.quizId,
         quizName: quizName,
         categoryId: _categoryId!,
@@ -137,7 +137,7 @@ class QuizAnalyticsManager {
           ? (correctAnswers / totalQuestions * 100)
           : 0.0;
 
-      await _analyticsService!.trackQuizFailed(
+      await _analyticsService.trackQuizFailed(
         quizId: _config!.quizId,
         quizName: quizName,
         categoryId: _categoryId!,
@@ -168,7 +168,7 @@ class QuizAnalyticsManager {
           ? (correctAnswers / totalQuestions * 100)
           : 0.0;
 
-      await _analyticsService!.trackQuizTimeout(
+      await _analyticsService.trackQuizTimeout(
         quizId: _config!.quizId,
         quizName: quizName,
         categoryId: _categoryId!,
@@ -194,7 +194,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackQuizPaused(
+      await _analyticsService.trackQuizPaused(
         quizId: _config!.quizId,
         quizName: quizName,
         currentQuestion: currentQuestion,
@@ -219,7 +219,7 @@ class QuizAnalyticsManager {
     _pausedAt = null;
 
     try {
-      await _analyticsService!.trackQuizResumed(
+      await _analyticsService.trackQuizResumed(
         quizId: _config!.quizId,
         quizName: quizName,
         currentQuestion: currentQuestion,
@@ -243,7 +243,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackQuestionDisplayed(
+      await _analyticsService.trackQuestionDisplayed(
         quizId: _config!.quizId,
         question: question,
         questionIndex: questionIndex,
@@ -268,7 +268,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackQuestionAnswered(
+      await _analyticsService.trackQuestionAnswered(
         quizId: _config!.quizId,
         question: question,
         questionIndex: questionIndex,
@@ -294,7 +294,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackQuestionSkipped(
+      await _analyticsService.trackQuestionSkipped(
         quizId: _config!.quizId,
         question: question,
         questionIndex: questionIndex,
@@ -317,7 +317,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackQuestionTimeout(
+      await _analyticsService.trackQuestionTimeout(
         quizId: _config!.quizId,
         question: question,
         questionIndex: questionIndex,
@@ -341,7 +341,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackHintFiftyFiftyUsed(
+      await _analyticsService.trackHintFiftyFiftyUsed(
         quizId: _config!.quizId,
         question: question,
         questionIndex: questionIndex,
@@ -363,7 +363,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackHintSkipUsed(
+      await _analyticsService.trackHintSkipUsed(
         quizId: _config!.quizId,
         question: question,
         questionIndex: questionIndex,
@@ -388,7 +388,7 @@ class QuizAnalyticsManager {
     if (!isEnabled || _config == null) return;
 
     try {
-      await _analyticsService!.trackLifeLost(
+      await _analyticsService.trackLifeLost(
         quizId: _config!.quizId,
         question: question,
         questionIndex: questionIndex,
@@ -416,7 +416,7 @@ class QuizAnalyticsManager {
           ? (correctAnswers / totalQuestions * 100)
           : 0.0;
 
-      await _analyticsService!.trackLivesDepleted(
+      await _analyticsService.trackLivesDepleted(
         quizId: _config!.quizId,
         quizName: quizName,
         categoryId: _categoryId!,
@@ -443,7 +443,7 @@ class QuizAnalyticsManager {
 
   /// Disposes the analytics service.
   void dispose() {
-    _analyticsService?.dispose();
+    _analyticsService.dispose();
     reset();
   }
 }

@@ -61,6 +61,7 @@ void main() {
           locale: const Locale('en'),
           home: QuizHomeScreen(
             categories: categories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig(
                 tabs: [QuizTab.play(), QuizTab.history()],
@@ -97,7 +98,7 @@ void main() {
             ),
             onCategorySelected: (category) {
               selectedCategory = category;
-            },
+            }, analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );

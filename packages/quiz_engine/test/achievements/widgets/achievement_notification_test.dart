@@ -36,7 +36,10 @@ void main() {
       expect(style.showConfetti, isTrue);
       expect(style.showGlow, isTrue);
       expect(style.displayDuration, equals(const Duration(seconds: 3)));
-      expect(style.animationDuration, equals(const Duration(milliseconds: 500)));
+      expect(
+        style.animationDuration,
+        equals(const Duration(milliseconds: 500)),
+      );
     });
 
     test('custom style overrides values', () {
@@ -71,6 +74,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           AchievementNotification(
+            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -87,6 +91,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           AchievementNotification(
+            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -103,6 +108,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           AchievementNotification(
+            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -119,6 +125,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           AchievementNotification(
+            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -136,6 +143,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           AchievementNotification(
+            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -153,6 +161,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           AchievementNotification(
+            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
             onDismiss: () => dismissed = true,
@@ -174,6 +183,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           AchievementNotification(
+            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
             onDismiss: () => dismissed = true,
@@ -195,6 +205,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           AchievementNotification(
+            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: const AchievementNotificationStyle(
               showGlow: true,
@@ -216,6 +227,7 @@ void main() {
       await tester.pumpWidget(
         wrapWithLocalizations(
           AchievementNotification(
+            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -229,8 +241,12 @@ void main() {
   });
 
   group('AchievementNotificationController', () {
-    testWidgets('queues achievements when one is already showing', (tester) async {
-      final controller = AchievementNotificationController();
+    testWidgets('queues achievements when one is already showing', (
+      tester,
+    ) async {
+      final controller = AchievementNotificationController(
+        analyticsService: NoOpAnalyticsService(),
+      );
 
       await tester.pumpWidget(
         MaterialApp(
@@ -265,7 +281,10 @@ void main() {
     });
 
     testWidgets('respects maxQueueSize', (tester) async {
-      final controller = AchievementNotificationController(maxQueueSize: 2);
+      final controller = AchievementNotificationController(
+        maxQueueSize: 2,
+        analyticsService: NoOpAnalyticsService(),
+      );
 
       await tester.pumpWidget(
         MaterialApp(
@@ -282,7 +301,10 @@ void main() {
 
       await tester.pump();
 
-      final achievements = List.generate(5, (i) => createTestAchievement(id: 'a$i'));
+      final achievements = List.generate(
+        5,
+        (i) => createTestAchievement(id: 'a$i'),
+      );
 
       // First one shows, next 2 queue, last 2 rejected
       for (final a in achievements) {
@@ -294,7 +316,9 @@ void main() {
     });
 
     testWidgets('clears queue', (tester) async {
-      final controller = AchievementNotificationController();
+      final controller = AchievementNotificationController(
+        analyticsService: NoOpAnalyticsService(),
+      );
 
       await tester.pumpWidget(
         MaterialApp(
@@ -325,7 +349,9 @@ void main() {
     });
 
     testWidgets('emits onShow events', (tester) async {
-      final controller = AchievementNotificationController();
+      final controller = AchievementNotificationController(
+        analyticsService: NoOpAnalyticsService(),
+      );
 
       await tester.pumpWidget(
         MaterialApp(
@@ -355,7 +381,9 @@ void main() {
     });
 
     test('returns false when not attached', () {
-      final controller = AchievementNotificationController();
+      final controller = AchievementNotificationController(
+        analyticsService: NoOpAnalyticsService(),
+      );
       final achievement = createTestAchievement();
 
       expect(controller.show(achievement), isFalse);
@@ -363,7 +391,9 @@ void main() {
     });
 
     testWidgets('returns false after disposed', (tester) async {
-      final controller = AchievementNotificationController();
+      final controller = AchievementNotificationController(
+        analyticsService: NoOpAnalyticsService(),
+      );
 
       await tester.pumpWidget(
         MaterialApp(

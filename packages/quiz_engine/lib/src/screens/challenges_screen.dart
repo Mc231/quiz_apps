@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart' hide QuizDataProvider;
 
+import '../analytics/quiz_analytics_adapter.dart';
 import '../models/challenge_mode.dart';
 import '../models/quiz_category.dart';
 import '../models/quiz_data_provider.dart' as models;
@@ -33,6 +34,7 @@ class ChallengesScreen extends StatelessWidget {
     required this.categories,
     required this.dataProvider,
     required this.settingsService,
+    required this.analyticsService,
     this.storageService,
     this.listConfig = const ChallengeListConfig(),
     this.categoryPickerTitle,
@@ -51,6 +53,9 @@ class ChallengesScreen extends StatelessWidget {
 
   /// Settings service for applying user settings.
   final SettingsService settingsService;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Optional storage service for persisting results.
   final StorageService? storageService;
@@ -111,6 +116,15 @@ class ChallengesScreen extends StatelessWidget {
     // Notify callback
     onChallengeStarted?.call(challenge, category);
 
+    // Log challenge selected event
+    analyticsService.logEvent(
+      InteractionEvent.categorySelected(
+        categoryId: category.id,
+        categoryName: category.title(context),
+        categoryIndex: categories.indexOf(category),
+      ),
+    );
+
     // Load questions
     var questions = await dataProvider.loadQuestions(context, category);
 
@@ -136,6 +150,9 @@ class ChallengesScreen extends StatelessWidget {
       storageAdapter = QuizStorageAdapter(storageService!);
     }
 
+    // Create analytics adapter
+    final quizAnalyticsAdapter = QuizAnalyticsAdapter(analyticsService);
+
     // Create config manager
     // Note: showAnswerFeedback comes from challenge mode, falling back to category
     final configManager = ConfigManager(
@@ -157,7 +174,9 @@ class ChallengesScreen extends StatelessWidget {
               dataProvider: () async => questions,
               configManager: configManager,
               storageService: storageAdapter,
+              quizAnalyticsService: quizAnalyticsAdapter,
               onQuizCompleted: onQuizCompleted,
+              screenAnalyticsService: analyticsService,
             ),
           ),
         ),
@@ -245,6 +264,7 @@ class ChallengesContent extends StatelessWidget {
     required this.challenges,
     required this.categories,
     required this.onChallengeSelected,
+    required this.analyticsService,
     this.listConfig = const ChallengeListConfig(),
     this.isRefreshing = false,
     this.onRefresh,
@@ -261,6 +281,9 @@ class ChallengesContent extends StatelessWidget {
   /// Callback when a challenge and category are selected.
   final void Function(ChallengeMode challenge, QuizCategory category)
       onChallengeSelected;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Configuration for the challenge list.
   final ChallengeListConfig listConfig;

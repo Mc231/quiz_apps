@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 import 'practice_state.dart';
 import '../l10n/quiz_localizations.dart';
@@ -15,6 +16,9 @@ class PracticeStartScreen extends StatelessWidget {
     super.key,
     required this.questionCount,
     required this.onStartPractice,
+    required this.analyticsService,
+    this.categoryId,
+    this.categoryName,
   });
 
   /// The number of questions to practice.
@@ -22,6 +26,15 @@ class PracticeStartScreen extends StatelessWidget {
 
   /// Called when the user taps the "Start Practice" button.
   final VoidCallback onStartPractice;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
+
+  /// Category ID for analytics.
+  final String? categoryId;
+
+  /// Category name for analytics.
+  final String? categoryName;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +76,16 @@ class PracticeStartScreen extends StatelessWidget {
 
             // Start Practice button
             FilledButton.icon(
-              onPressed: onStartPractice,
+              onPressed: () {
+                // Log practice started event
+                analyticsService.logEvent(
+                  ScreenViewEvent.practice(
+                    categoryId: categoryId ?? 'unknown',
+                    categoryName: categoryName ?? 'Practice',
+                  ),
+                );
+                onStartPractice();
+              },
               icon: const Icon(Icons.play_arrow),
               label: Text(l10n.startPractice),
               style: FilledButton.styleFrom(
@@ -100,6 +122,7 @@ class PracticeStartContent extends StatelessWidget {
     super.key,
     required this.state,
     required this.onStartPractice,
+    required this.analyticsService,
   });
 
   /// The practice ready state from BLoC.
@@ -107,6 +130,9 @@ class PracticeStartContent extends StatelessWidget {
 
   /// Called when the user taps the "Start Practice" button.
   final VoidCallback onStartPractice;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Convenience getter for the practice data.
   PracticeTabData get data => state.data;
@@ -116,6 +142,7 @@ class PracticeStartContent extends StatelessWidget {
     return PracticeStartScreen(
       questionCount: state.questionCount,
       onStartPractice: onStartPractice,
+      analyticsService: analyticsService,
     );
   }
 }

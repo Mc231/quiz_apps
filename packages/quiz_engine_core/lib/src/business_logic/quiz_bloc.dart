@@ -97,7 +97,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     this.onQuizCompleted,
     required this.configManager,
     QuizStorageService? storageService,
-    QuizAnalyticsService? analyticsService,
+    required QuizAnalyticsService analyticsService,
     this.quizName = 'Quiz',
     this.categoryId = '',
     this.categoryName = '',

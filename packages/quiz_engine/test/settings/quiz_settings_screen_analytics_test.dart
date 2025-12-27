@@ -203,7 +203,7 @@ void main() {
         wrapWithLocalizations(
           QuizSettingsScreen(
             settingsService: settingsService,
-            analyticsService: null, // No analytics service
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(
               showAppBar: false,
               showDataExport: false,

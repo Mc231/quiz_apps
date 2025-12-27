@@ -9,10 +9,10 @@ import '../widgets/achievements_list.dart';
 
 /// Helper to track achievement detail viewed events.
 void _trackAchievementDetailViewed(
-  AnalyticsService? analyticsService,
+  AnalyticsService analyticsService,
   AchievementDisplayData data,
 ) {
-  analyticsService?.logEvent(
+  analyticsService.logEvent(
     AchievementEvent.detailViewed(
       achievementId: data.achievement.id,
       achievementName: data.achievement.id, // Name requires context
@@ -173,7 +173,7 @@ class AchievementsScreen extends StatefulWidget {
     this.onAchievementTap,
     this.appBar,
     this.showScaffold = false,
-    this.analyticsService,
+    required  this.analyticsService,
   });
 
   /// The achievements data to display.
@@ -198,7 +198,7 @@ class AchievementsScreen extends StatefulWidget {
   final bool showScaffold;
 
   /// Optional analytics service for tracking achievement views.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   @override
   State<AchievementsScreen> createState() => _AchievementsScreenState();
@@ -448,7 +448,7 @@ class AchievementsScreenSliver extends StatefulWidget {
     required this.data,
     this.config = const AchievementsScreenConfig(),
     this.onAchievementTap,
-    this.analyticsService,
+    required this.analyticsService,
   });
 
   /// The achievements data to display.
@@ -461,7 +461,7 @@ class AchievementsScreenSliver extends StatefulWidget {
   final void Function(AchievementDisplayData)? onAchievementTap;
 
   /// Optional analytics service for tracking achievement views.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   @override
   State<AchievementsScreenSliver> createState() =>
@@ -574,7 +574,7 @@ class AchievementsContent extends StatelessWidget {
     this.onTierFilterChanged,
     this.onRefresh,
     this.onAchievementTap,
-    this.analyticsService,
+    required this.analyticsService,
   });
 
   /// The achievements data to display.
@@ -605,7 +605,7 @@ class AchievementsContent extends StatelessWidget {
   final void Function(AchievementDisplayData)? onAchievementTap;
 
   /// Optional analytics service for tracking achievement views.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   void _handleAchievementTap(AchievementDisplayData achievementData) {
     // Track the view event
@@ -685,6 +685,7 @@ class AchievementsScreenBuilder extends StatelessWidget {
   const AchievementsScreenBuilder({
     super.key,
     required this.dataLoader,
+    required this.analyticsService,
     this.config = const AchievementsScreenConfig(),
     this.onAchievementTap,
     this.loadingBuilder,
@@ -710,6 +711,9 @@ class AchievementsScreenBuilder extends StatelessWidget {
 
   /// Optional custom app bar.
   final PreferredSizeWidget? appBar;
+
+  // Analytics service for tracking achievement views.
+  final AnalyticsService analyticsService;
 
   @override
   Widget build(BuildContext context) {
@@ -739,7 +743,7 @@ class AchievementsScreenBuilder extends StatelessWidget {
             }
           },
           onAchievementTap: onAchievementTap,
-          appBar: appBar,
+          appBar: appBar, analyticsService: analyticsService,
         );
       },
     );
@@ -767,6 +771,7 @@ class AchievementsScreenBuilder extends StatelessWidget {
           ),
       body: ErrorStateWidget(
         message: l10n.initializationError(error.toString()),
+        analyticsService: analyticsService,
       ),
     );
   }

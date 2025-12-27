@@ -36,7 +36,7 @@ class QuizLifecycleHandler extends StatefulWidget {
   final Widget child;
 
   /// Optional analytics service for logging pause/resume events.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   /// Callback when the app returns from background with the duration.
   final BackgroundTimeCallback? onBackgroundTimeChanged;
@@ -50,7 +50,7 @@ class QuizLifecycleHandler extends StatefulWidget {
   const QuizLifecycleHandler({
     super.key,
     required this.child,
-    this.analyticsService,
+    required this.analyticsService,
     this.onBackgroundTimeChanged,
     this.quizId,
     this.quizName,
@@ -165,10 +165,9 @@ class _QuizLifecycleHandlerState extends State<QuizLifecycleHandler>
   }
 
   void _logPauseEvent() {
-    if (widget.analyticsService == null) return;
     if (widget.quizId == null || widget.quizName == null) return;
 
-    widget.analyticsService!.logEvent(
+    widget.analyticsService.logEvent(
       QuizEvent.paused(
         quizId: widget.quizId!,
         quizName: widget.quizName!,
@@ -179,10 +178,9 @@ class _QuizLifecycleHandlerState extends State<QuizLifecycleHandler>
   }
 
   void _logResumeEvent(Duration pauseDuration) {
-    if (widget.analyticsService == null) return;
     if (widget.quizId == null || widget.quizName == null) return;
 
-    widget.analyticsService!.logEvent(
+    widget.analyticsService.logEvent(
       QuizEvent.resumed(
         quizId: widget.quizId!,
         quizName: widget.quizName!,

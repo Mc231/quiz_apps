@@ -95,6 +95,7 @@ void main() {
           child: QuizSettingsScreen(
             settingsService: settingsService,
             config: const QuizSettingsConfig(showDataExport: false),
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -109,6 +110,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(
               title: 'My Settings',
               showDataExport: false,
@@ -127,6 +129,7 @@ void main() {
           child: Scaffold(
             body: QuizSettingsScreen(
               settingsService: settingsService,
+              analyticsService: NoOpAnalyticsService(),
               config: const QuizSettingsConfig(
                 showAppBar: false,
                 showDataExport: false,
@@ -148,6 +151,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
@@ -164,6 +168,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
@@ -183,6 +188,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
@@ -197,6 +203,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(
               showAudioHapticsSection: false,
               showDataExport: false,
@@ -219,6 +226,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
@@ -234,6 +242,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
@@ -254,6 +263,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
@@ -274,6 +284,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(
               showAppearanceSection: false,
               showDataExport: false,
@@ -294,6 +305,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
@@ -313,6 +325,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(
               showAboutSection: false,
               showDataExport: false,
@@ -332,6 +345,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
@@ -350,6 +364,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(showDataExport: false),
           ),
         ),
@@ -373,6 +388,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizSettingsConfig(
               showAdvancedSection: false,
               showDataExport: false,
@@ -433,6 +449,7 @@ void main() {
       await tester.pumpWidget(
         buildTestWidget(
           child: QuizSettingsScreen(
+            analyticsService: NoOpAnalyticsService(),
             settingsService: settingsService,
             config: QuizSettingsConfig(
               showDataExport: false,
@@ -459,6 +476,7 @@ void main() {
         buildTestWidget(
           child: QuizSettingsScreen(
             settingsService: settingsService,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizSettingsConfig(
               showDataExport: false,
               customSectionsBeforeAbout: (context) => [

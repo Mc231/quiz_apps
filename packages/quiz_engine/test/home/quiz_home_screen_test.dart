@@ -6,6 +6,7 @@ import 'package:quiz_engine/src/l10n/quiz_localizations_delegate.dart';
 import 'package:quiz_engine/src/models/quiz_category.dart';
 import 'package:quiz_engine/src/screens/statistics_screen.dart';
 import 'package:quiz_engine/src/widgets/session_card.dart';
+import 'package:shared_services/shared_services.dart';
 
 void main() {
   final testCategories = [
@@ -46,6 +47,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -64,6 +66,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -80,6 +83,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -95,6 +99,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -116,6 +121,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
             onCategorySelected: (category) => selectedCategory = category,
           ),
@@ -137,6 +143,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: const QuizHomeScreenConfig(
               showSettingsInAppBar: true,
             ),
@@ -159,6 +166,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
             isPlayLoading: true,
           ),
@@ -175,6 +183,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig.allTabs(),
             ),
@@ -195,6 +204,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig.allTabs(),
             ),
@@ -216,6 +226,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig.allTabs(),
             ),
@@ -316,6 +327,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig(
                 tabs: [
@@ -347,6 +359,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -364,6 +377,7 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
             historyDataProvider: () async {
               return HistoryTabData(

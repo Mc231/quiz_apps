@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 import 'practice_state.dart';
 import '../l10n/quiz_localizations.dart';
@@ -6,13 +7,14 @@ import '../l10n/quiz_localizations.dart';
 /// Screen displayed when a practice session is complete.
 ///
 /// Shows the number of correct answers and questions needing more practice.
-class PracticeCompleteScreen extends StatelessWidget {
+class PracticeCompleteScreen extends StatefulWidget {
   /// Creates a [PracticeCompleteScreen].
   const PracticeCompleteScreen({
     super.key,
     required this.correctCount,
     required this.needMorePracticeCount,
     required this.onDone,
+    required this.analyticsService,
   });
 
   /// The number of questions answered correctly.
@@ -24,11 +26,46 @@ class PracticeCompleteScreen extends StatelessWidget {
   /// Called when the user taps the "Done" button.
   final VoidCallback onDone;
 
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
+
   /// Total number of questions in the practice session.
   int get totalCount => correctCount + needMorePracticeCount;
 
   /// Whether all questions were answered correctly.
   bool get isAllCorrect => needMorePracticeCount == 0;
+
+  @override
+  State<PracticeCompleteScreen> createState() => _PracticeCompleteScreenState();
+}
+
+class _PracticeCompleteScreenState extends State<PracticeCompleteScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Log practice complete screen view
+    _logScreenView();
+  }
+
+  void _logScreenView() {
+    final scorePercentage = widget.totalCount > 0
+        ? (widget.correctCount / widget.totalCount * 100)
+        : 0.0;
+
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.custom(
+        name: 'practice_complete',
+        className: 'PracticeCompleteScreen',
+        additionalParams: {
+          'correct_count': widget.correctCount,
+          'need_more_practice_count': widget.needMorePracticeCount,
+          'total_count': widget.totalCount,
+          'score_percentage': scorePercentage,
+          'is_all_correct': widget.isAllCorrect,
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,21 +98,21 @@ class PracticeCompleteScreen extends StatelessWidget {
                       context,
                       icon: Icons.check_circle,
                       iconColor: Colors.green,
-                      text: l10n.practiceCorrectCount(correctCount),
+                      text: l10n.practiceCorrectCount(widget.correctCount),
                     ),
                     const SizedBox(height: 12),
-                    if (needMorePracticeCount > 0)
+                    if (widget.needMorePracticeCount > 0)
                       _buildResultRow(
                         context,
                         icon: Icons.refresh,
                         iconColor: theme.colorScheme.error,
-                        text: l10n.practiceNeedMorePractice(needMorePracticeCount),
+                        text: l10n.practiceNeedMorePractice(widget.needMorePracticeCount),
                       ),
                     const SizedBox(height: 24),
 
                     // Encouragement message
                     Text(
-                      isAllCorrect
+                      widget.isAllCorrect
                           ? l10n.practiceAllCorrect
                           : l10n.practiceKeepGoing,
                       style: theme.textTheme.bodyLarge?.copyWith(
@@ -89,7 +126,7 @@ class PracticeCompleteScreen extends StatelessWidget {
 
               // Done button
               FilledButton(
-                onPressed: onDone,
+                onPressed: widget.onDone,
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   textStyle: theme.textTheme.titleMedium,
@@ -147,6 +184,7 @@ class PracticeCompleteContent extends StatelessWidget {
     super.key,
     required this.state,
     required this.onDone,
+    required this.analyticsService,
   });
 
   /// The practice complete state from BLoC.
@@ -155,12 +193,16 @@ class PracticeCompleteContent extends StatelessWidget {
   /// Called when the user taps the "Done" button.
   final VoidCallback onDone;
 
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
+
   @override
   Widget build(BuildContext context) {
     return PracticeCompleteScreen(
       correctCount: state.correctCount,
       needMorePracticeCount: state.needMorePracticeCount,
       onDone: onDone,
+      analyticsService: analyticsService,
     );
   }
 }

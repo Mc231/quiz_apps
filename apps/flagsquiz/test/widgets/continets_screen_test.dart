@@ -65,6 +65,7 @@ void main() {
           supportedLocales: AppLocalizations.supportedLocales,
           home: QuizHomeScreen(
             categories: categories,
+            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig(
                 tabs: [QuizTab.play(), QuizTab.history()],
@@ -97,7 +98,7 @@ void main() {
               tabConfig: QuizTabConfig(
                 tabs: [QuizTab.play(), QuizTab.history()],
               ),
-            ),
+            ), analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );

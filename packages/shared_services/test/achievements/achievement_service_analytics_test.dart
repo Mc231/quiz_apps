@@ -178,7 +178,7 @@ void main() {
         repository: repository,
         statisticsDataSource: statsDataSource,
         engine: engine,
-        analyticsService: null,
+        analyticsService: NoOpAnalyticsService(),
       );
 
       final achievements = createTestAchievements();

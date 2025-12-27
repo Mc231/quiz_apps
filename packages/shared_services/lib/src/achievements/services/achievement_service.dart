@@ -37,7 +37,7 @@ class AchievementService {
     required AchievementEngine engine,
     this.categoryDataProvider,
     this.challengeDataProvider,
-    this.analyticsService,
+    required this.analyticsService,
   })  : _repository = repository,
         _statisticsDataSource = statisticsDataSource,
         _engine = engine;
@@ -47,7 +47,7 @@ class AchievementService {
   final AchievementEngine _engine;
 
   /// Optional analytics service for tracking achievement events.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   /// Optional provider for category completion data.
   CategoryDataProvider? categoryDataProvider;
@@ -283,8 +283,6 @@ class AchievementService {
     String? triggerQuizId,
   }) async {
     final analytics = analyticsService;
-    if (analytics == null) return;
-
     final unlockedCount = await _repository.getUnlockedCount();
     final totalPoints = await _repository.getTotalPoints(_achievements);
 

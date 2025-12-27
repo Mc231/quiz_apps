@@ -6,6 +6,7 @@ import 'package:mockito/annotations.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine/src/quiz/quiz_screen.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
+import 'package:shared_services/shared_services.dart';
 
 @GenerateNiceMocks([MockSpec<RandomItemPicker>()])
 import 'quiz_screen_test.mocks.dart';
@@ -35,6 +36,7 @@ void main() {
     bloc = QuizBloc(
       () => loadCountriesForContinent(),
       randomItemPicker,
+      analyticsService: NoOpQuizAnalyticsService(),
       configManager: configManager,
     );
   });
@@ -49,10 +51,7 @@ void main() {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('en')],
-      home: BlocProvider(
-        bloc: bloc,
-        child: child,
-      ),
+      home: BlocProvider(bloc: bloc, child: child),
     );
   }
 
@@ -72,7 +71,10 @@ void main() {
     when(randomItemPicker.pick()).thenReturn(randomPickResult);
     await tester.pumpWidget(
       wrapWithLocalizationsForBloc(
-        QuizScreen(title: "Test"),
+        QuizScreen(
+          title: "Test",
+          screenAnalyticsService: NoOpAnalyticsService(),
+        ),
         bloc,
       ),
     );
@@ -105,13 +107,17 @@ void main() {
       randomItemPicker,
       configManager: configManager,
       quizName: 'Test Quiz',
+      analyticsService: NoOpQuizAnalyticsService(),
     );
     bloc2.currentQuestion = Question(countries.first, countries);
     // When
     when(randomItemPicker.pick()).thenReturn(null);
     await tester.pumpWidget(
       wrapWithLocalizationsForBloc(
-        QuizScreen(title: "Test"),
+        QuizScreen(
+          title: "Test",
+          screenAnalyticsService: NoOpAnalyticsService(),
+        ),
         bloc2,
       ),
     );

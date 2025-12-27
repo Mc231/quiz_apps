@@ -162,7 +162,7 @@ void main() {
     testWidgets('does not track when analytics service is null',
         (tester) async {
       controller = AchievementNotificationController(
-        analyticsService: null, // No analytics service
+          analyticsService: NoOpAnalyticsService()// No analytics service
       );
 
       await tester.pumpWidget(

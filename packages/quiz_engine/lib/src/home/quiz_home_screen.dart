@@ -247,16 +247,17 @@ class QuizHomeScreen extends StatefulWidget {
 
   /// Analytics service for tracking screen views and user interactions.
   ///
-  /// When provided, tracks:
+  /// Tracks:
   /// - Screen views when tabs change
   /// - Tab selection events
   /// - Category selection events
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   /// Creates a [QuizHomeScreen].
   const QuizHomeScreen({
     super.key,
     required this.categories,
+    required this.analyticsService,
     this.config = const QuizHomeScreenConfig(),
     this.storageService,
     this.onCategorySelected,
@@ -273,7 +274,6 @@ class QuizHomeScreen extends StatefulWidget {
     this.formatStatus,
     this.formatDuration,
     this.onSessionDeleted,
-    this.analyticsService,
   });
 
   @override
@@ -338,13 +338,10 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
 
   /// Tracks the initial screen view when the home screen loads.
   void _trackInitialScreenView() {
-    final analyticsService = widget.analyticsService;
-    if (analyticsService == null) return;
-
     final currentTab = _tabs[_currentIndex];
     final screenEvent = ScreenViewEvent.home(activeTab: _getTabId(currentTab));
-    analyticsService.logEvent(screenEvent);
-    analyticsService.setCurrentScreen(
+    widget.analyticsService.logEvent(screenEvent);
+    widget.analyticsService.setCurrentScreen(
       screenName: screenEvent.screenName,
       screenClass: screenEvent.screenClass,
     );
@@ -543,6 +540,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
           body: SessionDetailScreen(
             session: detailData,
             texts: texts,
+            analyticsService: widget.analyticsService,
             onDelete: () => _deleteSession(sessionWithAnswers.session.id),
             imageBuilder: _buildQuestionImage,
           ),
@@ -703,9 +701,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
 
   /// Tracks tab selection analytics event.
   void _trackTabSelected(QuizTab tab, int index, String? previousTabId) {
-    final analyticsService = widget.analyticsService;
-    if (analyticsService == null) return;
-
     final event = InteractionEvent.tabSelected(
       tabId: _getTabId(tab),
       tabName: _getTabName(tab),
@@ -713,7 +708,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
       previousTabId: previousTabId,
     );
 
-    analyticsService.logEvent(event);
+    widget.analyticsService.logEvent(event);
   }
 
   @override
@@ -833,6 +828,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     return SessionHistoryScreen(
       sessions: _historyData.sessions,
       texts: texts,
+      analyticsService: widget.analyticsService,
       isLoading: _historyData.isLoading,
       onSessionTap: _handleSessionTap,
       onRefresh: _effectiveHistoryProvider != null ? _loadHistoryData : null,
@@ -851,6 +847,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
 
     return StatisticsDashboardScreen(
       data: dashboardData,
+      analyticsService: widget.analyticsService,
       isLoading: _dashboardLoading || _statisticsData.isLoading,
       onSessionTap: _handleSessionTap,
       onViewAllSessions: widget.onViewAllSessions,
@@ -894,6 +891,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     return AchievementsScreen(
       data: _achievementsData.screenData,
       onAchievementTap: widget.onAchievementTap,
+      analyticsService: widget.analyticsService,
       onRefresh: widget.achievementsDataProvider != null
           ? _loadAchievementsData
           : null,
@@ -989,6 +987,7 @@ class HomeTabContent extends StatelessWidget {
     required this.currentTabIndex,
     required this.historySessions,
     required this.historyTexts,
+    required this.analyticsService,
     this.isHistoryLoading = false,
     this.dashboardData,
     this.isDashboardLoading = false,
@@ -1010,6 +1009,9 @@ class HomeTabContent extends StatelessWidget {
 
   /// Texts for history screen.
   final SessionHistoryTexts historyTexts;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Whether history is loading.
   final bool isHistoryLoading;
@@ -1049,6 +1051,7 @@ class HomeTabContent extends StatelessWidget {
     return SessionHistoryScreen(
       sessions: historySessions,
       texts: historyTexts,
+      analyticsService: analyticsService,
       isLoading: isHistoryLoading,
       onSessionTap: onSessionTap ?? (_) {},
       onRefresh: onRefreshHistory,
@@ -1063,6 +1066,7 @@ class HomeTabContent extends StatelessWidget {
 
     return StatisticsDashboardScreen(
       data: dashboardData ?? StatisticsDashboardData.empty,
+      analyticsService: analyticsService,
       isLoading: isDashboardLoading,
       onSessionTap: onSessionTap,
       onViewAllSessions: onViewAllSessions,
@@ -1080,6 +1084,7 @@ class HomeTabContent extends StatelessWidget {
       data: achievementsData ?? const AchievementsScreenData.empty(),
       onAchievementTap: onAchievementTap,
       onRefresh: onRefreshAchievements,
+      analyticsService: analyticsService
     );
   }
 

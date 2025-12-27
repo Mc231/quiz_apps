@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../widgets/empty_state_widget.dart';
 import '../widgets/loading_indicator.dart';
@@ -39,13 +40,14 @@ class SessionHistoryTexts {
 ///
 /// Supports infinite scroll for loading more sessions when the user
 /// reaches the bottom of the list.
-class SessionHistoryScreen extends StatelessWidget {
+class SessionHistoryScreen extends StatefulWidget {
   /// Creates a [SessionHistoryScreen].
   const SessionHistoryScreen({
     super.key,
     required this.sessions,
     required this.texts,
     required this.onSessionTap,
+    required this.analyticsService,
     this.isLoading = false,
     this.onRefresh,
     this.onLoadMore,
@@ -62,6 +64,9 @@ class SessionHistoryScreen extends StatelessWidget {
 
   /// Callback when a session card is tapped.
   final void Function(SessionCardData session) onSessionTap;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Whether initial data is being loaded.
   final bool isLoading;
@@ -87,28 +92,45 @@ class SessionHistoryScreen extends StatelessWidget {
   final int loadMoreThreshold;
 
   @override
+  State<SessionHistoryScreen> createState() => _SessionHistoryScreenState();
+}
+
+class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _logScreenView();
+  }
+
+  void _logScreenView() {
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.history(sessionCount: widget.sessions.length),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (isLoading) {
+    if (widget.isLoading) {
       return const LoadingIndicator();
     }
 
-    if (sessions.isEmpty) {
+    if (widget.sessions.isEmpty) {
       return EmptyStateWidget(
         icon: Icons.history,
-        title: texts.emptyTitle,
-        message: texts.emptySubtitle,
+        title: widget.texts.emptyTitle,
+        message: widget.texts.emptySubtitle,
       );
     }
 
     // Calculate total items including loading indicator
-    final itemCount = sessions.length + (hasMore && isLoadingMore ? 1 : 0);
+    final itemCount = widget.sessions.length + (widget.hasMore && widget.isLoadingMore ? 1 : 0);
 
     final content = ListView.builder(
       padding: const EdgeInsets.symmetric(vertical: 8),
       itemCount: itemCount,
       itemBuilder: (context, index) {
         // Show loading indicator at the end
-        if (index >= sessions.length) {
+        if (index >= widget.sessions.length) {
           return const Padding(
             padding: EdgeInsets.all(16.0),
             child: Center(
@@ -122,30 +144,30 @@ class SessionHistoryScreen extends StatelessWidget {
         }
 
         // Trigger load more when approaching the end
-        if (hasMore &&
-            !isLoadingMore &&
-            onLoadMore != null &&
-            index >= sessions.length - loadMoreThreshold) {
+        if (widget.hasMore &&
+            !widget.isLoadingMore &&
+            widget.onLoadMore != null &&
+            index >= widget.sessions.length - widget.loadMoreThreshold) {
           // Use post-frame callback to avoid calling during build
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            onLoadMore?.call();
+            widget.onLoadMore?.call();
           });
         }
 
-        final session = sessions[index];
+        final session = widget.sessions[index];
         return SessionCard(
           data: session,
-          questionsLabel: texts.questionsLabel,
-          formatDate: texts.formatDate,
-          formatStatus: texts.formatStatus,
-          onTap: () => onSessionTap(session),
+          questionsLabel: widget.texts.questionsLabel,
+          formatDate: widget.texts.formatDate,
+          formatStatus: widget.texts.formatStatus,
+          onTap: () => widget.onSessionTap(session),
         );
       },
     );
 
-    if (onRefresh != null) {
+    if (widget.onRefresh != null) {
       return RefreshIndicator(
-        onRefresh: onRefresh!,
+        onRefresh: widget.onRefresh!,
         child: content,
       );
     }
@@ -165,6 +187,7 @@ class SessionHistoryContent extends StatelessWidget {
     required this.sessions,
     required this.texts,
     required this.onSessionTap,
+    required this.analyticsService,
     this.hasMore = false,
     this.isLoadingMore = false,
     this.loadMoreThreshold = 3,
@@ -180,6 +203,9 @@ class SessionHistoryContent extends StatelessWidget {
 
   /// Callback when a session card is tapped.
   final void Function(SessionCardData session) onSessionTap;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Whether there are more items to load.
   final bool hasMore;

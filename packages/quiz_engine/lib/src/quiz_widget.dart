@@ -32,7 +32,7 @@ class QuizWidget extends StatelessWidget {
       RandomItemPicker([]),
       configManager: quizEntry.configManager,
       storageService: quizEntry.storageService,
-      analyticsService: quizEntry.analyticsService,
+      analyticsService: quizEntry.quizAnalyticsService,
       quizName: quizEntry.title,
       categoryId: quizEntry.categoryId,
       categoryName: quizEntry.categoryName,
@@ -43,9 +43,11 @@ class QuizWidget extends StatelessWidget {
     return BlocProvider(
       bloc: bloc,
       child: QuizLifecycleHandler(
+        analyticsService: quizEntry.screenAnalyticsService,
         child: QuizScreen(
           title: quizEntry.title,
           themeData: quizEntry.themeData,
+          screenAnalyticsService: quizEntry.screenAnalyticsService,
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
 
+
 /// A consistent error state widget used throughout the app.
 ///
 /// Displays an error icon, message, and optional retry button.
@@ -17,7 +18,7 @@ import '../l10n/quiz_localizations.dart';
 /// ```
 class ErrorStateWidget extends StatefulWidget {
   /// Creates an [ErrorStateWidget].
-  const ErrorStateWidget({
+  ErrorStateWidget({
     super.key,
     required this.message,
     this.title,
@@ -28,7 +29,7 @@ class ErrorStateWidget extends StatefulWidget {
     this.iconColor,
     this.showIcon = true,
     this.padding = const EdgeInsets.all(32),
-    this.analyticsService,
+    required this.analyticsService,
     this.errorType,
     this.errorContext,
   });
@@ -40,7 +41,7 @@ class ErrorStateWidget extends StatefulWidget {
     String? title,
     VoidCallback? onRetry,
     String? retryLabel,
-    AnalyticsService? analyticsService,
+    required AnalyticsService analyticsService,
     String? errorContext,
   }) {
     return ErrorStateWidget(
@@ -63,7 +64,7 @@ class ErrorStateWidget extends StatefulWidget {
     String? title,
     VoidCallback? onRetry,
     String? retryLabel,
-    AnalyticsService? analyticsService,
+    required AnalyticsService analyticsService,
     String? errorContext,
   }) {
     return ErrorStateWidget(
@@ -113,7 +114,7 @@ class ErrorStateWidget extends StatefulWidget {
   final EdgeInsets padding;
 
   /// Optional analytics service for tracking error events.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   /// The type of error (e.g., 'network', 'server', 'data_load').
   final String? errorType;
@@ -139,20 +140,19 @@ class _ErrorStateWidgetState extends State<ErrorStateWidget> {
     _retryCount++;
 
     // Track retry event
-    if (widget.analyticsService != null) {
-      final timeSinceError = _errorShownAt != null
-          ? DateTime.now().difference(_errorShownAt!)
-          : null;
+    final timeSinceError =
+        _errorShownAt != null
+            ? DateTime.now().difference(_errorShownAt!)
+            : null;
 
-      widget.analyticsService!.logEvent(
-        ErrorEvent.retryTapped(
-          errorType: widget.errorType ?? 'unknown',
-          context: widget.errorContext ?? 'unknown',
-          attemptNumber: _retryCount,
-          timeSinceError: timeSinceError,
-        ),
-      );
-    }
+    widget.analyticsService.logEvent(
+      ErrorEvent.retryTapped(
+        errorType: widget.errorType ?? 'unknown',
+        context: widget.errorContext ?? 'unknown',
+        attemptNumber: _retryCount,
+        timeSinceError: timeSinceError,
+      ),
+    );
 
     widget.onRetry?.call();
   }
@@ -177,7 +177,9 @@ class _ErrorStateWidgetState extends State<ErrorStateWidget> {
                 width: widget.iconSize + 24,
                 height: widget.iconSize + 24,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
+                  color: theme.colorScheme.errorContainer.withValues(
+                    alpha: 0.3,
+                  ),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(

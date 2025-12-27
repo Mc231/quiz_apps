@@ -22,7 +22,8 @@ class FlagsQuizDependencies {
     required this.achievementsProvider,
     required this.dataProvider,
     required this.categories,
-    this.analyticsService,
+    required this.screenAnalyticsService,
+    required this.quizAnalyticsService,
   });
 
   final SettingsService settingsService;
@@ -31,11 +32,8 @@ class FlagsQuizDependencies {
   final FlagsAchievementsDataProvider achievementsProvider;
   final FlagsDataProvider dataProvider;
   final List<QuizCategory> categories;
-
-  /// Optional analytics service for tracking quiz events.
-  ///
-  /// When null, analytics tracking is disabled.
-  final QuizAnalyticsService? analyticsService;
+  final AnalyticsService screenAnalyticsService;
+  final QuizAnalyticsService quizAnalyticsService;
 }
 
 /// Provides a fully initialized [FlagsQuizApp] instance.
@@ -115,7 +113,8 @@ class FlagsQuizAppProvider {
       achievementsProvider: achievementsProvider,
       dataProvider: dataProvider,
       categories: categories,
-      analyticsService: quizAnalytics,
+      screenAnalyticsService: analytics,
+      quizAnalyticsService: quizAnalytics,
     );
   }
 }

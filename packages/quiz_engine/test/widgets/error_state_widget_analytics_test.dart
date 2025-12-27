@@ -180,7 +180,7 @@ void main() {
           ErrorStateWidget(
             message: 'Error',
             onRetry: () => retryWasCalled = true,
-            analyticsService: null, // No analytics service
+            analyticsService: NoOpAnalyticsService(), // No analytics service
             errorType: 'test',
             errorContext: 'test',
           ),

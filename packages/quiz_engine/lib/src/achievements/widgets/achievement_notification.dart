@@ -71,7 +71,7 @@ class AchievementNotification extends StatefulWidget {
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
-    this.analyticsService,
+    required this.analyticsService,
     this.shownAt,
   });
 
@@ -94,7 +94,7 @@ class AchievementNotification extends StatefulWidget {
   final AudioService? audioService;
 
   /// Optional analytics service for tracking tap events.
-  final AnalyticsService? analyticsService;
+  final AnalyticsService analyticsService;
 
   /// When the notification was shown (for calculating time to tap).
   final DateTime? shownAt;
@@ -193,9 +193,9 @@ class _AchievementNotificationState extends State<AchievementNotification>
 
     // Track tap event before dismissing
     final shownAt = widget.shownAt;
-    if (shownAt != null && widget.analyticsService != null) {
+    if (shownAt != null) {
       final timeToTap = DateTime.now().difference(shownAt);
-      widget.analyticsService!.logEvent(
+      widget.analyticsService.logEvent(
         AchievementEvent.notificationTapped(
           achievementId: widget.achievement.id,
           achievementName: widget.achievement.id, // Name requires context

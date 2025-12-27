@@ -50,6 +50,7 @@ void main() {
       ),
     );
     bloc = QuizBloc(
+      analyticsService: NoOpQuizAnalyticsService(),
       mockDataProvider,
       randomItemPicker,
       filter: (entry) => true,
@@ -83,6 +84,7 @@ void main() {
     );
     final result = QuizBloc(
       mockDataProvider,
+      analyticsService: NoOpQuizAnalyticsService(),
       randomItemPicker,
       filter: (entry) => true,
       configManager: configManager,
@@ -138,6 +140,7 @@ void main() {
     final blocWithCallback = QuizBloc(
       () async => mockItems,
       randomItemPicker,
+      analyticsService: NoOpQuizAnalyticsService(),
       configManager: ConfigManager(
         defaultConfig: QuizConfig(
           quizId: 'test_quiz',
@@ -206,6 +209,7 @@ void main() {
       endlessBloc = QuizBloc(
         () async => endlessItems,
         endlessItemPicker,
+        analyticsService: NoOpQuizAnalyticsService(),
         configManager: configManager,
       );
     });

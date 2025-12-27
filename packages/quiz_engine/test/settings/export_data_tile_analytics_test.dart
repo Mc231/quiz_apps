@@ -208,7 +208,7 @@ void main() {
         wrapWithLocalizations(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: null, // No analytics service
+            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );

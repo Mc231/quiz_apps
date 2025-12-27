@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../widgets/question_review_widget.dart';
 
@@ -168,6 +169,7 @@ class SessionDetailScreen extends StatefulWidget {
     super.key,
     required this.session,
     required this.texts,
+    required this.analyticsService,
     this.onPracticeWrongAnswers,
     this.onExport,
     this.onDelete,
@@ -179,6 +181,9 @@ class SessionDetailScreen extends StatefulWidget {
 
   /// Localization texts.
   final SessionDetailTexts texts;
+
+  /// Analytics service for tracking events.
+  final AnalyticsService analyticsService;
 
   /// Callback to practice wrong answers.
   final VoidCallback? onPracticeWrongAnswers;
@@ -198,6 +203,24 @@ class SessionDetailScreen extends StatefulWidget {
 
 class _SessionDetailScreenState extends State<SessionDetailScreen> {
   QuestionFilterMode _filterMode = QuestionFilterMode.all;
+
+  @override
+  void initState() {
+    super.initState();
+    _logScreenView();
+  }
+
+  void _logScreenView() {
+    final daysAgo = DateTime.now().difference(widget.session.startTime).inDays;
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.sessionDetail(
+        sessionId: widget.session.id,
+        quizName: widget.session.quizName,
+        scorePercentage: widget.session.scorePercentage,
+        daysAgo: daysAgo,
+      ),
+    );
+  }
 
   List<ReviewedQuestion> get _filteredQuestions {
     if (_filterMode == QuestionFilterMode.wrongOnly) {
