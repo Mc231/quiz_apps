@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:shared_services/shared_services.dart' show AnalyticsService;
+import 'package:shared_services/shared_services.dart' show AnalyticsService, ScreenViewEvent;
 
 import '../../quiz_engine.dart';
 import 'quiz_layout.dart';
@@ -58,6 +58,9 @@ class QuizScreenState extends State<QuizScreen> {
   /// Flag to track if the quiz is over
   bool _isQuizOver = false;
 
+  /// Flag to track if screen view has been logged
+  bool _screenViewLogged = false;
+
   @override
   void initState() {
     super.initState();
@@ -65,6 +68,28 @@ class QuizScreenState extends State<QuizScreen> {
     _updateFeedbackServiceFromConfig();
     _initializeFeedbackServiceAsync();
     _bloc.performInitialLoad();
+  }
+
+  void _logScreenView(int totalQuestions) {
+    if (!mounted) return;
+    widget.screenAnalyticsService.logEvent(
+      ScreenViewEvent.quiz(
+        quizId: _bloc.config.quizId,
+        quizName: widget.title,
+        mode: _getModeConfigName(_bloc.config.modeConfig),
+        totalQuestions: totalQuestions,
+      ),
+    );
+  }
+
+  String _getModeConfigName(QuizModeConfig config) {
+    return switch (config) {
+      StandardMode() => 'standard',
+      TimedMode() => 'timed',
+      LivesMode() => 'lives',
+      EndlessMode() => 'endless',
+      SurvivalMode() => 'survival',
+    };
   }
 
   /// Get whether exit confirmation should be shown
@@ -96,6 +121,11 @@ class QuizScreenState extends State<QuizScreen> {
 
     // Listen to quiz states and provide feedback
     _bloc.stream.listen((state) {
+      // Log screen view on first QuestionState
+      if (!_screenViewLogged && state is QuestionState) {
+        _screenViewLogged = true;
+        _logScreenView(state.total);
+      }
       if (state is AnswerFeedbackState) {
         _provideFeedback(state);
       } else if (state is QuizCompletedState) {

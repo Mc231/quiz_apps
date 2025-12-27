@@ -26,7 +26,7 @@ import '../widgets/challenge_list.dart';
 ///   storageService: storageService,
 /// )
 /// ```
-class ChallengesScreen extends StatelessWidget {
+class ChallengesScreen extends StatefulWidget {
   /// Creates a [ChallengesScreen].
   const ChallengesScreen({
     super.key,
@@ -40,6 +40,7 @@ class ChallengesScreen extends StatelessWidget {
     this.categoryPickerTitle,
     this.onChallengeStarted,
     this.onQuizCompleted,
+    this.completedChallengeCount = 0,
   });
 
   /// List of available challenge modes.
@@ -76,11 +77,34 @@ class ChallengesScreen extends StatelessWidget {
   /// or any post-quiz processing.
   final void Function(QuizResults results)? onQuizCompleted;
 
+  /// Number of completed challenges for analytics tracking.
+  final int completedChallengeCount;
+
+  @override
+  State<ChallengesScreen> createState() => _ChallengesScreenState();
+}
+
+class _ChallengesScreenState extends State<ChallengesScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _logScreenView();
+  }
+
+  void _logScreenView() {
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.challenges(
+        challengeCount: widget.challenges.length,
+        completedCount: widget.completedChallengeCount,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChallengeListWidget(
-      challenges: challenges,
-      config: listConfig,
+      challenges: widget.challenges,
+      config: widget.listConfig,
       onChallengeSelected: (challenge) => _onChallengeSelected(context, challenge),
     );
   }
@@ -98,8 +122,8 @@ class ChallengesScreen extends StatelessWidget {
       ),
       builder: (context) => _CategoryPickerSheet(
         challenge: challenge,
-        categories: categories,
-        title: categoryPickerTitle,
+        categories: widget.categories,
+        title: widget.categoryPickerTitle,
         onCategorySelected: (category) {
           Navigator.pop(context);
           _startChallenge(context, challenge, category);
@@ -114,19 +138,19 @@ class ChallengesScreen extends StatelessWidget {
     QuizCategory category,
   ) async {
     // Notify callback
-    onChallengeStarted?.call(challenge, category);
+    widget.onChallengeStarted?.call(challenge, category);
 
     // Log challenge selected event
-    analyticsService.logEvent(
+    widget.analyticsService.logEvent(
       InteractionEvent.categorySelected(
         categoryId: category.id,
         categoryName: category.title(context),
-        categoryIndex: categories.indexOf(category),
+        categoryIndex: widget.categories.indexOf(category),
       ),
     );
 
     // Load questions
-    var questions = await dataProvider.loadQuestions(context, category);
+    var questions = await widget.dataProvider.loadQuestions(context, category);
 
     // Limit questions if challenge has a count limit
     if (challenge.questionCount != null && questions.length > challenge.questionCount!) {
@@ -137,7 +161,7 @@ class ChallengesScreen extends StatelessWidget {
     final quizConfig = _createQuizConfig(context, challenge, category);
 
     // Create storage config
-    final storageConfig = dataProvider.createStorageConfig(context, category);
+    final storageConfig = widget.dataProvider.createStorageConfig(context, category);
 
     // Apply storage config
     final configWithStorage = quizConfig.copyWith(
@@ -146,20 +170,20 @@ class ChallengesScreen extends StatelessWidget {
 
     // Create storage adapter
     QuizStorageAdapter? storageAdapter;
-    if (storageService != null) {
-      storageAdapter = QuizStorageAdapter(storageService!);
+    if (widget.storageService != null) {
+      storageAdapter = QuizStorageAdapter(widget.storageService!);
     }
 
     // Create analytics adapter
-    final quizAnalyticsAdapter = QuizAnalyticsAdapter(analyticsService);
+    final quizAnalyticsAdapter = QuizAnalyticsAdapter(widget.analyticsService);
 
     // Create config manager
     // Note: showAnswerFeedback comes from challenge mode, falling back to category
     final configManager = ConfigManager(
       defaultConfig: configWithStorage,
       getSettings: () => {
-        'soundEnabled': settingsService.currentSettings.soundEnabled,
-        'hapticEnabled': settingsService.currentSettings.hapticEnabled,
+        'soundEnabled': widget.settingsService.currentSettings.soundEnabled,
+        'hapticEnabled': widget.settingsService.currentSettings.hapticEnabled,
         'showAnswerFeedback': challenge.showAnswerFeedback,
       },
     );
@@ -175,8 +199,8 @@ class ChallengesScreen extends StatelessWidget {
               configManager: configManager,
               storageService: storageAdapter,
               quizAnalyticsService: quizAnalyticsAdapter,
-              onQuizCompleted: onQuizCompleted,
-              screenAnalyticsService: analyticsService,
+              onQuizCompleted: widget.onQuizCompleted,
+              screenAnalyticsService: widget.analyticsService,
             ),
           ),
         ),

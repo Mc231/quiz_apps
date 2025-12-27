@@ -212,6 +212,17 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
   void initState() {
     super.initState();
     _currentFilter = widget.config.initialFilter;
+    _logScreenView();
+  }
+
+  void _logScreenView() {
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.achievements(
+        unlockedCount: widget.data.unlockedCount,
+        totalCount: widget.data.totalCount,
+        totalPoints: widget.data.totalPoints,
+      ),
+    );
   }
 
   void _handleAchievementTap(AchievementDisplayData data) {
@@ -476,6 +487,17 @@ class _AchievementsScreenSliverState extends State<AchievementsScreenSliver> {
   void initState() {
     super.initState();
     _currentFilter = widget.config.initialFilter;
+    _logScreenView();
+  }
+
+  void _logScreenView() {
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.achievements(
+        unlockedCount: widget.data.unlockedCount,
+        totalCount: widget.data.totalCount,
+        totalPoints: widget.data.totalPoints,
+      ),
+    );
   }
 
   void _handleAchievementTap(AchievementDisplayData data) {

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_services/shared_services.dart';
 
-import '../l10n/quiz_localizations.dart';
-import 'export_data_tile.dart';
 
 /// Source identifier for settings analytics events.
 const String _settingsSource = 'settings_screen';
@@ -202,6 +201,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
     super.initState();
     _currentSettings = widget.settingsService.currentSettings;
     _loadPackageInfo();
+    _logScreenView();
 
     widget.settingsService.settingsStream.listen((settings) {
       if (mounted) {
@@ -210,6 +210,10 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         });
       }
     });
+  }
+
+  void _logScreenView() {
+    widget.analyticsService.logEvent(ScreenViewEvent.settings());
   }
 
   Future<void> _loadPackageInfo() async {
