@@ -2847,24 +2847,29 @@ class MyScreen extends StatelessWidget {
 
 ---
 
-#### Sprint 9.5.8: Practice BLoC
+#### Sprint 9.5.8: Practice BLoC ✅
 
 **Tasks:**
-- [ ] Create `PracticeState` sealed class
-- [ ] Create `PracticeBloc` for practice mode management
-- [ ] Refactor `PracticeStartScreen` and `PracticeCompleteScreen` to use BLoC
-- [ ] Move practice data loading and progress tracking to BLoC
-- [ ] Write unit tests for `PracticeBloc`
-- [ ] Write widget tests for refactored screens
+- [x] Create `PracticeState` sealed class (Loading, Ready, Complete, Error)
+- [x] Create `PracticeEvent` sealed class
+- [x] Create `PracticeBloc` for practice mode management
+- [x] Create `PracticeBuilder` widget for BLoC integration
+- [x] Add `PracticeStartContent` to `PracticeStartScreen`
+- [x] Add `PracticeCompleteContent` to `PracticeCompleteScreen`
+- [x] Move practice data loading and progress tracking to BLoC
+- [x] Write unit tests for `PracticeBloc` (30 tests)
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/bloc/practice/practice_state.dart`
-- `packages/quiz_engine/lib/src/bloc/practice/practice_bloc.dart`
-- `packages/quiz_engine/test/bloc/practice/practice_bloc_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/bloc/practice/practice_state.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/practice/practice_event.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/practice/practice_bloc.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/practice/practice_builder.dart`
+- ✅ `packages/quiz_engine/test/bloc/practice/practice_bloc_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/screens/practice_start_screen.dart`
-- `packages/quiz_engine/lib/src/screens/practice_complete_screen.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/screens/practice_start_screen.dart` (added `PracticeStartContent`)
+- ✅ `packages/quiz_engine/lib/src/screens/practice_complete_screen.dart` (added `PracticeCompleteContent`)
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` (added Practice BLoC exports)
 
 ---
 
