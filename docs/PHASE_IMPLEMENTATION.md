@@ -2430,29 +2430,38 @@ await compositeService.logEvent(QuizEvent.started(...));
 
 ---
 
-### Sprint 9.1.7: Analytics Integration - UI Screens
+### Sprint 9.1.7: Analytics Integration - UI Screens ✅
 
 **Goal:** Integrate analytics into UI screens and navigation.
 
 **Tasks:**
-- [ ] Create `AnalyticsNavigatorObserver` for automatic screen tracking
-- [ ] Integrate screen views in `QuizHomeScreen`
-- [ ] Integrate screen views in `StatisticsDashboard`
-- [ ] Integrate screen views in `SessionHistoryScreen`
-- [ ] Integrate screen views in `AchievementsScreen`
-- [ ] Integrate screen views in `QuizSettingsScreen`
-- [ ] Integrate screen views in `SessionDetailScreen`
-- [ ] Track `tab_selected` events in bottom navigation
-- [ ] Track `category_selected` events
-- [ ] Write integration tests
+- [x] Create `AnalyticsNavigatorObserver` for automatic screen tracking
+- [x] Integrate screen views in `QuizHomeScreen`
+- [x] Integrate screen views in `StatisticsDashboard` (via tab tracking)
+- [x] Integrate screen views in `SessionHistoryScreen` (via tab tracking)
+- [x] Integrate screen views in `AchievementsScreen` (via tab tracking)
+- [x] Integrate screen views in `QuizSettingsScreen` (via tab tracking)
+- [x] Integrate screen views in `SessionDetailScreen` (via navigator observer)
+- [x] Track `tab_selected` events in bottom navigation
+- [x] Track `category_selected` events
+- [x] Write integration tests
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/analytics/analytics_navigator_observer.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/analytics/analytics_navigator_observer.dart`
+- ✅ `packages/quiz_engine/lib/src/analytics/analytics_exports.dart`
+- ✅ `packages/quiz_engine/test/analytics/analytics_navigator_observer_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/quiz_app.dart`
-- `packages/quiz_engine/lib/src/screens/quiz_home_screen.dart`
-- `packages/quiz_engine/lib/src/screens/play_screen.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Added analytics export
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added screenAnalyticsService parameter, category tracking
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` - Added analyticsService, tab tracking, screen view tracking
+
+**Implementation Notes:**
+- `AnalyticsNavigatorObserver` provides automatic screen tracking for route-based navigation
+- `QuizHomeScreen` tracks tab selection events and initial screen views
+- `QuizApp` tracks category selection events and passes analytics service to home screen
+- Screen views for tabs (Statistics, History, Achievements, Settings) are tracked when the home screen loads and when tabs change
+- The extension `AnalyticsServiceScreenTracking` provides a convenient way to log screen views using the `ScreenViewEvent` sealed class
 
 ---
 
