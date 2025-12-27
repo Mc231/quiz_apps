@@ -6,6 +6,7 @@ library;
 // Database
 export 'database/app_database.dart';
 export 'database/database_config.dart';
+export 'database/database_initializer.dart';
 
 // Table definitions
 export 'database/tables/daily_statistics_table.dart';

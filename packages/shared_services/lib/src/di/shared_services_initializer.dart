@@ -4,6 +4,7 @@
 /// with a single call.
 library;
 
+import '../storage/database/database_initializer.dart';
 import 'dependency_module.dart';
 import 'modules/settings_module.dart';
 import 'modules/storage_module.dart';
@@ -86,6 +87,9 @@ class SharedServicesInitializer {
     }
 
     final locator = serviceLocator ?? sl;
+
+    // Initialize database factory for web platform
+    await DatabaseInitializer.initialize();
 
     // Register settings module (async initialization for SharedPreferences)
     final settingsModule = SettingsModule();
