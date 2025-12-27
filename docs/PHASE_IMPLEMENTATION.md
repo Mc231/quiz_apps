@@ -4,7 +4,7 @@
 
 **Reference:** See [CORE_ARCHITECTURE_GUIDE.md](./CORE_ARCHITECTURE_GUIDE.md) for architectural details and design patterns.
 
-**Last Updated:** 2025-12-26
+**Last Updated:** 2025-12-27
 
 ---
 
@@ -2341,20 +2341,49 @@ await analyticsService.logPostScore(score: 850, level: 5);
 
 ---
 
-### Sprint 9.1.5: Composite Analytics Service
+### Sprint 9.1.5: Composite Analytics Service ✅
 
 **Goal:** Create composite service for multi-provider analytics.
 
 **Tasks:**
-- [ ] Create `CompositeAnalyticsService` implementation
-- [ ] Support multiple providers (Firebase + Amplitude, etc.)
-- [ ] Implement fan-out event logging
-- [ ] Add provider-specific configuration
-- [ ] Write unit tests
+- [x] Create `CompositeAnalyticsService` implementation
+- [x] Support multiple providers (Firebase + Amplitude, etc.)
+- [x] Implement fan-out event logging
+- [x] Add provider-specific configuration
+- [x] Write unit tests
 
-**Files to Create:**
-- `packages/shared_services/lib/src/analytics/composite_analytics_service.dart`
-- `packages/shared_services/test/analytics/composite_analytics_service_test.dart`
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/analytics/services/composite_analytics_service.dart`
+- ✅ `packages/shared_services/test/analytics/composite_analytics_service_test.dart`
+
+**Features:**
+- `AnalyticsProviderConfig` - Configuration for each provider with name, enabled flag, and event filter
+- `CompositeAnalyticsService` - Fan-out service that logs to multiple providers
+- Event filtering per provider (e.g., send monetization events only to revenue analytics)
+- Graceful error handling - one provider failing doesn't affect others
+- `stopOnFirstError` option for strict error handling
+- Provider lookup by name (`getProvider`, `getProviderConfig`)
+- Extension method `toCompositeService()` for easy creation from a list
+
+**Usage Example:**
+```dart
+final compositeService = CompositeAnalyticsService(
+  providers: [
+    AnalyticsProviderConfig(
+      provider: FirebaseAnalyticsService(),
+      name: 'Firebase',
+    ),
+    AnalyticsProviderConfig(
+      provider: AmplitudeAnalyticsService(),
+      name: 'Amplitude',
+      eventFilter: (event) => event is MonetizationEvent,
+    ),
+  ],
+);
+
+await compositeService.initialize();
+await compositeService.logEvent(QuizEvent.started(...));
+```
 
 ---
 
