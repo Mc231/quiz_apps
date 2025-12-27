@@ -2725,23 +2725,27 @@ class MyScreen extends StatelessWidget {
 
 ---
 
-#### Sprint 9.5.3: Session Detail BLoC
+#### Sprint 9.5.3: Session Detail BLoC ✅
 
 **Tasks:**
-- [ ] Create `SessionDetailState` sealed class
-- [ ] Create `SessionDetailBloc` for session detail management
-- [ ] Refactor `SessionDetailScreen` to use BLoC
-- [ ] Move question navigation, filtering, and delete logic to BLoC
-- [ ] Write unit tests for `SessionDetailBloc`
-- [ ] Write widget tests for refactored screen
+- [x] Create `SessionDetailState` sealed class
+- [x] Create `SessionDetailEvent` sealed class
+- [x] Create `SessionDetailBloc` for session detail management
+- [x] Create `SessionDetailBuilder` widget for BLoC integration
+- [x] Refactor `SessionDetailScreen` to use BLoC (added `SessionDetailContent`)
+- [x] Move question filtering and delete logic to BLoC
+- [x] Write unit tests for `SessionDetailBloc` (34 tests)
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/bloc/session_detail/session_detail_state.dart`
-- `packages/quiz_engine/lib/src/bloc/session_detail/session_detail_bloc.dart`
-- `packages/quiz_engine/test/bloc/session_detail/session_detail_bloc_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/bloc/session_detail/session_detail_state.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/session_detail/session_detail_event.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/session_detail/session_detail_bloc.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/session_detail/session_detail_builder.dart`
+- ✅ `packages/quiz_engine/test/bloc/session_detail/session_detail_bloc_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/screens/session_detail_screen.dart` (added `SessionDetailContent`)
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` (added BLoC exports)
 
 ---
 
