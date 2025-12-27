@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
 
@@ -14,7 +15,7 @@ import '../l10n/quiz_localizations.dart';
 ///   onRetry: () => loadData(),
 /// )
 /// ```
-class ErrorStateWidget extends StatelessWidget {
+class ErrorStateWidget extends StatefulWidget {
   /// Creates an [ErrorStateWidget].
   const ErrorStateWidget({
     super.key,
@@ -27,6 +28,9 @@ class ErrorStateWidget extends StatelessWidget {
     this.iconColor,
     this.showIcon = true,
     this.padding = const EdgeInsets.all(32),
+    this.analyticsService,
+    this.errorType,
+    this.errorContext,
   });
 
   /// Creates an [ErrorStateWidget] for network errors.
@@ -36,6 +40,8 @@ class ErrorStateWidget extends StatelessWidget {
     String? title,
     VoidCallback? onRetry,
     String? retryLabel,
+    AnalyticsService? analyticsService,
+    String? errorContext,
   }) {
     return ErrorStateWidget(
       key: key,
@@ -44,6 +50,9 @@ class ErrorStateWidget extends StatelessWidget {
       onRetry: onRetry,
       retryLabel: retryLabel,
       icon: Icons.wifi_off_rounded,
+      analyticsService: analyticsService,
+      errorType: 'network',
+      errorContext: errorContext,
     );
   }
 
@@ -54,6 +63,8 @@ class ErrorStateWidget extends StatelessWidget {
     String? title,
     VoidCallback? onRetry,
     String? retryLabel,
+    AnalyticsService? analyticsService,
+    String? errorContext,
   }) {
     return ErrorStateWidget(
       key: key,
@@ -62,6 +73,9 @@ class ErrorStateWidget extends StatelessWidget {
       onRetry: onRetry,
       retryLabel: retryLabel,
       icon: Icons.cloud_off_rounded,
+      analyticsService: analyticsService,
+      errorType: 'server',
+      errorContext: errorContext,
     );
   }
 
@@ -98,32 +112,77 @@ class ErrorStateWidget extends StatelessWidget {
   /// Padding around the widget.
   final EdgeInsets padding;
 
+  /// Optional analytics service for tracking error events.
+  final AnalyticsService? analyticsService;
+
+  /// The type of error (e.g., 'network', 'server', 'data_load').
+  final String? errorType;
+
+  /// Context where the error occurred (e.g., 'quiz_screen', 'settings').
+  final String? errorContext;
+
+  @override
+  State<ErrorStateWidget> createState() => _ErrorStateWidgetState();
+}
+
+class _ErrorStateWidgetState extends State<ErrorStateWidget> {
+  int _retryCount = 0;
+  DateTime? _errorShownAt;
+
+  @override
+  void initState() {
+    super.initState();
+    _errorShownAt = DateTime.now();
+  }
+
+  void _handleRetry() {
+    _retryCount++;
+
+    // Track retry event
+    if (widget.analyticsService != null) {
+      final timeSinceError = _errorShownAt != null
+          ? DateTime.now().difference(_errorShownAt!)
+          : null;
+
+      widget.analyticsService!.logEvent(
+        ErrorEvent.retryTapped(
+          errorType: widget.errorType ?? 'unknown',
+          context: widget.errorContext ?? 'unknown',
+          attemptNumber: _retryCount,
+          timeSinceError: timeSinceError,
+        ),
+      );
+    }
+
+    widget.onRetry?.call();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = QuizL10n.of(context);
     final effectiveIconColor =
-        iconColor ?? theme.colorScheme.error.withValues(alpha: 0.7);
+        widget.iconColor ?? theme.colorScheme.error.withValues(alpha: 0.7);
 
     return Center(
       child: Padding(
-        padding: padding,
+        padding: widget.padding,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Icon
-            if (showIcon) ...[
+            if (widget.showIcon) ...[
               Container(
-                width: iconSize + 24,
-                height: iconSize + 24,
+                width: widget.iconSize + 24,
+                height: widget.iconSize + 24,
                 decoration: BoxDecoration(
                   color: theme.colorScheme.errorContainer.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
-                  icon,
-                  size: iconSize,
+                  widget.icon,
+                  size: widget.iconSize,
                   color: effectiveIconColor,
                 ),
               ),
@@ -131,9 +190,9 @@ class ErrorStateWidget extends StatelessWidget {
             ],
 
             // Title
-            if (title != null) ...[
+            if (widget.title != null) ...[
               Text(
-                title!,
+                widget.title!,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   color: theme.colorScheme.onSurface,
@@ -145,7 +204,7 @@ class ErrorStateWidget extends StatelessWidget {
 
             // Message
             Text(
-              message,
+              widget.message,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -153,12 +212,12 @@ class ErrorStateWidget extends StatelessWidget {
             ),
 
             // Retry button
-            if (onRetry != null) ...[
+            if (widget.onRetry != null) ...[
               const SizedBox(height: 24),
               FilledButton.icon(
-                onPressed: onRetry,
+                onPressed: _handleRetry,
                 icon: const Icon(Icons.refresh),
-                label: Text(retryLabel ?? l10n.retry),
+                label: Text(widget.retryLabel ?? l10n.retry),
               ),
             ],
           ],
