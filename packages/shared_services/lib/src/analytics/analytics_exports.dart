@@ -8,6 +8,10 @@ export 'analytics_event.dart';
 export 'analytics_service.dart';
 
 // Events
+export 'events/hint_event.dart';
+export 'events/question_event.dart';
+export 'events/quiz_event.dart';
+export 'events/resource_event.dart';
 export 'events/screen_view_event.dart';
 
 // Services
