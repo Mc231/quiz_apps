@@ -31,8 +31,12 @@ export 'src/home/quiz_home_screen.dart';
 export 'src/quiz_widget.dart';
 export 'src/quiz_widget_entry.dart';
 
-// BLoC Provider
+// BLoC Infrastructure
 export 'src/bloc/bloc_provider.dart';
+export 'src/bloc/bloc_builder.dart';
+export 'src/bloc/base/base_bloc_state.dart';
+export 'src/bloc/base/screen_bloc.dart';
+export 'src/bloc/base/bloc_analytics_mixin.dart';
 
 // Statistics BLoC
 export 'src/bloc/statistics/statistics_bloc.dart';
