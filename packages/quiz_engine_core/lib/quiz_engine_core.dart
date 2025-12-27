@@ -22,6 +22,9 @@ export 'src/model/random_pick_result.dart';
 // Storage
 export 'src/storage/quiz_storage_service.dart';
 
+// Analytics
+export 'src/analytics/quiz_analytics_service.dart';
+
 // Utilities
 export 'src/random_item_picker.dart';
 export 'src/resource_provider.dart';
