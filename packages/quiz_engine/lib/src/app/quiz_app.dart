@@ -314,6 +314,16 @@ class QuizApp extends StatefulWidget {
   /// When provided, quiz events will be tracked through this service.
   final QuizAnalyticsService? analyticsService;
 
+  /// Analytics service for tracking screen views and user interactions.
+  ///
+  /// When provided, tracks:
+  /// - Screen views when tabs change
+  /// - Tab selection events
+  /// - Category selection events
+  ///
+  /// This is separate from [analyticsService] which tracks quiz-specific events.
+  final AnalyticsService? screenAnalyticsService;
+
   /// Locale override.
   final Locale? locale;
 
@@ -351,6 +361,7 @@ class QuizApp extends StatefulWidget {
     this.settingsBuilder,
     this.settingsConfig,
     this.analyticsService,
+    this.screenAnalyticsService,
     this.locale,
     this.formatDate,
     this.formatStatus,
@@ -510,8 +521,13 @@ class _QuizAppState extends State<QuizApp> {
         storageService: widget.storageService,
         config: homeConfig,
         onCategorySelected: hasDataProvider
-            ? (category) => _startQuiz(innerContext, category)
-            : widget.callbacks.onCategorySelected,
+            ? (category) => _handleCategorySelected(innerContext, category)
+            : widget.callbacks.onCategorySelected != null
+                ? (category) {
+                    _trackCategorySelected(innerContext, category);
+                    widget.callbacks.onCategorySelected!(category);
+                  }
+                : null,
         onSettingsPressed: hasDataProvider
             ? () => _openSettings(innerContext)
             : widget.callbacks.onSettingsPressed,
@@ -527,6 +543,7 @@ class _QuizAppState extends State<QuizApp> {
         formatDate: widget.formatDate,
         formatStatus: widget.formatStatus,
         formatDuration: widget.formatDuration,
+        analyticsService: widget.screenAnalyticsService,
       );
       },
     );
@@ -629,6 +646,30 @@ class _QuizAppState extends State<QuizApp> {
           config: widget.settingsConfig ??
               const QuizSettingsConfig(showAppBar: false),
         );
+  }
+
+  /// Handles category selection with analytics tracking.
+  void _handleCategorySelected(BuildContext context, QuizCategory category) {
+    _trackCategorySelected(context, category);
+    _startQuiz(context, category);
+  }
+
+  /// Tracks the category_selected analytics event.
+  void _trackCategorySelected(BuildContext context, QuizCategory category) {
+    final analyticsService = widget.screenAnalyticsService;
+    if (analyticsService == null) return;
+
+    // Get the category index from the categories list
+    final categories = widget.categories ?? [];
+    final categoryIndex = categories.indexOf(category);
+
+    final event = InteractionEvent.categorySelected(
+      categoryId: category.id,
+      categoryName: category.title(context),
+      categoryIndex: categoryIndex >= 0 ? categoryIndex : 0,
+    );
+
+    analyticsService.logEvent(event);
   }
 
   /// Starts a quiz for the given category.
