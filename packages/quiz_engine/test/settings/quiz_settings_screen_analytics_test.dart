@@ -42,6 +42,9 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      // Reset analytics after screen view event is logged
+      analyticsService.reset();
+
       // Find and tap sound effects toggle
       final soundToggle = find.widgetWithText(SwitchListTile, 'Sound Effects');
       expect(soundToggle, findsOneWidget);
@@ -71,6 +74,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
+
+      // Reset analytics after screen view event is logged
+      analyticsService.reset();
 
       // Find and tap haptic feedback toggle
       final hapticToggle =
@@ -102,6 +108,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
+
+      // Reset analytics after screen view event is logged
+      analyticsService.reset();
 
       // Open theme dialog
       final themeTile = find.widgetWithText(ListTile, 'Theme');
@@ -141,6 +150,9 @@ void main() {
       );
       await tester.pumpAndSettle();
 
+      // Reset analytics after screen view event is logged
+      analyticsService.reset();
+
       // Find and tap reset to defaults
       final resetTile = find.widgetWithText(ListTile, 'Reset to Defaults');
       expect(resetTile, findsOneWidget);
@@ -178,6 +190,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
+
+      // Reset analytics after screen view event is logged
+      analyticsService.reset();
 
       // Find and tap background music toggle
       final musicToggle =
@@ -237,6 +252,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
+
+      // Reset analytics after screen view event is logged
+      analyticsService.reset();
 
       // Toggle sound effects
       await tester.tap(find.widgetWithText(SwitchListTile, 'Sound Effects'));

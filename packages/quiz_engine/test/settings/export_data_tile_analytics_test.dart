@@ -45,9 +45,10 @@ void main() {
     late MockDataExportService exportService;
     late MockAnalyticsService analyticsService;
 
-    setUp(() {
+    setUp(() async {
       exportService = MockDataExportService();
       analyticsService = MockAnalyticsService();
+      await analyticsService.initialize();
     });
 
     tearDown(() {

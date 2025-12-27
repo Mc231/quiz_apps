@@ -77,11 +77,12 @@ void main() {
     ];
   }
 
-  setUp(() {
+  setUp(() async {
     repository = MockAchievementRepository();
     statsDataSource = MockStatisticsDataSource(createStats());
     engine = AchievementEngine(repository: repository);
     analyticsService = MockAnalyticsService();
+    await analyticsService.initialize();
     service = AchievementService(
       repository: repository,
       statisticsDataSource: statsDataSource,
