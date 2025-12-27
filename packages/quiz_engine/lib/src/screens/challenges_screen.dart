@@ -234,6 +234,89 @@ class ChallengesScreen extends StatelessWidget {
   }
 }
 
+/// BLoC-compatible content widget for challenges.
+///
+/// This widget receives all state and callbacks externally, making it
+/// suitable for use with [ChallengesBloc] via [ChallengesBuilder].
+class ChallengesContent extends StatelessWidget {
+  /// Creates a [ChallengesContent].
+  const ChallengesContent({
+    super.key,
+    required this.challenges,
+    required this.categories,
+    required this.onChallengeSelected,
+    this.listConfig = const ChallengeListConfig(),
+    this.isRefreshing = false,
+    this.onRefresh,
+    this.categoryPickerTitle,
+    this.trailingBuilder,
+  });
+
+  /// List of available challenges.
+  final List<ChallengeMode> challenges;
+
+  /// List of available categories.
+  final List<QuizCategory> categories;
+
+  /// Callback when a challenge and category are selected.
+  final void Function(ChallengeMode challenge, QuizCategory category)
+      onChallengeSelected;
+
+  /// Configuration for the challenge list.
+  final ChallengeListConfig listConfig;
+
+  /// Whether the content is refreshing.
+  final bool isRefreshing;
+
+  /// Callback for pull-to-refresh.
+  final Future<void> Function()? onRefresh;
+
+  /// Title for the category picker dialog.
+  final String? categoryPickerTitle;
+
+  /// Builder for trailing widget on each card.
+  final Widget Function(ChallengeMode challenge)? trailingBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final content = ChallengeListWidget(
+      challenges: challenges,
+      config: listConfig,
+      trailingBuilder: trailingBuilder,
+      onChallengeSelected: (challenge) =>
+          _showCategoryPicker(context, challenge),
+    );
+
+    if (onRefresh != null) {
+      return RefreshIndicator(
+        onRefresh: onRefresh!,
+        child: content,
+      );
+    }
+
+    return content;
+  }
+
+  void _showCategoryPicker(BuildContext context, ChallengeMode challenge) {
+    showModalBottomSheet<QuizCategory>(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) => _CategoryPickerSheet(
+        challenge: challenge,
+        categories: categories,
+        title: categoryPickerTitle,
+        onCategorySelected: (category) {
+          Navigator.pop(context);
+          onChallengeSelected(challenge, category);
+        },
+      ),
+    );
+  }
+}
+
 /// Bottom sheet for picking a category.
 class _CategoryPickerSheet extends StatelessWidget {
   const _CategoryPickerSheet({
