@@ -21,7 +21,7 @@
 | Phase 7 | QuizApp Refactoring | ✅ Completed |
 | Phase 8 | Achievements & Core Features | ✅ Completed (12/12 sprints) |
 | Phase 8.5 | Production Polish | ✅ Completed (7/7 sprints) |
-| Phase 9 | Shared Services (Ads, Analytics, IAP) | 🔄 In Progress (Analytics ✅ 11/11, Ads/IAP pending) |
+| Phase 9 | Shared Services (Ads, Analytics, IAP) | 🔄 In Progress (Analytics ✅ 11/11, BLoC Architecture ✅ 9/9, Ads/IAP pending) |
 | Phase 10 | Polish & Integration | Not Started |
 | Phase 11 | Second App Validation | Not Started |
 
@@ -2634,7 +2634,9 @@ dependencies:
 
 ---
 
-### Sprint 9.5: Screen BLoC Architecture Refactoring
+### Sprint 9.5: Screen BLoC Architecture Refactoring ✅
+
+**Status:** Complete (9/9 sprints, 280+ tests)
 
 **Goal:** Refactor all UI screens to use the BLoC pattern consistent with QuizBloc for better state management, testability, and separation of concerns.
 
@@ -2903,34 +2905,43 @@ class MyScreen extends StatelessWidget {
 
 ### Phase 9 Summary
 
-| Sprint | Events/Items | Description |
-|--------|--------------|-------------|
-| 9.1 | 17 | Core infrastructure + ScreenViewEvent |
-| 9.1.1 | 24 | QuizEvent, QuestionEvent, HintEvent, ResourceEvent |
-| 9.1.2 | 25 | InteractionEvent, SettingsEvent, AchievementEvent |
-| 9.1.3 | 21 | MonetizationEvent, ErrorEvent, PerformanceEvent |
-| 9.1.4 | - | Firebase Analytics implementation |
-| 9.1.5 | - | Composite Analytics service |
-| 9.1.6 | - | QuizBloc integration |
-| 9.1.7 | - | UI screens integration |
-| 9.1.8 | - | Settings & achievements integration |
-| 9.1.9 | - | User properties & lifecycle |
-| 9.1.10 | - | Testing & documentation |
-| 9.2 | - | Ads service (AdMob) |
-| 9.3 | - | IAP service |
-| 9.4 | - | Final integration |
-| 9.5.1 | - | Statistics BLoC |
-| 9.5.2 | - | Session History BLoC |
-| 9.5.3 | - | Session Detail BLoC |
-| 9.5.4 | - | Challenges BLoC |
-| 9.5.5 | - | Home Screen BLoC |
-| 9.5.6 | - | Achievements BLoC |
-| 9.5.7 | - | Settings BLoC |
-| 9.5.8 | - | Practice BLoC |
-| 9.5.9 | - | BLoC Infrastructure & Utilities |
+| Sprint | Status | Description |
+|--------|--------|-------------|
+| **Analytics (9.1.x)** | | |
+| 9.1 | ✅ | Core infrastructure + ScreenViewEvent (17 events) |
+| 9.1.1 | ✅ | QuizEvent, QuestionEvent, HintEvent, ResourceEvent (24 events) |
+| 9.1.2 | ✅ | InteractionEvent, SettingsEvent, AchievementEvent (25 events) |
+| 9.1.3 | ✅ | MonetizationEvent, ErrorEvent, PerformanceEvent (21 events) |
+| 9.1.4 | ✅ | Firebase Analytics implementation |
+| 9.1.5 | ✅ | Composite Analytics service |
+| 9.1.6 | ✅ | QuizBloc integration |
+| 9.1.7 | ✅ | UI screens integration |
+| 9.1.8 | ✅ | Settings & achievements integration |
+| 9.1.9 | ✅ | User properties & lifecycle |
+| 9.1.10 | ✅ | Testing & documentation |
+| **Ads & IAP (9.2-9.4)** | | |
+| 9.2 | ⏳ | Ads service (AdMob) |
+| 9.3 | ⏳ | IAP service |
+| 9.4 | ⏳ | Final integration |
+| **BLoC Architecture (9.5.x)** | | |
+| 9.5.1 | ✅ | Statistics BLoC (31 tests) |
+| 9.5.2 | ✅ | Session History BLoC (18 tests) |
+| 9.5.3 | ✅ | Session Detail BLoC (25 tests) |
+| 9.5.4 | ✅ | Challenges BLoC (19 tests) |
+| 9.5.5 | ✅ | Home Screen BLoC (28 tests) |
+| 9.5.6 | ✅ | Achievements BLoC (26 tests) |
+| 9.5.7 | ✅ | Settings BLoC (37 tests) |
+| 9.5.8 | ✅ | Practice BLoC (30 tests) |
+| 9.5.9 | ✅ | BLoC Infrastructure & Utilities (66 tests) |
 
-**Total Analytics Events:** 87 events across 11 sealed classes
-**Total Screen BLoCs:** 8 BLoCs + base infrastructure
+**Completed:**
+- Analytics Events: 87 events across 11 sealed classes
+- Screen BLoCs: 8 BLoCs + base infrastructure (280+ tests)
+
+**Pending:**
+- Ads service (AdMob integration)
+- IAP service (In-App Purchases)
+- Final integration
 
 ---
 
