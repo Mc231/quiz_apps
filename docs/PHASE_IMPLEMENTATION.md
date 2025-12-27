@@ -2196,6 +2196,149 @@ dependencies:
 - [ ] Add FirebaseAnalyticsObserver to MaterialApp navigatorObservers
 - [ ] Test with Firebase Console DebugView
 
+#### Firebase Analytics Integration Guide
+
+**Step 1: Create Firebase Project**
+
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Click "Add project" and follow the setup wizard
+3. Enable Google Analytics when prompted (recommended)
+
+**Step 2: iOS Setup**
+
+1. In Firebase Console, click "Add app" → iOS
+2. Enter your iOS bundle ID (e.g., `com.example.flagsquiz`)
+3. Download `GoogleService-Info.plist`
+4. Add the file to your iOS project:
+   ```
+   apps/flagsquiz/ios/Runner/GoogleService-Info.plist
+   ```
+5. Open `ios/Runner.xcworkspace` in Xcode
+6. Right-click on `Runner` → "Add Files to Runner"
+7. Select `GoogleService-Info.plist` (ensure "Copy items if needed" is checked)
+
+**iOS Info.plist Configuration** (optional, for ad tracking):
+```xml
+<!-- apps/flagsquiz/ios/Runner/Info.plist -->
+<key>NSUserTrackingUsageDescription</key>
+<string>This identifier will be used to deliver personalized ads to you.</string>
+```
+
+**Step 3: Android Setup**
+
+1. In Firebase Console, click "Add app" → Android
+2. Enter your Android package name (e.g., `com.example.flagsquiz`)
+3. Download `google-services.json`
+4. Add the file to your Android project:
+   ```
+   apps/flagsquiz/android/app/google-services.json
+   ```
+
+5. Update `android/build.gradle` (project-level):
+   ```gradle
+   buildscript {
+       dependencies {
+           // Add this line
+           classpath 'com.google.gms:google-services:4.4.2'
+       }
+   }
+   ```
+
+6. Update `android/app/build.gradle` (app-level):
+   ```gradle
+   plugins {
+       id 'com.android.application'
+       id 'kotlin-android'
+       id 'dev.flutter.flutter-gradle-plugin'
+       // Add this line
+       id 'com.google.gms.google-services'
+   }
+   ```
+
+**Step 4: Initialize Firebase in App**
+
+```dart
+// apps/flagsquiz/lib/main.dart
+import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_services/shared_services.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Firebase
+  await Firebase.initializeApp();
+
+  // Initialize Analytics
+  final analyticsService = FirebaseAnalyticsService();
+  await analyticsService.initialize();
+
+  runApp(MyApp(analyticsService: analyticsService));
+}
+```
+
+**Step 5: Add Navigation Observer**
+
+```dart
+// In your MaterialApp
+MaterialApp(
+  navigatorObservers: [
+    firebaseAnalyticsService.observer,
+  ],
+  // ... rest of app config
+)
+```
+
+**Step 6: Enable Debug Mode (for testing)**
+
+Run with debug flag to see events in Firebase DebugView:
+
+```bash
+# iOS
+flutter run --dart-define=FIREBASE_ANALYTICS_DEBUG=true
+
+# Or via Xcode scheme arguments:
+# -FIRDebugEnabled
+```
+
+```bash
+# Android
+adb shell setprop debug.firebase.analytics.app com.example.flagsquiz
+```
+
+Then open Firebase Console → Analytics → DebugView to see real-time events.
+
+**Step 7: Usage Examples**
+
+```dart
+// Log custom events
+await analyticsService.logEvent(
+  QuizEvent.started(
+    quizId: 'quiz-123',
+    quizName: 'World Flags',
+    categoryId: 'europe',
+    categoryName: 'Europe',
+    mode: 'standard',
+    totalQuestions: 10,
+  ),
+);
+
+// Set user properties
+await analyticsService.setUserProperty(
+  name: AnalyticsUserProperties.totalQuizzesTaken,
+  value: '42',
+);
+
+// Log screen views
+await analyticsService.setCurrentScreen(
+  screenName: 'QuizScreen',
+  screenClass: 'QuizScreen',
+);
+
+// Firebase standard events
+await analyticsService.logUnlockAchievement(achievementId: 'first_quiz');
+await analyticsService.logPostScore(score: 850, level: 5);
+```
+
 ---
 
 ### Sprint 9.1.5: Composite Analytics Service
