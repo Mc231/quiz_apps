@@ -3,6 +3,8 @@ library;
 
 import 'dart:async';
 
+import '../../analytics/analytics_service.dart';
+import '../../analytics/events/achievement_event.dart';
 import '../../storage/data_sources/statistics_data_source.dart';
 import '../../storage/models/global_statistics.dart';
 import '../../storage/models/quiz_session.dart';
@@ -35,6 +37,7 @@ class AchievementService {
     required AchievementEngine engine,
     this.categoryDataProvider,
     this.challengeDataProvider,
+    this.analyticsService,
   })  : _repository = repository,
         _statisticsDataSource = statisticsDataSource,
         _engine = engine;
@@ -42,6 +45,9 @@ class AchievementService {
   final AchievementRepository _repository;
   final StatisticsDataSource _statisticsDataSource;
   final AchievementEngine _engine;
+
+  /// Optional analytics service for tracking achievement events.
+  final AnalyticsService? analyticsService;
 
   /// Optional provider for category completion data.
   CategoryDataProvider? categoryDataProvider;
@@ -90,6 +96,10 @@ class AchievementService {
 
     if (result.hasNewUnlocks) {
       _unlockController.add(result.newlyUnlocked);
+      await _trackUnlockedAchievements(
+        result.newlyUnlocked,
+        triggerQuizId: session.id,
+      );
     }
 
     return result.newlyUnlocked;
@@ -113,6 +123,7 @@ class AchievementService {
 
     if (result.hasNewUnlocks) {
       _unlockController.add(result.newlyUnlocked);
+      await _trackUnlockedAchievements(result.newlyUnlocked);
     }
 
     return result.newlyUnlocked;
@@ -264,6 +275,33 @@ class AchievementService {
   Future<void> resetAll() async {
     await _repository.resetAll();
     _engine.clearCache();
+  }
+
+  /// Tracks unlocked achievements via analytics.
+  Future<void> _trackUnlockedAchievements(
+    List<Achievement> achievements, {
+    String? triggerQuizId,
+  }) async {
+    final analytics = analyticsService;
+    if (analytics == null) return;
+
+    final unlockedCount = await _repository.getUnlockedCount();
+    final totalPoints = await _repository.getTotalPoints(_achievements);
+
+    for (final achievement in achievements) {
+      await analytics.logEvent(
+        AchievementEvent.unlocked(
+          achievementId: achievement.id,
+          achievementName: achievement.id, // Name requires context
+          achievementCategory: achievement.tier.name,
+          pointsAwarded: achievement.points,
+          totalPoints: totalPoints,
+          unlockedCount: unlockedCount,
+          totalAchievements: _achievements.length,
+          triggerQuizId: triggerQuizId,
+        ),
+      );
+    }
   }
 
   /// Builds an achievement context from current state.
