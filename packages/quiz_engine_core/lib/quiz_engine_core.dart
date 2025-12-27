@@ -10,6 +10,7 @@ export 'src/model/config/config_exports.dart';
 
 // BLoC (abstract interface only)
 export 'src/bloc/bloc.dart';
+export 'src/bloc/single_subscription_bloc.dart';
 
 // Models
 export 'src/model/answer.dart';
