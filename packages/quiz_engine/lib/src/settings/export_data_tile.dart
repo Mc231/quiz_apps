@@ -7,6 +7,9 @@ import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
 
+/// Export format identifier for analytics.
+const String _exportFormat = 'json';
+
 /// Configuration for [ExportDataTile].
 class ExportDataTileConfig {
   /// Creates an [ExportDataTileConfig].
@@ -51,6 +54,7 @@ class ExportDataTile extends StatefulWidget {
     super.key,
     required this.exportService,
     this.config = const ExportDataTileConfig(),
+    this.analyticsService,
   });
 
   /// The data export service.
@@ -58,6 +62,9 @@ class ExportDataTile extends StatefulWidget {
 
   /// Configuration for the tile.
   final ExportDataTileConfig config;
+
+  /// Optional analytics service for tracking export events.
+  final AnalyticsService? analyticsService;
 
   @override
   State<ExportDataTile> createState() => _ExportDataTileState();
@@ -159,8 +166,19 @@ class _ExportDataTileState extends State<ExportDataTile> {
 
     widget.config.onExportStarted?.call();
 
+    final startTime = DateTime.now();
+
+    // Track export initiated event
+    widget.analyticsService?.logEvent(
+      InteractionEvent.dataExportInitiated(
+        exportFormat: _exportFormat,
+        sessionCount: 0, // Count determined after export
+      ),
+    );
+
     try {
       final result = await widget.exportService.exportAllData();
+      final exportDuration = DateTime.now().difference(startTime);
 
       if (!mounted) return;
 
@@ -169,6 +187,17 @@ class _ExportDataTileState extends State<ExportDataTile> {
         final tempDir = await getTemporaryDirectory();
         final file = File('${tempDir.path}/${result.suggestedFilename}');
         await file.writeAsString(result.data);
+
+        // Track successful export
+        widget.analyticsService?.logEvent(
+          InteractionEvent.dataExportCompleted(
+            exportFormat: _exportFormat,
+            sessionCount: result.totalItems,
+            fileSizeBytes: result.data.length,
+            exportDuration: exportDuration,
+            success: true,
+          ),
+        );
 
         widget.config.onExportCompleted?.call(result);
 
@@ -187,7 +216,21 @@ class _ExportDataTileState extends State<ExportDataTile> {
           );
         }
       } else {
-        widget.config.onExportError?.call(result.errorMessage ?? 'Unknown error');
+        final errorMessage = result.errorMessage ?? 'Unknown error';
+
+        // Track failed export
+        widget.analyticsService?.logEvent(
+          InteractionEvent.dataExportCompleted(
+            exportFormat: _exportFormat,
+            sessionCount: 0,
+            fileSizeBytes: 0,
+            exportDuration: exportDuration,
+            success: false,
+            errorMessage: errorMessage,
+          ),
+        );
+
+        widget.config.onExportError?.call(errorMessage);
 
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -200,6 +243,20 @@ class _ExportDataTileState extends State<ExportDataTile> {
         }
       }
     } catch (e) {
+      final exportDuration = DateTime.now().difference(startTime);
+
+      // Track export error
+      widget.analyticsService?.logEvent(
+        InteractionEvent.dataExportCompleted(
+          exportFormat: _exportFormat,
+          sessionCount: 0,
+          fileSizeBytes: 0,
+          exportDuration: exportDuration,
+          success: false,
+          errorMessage: e.toString(),
+        ),
+      );
+
       widget.config.onExportError?.call(e.toString());
 
       if (mounted) {
