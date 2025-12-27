@@ -67,6 +67,30 @@ In `PHASE_IMPLEMENTATION.md`:
 - ✅ `packages/shared_services/lib/src/storage/data_sources/quiz_session_data_source.dart`
 ```
 
+### Post-Sprint Integration Check (MANDATORY)
+
+**After completing any sprint, ALWAYS check for missing integrations:**
+
+1. **Review what was created vs. what uses it:**
+   - New classes/models → Are they used by BLoCs, screens, or services?
+   - New services → Are they provided to widgets via DI/Provider?
+   - New events/types → Are they fired/triggered at appropriate points?
+
+2. **Create a TODO list for missing integrations:**
+   - If new code is created but not yet integrated, add pending tasks
+   - Example: "Event classes created" → Need "Integrate events with QuizBloc"
+
+3. **Document pending integrations in PHASE_IMPLEMENTATION.md:**
+   ```markdown
+   **Pending Integrations (for future sprints):**
+   - [ ] Integrate QuizEvent with QuizBloc
+   - [ ] Add AnalyticsService provider to quiz screens
+   ```
+
+4. **Ask the user if they want to continue with integrations immediately**
+
+This ensures no orphaned code is created without a clear path to integration.
+
 ---
 
 ## Project Overview
