@@ -20,10 +20,18 @@ class MigrationV5 extends Migration {
 
   @override
   Future<void> migrate(Database db) async {
-    // Add score column with default value of 0
-    await db.execute(
-      'ALTER TABLE $quizSessionsTable ADD COLUMN score INTEGER DEFAULT 0',
+    // Check if column already exists (for idempotent migrations)
+    final columns = await db.rawQuery(
+      "PRAGMA table_info($quizSessionsTable)",
     );
+    final hasScoreColumn = columns.any((col) => col['name'] == 'score');
+
+    if (!hasScoreColumn) {
+      // Add score column with default value of 0
+      await db.execute(
+        'ALTER TABLE $quizSessionsTable ADD COLUMN score INTEGER DEFAULT 0',
+      );
+    }
   }
 
   @override
