@@ -978,6 +978,119 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   }
 }
 
+/// BLoC-compatible content widget for home screen tabs.
+///
+/// This widget receives tab data and callbacks externally, making it
+/// suitable for use with [HomeBloc] via [HomeBuilder].
+class HomeTabContent extends StatelessWidget {
+  /// Creates a [HomeTabContent].
+  const HomeTabContent({
+    super.key,
+    required this.currentTabIndex,
+    required this.historySessions,
+    required this.historyTexts,
+    this.isHistoryLoading = false,
+    this.dashboardData,
+    this.isDashboardLoading = false,
+    this.achievementsData,
+    this.isAchievementsLoading = false,
+    this.onSessionTap,
+    this.onViewAllSessions,
+    this.onAchievementTap,
+    this.onRefreshHistory,
+    this.onRefreshStatistics,
+    this.onRefreshAchievements,
+  });
+
+  /// Current tab index.
+  final int currentTabIndex;
+
+  /// Sessions for history tab.
+  final List<SessionCardData> historySessions;
+
+  /// Texts for history screen.
+  final SessionHistoryTexts historyTexts;
+
+  /// Whether history is loading.
+  final bool isHistoryLoading;
+
+  /// Dashboard data for statistics tab.
+  final StatisticsDashboardData? dashboardData;
+
+  /// Whether dashboard is loading.
+  final bool isDashboardLoading;
+
+  /// Achievements data for achievements tab.
+  final AchievementsScreenData? achievementsData;
+
+  /// Whether achievements are loading.
+  final bool isAchievementsLoading;
+
+  /// Callback when a session is tapped.
+  final void Function(SessionCardData session)? onSessionTap;
+
+  /// Callback when view all sessions is tapped.
+  final VoidCallback? onViewAllSessions;
+
+  /// Callback when an achievement is tapped.
+  final void Function(AchievementDisplayData achievement)? onAchievementTap;
+
+  /// Callback to refresh history.
+  final Future<void> Function()? onRefreshHistory;
+
+  /// Callback to refresh statistics.
+  final Future<void> Function()? onRefreshStatistics;
+
+  /// Callback to refresh achievements.
+  final Future<void> Function()? onRefreshAchievements;
+
+  /// Builds the history tab content.
+  Widget buildHistoryTab() {
+    return SessionHistoryScreen(
+      sessions: historySessions,
+      texts: historyTexts,
+      isLoading: isHistoryLoading,
+      onSessionTap: onSessionTap ?? (_) {},
+      onRefresh: onRefreshHistory,
+    );
+  }
+
+  /// Builds the statistics tab content.
+  Widget buildStatisticsTab() {
+    if (dashboardData == null && !isDashboardLoading) {
+      return const LoadingIndicator();
+    }
+
+    return StatisticsDashboardScreen(
+      data: dashboardData ?? StatisticsDashboardData.empty,
+      isLoading: isDashboardLoading,
+      onSessionTap: onSessionTap,
+      onViewAllSessions: onViewAllSessions,
+      showTabs: true,
+    );
+  }
+
+  /// Builds the achievements tab content.
+  Widget buildAchievementsTab() {
+    if (achievementsData == null && !isAchievementsLoading) {
+      return const LoadingIndicator();
+    }
+
+    return AchievementsScreen(
+      data: achievementsData ?? const AchievementsScreenData.empty(),
+      onAchievementTap: onAchievementTap,
+      onRefresh: onRefreshAchievements,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // This widget is typically used within a tab-switching context
+    // Individual tab builders are provided for flexibility
+    return const SizedBox.shrink();
+  }
+}
+
 /// Extension to add copyWith to PlayScreenConfig.
 extension PlayScreenConfigCopyWith on PlayScreenConfig {
   /// Creates a copy with the given fields replaced.
