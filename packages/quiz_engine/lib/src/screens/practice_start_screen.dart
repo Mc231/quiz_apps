@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../bloc/practice/practice_state.dart';
 import '../l10n/quiz_localizations.dart';
+import '../models/practice_data_provider.dart';
 
 /// Screen displayed before starting a practice session.
 ///
@@ -72,6 +74,48 @@ class PracticeStartScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// A stateless content widget for practice start screen.
+///
+/// This widget receives BLoC state directly, making it suitable for use
+/// with [PracticeBuilder].
+///
+/// Example:
+/// ```dart
+/// PracticeBuilder(
+///   bloc: practiceBloc,
+///   readyBuilder: (context, state) => PracticeStartContent(
+///     state: state,
+///     onStartPractice: () => startPracticeQuiz(state.data),
+///   ),
+///   completeBuilder: (context, state) => PracticeCompleteContent(...),
+/// )
+/// ```
+class PracticeStartContent extends StatelessWidget {
+  /// Creates a [PracticeStartContent].
+  const PracticeStartContent({
+    super.key,
+    required this.state,
+    required this.onStartPractice,
+  });
+
+  /// The practice ready state from BLoC.
+  final PracticeReady state;
+
+  /// Called when the user taps the "Start Practice" button.
+  final VoidCallback onStartPractice;
+
+  /// Convenience getter for the practice data.
+  PracticeTabData get data => state.data;
+
+  @override
+  Widget build(BuildContext context) {
+    return PracticeStartScreen(
+      questionCount: state.questionCount,
+      onStartPractice: onStartPractice,
     );
   }
 }
