@@ -3,7 +3,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:shared_services/shared_services.dart';
-import 'package:shared_services/src/analytics/services/firebase_analytics_service.dart';
 
 import 'firebase_analytics_service_test.mocks.dart';
 
