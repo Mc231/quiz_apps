@@ -7,6 +7,22 @@ import '../../widgets/loading_indicator.dart';
 import '../widgets/achievement_card.dart';
 import '../widgets/achievements_list.dart';
 
+/// Helper to track achievement detail viewed events.
+void _trackAchievementDetailViewed(
+  AnalyticsService? analyticsService,
+  AchievementDisplayData data,
+) {
+  analyticsService?.logEvent(
+    AchievementEvent.detailViewed(
+      achievementId: data.achievement.id,
+      achievementName: data.achievement.id, // Name requires context
+      achievementCategory: data.achievement.tier.name,
+      isUnlocked: data.isUnlocked,
+      progress: data.progress.currentValue / data.progress.targetValue,
+    ),
+  );
+}
+
 /// Data model for achievements screen.
 class AchievementsScreenData {
   /// Creates an [AchievementsScreenData].
@@ -157,6 +173,7 @@ class AchievementsScreen extends StatefulWidget {
     this.onAchievementTap,
     this.appBar,
     this.showScaffold = false,
+    this.analyticsService,
   });
 
   /// The achievements data to display.
@@ -180,6 +197,9 @@ class AchievementsScreen extends StatefulWidget {
   /// Defaults to `false` for use in QuizHomeScreen tabs.
   final bool showScaffold;
 
+  /// Optional analytics service for tracking achievement views.
+  final AnalyticsService? analyticsService;
+
   @override
   State<AchievementsScreen> createState() => _AchievementsScreenState();
 }
@@ -192,6 +212,13 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
   void initState() {
     super.initState();
     _currentFilter = widget.config.initialFilter;
+  }
+
+  void _handleAchievementTap(AchievementDisplayData data) {
+    // Track the view event
+    _trackAchievementDetailViewed(widget.analyticsService, data);
+    // Call the original callback
+    widget.onAchievementTap?.call(data);
   }
 
   @override
@@ -260,7 +287,9 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
               tierFilter: _currentTierFilter,
               groupByCategory: widget.config.groupByCategory,
             ),
-            onAchievementTap: widget.onAchievementTap,
+            onAchievementTap: widget.onAchievementTap != null
+                ? _handleAchievementTap
+                : null,
           ),
         ),
       ],
@@ -419,6 +448,7 @@ class AchievementsScreenSliver extends StatefulWidget {
     required this.data,
     this.config = const AchievementsScreenConfig(),
     this.onAchievementTap,
+    this.analyticsService,
   });
 
   /// The achievements data to display.
@@ -429,6 +459,9 @@ class AchievementsScreenSliver extends StatefulWidget {
 
   /// Callback when an achievement is tapped.
   final void Function(AchievementDisplayData)? onAchievementTap;
+
+  /// Optional analytics service for tracking achievement views.
+  final AnalyticsService? analyticsService;
 
   @override
   State<AchievementsScreenSliver> createState() =>
@@ -443,6 +476,13 @@ class _AchievementsScreenSliverState extends State<AchievementsScreenSliver> {
   void initState() {
     super.initState();
     _currentFilter = widget.config.initialFilter;
+  }
+
+  void _handleAchievementTap(AchievementDisplayData data) {
+    // Track the view event
+    _trackAchievementDetailViewed(widget.analyticsService, data);
+    // Call the original callback
+    widget.onAchievementTap?.call(data);
   }
 
   @override
@@ -488,7 +528,9 @@ class _AchievementsScreenSliverState extends State<AchievementsScreenSliver> {
               tierFilter: _currentTierFilter,
               groupByCategory: widget.config.groupByCategory,
             ),
-            onAchievementTap: widget.onAchievementTap,
+            onAchievementTap: widget.onAchievementTap != null
+                ? _handleAchievementTap
+                : null,
           ),
         ),
       ],
