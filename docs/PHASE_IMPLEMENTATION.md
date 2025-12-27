@@ -2497,23 +2497,28 @@ await compositeService.logEvent(QuizEvent.started(...));
 
 ---
 
-### Sprint 9.1.9: User Properties & App Lifecycle
+### Sprint 9.1.9: User Properties & App Lifecycle ✅
 
 **Goal:** Implement user properties and app lifecycle tracking.
 
 **Tasks:**
-- [ ] Implement user property updates after quiz completion
-- [ ] Track `app_launch` event with startup time
-- [ ] Track `app_session_start` and `app_session_end`
-- [ ] Add background time tracking to `QuizLifecycleHandler`
-- [ ] Implement anonymous user ID generation
-- [ ] Write integration tests
+- [x] Implement user property updates after quiz completion
+- [x] Track `app_launch` event with startup time
+- [x] Track `app_session_start` and `app_session_end`
+- [x] Add background time tracking to `QuizLifecycleHandler`
+- [x] Implement anonymous user ID generation
+- [x] Write integration tests
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/analytics/analytics_lifecycle_observer.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/analytics/analytics_lifecycle_observer.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/widgets/quiz_lifecycle_handler.dart`
+**Test Files Created:**
+- ✅ `packages/quiz_engine/test/analytics/analytics_lifecycle_observer_test.dart`
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/widgets/quiz_lifecycle_handler.dart`
+- ✅ `packages/quiz_engine/lib/src/analytics/analytics_exports.dart`
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart`
 
 ---
 
