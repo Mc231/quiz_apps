@@ -25,7 +25,6 @@ class MockSessionHistoryDataProvider implements SessionHistoryDataProvider {
   int loadMoreCallCount = 0;
   int deleteCallCount = 0;
   String? lastDeletedSessionId;
-  bool _hasMoreAfterLoad = true;
 
   @override
   Future<SessionHistoryPage> loadInitialSessions() async {
@@ -36,7 +35,6 @@ class MockSessionHistoryDataProvider implements SessionHistoryDataProvider {
     if (_shouldFail) {
       throw Exception('Failed to load sessions');
     }
-    _hasMoreAfterLoad = _hasMore;
     return SessionHistoryPage(
       sessions: _initialSessions,
       hasMore: _hasMore,
@@ -55,7 +53,6 @@ class MockSessionHistoryDataProvider implements SessionHistoryDataProvider {
     if (_shouldFail) {
       throw Exception('Failed to load more sessions');
     }
-    _hasMoreAfterLoad = false;
     return SessionHistoryPage(
       sessions: _moreSessions,
       hasMore: false,

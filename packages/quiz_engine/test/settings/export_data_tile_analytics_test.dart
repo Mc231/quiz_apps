@@ -14,22 +14,25 @@ class MockDataExportService implements DataExportService {
   String? errorMessage;
 
   @override
-  Future<DataExportResult> exportAllData() async {
+  Future<DataExportResult> exportAllData({
+    DataExportConfig config = DataExportConfig.full,
+  }) async {
     await Future.delayed(const Duration(milliseconds: 100));
 
     if (shouldSucceed) {
       return DataExportResult(
         success: true,
         data: exportData,
-        totalItems: totalItems,
-        suggestedFilename: 'quiz_data_export.json',
+        exportedAt: DateTime.now(),
+        itemCounts: {'sessions': totalItems},
       );
     } else {
       return DataExportResult(
         success: false,
         data: '',
-        totalItems: 0,
         errorMessage: errorMessage ?? 'Export failed',
+        exportedAt: DateTime.now(),
+        itemCounts: {},
       );
     }
   }

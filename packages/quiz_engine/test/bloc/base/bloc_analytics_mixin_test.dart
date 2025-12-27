@@ -92,6 +92,7 @@ void main() {
         await user.logEvent(InteractionEvent.categorySelected(
           categoryId: 'test_category',
           categoryName: 'Test Category',
+          categoryIndex: 0,
         ));
 
         expect(mockAnalytics.loggedEvents, hasLength(1));
@@ -105,6 +106,7 @@ void main() {
         await user.logEvent(InteractionEvent.categorySelected(
           categoryId: 'test_category',
           categoryName: 'Test Category',
+          categoryIndex: 0,
         ));
 
         // No way to verify, but it shouldn't throw

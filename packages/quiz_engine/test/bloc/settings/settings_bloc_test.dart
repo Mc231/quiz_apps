@@ -86,6 +86,7 @@ class MockSettingsService implements SettingsService {
     _controller.add(_currentSettings);
   }
 
+  @override
   void dispose() {
     _controller.close();
   }

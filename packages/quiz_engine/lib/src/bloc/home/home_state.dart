@@ -1,8 +1,6 @@
 /// State classes for the Home BLoC.
 library;
 
-import 'package:shared_services/shared_services.dart';
-
 import '../../achievements/screens/achievements_screen.dart';
 import '../../screens/statistics_dashboard_screen.dart';
 import '../../widgets/session_card.dart';

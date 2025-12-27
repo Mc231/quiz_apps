@@ -254,9 +254,9 @@ void main() {
         bloc.add(ChallengesEvent.load());
         await Future.delayed(const Duration(milliseconds: 100));
 
-        // Save reference to loaded state
-        final loadedChallenges = bloc.challenges;
-        final loadedCategories = bloc.categories;
+        // Verify data is loaded
+        expect(bloc.challenges, isNotNull);
+        expect(bloc.categories, isNotNull);
 
         // Create new failing provider
         final failingProvider = MockChallengesDataProvider(shouldFail: true);
