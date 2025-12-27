@@ -2618,6 +2618,229 @@ dependencies:
 
 ---
 
+### Sprint 9.5: Screen BLoC Architecture Refactoring
+
+**Goal:** Refactor all UI screens to use the BLoC pattern consistent with QuizBloc for better state management, testability, and separation of concerns.
+
+**Background:**
+Currently, QuizBloc (in quiz_engine_core) provides a clean separation of business logic from UI using streams and state objects. Other screens like StatisticsDashboardScreen, SessionHistoryScreen, and ChallengesScreen manage state directly in StatefulWidgets, making them harder to test and maintain.
+
+**Architecture Pattern (following QuizBloc):**
+```dart
+// BLoC with stream-based state management
+class ScreenBloc extends SingleSubscriptionBloc<ScreenState> {
+  // Business logic methods
+  // Stream emissions for state changes
+}
+
+// Sealed state classes
+sealed class ScreenState {
+  const ScreenState();
+  factory ScreenState.loading() = LoadingState;
+  factory ScreenState.loaded(Data data) = LoadedState;
+  factory ScreenState.error(String message) = ErrorState;
+}
+
+// Screen widget uses BlocProvider
+class MyScreen extends StatelessWidget {
+  Widget build(context) {
+    return BlocProvider<ScreenBloc>(
+      bloc: bloc,
+      child: StreamBuilder<ScreenState>(
+        stream: bloc.stream,
+        builder: (context, snapshot) => /* render based on state */,
+      ),
+    );
+  }
+}
+```
+
+#### Sprint 9.5.1: Statistics BLoC
+
+**Tasks:**
+- [ ] Create `StatisticsState` sealed class with loading/loaded/error states
+- [ ] Create `StatisticsBloc` for statistics dashboard logic
+- [ ] Refactor `StatisticsDashboardScreen` to use `StatisticsBloc`
+- [ ] Move data loading, tab switching, and filtering logic to BLoC
+- [ ] Write unit tests for `StatisticsBloc`
+- [ ] Write widget tests for refactored screen
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/bloc/statistics/statistics_state.dart`
+- `packages/quiz_engine/lib/src/bloc/statistics/statistics_bloc.dart`
+- `packages/quiz_engine/test/bloc/statistics/statistics_bloc_test.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
+
+---
+
+#### Sprint 9.5.2: Session History BLoC
+
+**Tasks:**
+- [ ] Create `SessionHistoryState` sealed class
+- [ ] Create `SessionHistoryBloc` for history management
+- [ ] Refactor `SessionHistoryScreen` to use BLoC
+- [ ] Move pagination, filtering, and refresh logic to BLoC
+- [ ] Write unit tests for `SessionHistoryBloc`
+- [ ] Write widget tests for refactored screen
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/bloc/session_history/session_history_state.dart`
+- `packages/quiz_engine/lib/src/bloc/session_history/session_history_bloc.dart`
+- `packages/quiz_engine/test/bloc/session_history/session_history_bloc_test.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/screens/session_history_screen.dart`
+
+---
+
+#### Sprint 9.5.3: Session Detail BLoC
+
+**Tasks:**
+- [ ] Create `SessionDetailState` sealed class
+- [ ] Create `SessionDetailBloc` for session detail management
+- [ ] Refactor `SessionDetailScreen` to use BLoC
+- [ ] Move question navigation, filtering, and delete logic to BLoC
+- [ ] Write unit tests for `SessionDetailBloc`
+- [ ] Write widget tests for refactored screen
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/bloc/session_detail/session_detail_state.dart`
+- `packages/quiz_engine/lib/src/bloc/session_detail/session_detail_bloc.dart`
+- `packages/quiz_engine/test/bloc/session_detail/session_detail_bloc_test.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
+
+---
+
+#### Sprint 9.5.4: Challenges BLoC
+
+**Tasks:**
+- [ ] Create `ChallengesState` sealed class
+- [ ] Create `ChallengesBloc` for challenge management
+- [ ] Refactor `ChallengesScreen` to use BLoC
+- [ ] Move challenge selection, category picker, and quiz start logic to BLoC
+- [ ] Write unit tests for `ChallengesBloc`
+- [ ] Write widget tests for refactored screen
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/bloc/challenges/challenges_state.dart`
+- `packages/quiz_engine/lib/src/bloc/challenges/challenges_bloc.dart`
+- `packages/quiz_engine/test/bloc/challenges/challenges_bloc_test.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/screens/challenges_screen.dart`
+
+---
+
+#### Sprint 9.5.5: Home Screen BLoC
+
+**Tasks:**
+- [ ] Create `HomeState` sealed class
+- [ ] Create `HomeBloc` for home screen management
+- [ ] Refactor `QuizHomeScreen` to use BLoC
+- [ ] Move tab switching, data loading, and navigation logic to BLoC
+- [ ] Integrate analytics tracking in BLoC layer
+- [ ] Write unit tests for `HomeBloc`
+- [ ] Write widget tests for refactored screen
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/bloc/home/home_state.dart`
+- `packages/quiz_engine/lib/src/bloc/home/home_bloc.dart`
+- `packages/quiz_engine/test/bloc/home/home_bloc_test.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
+
+---
+
+#### Sprint 9.5.6: Achievements BLoC
+
+**Tasks:**
+- [ ] Create `AchievementsState` sealed class
+- [ ] Create `AchievementsBloc` for achievements management
+- [ ] Refactor `AchievementsScreen` to use BLoC
+- [ ] Move filtering, loading, and refresh logic to BLoC
+- [ ] Write unit tests for `AchievementsBloc`
+- [ ] Write widget tests for refactored screen
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/bloc/achievements/achievements_state.dart`
+- `packages/quiz_engine/lib/src/bloc/achievements/achievements_bloc.dart`
+- `packages/quiz_engine/test/bloc/achievements/achievements_bloc_test.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
+
+---
+
+#### Sprint 9.5.7: Settings BLoC
+
+**Tasks:**
+- [ ] Create `SettingsState` sealed class
+- [ ] Create `SettingsBloc` for settings management
+- [ ] Refactor `QuizSettingsScreen` to use BLoC
+- [ ] Move settings loading, saving, and validation logic to BLoC
+- [ ] Integrate analytics tracking for settings changes
+- [ ] Write unit tests for `SettingsBloc`
+- [ ] Write widget tests for refactored screen
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/bloc/settings/settings_state.dart`
+- `packages/quiz_engine/lib/src/bloc/settings/settings_bloc.dart`
+- `packages/quiz_engine/test/bloc/settings/settings_bloc_test.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+
+---
+
+#### Sprint 9.5.8: Practice BLoC
+
+**Tasks:**
+- [ ] Create `PracticeState` sealed class
+- [ ] Create `PracticeBloc` for practice mode management
+- [ ] Refactor `PracticeStartScreen` and `PracticeCompleteScreen` to use BLoC
+- [ ] Move practice data loading and progress tracking to BLoC
+- [ ] Write unit tests for `PracticeBloc`
+- [ ] Write widget tests for refactored screens
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/bloc/practice/practice_state.dart`
+- `packages/quiz_engine/lib/src/bloc/practice/practice_bloc.dart`
+- `packages/quiz_engine/test/bloc/practice/practice_bloc_test.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/screens/practice_start_screen.dart`
+- `packages/quiz_engine/lib/src/screens/practice_complete_screen.dart`
+
+---
+
+#### Sprint 9.5.9: BLoC Infrastructure & Utilities
+
+**Tasks:**
+- [ ] Create `BaseBlocState` abstract class with common state properties
+- [ ] Create `ScreenBloc` base class extending `SingleSubscriptionBloc`
+- [ ] Add analytics integration helper for BLoCs
+- [ ] Create `BlocBuilder` widget for cleaner stream handling
+- [ ] Update `BlocProvider` with additional utilities
+- [ ] Export all BLoCs from `quiz_engine.dart`
+- [ ] Write documentation for BLoC pattern usage
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/bloc/base/base_bloc_state.dart`
+- `packages/quiz_engine/lib/src/bloc/base/screen_bloc.dart`
+- `packages/quiz_engine/lib/src/bloc/base/bloc_analytics_mixin.dart`
+- `packages/quiz_engine/lib/src/bloc/bloc_builder.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/bloc/bloc_provider.dart`
+- `packages/quiz_engine/lib/quiz_engine.dart`
+
+---
+
 ### Phase 9 Summary
 
 | Sprint | Events/Items | Description |
@@ -2636,8 +2859,18 @@ dependencies:
 | 9.2 | - | Ads service (AdMob) |
 | 9.3 | - | IAP service |
 | 9.4 | - | Final integration |
+| 9.5.1 | - | Statistics BLoC |
+| 9.5.2 | - | Session History BLoC |
+| 9.5.3 | - | Session Detail BLoC |
+| 9.5.4 | - | Challenges BLoC |
+| 9.5.5 | - | Home Screen BLoC |
+| 9.5.6 | - | Achievements BLoC |
+| 9.5.7 | - | Settings BLoC |
+| 9.5.8 | - | Practice BLoC |
+| 9.5.9 | - | BLoC Infrastructure & Utilities |
 
 **Total Analytics Events:** 87 events across 11 sealed classes
+**Total Screen BLoCs:** 8 BLoCs + base infrastructure
 
 ---
 
