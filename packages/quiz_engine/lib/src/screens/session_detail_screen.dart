@@ -581,3 +581,434 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
     return '${secs}s';
   }
 }
+
+/// BLoC-compatible content widget for session detail.
+///
+/// This widget receives all state and callbacks externally, making it
+/// suitable for use with [SessionDetailBloc] via [SessionDetailBuilder].
+class SessionDetailContent extends StatelessWidget {
+  /// Creates a [SessionDetailContent].
+  const SessionDetailContent({
+    super.key,
+    required this.session,
+    required this.texts,
+    this.filterMode = QuestionFilterMode.all,
+    this.isDeleting = false,
+    this.onFilterModeChanged,
+    this.onPracticeWrongAnswers,
+    this.onExport,
+    this.onDelete,
+    this.imageBuilder,
+  });
+
+  /// Session data to display.
+  final SessionDetailData session;
+
+  /// Localization texts.
+  final SessionDetailTexts texts;
+
+  /// Current filter mode for questions.
+  final QuestionFilterMode filterMode;
+
+  /// Whether the session is being deleted.
+  final bool isDeleting;
+
+  /// Callback when filter mode changes.
+  final void Function(QuestionFilterMode mode)? onFilterModeChanged;
+
+  /// Callback to practice wrong answers.
+  final VoidCallback? onPracticeWrongAnswers;
+
+  /// Callback to export session.
+  final VoidCallback? onExport;
+
+  /// Callback to delete session.
+  final VoidCallback? onDelete;
+
+  /// Optional image builder for question images.
+  final Widget Function(String path)? imageBuilder;
+
+  List<ReviewedQuestion> get _filteredQuestions {
+    if (filterMode == QuestionFilterMode.wrongOnly) {
+      return session.questions
+          .where((q) => !q.isCorrect && !q.isSkipped)
+          .toList();
+    }
+    return session.questions;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final filteredQuestions = _filteredQuestions;
+
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: _buildSummaryCard(context)),
+        if (session.wrongAnswersCount > 0 && onPracticeWrongAnswers != null)
+          SliverToBoxAdapter(child: _buildPracticeButton(context)),
+        SliverToBoxAdapter(child: _buildActionsRow(context)),
+        SliverToBoxAdapter(
+          child: _buildReviewHeader(context),
+        ),
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return QuestionReviewWidget(
+                question: filteredQuestions[index],
+                questionLabel: texts.questionLabel,
+                yourAnswerLabel: texts.yourAnswerLabel,
+                correctAnswerLabel: texts.correctAnswerLabel,
+                skippedLabel: texts.skippedLabel,
+                imageBuilder: imageBuilder,
+              );
+            },
+            childCount: filteredQuestions.length,
+          ),
+        ),
+        const SliverToBoxAdapter(child: SizedBox(height: 24)),
+      ],
+    );
+  }
+
+  Widget _buildReviewHeader(BuildContext context) {
+    final hasWrongAnswers = session.wrongAnswersCount > 0;
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              texts.reviewAnswersLabel,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ),
+          if (hasWrongAnswers) _buildFilterToggle(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilterToggle(BuildContext context) {
+    return SegmentedButton<QuestionFilterMode>(
+      segments: [
+        ButtonSegment<QuestionFilterMode>(
+          value: QuestionFilterMode.all,
+          label: Text(texts.showAllLabel),
+        ),
+        ButtonSegment<QuestionFilterMode>(
+          value: QuestionFilterMode.wrongOnly,
+          label: Text(texts.showWrongOnlyLabel),
+        ),
+      ],
+      selected: {filterMode},
+      onSelectionChanged: (Set<QuestionFilterMode> newSelection) {
+        onFilterModeChanged?.call(newSelection.first);
+      },
+      style: ButtonStyle(
+        visualDensity: VisualDensity.compact,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
+    );
+  }
+
+  Widget _buildSummaryCard(BuildContext context) {
+    final theme = Theme.of(context);
+    final (statusLabel, statusColor) =
+        texts.formatStatus(session.completionStatus, session.isPerfectScore);
+
+    return Card(
+      margin: const EdgeInsets.all(16),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            // Header
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        session.quizName,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        texts.formatDate(session.startTime),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: statusColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(16),
+                    border:
+                        Border.all(color: statusColor.withValues(alpha: 0.3)),
+                  ),
+                  child: Text(
+                    statusLabel,
+                    style: TextStyle(
+                      color: statusColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            // Score circle
+            _buildScoreCircle(context),
+            const SizedBox(height: 24),
+            // Stats row
+            _buildStatsRow(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScoreCircle(BuildContext context) {
+    final scoreColor = _getScoreColor(session.scorePercentage);
+
+    return SizedBox(
+      width: 120,
+      height: 120,
+      child: Stack(
+        children: [
+          Center(
+            child: SizedBox(
+              width: 120,
+              height: 120,
+              child: CircularProgressIndicator(
+                value: session.scorePercentage / 100,
+                strokeWidth: 10,
+                backgroundColor: Colors.grey[200],
+                valueColor: AlwaysStoppedAnimation<Color>(scoreColor),
+              ),
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${session.scorePercentage.round()}%',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: scoreColor,
+                  ),
+                ),
+                Text(
+                  texts.scoreLabel,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatsRow(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildStatItem(
+          context,
+          icon: Icons.check_circle,
+          color: Colors.green,
+          value: session.totalCorrect.toString(),
+          label: texts.correctLabel,
+        ),
+        _buildStatItem(
+          context,
+          icon: Icons.cancel,
+          color: Colors.red,
+          value: session.totalIncorrect.toString(),
+          label: texts.incorrectLabel,
+        ),
+        if (session.totalSkipped > 0)
+          _buildStatItem(
+            context,
+            icon: Icons.skip_next,
+            color: Colors.orange,
+            value: session.totalSkipped.toString(),
+            label: texts.skippedLabel,
+          ),
+        if (session.durationSeconds != null)
+          _buildStatItem(
+            context,
+            icon: Icons.timer,
+            color: Colors.blue,
+            value: _formatDuration(session.durationSeconds!),
+            label: texts.durationLabel,
+          ),
+      ],
+    );
+  }
+
+  Widget _buildStatItem(
+    BuildContext context, {
+    required IconData icon,
+    required Color color,
+    required String value,
+    required String label,
+  }) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: color, size: 24),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.grey[600],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPracticeButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: ElevatedButton.icon(
+        onPressed: onPracticeWrongAnswers,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.orange,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        icon: const Icon(Icons.replay),
+        label: Text(
+          '${texts.practiceWrongAnswersLabel} (${session.wrongAnswersCount})',
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionsRow(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          if (onExport != null)
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: isDeleting ? null : onExport,
+                icon: const Icon(Icons.share),
+                label: Text(texts.exportLabel),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          if (onExport != null && onDelete != null) const SizedBox(width: 12),
+          if (onDelete != null)
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: isDeleting ? null : () => _showDeleteDialog(context),
+                icon: isDeleting
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.delete_outline, color: Colors.red),
+                label: Text(
+                  texts.deleteLabel,
+                  style: TextStyle(color: isDeleting ? null : Colors.red),
+                ),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  side: BorderSide(color: isDeleting ? Colors.grey : Colors.red),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(texts.deleteDialogTitle),
+        content: Text(texts.deleteDialogMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(texts.cancelLabel),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              onDelete?.call();
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: Text(texts.deleteLabel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getScoreColor(double percentage) {
+    if (percentage >= 90) return Colors.green;
+    if (percentage >= 70) return Colors.lightGreen;
+    if (percentage >= 50) return Colors.orange;
+    return Colors.red;
+  }
+
+  String _formatDuration(int seconds) {
+    final minutes = seconds ~/ 60;
+    final secs = seconds % 60;
+    if (minutes > 0) {
+      return '${minutes}m ${secs}s';
+    }
+    return '${secs}s';
+  }
+}
