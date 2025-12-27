@@ -70,6 +70,12 @@ export 'src/bloc/achievements/achievements_builder.dart';
 export 'src/bloc/achievements/achievements_event.dart';
 export 'src/bloc/achievements/achievements_state.dart';
 
+// Settings BLoC
+export 'src/bloc/settings/settings_bloc.dart';
+export 'src/bloc/settings/settings_builder.dart';
+export 'src/bloc/settings/settings_event.dart';
+export 'src/bloc/settings/settings_state.dart';
+
 // Extensions
 export 'src/extensions/sizing_information_extension.dart';
 
