@@ -20,6 +20,9 @@ dependencies:
   quiz_engine_core:
     path: ../quiz_engine_core
   logger: ^2.5.0
+  # Firebase Analytics
+  firebase_core: ^3.8.1
+  firebase_analytics: ^11.4.1
 
 dev_dependencies:
   flutter_test:
