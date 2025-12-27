@@ -2873,26 +2873,31 @@ class MyScreen extends StatelessWidget {
 
 ---
 
-#### Sprint 9.5.9: BLoC Infrastructure & Utilities
+#### Sprint 9.5.9: BLoC Infrastructure & Utilities ✅
 
 **Tasks:**
-- [ ] Create `BaseBlocState` abstract class with common state properties
-- [ ] Create `ScreenBloc` base class extending `SingleSubscriptionBloc`
-- [ ] Add analytics integration helper for BLoCs
-- [ ] Create `BlocBuilder` widget for cleaner stream handling
-- [ ] Update `BlocProvider` with additional utilities
-- [ ] Export all BLoCs from `quiz_engine.dart`
-- [ ] Write documentation for BLoC pattern usage
+- [x] Create `BaseBlocState` abstract class with common state properties
+- [x] Create `ScreenBloc` base class extending `SingleSubscriptionBloc`
+- [x] Add analytics integration helper for BLoCs (`BlocAnalyticsMixin`)
+- [x] Create `BlocBuilder` widget for cleaner stream handling
+- [x] Update `BlocProvider` with additional utilities (`maybeOf`, `value`, extensions)
+- [x] Export all BLoC infrastructure from `quiz_engine.dart`
+- [x] Write unit tests for BLoC infrastructure (62 tests)
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/bloc/base/base_bloc_state.dart`
-- `packages/quiz_engine/lib/src/bloc/base/screen_bloc.dart`
-- `packages/quiz_engine/lib/src/bloc/base/bloc_analytics_mixin.dart`
-- `packages/quiz_engine/lib/src/bloc/bloc_builder.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/bloc/base/base_bloc_state.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/base/screen_bloc.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/base/bloc_analytics_mixin.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/bloc_builder.dart`
+- ✅ `packages/quiz_engine/test/bloc/base/base_bloc_state_test.dart`
+- ✅ `packages/quiz_engine/test/bloc/base/screen_bloc_test.dart`
+- ✅ `packages/quiz_engine/test/bloc/base/bloc_analytics_mixin_test.dart`
+- ✅ `packages/quiz_engine/test/bloc/bloc_builder_test.dart`
+- ✅ `packages/quiz_engine/test/bloc/bloc_provider_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/bloc/bloc_provider.dart`
-- `packages/quiz_engine/lib/quiz_engine.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/bloc/bloc_provider.dart` (added `maybeOf`, `value`, `disposeBloc`, extensions)
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` (added BLoC infrastructure exports)
 
 ---
 
