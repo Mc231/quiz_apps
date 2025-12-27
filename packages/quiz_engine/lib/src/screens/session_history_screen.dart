@@ -153,3 +153,109 @@ class SessionHistoryScreen extends StatelessWidget {
     return content;
   }
 }
+
+/// BLoC-compatible content widget for session history.
+///
+/// This widget receives all state and callbacks externally, making it
+/// suitable for use with [SessionHistoryBloc] via [SessionHistoryBuilder].
+class SessionHistoryContent extends StatelessWidget {
+  /// Creates a [SessionHistoryContent].
+  const SessionHistoryContent({
+    super.key,
+    required this.sessions,
+    required this.texts,
+    required this.onSessionTap,
+    this.hasMore = false,
+    this.isLoadingMore = false,
+    this.loadMoreThreshold = 3,
+    this.onRefresh,
+    this.onLoadMore,
+  });
+
+  /// List of sessions to display.
+  final List<SessionCardData> sessions;
+
+  /// Localization texts.
+  final SessionHistoryTexts texts;
+
+  /// Callback when a session card is tapped.
+  final void Function(SessionCardData session) onSessionTap;
+
+  /// Whether there are more items to load.
+  final bool hasMore;
+
+  /// Whether more items are currently being loaded.
+  final bool isLoadingMore;
+
+  /// Number of items from the end to trigger [onLoadMore].
+  final int loadMoreThreshold;
+
+  /// Callback for pull-to-refresh.
+  final Future<void> Function()? onRefresh;
+
+  /// Callback when more items should be loaded.
+  final VoidCallback? onLoadMore;
+
+  @override
+  Widget build(BuildContext context) {
+    if (sessions.isEmpty) {
+      return EmptyStateWidget(
+        icon: Icons.history,
+        title: texts.emptyTitle,
+        message: texts.emptySubtitle,
+      );
+    }
+
+    // Calculate total items including loading indicator
+    final itemCount = sessions.length + (hasMore && isLoadingMore ? 1 : 0);
+
+    final content = ListView.builder(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      itemCount: itemCount,
+      itemBuilder: (context, index) {
+        // Show loading indicator at the end
+        if (index >= sessions.length) {
+          return const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Center(
+              child: SizedBox(
+                width: 24,
+                height: 24,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
+            ),
+          );
+        }
+
+        // Trigger load more when approaching the end
+        if (hasMore &&
+            !isLoadingMore &&
+            onLoadMore != null &&
+            index >= sessions.length - loadMoreThreshold) {
+          // Use post-frame callback to avoid calling during build
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            onLoadMore?.call();
+          });
+        }
+
+        final session = sessions[index];
+        return SessionCard(
+          data: session,
+          questionsLabel: texts.questionsLabel,
+          formatDate: texts.formatDate,
+          formatStatus: texts.formatStatus,
+          onTap: () => onSessionTap(session),
+        );
+      },
+    );
+
+    if (onRefresh != null) {
+      return RefreshIndicator(
+        onRefresh: onRefresh!,
+        child: content,
+      );
+    }
+
+    return content;
+  }
+}
