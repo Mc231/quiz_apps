@@ -34,6 +34,12 @@ export 'src/quiz_widget_entry.dart';
 // BLoC Provider
 export 'src/bloc/bloc_provider.dart';
 
+// Statistics BLoC
+export 'src/bloc/statistics/statistics_bloc.dart';
+export 'src/bloc/statistics/statistics_dashboard_builder.dart';
+export 'src/bloc/statistics/statistics_event.dart';
+export 'src/bloc/statistics/statistics_state.dart';
+
 // Extensions
 export 'src/extensions/sizing_information_extension.dart';
 
