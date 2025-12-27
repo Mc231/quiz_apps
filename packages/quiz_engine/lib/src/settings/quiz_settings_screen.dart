@@ -5,6 +5,9 @@ import 'package:shared_services/shared_services.dart';
 import '../l10n/quiz_localizations.dart';
 import 'export_data_tile.dart';
 
+/// Source identifier for settings analytics events.
+const String _settingsSource = 'settings_screen';
+
 /// Configuration for which sections to show in the settings screen.
 ///
 /// Note: The Quiz Behavior section with `showAnswerFeedback` toggle has been
@@ -174,12 +177,16 @@ class QuizSettingsScreen extends StatefulWidget {
   /// Optional app name override for about dialog.
   final String? appName;
 
+  /// Optional analytics service for tracking settings changes.
+  final AnalyticsService? analyticsService;
+
   /// Creates a [QuizSettingsScreen].
   const QuizSettingsScreen({
     super.key,
     required this.settingsService,
     this.config = const QuizSettingsConfig(),
     this.appName,
+    this.analyticsService,
   });
 
   @override
@@ -256,6 +263,12 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             value: _currentSettings.soundEnabled,
             onChanged: (value) async {
               await widget.settingsService.toggleSound();
+              widget.analyticsService?.logEvent(
+                SettingsEvent.soundEffectsToggled(
+                  enabled: value,
+                  source: _settingsSource,
+                ),
+              );
             },
           ),
         );
@@ -268,7 +281,16 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             subtitle: Text(l10n.backgroundMusicDescription),
             value: _currentSettings.musicEnabled,
             onChanged: (value) async {
+              final oldValue = _currentSettings.musicEnabled;
               await widget.settingsService.toggleMusic();
+              widget.analyticsService?.logEvent(
+                SettingsEvent.changed(
+                  settingName: 'background_music',
+                  oldValue: oldValue.toString(),
+                  newValue: value.toString(),
+                  settingCategory: 'audio',
+                ),
+              );
             },
           ),
         );
@@ -282,6 +304,12 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             value: _currentSettings.hapticEnabled,
             onChanged: (value) async {
               await widget.settingsService.toggleHaptic();
+              widget.analyticsService?.logEvent(
+                SettingsEvent.hapticFeedbackToggled(
+                  enabled: value,
+                  source: _settingsSource,
+                ),
+              );
             },
           ),
         );
@@ -429,6 +457,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
     return ExportDataTile(
       exportService: exportService,
       config: const ExportDataTileConfig(showIcon: false),
+      analyticsService: widget.analyticsService,
     );
   }
 
@@ -444,6 +473,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   }
 
   void _showThemeDialog(QuizLocalizations l10n) {
+    final previousTheme = _currentSettings.themeMode;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -456,6 +486,13 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
               onChanged: (value) async {
                 if (value == null) return;
                 await widget.settingsService.setThemeMode(value);
+                widget.analyticsService?.logEvent(
+                  SettingsEvent.themeChanged(
+                    newTheme: value.name,
+                    previousTheme: previousTheme.name,
+                    source: _settingsSource,
+                  ),
+                );
                 if (mounted) Navigator.pop(context);
               },
               child: Column(
@@ -542,6 +579,13 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
           TextButton(
             onPressed: () async {
               await widget.settingsService.resetToDefaults();
+              widget.analyticsService?.logEvent(
+                SettingsEvent.resetConfirmed(
+                  resetType: 'settings_only',
+                  sessionsDeleted: 0,
+                  achievementsReset: 0,
+                ),
+              );
               if (mounted) {
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
