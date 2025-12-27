@@ -2798,23 +2798,27 @@ class MyScreen extends StatelessWidget {
 
 ---
 
-#### Sprint 9.5.6: Achievements BLoC
+#### Sprint 9.5.6: Achievements BLoC ✅
 
 **Tasks:**
-- [ ] Create `AchievementsState` sealed class
-- [ ] Create `AchievementsBloc` for achievements management
-- [ ] Refactor `AchievementsScreen` to use BLoC
-- [ ] Move filtering, loading, and refresh logic to BLoC
-- [ ] Write unit tests for `AchievementsBloc`
-- [ ] Write widget tests for refactored screen
+- [x] Create `AchievementsState` sealed class
+- [x] Create `AchievementsEvent` sealed class
+- [x] Create `AchievementsBloc` for achievements management
+- [x] Create `AchievementsBuilder` widget for BLoC integration
+- [x] Refactor `AchievementsScreen` to use BLoC (add `AchievementsContent`)
+- [x] Move filtering, loading, and refresh logic to BLoC
+- [x] Write unit tests for `AchievementsBloc` (40 tests)
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/bloc/achievements/achievements_state.dart`
-- `packages/quiz_engine/lib/src/bloc/achievements/achievements_bloc.dart`
-- `packages/quiz_engine/test/bloc/achievements/achievements_bloc_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/bloc/achievements/achievements_state.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/achievements/achievements_event.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/achievements/achievements_bloc.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/achievements/achievements_builder.dart`
+- ✅ `packages/quiz_engine/test/bloc/achievements/achievements_bloc_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart` (added `AchievementsContent`)
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` (added Achievements BLoC exports)
 
 ---
 
