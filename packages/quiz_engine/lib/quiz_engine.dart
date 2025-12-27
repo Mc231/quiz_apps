@@ -64,6 +64,12 @@ export 'src/bloc/home/home_builder.dart';
 export 'src/bloc/home/home_event.dart';
 export 'src/bloc/home/home_state.dart';
 
+// Achievements BLoC
+export 'src/bloc/achievements/achievements_bloc.dart';
+export 'src/bloc/achievements/achievements_builder.dart';
+export 'src/bloc/achievements/achievements_event.dart';
+export 'src/bloc/achievements/achievements_state.dart';
+
 // Extensions
 export 'src/extensions/sizing_information_extension.dart';
 
