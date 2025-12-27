@@ -1,5 +1,8 @@
 library quiz_engine;
 
+// Analytics
+export 'src/analytics/analytics_navigator_observer.dart';
+
 // Models
 export 'src/models/achievements_data_provider.dart';
 export 'src/models/challenge_mode.dart';
