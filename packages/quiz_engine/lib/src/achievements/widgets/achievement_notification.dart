@@ -7,6 +7,9 @@ import 'package:shared_services/shared_services.dart';
 import '../../l10n/quiz_localizations.dart';
 import '../../theme/quiz_animations.dart';
 
+// Re-export for convenience
+export 'package:shared_services/src/analytics/events/achievement_event.dart';
+
 /// Style configuration for [AchievementNotification].
 class AchievementNotificationStyle {
   /// Creates an [AchievementNotificationStyle].
@@ -64,9 +67,12 @@ class AchievementNotification extends StatefulWidget {
     super.key,
     required this.achievement,
     this.onDismiss,
+    this.onTap,
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
+    this.analyticsService,
+    this.shownAt,
   });
 
   /// The achievement that was unlocked.
@@ -74,6 +80,9 @@ class AchievementNotification extends StatefulWidget {
 
   /// Called when the notification is dismissed.
   final VoidCallback? onDismiss;
+
+  /// Called when the notification is tapped (before dismiss).
+  final VoidCallback? onTap;
 
   /// Style configuration.
   final AchievementNotificationStyle style;
@@ -83,6 +92,12 @@ class AchievementNotification extends StatefulWidget {
 
   /// Optional audio service for sound effects.
   final AudioService? audioService;
+
+  /// Optional analytics service for tracking tap events.
+  final AnalyticsService? analyticsService;
+
+  /// When the notification was shown (for calculating time to tap).
+  final DateTime? shownAt;
 
   @override
   State<AchievementNotification> createState() =>
@@ -173,6 +188,26 @@ class _AchievementNotificationState extends State<AchievementNotification>
     _dismissTimer = Timer(widget.style.displayDuration, _dismiss);
   }
 
+  void _handleTap() {
+    if (_isDismissed) return;
+
+    // Track tap event before dismissing
+    final shownAt = widget.shownAt;
+    if (shownAt != null && widget.analyticsService != null) {
+      final timeToTap = DateTime.now().difference(shownAt);
+      widget.analyticsService!.logEvent(
+        AchievementEvent.notificationTapped(
+          achievementId: widget.achievement.id,
+          achievementName: widget.achievement.id, // Name requires context
+          timeToTap: timeToTap,
+        ),
+      );
+    }
+
+    widget.onTap?.call();
+    _dismiss();
+  }
+
   void _dismiss() {
     if (_isDismissed) return;
     _isDismissed = true;
@@ -218,7 +253,7 @@ class _AchievementNotificationState extends State<AchievementNotification>
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: GestureDetector(
-              onTap: _dismiss,
+              onTap: _handleTap,
               excludeFromSemantics: true,
               child: Stack(
                 children: [
