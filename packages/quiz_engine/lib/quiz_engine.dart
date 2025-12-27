@@ -52,6 +52,12 @@ export 'src/bloc/session_detail/session_detail_builder.dart';
 export 'src/bloc/session_detail/session_detail_event.dart';
 export 'src/bloc/session_detail/session_detail_state.dart';
 
+// Challenges BLoC
+export 'src/bloc/challenges/challenges_bloc.dart';
+export 'src/bloc/challenges/challenges_builder.dart';
+export 'src/bloc/challenges/challenges_event.dart';
+export 'src/bloc/challenges/challenges_state.dart';
+
 // Extensions
 export 'src/extensions/sizing_information_extension.dart';
 
