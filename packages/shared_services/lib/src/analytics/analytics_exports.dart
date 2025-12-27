@@ -22,4 +22,5 @@ export 'events/settings_event.dart';
 
 // Services
 export 'services/console_analytics_service.dart';
+export 'services/firebase_analytics_service.dart';
 export 'services/no_op_analytics_service.dart';
