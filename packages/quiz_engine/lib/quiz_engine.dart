@@ -1,6 +1,7 @@
 library quiz_engine;
 
 // Analytics
+export 'src/analytics/analytics_lifecycle_observer.dart';
 export 'src/analytics/analytics_navigator_observer.dart';
 
 // Models
