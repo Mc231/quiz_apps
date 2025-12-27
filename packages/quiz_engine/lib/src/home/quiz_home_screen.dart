@@ -245,6 +245,14 @@ class QuizHomeScreen extends StatefulWidget {
   /// Called after successful deletion from [SessionDetailScreen].
   final VoidCallback? onSessionDeleted;
 
+  /// Analytics service for tracking screen views and user interactions.
+  ///
+  /// When provided, tracks:
+  /// - Screen views when tabs change
+  /// - Tab selection events
+  /// - Category selection events
+  final AnalyticsService? analyticsService;
+
   /// Creates a [QuizHomeScreen].
   const QuizHomeScreen({
     super.key,
@@ -265,6 +273,7 @@ class QuizHomeScreen extends StatefulWidget {
     this.formatStatus,
     this.formatDuration,
     this.onSessionDeleted,
+    this.analyticsService,
   });
 
   @override
@@ -320,6 +329,25 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
       _dataLoader = DefaultDataLoader(widget.storageService!);
     }
     _loadDataForCurrentTab();
+
+    // Track initial screen view after first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _trackInitialScreenView();
+    });
+  }
+
+  /// Tracks the initial screen view when the home screen loads.
+  void _trackInitialScreenView() {
+    final analyticsService = widget.analyticsService;
+    if (analyticsService == null) return;
+
+    final currentTab = _tabs[_currentIndex];
+    final screenEvent = ScreenViewEvent.home(activeTab: _getTabId(currentTab));
+    analyticsService.logEvent(screenEvent);
+    analyticsService.setCurrentScreen(
+      screenName: screenEvent.screenName,
+      screenClass: screenEvent.screenClass,
+    );
   }
 
   @override
@@ -629,6 +657,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
 
   void _onTabSelected(int index) {
     final isSameTab = index == _currentIndex;
+    final previousTabId = isSameTab ? null : _getTabId(_tabs[_currentIndex]);
 
     if (!isSameTab) {
       setState(() {
@@ -637,11 +666,54 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
 
       // Notify callback
       widget.config.tabConfig.onTabSelected?.call(_tabs[index], index);
+
+      // Track tab selection analytics
+      final newTab = _tabs[index];
+      _trackTabSelected(newTab, index, previousTabId);
     }
 
     // Always reload data for the tab (even if already selected)
     // This ensures fresh data when tapping an already-selected tab
     _loadDataForCurrentTab();
+  }
+
+  /// Gets a string identifier for a tab.
+  String _getTabId(QuizTab tab) {
+    return switch (tab) {
+      PlayTab() => 'play',
+      HistoryTab() => 'history',
+      StatisticsTab() => 'statistics',
+      SettingsTab() => 'settings',
+      AchievementsTab() => 'achievements',
+      CustomTab(:final id) => id,
+    };
+  }
+
+  /// Gets a display name for a tab.
+  String _getTabName(QuizTab tab) {
+    return switch (tab) {
+      PlayTab() => 'Play',
+      HistoryTab() => 'History',
+      StatisticsTab() => 'Statistics',
+      SettingsTab() => 'Settings',
+      AchievementsTab() => 'Achievements',
+      CustomTab(:final labelBuilder) => labelBuilder(context),
+    };
+  }
+
+  /// Tracks tab selection analytics event.
+  void _trackTabSelected(QuizTab tab, int index, String? previousTabId) {
+    final analyticsService = widget.analyticsService;
+    if (analyticsService == null) return;
+
+    final event = InteractionEvent.tabSelected(
+      tabId: _getTabId(tab),
+      tabName: _getTabName(tab),
+      tabIndex: index,
+      previousTabId: previousTabId,
+    );
+
+    analyticsService.logEvent(event);
   }
 
   @override
