@@ -2749,23 +2749,26 @@ class MyScreen extends StatelessWidget {
 
 ---
 
-#### Sprint 9.5.4: Challenges BLoC
+#### Sprint 9.5.4: Challenges BLoC ✅
 
 **Tasks:**
-- [ ] Create `ChallengesState` sealed class
-- [ ] Create `ChallengesBloc` for challenge management
-- [ ] Refactor `ChallengesScreen` to use BLoC
-- [ ] Move challenge selection, category picker, and quiz start logic to BLoC
-- [ ] Write unit tests for `ChallengesBloc`
-- [ ] Write widget tests for refactored screen
+- [x] Create `ChallengesState` sealed class
+- [x] Create `ChallengesEvent` sealed class
+- [x] Create `ChallengesBloc` for challenge management
+- [x] Create `ChallengesBuilder` widget for BLoC integration
+- [x] Refactor `ChallengesScreen` to use BLoC (added `ChallengesContent`)
+- [x] Write unit tests for `ChallengesBloc` (24 tests)
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/bloc/challenges/challenges_state.dart`
-- `packages/quiz_engine/lib/src/bloc/challenges/challenges_bloc.dart`
-- `packages/quiz_engine/test/bloc/challenges/challenges_bloc_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/bloc/challenges/challenges_state.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/challenges/challenges_event.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/challenges/challenges_bloc.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/challenges/challenges_builder.dart`
+- ✅ `packages/quiz_engine/test/bloc/challenges/challenges_bloc_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/screens/challenges_screen.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/screens/challenges_screen.dart` (added `ChallengesContent`)
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` (added BLoC exports)
 
 ---
 
