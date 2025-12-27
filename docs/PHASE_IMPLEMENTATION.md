@@ -2100,25 +2100,40 @@ QuizBloc (Orchestrator ~460 lines)
 
 ---
 
-### Sprint 9.1.2: Interaction & Settings Event Classes
+### Sprint 9.1.2: Interaction & Settings Event Classes ✅
 
 **Goal:** Create sealed classes for user interactions and settings.
 
-**Tasks:**
-- [ ] Create `InteractionEvent` sealed class (12 events)
-  - `categorySelected`, `tabSelected`, `sessionViewed`, `sessionDeleted`, `exitDialogShown`, `exitDialogConfirmed`, `exitDialogCancelled`, `dataExportInitiated`, `dataExportCompleted`, `pullToRefresh`, `viewAllSessions`, `leaderboardViewed`
-- [ ] Create `SettingsEvent` sealed class (8 events)
-  - `changed`, `soundEffectsToggled`, `hapticFeedbackToggled`, `themeChanged`, `answerFeedbackToggled`, `resetConfirmed`, `privacyPolicyViewed`, `termsOfServiceViewed`
-- [ ] Create `AchievementEvent` sealed class (5 events)
-  - `unlocked`, `notificationShown`, `notificationTapped`, `detailViewed`, `filtered`
-- [ ] Write unit tests for all event classes
+**Status:** COMPLETED (2025-12-27)
 
-**Files to Create:**
-- `packages/shared_services/lib/src/analytics/events/interaction_event.dart`
-- `packages/shared_services/lib/src/analytics/events/settings_event.dart`
-- `packages/shared_services/lib/src/analytics/events/achievement_event.dart`
-- `packages/shared_services/test/analytics/events/interaction_event_test.dart`
-- `packages/shared_services/test/analytics/events/settings_event_test.dart`
+**Tasks:**
+- [x] Create `InteractionEvent` sealed class (12 events)
+  - `categorySelected`, `tabSelected`, `sessionViewed`, `sessionDeleted`, `exitDialogShown`, `exitDialogConfirmed`, `exitDialogCancelled`, `dataExportInitiated`, `dataExportCompleted`, `pullToRefresh`, `viewAllSessions`, `leaderboardViewed`
+- [x] Create `SettingsEvent` sealed class (8 events)
+  - `changed`, `soundEffectsToggled`, `hapticFeedbackToggled`, `themeChanged`, `answerFeedbackToggled`, `resetConfirmed`, `privacyPolicyViewed`, `termsOfServiceViewed`
+- [x] Create `AchievementEvent` sealed class (5 events)
+  - `unlocked`, `notificationShown`, `notificationTapped`, `detailViewed`, `filtered`
+- [x] Write unit tests for all event classes
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/analytics/events/interaction_event.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/settings_event.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/achievement_event.dart`
+- ✅ `packages/shared_services/test/analytics/events/interaction_event_test.dart`
+- ✅ `packages/shared_services/test/analytics/events/settings_event_test.dart`
+- ✅ `packages/shared_services/test/analytics/events/achievement_event_test.dart`
+
+**Implementation Details:**
+- InteractionEvent: 12 events for navigation, session management, dialogs, data export
+- SettingsEvent: 8 events for settings changes, toggles, and legal link views
+- AchievementEvent: 5 events for achievement unlocks, notifications, and filtering
+- All events extend `AnalyticsEvent` with factory constructors
+- 25 event types total with comprehensive unit tests
+
+**Pending Integrations (for Sprint 9.1.6+):**
+- [ ] Integrate `InteractionEvent` with navigation and UI components
+- [ ] Integrate `SettingsEvent` with settings screens
+- [ ] Integrate `AchievementEvent` with achievement system
 
 ---
 
