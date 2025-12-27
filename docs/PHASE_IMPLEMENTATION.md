@@ -2137,25 +2137,31 @@ QuizBloc (Orchestrator ~460 lines)
 
 ---
 
-### Sprint 9.1.3: Monetization & Error Event Classes
+### Sprint 9.1.3: Monetization & Error Event Classes ✅
 
 **Goal:** Create sealed classes for monetization and error tracking.
 
 **Tasks:**
-- [ ] Create `MonetizationEvent` sealed class (10 events)
+- [x] Create `MonetizationEvent` sealed class (10 events)
   - `purchaseSheetOpened`, `packSelected`, `purchaseInitiated`, `purchaseCompleted`, `purchaseCancelled`, `purchaseFailed`, `restoreInitiated`, `restoreCompleted`, `adWatched`, `adFailed`
-- [ ] Create `ErrorEvent` sealed class (6 events)
+- [x] Create `ErrorEvent` sealed class (6 events)
   - `dataLoadFailed`, `saveFailed`, `retryTapped`, `appCrash`, `featureFailure`, `network`
-- [ ] Create `PerformanceEvent` sealed class (5 events)
+- [x] Create `PerformanceEvent` sealed class (5 events)
   - `appLaunch`, `sessionStart`, `sessionEnd`, `screenRender`, `databaseQuery`
-- [ ] Write unit tests for all event classes
+- [x] Write unit tests for all event classes
 
-**Files to Create:**
-- `packages/shared_services/lib/src/analytics/events/monetization_event.dart`
-- `packages/shared_services/lib/src/analytics/events/error_event.dart`
-- `packages/shared_services/lib/src/analytics/events/performance_event.dart`
-- `packages/shared_services/test/analytics/events/monetization_event_test.dart`
-- `packages/shared_services/test/analytics/events/error_event_test.dart`
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/analytics/events/monetization_event.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/error_event.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/performance_event.dart`
+- ✅ `packages/shared_services/test/analytics/events/monetization_event_test.dart`
+- ✅ `packages/shared_services/test/analytics/events/error_event_test.dart`
+- ✅ `packages/shared_services/test/analytics/events/performance_event_test.dart`
+
+**Pending Integrations:**
+- [ ] Integrate `MonetizationEvent` with IAP and ad services
+- [ ] Integrate `ErrorEvent` with error handling and crash reporting
+- [ ] Integrate `PerformanceEvent` with app lifecycle and database operations
 
 ---
 
