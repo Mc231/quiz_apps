@@ -21,6 +21,7 @@ export 'events/screen_view_event.dart';
 export 'events/settings_event.dart';
 
 // Services
+export 'services/composite_analytics_service.dart';
 export 'services/console_analytics_service.dart';
 export 'services/firebase_analytics_service.dart';
 export 'services/no_op_analytics_service.dart';
