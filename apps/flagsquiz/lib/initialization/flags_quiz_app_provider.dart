@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../achievements/flags_achievements_data_provider.dart';
@@ -21,6 +22,7 @@ class FlagsQuizDependencies {
     required this.achievementsProvider,
     required this.dataProvider,
     required this.categories,
+    this.analyticsService,
   });
 
   final SettingsService settingsService;
@@ -29,6 +31,11 @@ class FlagsQuizDependencies {
   final FlagsAchievementsDataProvider achievementsProvider;
   final FlagsDataProvider dataProvider;
   final List<QuizCategory> categories;
+
+  /// Optional analytics service for tracking quiz events.
+  ///
+  /// When null, analytics tracking is disabled.
+  final QuizAnalyticsService? analyticsService;
 }
 
 /// Provides a fully initialized [FlagsQuizApp] instance.
