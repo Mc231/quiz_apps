@@ -2465,23 +2465,35 @@ await compositeService.logEvent(QuizEvent.started(...));
 
 ---
 
-### Sprint 9.1.8: Analytics Integration - Settings & Achievements
+### Sprint 9.1.8: Analytics Integration - Settings & Achievements ✅
 
 **Goal:** Integrate analytics into settings and achievements.
 
 **Tasks:**
-- [ ] Track settings changes (sound, haptics, theme, feedback toggle)
-- [ ] Track `achievement_unlocked` from `AchievementEngine`
-- [ ] Track `achievement_notification_shown` and `tapped`
-- [ ] Track `achievement_detail_viewed`
-- [ ] Track `data_export_initiated` and `completed`
-- [ ] Track error events from error handlers
-- [ ] Write integration tests
+- [x] Track settings changes (sound, haptics, theme, feedback toggle)
+- [x] Track `achievement_unlocked` from `AchievementService`
+- [x] Track `achievement_notification_shown` and `tapped`
+- [x] Track `achievement_detail_viewed`
+- [x] Track `data_export_initiated` and `completed`
+- [x] Track error events from error handlers
+- [x] Write integration tests
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
-- `packages/shared_services/lib/src/achievements/achievement_engine.dart`
-- `packages/quiz_engine/lib/src/settings/export_data_tile.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+- ✅ `packages/shared_services/lib/src/achievements/services/achievement_service.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/export_data_tile.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/achievement_notification_controller.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/widgets/achievement_notification.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/error_state_widget.dart`
+
+**Test Files Created:**
+- ✅ `packages/quiz_engine/test/mocks/mock_analytics_service.dart`
+- ✅ `packages/quiz_engine/test/settings/quiz_settings_screen_analytics_test.dart`
+- ✅ `packages/shared_services/test/achievements/achievement_service_analytics_test.dart`
+- ✅ `packages/quiz_engine/test/achievements/achievement_notification_controller_analytics_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/error_state_widget_analytics_test.dart`
+- ✅ `packages/quiz_engine/test/settings/export_data_tile_analytics_test.dart`
 
 ---
 
