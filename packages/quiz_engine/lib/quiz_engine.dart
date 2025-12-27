@@ -58,6 +58,12 @@ export 'src/bloc/challenges/challenges_builder.dart';
 export 'src/bloc/challenges/challenges_event.dart';
 export 'src/bloc/challenges/challenges_state.dart';
 
+// Home BLoC
+export 'src/bloc/home/home_bloc.dart';
+export 'src/bloc/home/home_builder.dart';
+export 'src/bloc/home/home_event.dart';
+export 'src/bloc/home/home_state.dart';
+
 // Extensions
 export 'src/extensions/sizing_information_extension.dart';
 
