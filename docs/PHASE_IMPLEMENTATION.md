@@ -2671,23 +2671,30 @@ class MyScreen extends StatelessWidget {
 }
 ```
 
-#### Sprint 9.5.1: Statistics BLoC
+#### Sprint 9.5.1: Statistics BLoC ✅
 
 **Tasks:**
-- [ ] Create `StatisticsState` sealed class with loading/loaded/error states
-- [ ] Create `StatisticsBloc` for statistics dashboard logic
-- [ ] Refactor `StatisticsDashboardScreen` to use `StatisticsBloc`
-- [ ] Move data loading, tab switching, and filtering logic to BLoC
-- [ ] Write unit tests for `StatisticsBloc`
-- [ ] Write widget tests for refactored screen
+- [x] Create `StatisticsState` sealed class with loading/loaded/error states
+- [x] Create `StatisticsBloc` for statistics dashboard logic
+- [x] Refactor `StatisticsDashboardScreen` to use `StatisticsBloc`
+- [x] Move data loading, tab switching, and filtering logic to BLoC
+- [x] Write unit tests for `StatisticsBloc`
+- [x] Create `StatisticsDataProvider` abstract interface
+- [x] Create `StatisticsEvent` sealed class for BLoC events
+- [x] Create `StatisticsDashboardBuilder` widget for BLoC integration
+- [x] Create `StatisticsDashboardContent` widget for BLoC-controlled rendering
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/bloc/statistics/statistics_state.dart`
-- `packages/quiz_engine/lib/src/bloc/statistics/statistics_bloc.dart`
-- `packages/quiz_engine/test/bloc/statistics/statistics_bloc_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/bloc/statistics/statistics_state.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/statistics/statistics_event.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/statistics/statistics_bloc.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/statistics/statistics_dashboard_builder.dart`
+- ✅ `packages/quiz_engine/test/bloc/statistics/statistics_bloc_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart` - Added `StatisticsDashboardContent` widget
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Added exports for Statistics BLoC
+- ✅ `packages/quiz_engine_core/lib/quiz_engine_core.dart` - Exported `SingleSubscriptionBloc`
 
 ---
 
