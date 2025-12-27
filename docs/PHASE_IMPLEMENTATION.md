@@ -2822,24 +2822,28 @@ class MyScreen extends StatelessWidget {
 
 ---
 
-#### Sprint 9.5.7: Settings BLoC
+#### Sprint 9.5.7: Settings BLoC ✅
 
 **Tasks:**
-- [ ] Create `SettingsState` sealed class
-- [ ] Create `SettingsBloc` for settings management
-- [ ] Refactor `QuizSettingsScreen` to use BLoC
-- [ ] Move settings loading, saving, and validation logic to BLoC
-- [ ] Integrate analytics tracking for settings changes
-- [ ] Write unit tests for `SettingsBloc`
-- [ ] Write widget tests for refactored screen
+- [x] Create `SettingsState` sealed class
+- [x] Create `SettingsEvent` sealed class
+- [x] Create `SettingsBloc` for settings management
+- [x] Create `SettingsBuilder` widget for BLoC integration
+- [x] Refactor `QuizSettingsScreen` to use BLoC (add `SettingsContent`)
+- [x] Move settings loading, saving, and validation logic to BLoC
+- [x] Integrate analytics tracking for settings changes (via `SettingsContent`)
+- [x] Write unit tests for `SettingsBloc` (37 tests)
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/bloc/settings/settings_state.dart`
-- `packages/quiz_engine/lib/src/bloc/settings/settings_bloc.dart`
-- `packages/quiz_engine/test/bloc/settings/settings_bloc_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/bloc/settings/settings_state.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/settings/settings_event.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/settings/settings_bloc.dart`
+- ✅ `packages/quiz_engine/lib/src/bloc/settings/settings_builder.dart`
+- ✅ `packages/quiz_engine/test/bloc/settings/settings_bloc_test.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart` (added `SettingsContent`)
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` (added Settings BLoC exports)
 
 ---
 
