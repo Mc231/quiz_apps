@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:quiz_engine_core/src/business_logic/quiz_state/quiz_state.dart';
 import 'package:quiz_engine_core/src/model/question_entry.dart';
 
+import '../analytics/quiz_analytics_service.dart';
 import '../bloc/single_subscription_bloc.dart';
 import '../model/question.dart';
 import '../model/quiz_results.dart';
@@ -25,6 +26,7 @@ import 'managers/managers.dart';
 /// - [QuizSessionManager] - Manages storage integration
 /// - [QuizAnswerProcessor] - Creates answer objects
 /// - [QuizGameFlowManager] - Manages question picking and game flow
+/// - [QuizAnalyticsManager] - Handles analytics event tracking
 class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Function to fetch quiz data.
   final Future<List<QuestionEntry>> Function() dataProvider;
@@ -44,6 +46,12 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Human-readable name of the quiz (for display in results).
   final String quizName;
 
+  /// Category ID for analytics tracking.
+  final String categoryId;
+
+  /// Category name for analytics tracking.
+  final String categoryName;
+
   /// The loaded configuration.
   late final QuizConfig _config;
 
@@ -61,6 +69,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Manages storage session lifecycle.
   final QuizSessionManager _sessionManager;
 
+  /// Manages analytics event tracking.
+  final QuizAnalyticsManager _analyticsManager;
+
   /// Processes answers.
   final QuizAnswerProcessor _answerProcessor = QuizAnswerProcessor();
 
@@ -75,7 +86,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// [onQuizCompleted] - Callback with detailed results for achievement integration
   /// [configManager] - Configuration manager with default config
   /// [storageService] - Optional storage service for persisting quiz sessions
+  /// [analyticsService] - Optional analytics service for event tracking
   /// [quizName] - Human-readable name of the quiz (for display in results)
+  /// [categoryId] - Category ID for analytics tracking
+  /// [categoryName] - Category name for analytics tracking
   QuizBloc(
     this.dataProvider,
     this.randomItemPicker, {
@@ -83,8 +97,12 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     this.onQuizCompleted,
     required this.configManager,
     QuizStorageService? storageService,
+    QuizAnalyticsService? analyticsService,
     this.quizName = 'Quiz',
-  }) : _sessionManager = QuizSessionManager(storageService: storageService) {
+    this.categoryId = '',
+    this.categoryName = '',
+  })  : _sessionManager = QuizSessionManager(storageService: storageService),
+        _analyticsManager = QuizAnalyticsManager(analyticsService: analyticsService) {
     // Initialize timer manager with callbacks
     _timerManager = QuizTimerManager(
       onTick: _handleTimerTick,
@@ -158,6 +176,21 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       totalQuestions: filteredItems.length,
     );
 
+    // Initialize analytics manager
+    _analyticsManager.initialize(
+      config: _config,
+      categoryId: categoryId,
+      categoryName: categoryName,
+    );
+
+    // Track quiz started
+    await _analyticsManager.trackQuizStarted(
+      quizName: quizName,
+      totalQuestions: filteredItems.length,
+      initialLives: _config.modeConfig.lives,
+      initialHints: _hintManager.hintState?.remainingHints[HintType.fiftyFifty],
+    );
+
     // Start tracking session duration
     _timerManager.startSession();
 
@@ -178,8 +211,37 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Process the answer
     final result = _answerProcessor.processUserAnswer(selectedItem, currentQuestion);
 
+    // Track life lost before recording (to get accurate remaining count)
+    final livesBeforeAnswer = _progressTracker.remainingLives;
+    final initialLives = _config.modeConfig.lives;
+
     // Update progress
     _progressTracker.recordAnswer(result.answer);
+
+    // Track answer submitted
+    await _analyticsManager.trackQuestionAnswered(
+      question: currentQuestion,
+      questionIndex: _progressTracker.currentProgress - 1,
+      isCorrect: result.isCorrect,
+      responseTime: Duration(seconds: timeSpentSeconds),
+      selectedAnswer: selectedItem,
+      currentStreak: result.isCorrect ? _progressTracker.currentStreak : 0,
+      livesRemaining: _progressTracker.remainingLives,
+    );
+
+    // Track life lost if incorrect and lives mode is active
+    if (!result.isCorrect &&
+        initialLives != null &&
+        _progressTracker.remainingLives != null &&
+        _progressTracker.remainingLives! < livesBeforeAnswer!) {
+      await _analyticsManager.trackLifeLost(
+        question: currentQuestion,
+        questionIndex: _progressTracker.currentProgress - 1,
+        livesRemaining: _progressTracker.remainingLives!,
+        livesTotal: initialLives,
+        reason: 'incorrect_answer',
+      );
+    }
 
     // Save to storage
     await _sessionManager.saveAnswer(
@@ -210,6 +272,14 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   void use50_50Hint() {
     final disabled = _hintManager.use5050Hint(currentQuestion);
     if (disabled.isNotEmpty) {
+      // Track hint usage
+      _analyticsManager.trackHintFiftyFiftyUsed(
+        question: currentQuestion,
+        questionIndex: _progressTracker.currentProgress,
+        hintsRemaining: _hintManager.hintState?.remainingHints[HintType.fiftyFifty] ?? 0,
+        eliminatedOptions: disabled.toList(),
+      );
+
       _emitQuestionState();
     }
   }
@@ -221,11 +291,28 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _timerManager.cancelQuestionTimer();
     final timeSpentSeconds = _timerManager.stopQuestionStopwatch();
 
+    // Track hint skip used
+    await _analyticsManager.trackHintSkipUsed(
+      question: currentQuestion,
+      questionIndex: _progressTracker.currentProgress,
+      hintsRemaining: _hintManager.hintState?.remainingHints[HintType.skip] ?? 0,
+      timeBeforeSkip: Duration(seconds: timeSpentSeconds),
+    );
+
     // Process the skip
     final result = _answerProcessor.processSkip(currentQuestion);
 
     // Record without deducting life (skipped answers don't deduct lives)
     _progressTracker.recordAnswer(result.answer);
+
+    // Track question skipped
+    await _analyticsManager.trackQuestionSkipped(
+      question: currentQuestion,
+      questionIndex: _progressTracker.currentProgress - 1,
+      timeBeforeSkip: Duration(seconds: timeSpentSeconds),
+      usedHint: true,
+      hintsRemaining: _hintManager.hintState?.remainingHints[HintType.skip],
+    );
 
     // Save to storage
     await _sessionManager.saveAnswer(
@@ -247,11 +334,25 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Pauses both question and total timers.
   void pauseTimers() {
     _timerManager.pauseTimers();
+
+    // Track quiz paused
+    _analyticsManager.trackQuizPaused(
+      quizName: quizName,
+      currentQuestion: _progressTracker.currentProgress,
+      totalQuestions: _progressTracker.totalCount,
+    );
   }
 
   /// Resumes both question and total timers.
   void resumeTimers() {
     _timerManager.resumeTimers();
+
+    // Track quiz resumed
+    _analyticsManager.trackQuizResumed(
+      quizName: quizName,
+      currentQuestion: _progressTracker.currentProgress,
+      totalQuestions: _progressTracker.totalCount,
+    );
   }
 
   // ============ Quiz Cancellation ============
@@ -261,6 +362,14 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _timerManager.cancelQuestionTimer();
     _timerManager.cancelTotalTimer();
     _timerManager.stopSession();
+
+    // Track quiz cancelled
+    await _analyticsManager.trackQuizCancelled(
+      quizName: quizName,
+      questionsAnswered: _progressTracker.answers.length,
+      totalQuestions: _progressTracker.totalCount,
+      timeSpent: Duration(seconds: _timerManager.sessionDurationSeconds),
+    );
 
     await _sessionManager.cancelSession(
       hasAnswers: _progressTracker.answers.isNotEmpty,
@@ -293,6 +402,14 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _timerManager.startQuestionTimer();
     _timerManager.startQuestionStopwatch();
 
+    // Track question displayed
+    _analyticsManager.trackQuestionDisplayed(
+      question: question,
+      questionIndex: _progressTracker.currentProgress,
+      totalQuestions: _progressTracker.totalCount,
+      timeLimit: _config.modeConfig.questionTimeLimit,
+    );
+
     _emitQuestionState();
   }
 
@@ -306,11 +423,42 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     final mode = _config.modeConfig;
     if (mode is! TimedMode && mode is! SurvivalMode) return;
 
+    // Get time limit from mode config
+    final timeLimit = mode is TimedMode
+        ? mode.timePerQuestion
+        : (mode as SurvivalMode).timePerQuestion;
+
+    // Track question timeout
+    _analyticsManager.trackQuestionTimeout(
+      question: currentQuestion,
+      questionIndex: _progressTracker.currentProgress,
+      timeLimit: timeLimit,
+      livesRemaining: _progressTracker.remainingLives,
+    );
+
     // Create timeout answer
     final result = _answerProcessor.processTimeout(currentQuestion);
 
+    // Track life lost before deducting
+    final livesBeforeDeduct = _progressTracker.remainingLives;
+    final initialLives = _config.modeConfig.lives;
+
     // Deduct life for timeout
     _progressTracker.deductLife();
+
+    // Track life lost
+    if (initialLives != null &&
+        _progressTracker.remainingLives != null &&
+        livesBeforeDeduct != null &&
+        _progressTracker.remainingLives! < livesBeforeDeduct) {
+      _analyticsManager.trackLifeLost(
+        question: currentQuestion,
+        questionIndex: _progressTracker.currentProgress,
+        livesRemaining: _progressTracker.remainingLives!,
+        livesTotal: initialLives,
+        reason: 'timeout',
+      );
+    }
 
     // Record the timeout answer
     _progressTracker.recordAnswer(result.answer);
@@ -354,6 +502,47 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _timerManager.cancelTotalTimer();
     _timerManager.stopSession();
 
+    // Determine completion status
+    final completionStatus = _determineCompletionStatus();
+    final duration = Duration(seconds: _timerManager.sessionDurationSeconds);
+
+    // Track analytics based on completion status
+    switch (completionStatus) {
+      case SessionCompletionStatus.completed:
+        // Track completed - happens after results are created (below)
+        break;
+      case SessionCompletionStatus.failed:
+        // Track lives depleted first
+        await _analyticsManager.trackLivesDepleted(
+          quizName: quizName,
+          questionsAnswered: _progressTracker.answers.length,
+          totalQuestions: _progressTracker.totalCount,
+          correctAnswers: _progressTracker.correctAnswers,
+          duration: duration,
+        );
+        // Then track quiz failed
+        await _analyticsManager.trackQuizFailed(
+          quizName: quizName,
+          questionsAnswered: _progressTracker.answers.length,
+          totalQuestions: _progressTracker.totalCount,
+          correctAnswers: _progressTracker.correctAnswers,
+          duration: duration,
+          reason: 'lives_depleted',
+        );
+        break;
+      case SessionCompletionStatus.timeout:
+        await _analyticsManager.trackQuizTimeout(
+          quizName: quizName,
+          questionsAnswered: _progressTracker.answers.length,
+          totalQuestions: _progressTracker.totalCount,
+          correctAnswers: _progressTracker.correctAnswers,
+        );
+        break;
+      case SessionCompletionStatus.cancelled:
+        // Cancelled is handled by cancelQuiz() method
+        break;
+    }
+
     // Calculate score
     final scoreBreakdown = _config.scoringStrategy.calculateScore(
       correctAnswers: _progressTracker.correctAnswers,
@@ -364,7 +553,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
     // Complete storage session
     await _sessionManager.completeSession(
-      status: _determineCompletionStatus(),
+      status: completionStatus,
       totalAnswered: _progressTracker.answers.length,
       totalCorrect: _progressTracker.correctAnswers,
       totalFailed: _progressTracker.totalFailedAnswers,
@@ -395,6 +584,11 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       score: scoreBreakdown.totalScore,
       scoreBreakdown: scoreBreakdown,
     );
+
+    // Track quiz completed (for successful completion)
+    if (completionStatus == SessionCompletionStatus.completed) {
+      await _analyticsManager.trackQuizCompleted(results: results);
+    }
 
     dispatchState(QuizState.completed(results));
     onQuizCompleted?.call(results);
@@ -450,6 +644,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   void dispose() {
     _timerManager.dispose();
     _sessionManager.dispose();
+    _analyticsManager.dispose();
     _gameFlowManager.reset();
     _progressTracker.resetAll();
     _hintManager.reset();
