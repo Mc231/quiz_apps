@@ -538,6 +538,145 @@ class _AchievementsScreenSliverState extends State<AchievementsScreenSliver> {
   }
 }
 
+/// A stateless content widget for use with AchievementsBloc.
+///
+/// This widget renders achievements content without managing its own state,
+/// making it suitable for use with [AchievementsBuilder] and BLoC pattern.
+///
+/// Example:
+/// ```dart
+/// AchievementsBuilder(
+///   bloc: achievementsBloc,
+///   builder: (context, state) => AchievementsContent(
+///     data: state.data,
+///     filter: state.filter,
+///     tierFilter: state.tierFilter,
+///     isRefreshing: state.isRefreshing,
+///     onFilterChanged: (filter) =>
+///         achievementsBloc.add(AchievementsEvent.changeFilter(filter)),
+///     onTierFilterChanged: (tier) =>
+///         achievementsBloc.add(AchievementsEvent.changeTierFilter(tier)),
+///     onRefresh: () async =>
+///         achievementsBloc.add(AchievementsEvent.refresh()),
+///   ),
+/// )
+/// ```
+class AchievementsContent extends StatelessWidget {
+  /// Creates an [AchievementsContent].
+  const AchievementsContent({
+    super.key,
+    required this.data,
+    this.filter = AchievementFilter.all,
+    this.tierFilter,
+    this.isRefreshing = false,
+    this.config = const AchievementsScreenConfig(),
+    this.onFilterChanged,
+    this.onTierFilterChanged,
+    this.onRefresh,
+    this.onAchievementTap,
+    this.analyticsService,
+  });
+
+  /// The achievements data to display.
+  final AchievementsScreenData data;
+
+  /// Current filter selection.
+  final AchievementFilter filter;
+
+  /// Current tier filter selection.
+  final AchievementTier? tierFilter;
+
+  /// Whether a refresh is in progress.
+  final bool isRefreshing;
+
+  /// Configuration for the screen.
+  final AchievementsScreenConfig config;
+
+  /// Callback when filter changes.
+  final void Function(AchievementFilter)? onFilterChanged;
+
+  /// Callback when tier filter changes.
+  final void Function(AchievementTier?)? onTierFilterChanged;
+
+  /// Callback for pull-to-refresh.
+  final Future<void> Function()? onRefresh;
+
+  /// Callback when an achievement is tapped.
+  final void Function(AchievementDisplayData)? onAchievementTap;
+
+  /// Optional analytics service for tracking achievement views.
+  final AnalyticsService? analyticsService;
+
+  void _handleAchievementTap(AchievementDisplayData achievementData) {
+    // Track the view event
+    _trackAchievementDetailViewed(analyticsService, achievementData);
+    // Call the original callback
+    onAchievementTap?.call(achievementData);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final content = config.enablePullToRefresh && onRefresh != null
+        ? RefreshIndicator(
+            onRefresh: onRefresh!,
+            child: _buildContent(context),
+          )
+        : _buildContent(context);
+
+    return content;
+  }
+
+  Widget _buildContent(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        if (config.showHeader)
+          SliverToBoxAdapter(
+            child: _AchievementsHeader(
+              data: data,
+              style: config.headerStyle,
+              showPoints: config.showPointsInHeader,
+            ),
+          ),
+        if (config.showFilterChips)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: AchievementFilterChips(
+                selected: filter,
+                onChanged: onFilterChanged ?? (_) {},
+                counts: data.filterCounts,
+              ),
+            ),
+          ),
+        if (config.showTierFilter)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: AchievementTierFilterChips(
+                selected: tierFilter,
+                onChanged: onTierFilterChanged ?? (_) {},
+              ),
+            ),
+          ),
+        if (config.showFilterChips || config.showTierFilter)
+          const SliverToBoxAdapter(child: SizedBox(height: 8)),
+        SliverFillRemaining(
+          child: AchievementsList(
+            achievements: data.achievements,
+            config: config.listConfig.copyWith(
+              filter: filter,
+              tierFilter: tierFilter,
+              groupByCategory: config.groupByCategory,
+            ),
+            onAchievementTap:
+                onAchievementTap != null ? _handleAchievementTap : null,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 /// An async builder for achievements screen data.
 ///
 /// Handles loading and error states while fetching achievement data.
