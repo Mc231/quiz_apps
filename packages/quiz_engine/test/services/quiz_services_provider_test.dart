@@ -14,6 +14,10 @@ void main() {
       final achievementService = MockAchievementService();
       final screenAnalyticsService = MockAnalyticsService();
       final quizAnalyticsService = MockQuizAnalyticsService();
+      final resourceManager = ResourceManager(
+        config: ResourceConfig.standard(),
+        repository: InMemoryResourceRepository(),
+      );
 
       final services = QuizServices(
         settingsService: settingsService,
@@ -21,6 +25,7 @@ void main() {
         achievementService: achievementService,
         screenAnalyticsService: screenAnalyticsService,
         quizAnalyticsService: quizAnalyticsService,
+        resourceManager: resourceManager,
       );
 
       expect(services.settingsService, equals(settingsService));
@@ -28,17 +33,23 @@ void main() {
       expect(services.achievementService, equals(achievementService));
       expect(services.screenAnalyticsService, equals(screenAnalyticsService));
       expect(services.quizAnalyticsService, equals(quizAnalyticsService));
+      expect(services.resourceManager, equals(resourceManager));
     });
 
     test('noOp factory creates instance with NoOp analytics services', () {
       final settingsService = MockSettingsService();
       final storageService = MockStorageService();
       final achievementService = MockAchievementService();
+      final resourceManager = ResourceManager(
+        config: ResourceConfig.standard(),
+        repository: InMemoryResourceRepository(),
+      );
 
       final services = QuizServices.noOp(
         settingsService: settingsService,
         storageService: storageService,
         achievementService: achievementService,
+        resourceManager: resourceManager,
       );
 
       expect(services.settingsService, equals(settingsService));
@@ -46,6 +57,7 @@ void main() {
       expect(services.achievementService, equals(achievementService));
       expect(services.screenAnalyticsService, isA<NoOpAnalyticsService>());
       expect(services.quizAnalyticsService, isA<NoOpQuizAnalyticsService>());
+      expect(services.resourceManager, equals(resourceManager));
     });
 
     test('copyWith creates modified copy', () {
@@ -80,6 +92,10 @@ void main() {
       final achievementService = MockAchievementService();
       final screenAnalyticsService = MockAnalyticsService();
       final quizAnalyticsService = MockQuizAnalyticsService();
+      final resourceManager = ResourceManager(
+        config: ResourceConfig.standard(),
+        repository: InMemoryResourceRepository(),
+      );
 
       final services1 = QuizServices(
         settingsService: settingsService,
@@ -87,6 +103,7 @@ void main() {
         achievementService: achievementService,
         screenAnalyticsService: screenAnalyticsService,
         quizAnalyticsService: quizAnalyticsService,
+        resourceManager: resourceManager,
       );
 
       final services2 = QuizServices(
@@ -95,6 +112,7 @@ void main() {
         achievementService: achievementService,
         screenAnalyticsService: screenAnalyticsService,
         quizAnalyticsService: quizAnalyticsService,
+        resourceManager: resourceManager,
       );
 
       expect(services1, equals(services2));
