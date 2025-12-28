@@ -57,11 +57,11 @@ void main() {
 
     testWidgets('tracks export initiated event', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: analyticsService,
           ),
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -93,11 +93,11 @@ void main() {
       exportService.totalItems = 42;
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: analyticsService,
           ),
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -136,11 +136,11 @@ void main() {
       exportService.errorMessage = 'Database connection failed';
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: analyticsService,
           ),
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -173,11 +173,11 @@ void main() {
       exportService.exportData = '{"data": "${List.filled(1000, 'x').join()}"}';
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: analyticsService,
           ),
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -203,14 +203,14 @@ void main() {
       expect(fileSize, exportService.exportData.length);
     });
 
-    testWidgets('does not track when analytics service is null',
+    testWidgets('does not track when NoOp analytics service is used',
         (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: NoOpAnalyticsService(),
           ),
+          screenAnalyticsService: NoOpAnalyticsService(),
         ),
       );
       await tester.pumpAndSettle();
@@ -223,7 +223,7 @@ void main() {
       await tester.pump();
       await tester.pumpAndSettle();
 
-      // Verify no events were logged
+      // Verify no events were logged on our mock service
       expect(analyticsService.loggedEvents, isEmpty);
     });
 
@@ -231,11 +231,11 @@ void main() {
       exportService.shouldSucceed = true;
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: analyticsService,
           ),
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -266,11 +266,11 @@ void main() {
       exportService.shouldSucceed = true;
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: analyticsService,
           ),
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -295,11 +295,11 @@ void main() {
     testWidgets('does not track completion when dialog is cancelled',
         (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: analyticsService,
           ),
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -331,12 +331,12 @@ void main() {
       exportService.totalItems = 25;
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ExportDataTile(
             exportService: exportService,
-            analyticsService: analyticsService,
             config: config,
           ),
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
