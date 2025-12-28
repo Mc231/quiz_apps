@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
+import '../services/quiz_services_context.dart';
 import '../widgets/category_statistics_widget.dart';
 import '../widgets/empty_state_widget.dart';
 import '../widgets/leaderboard_widget.dart';
@@ -86,12 +87,13 @@ class StatisticsDashboardData {
 }
 
 /// Enhanced statistics dashboard screen with tabbed interface.
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class StatisticsDashboardScreen extends StatefulWidget {
   /// Creates a [StatisticsDashboardScreen].
   const StatisticsDashboardScreen({
     super.key,
     required this.data,
-    required this.analyticsService,
     this.initialTab = StatisticsDashboardTab.overview,
     this.onSessionTap,
     this.onCategoryTap,
@@ -103,9 +105,6 @@ class StatisticsDashboardScreen extends StatefulWidget {
 
   /// Dashboard data.
   final StatisticsDashboardData data;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
 
   /// Initial tab to display.
   final StatisticsDashboardTab initialTab;
@@ -139,6 +138,9 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
   ProgressTimeRange _progressTimeRange = ProgressTimeRange.week;
   LeaderboardType _leaderboardType = LeaderboardType.bestScores;
 
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
   @override
   void initState() {
     super.initState();
@@ -148,11 +150,14 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
       initialIndex: widget.initialTab.index,
     );
     _tabController.addListener(_handleTabChange);
-    _logScreenView();
+    // Log screen view after first frame when context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _logScreenView();
+    });
   }
 
   void _logScreenView() {
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.statistics(
         totalSessions: widget.data.globalStatistics.totalSessions,
         averageScore: widget.data.globalStatistics.averageScore,
@@ -163,7 +168,7 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
   void _handleTabChange() {
     if (!_tabController.indexIsChanging) {
       final tab = StatisticsDashboardTab.values[_tabController.index];
-      widget.analyticsService.logEvent(
+      _analyticsService.logEvent(
         InteractionEvent.tabSelected(
           tabId: tab.name,
           tabName: tab.name,
@@ -724,6 +729,8 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
 ///
 /// This widget receives all state and callbacks externally, making it
 /// suitable for use with [StatisticsBloc] via [StatisticsDashboardBuilder].
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class StatisticsDashboardContent extends StatefulWidget {
   /// Creates a [StatisticsDashboardContent].
   const StatisticsDashboardContent({
@@ -735,7 +742,6 @@ class StatisticsDashboardContent extends StatefulWidget {
     required this.onTabChanged,
     required this.onTimeRangeChanged,
     required this.onLeaderboardTypeChanged,
-    required this.analyticsService,
     this.onSessionTap,
     this.onCategoryTap,
     this.onLeaderboardEntryTap,
@@ -765,9 +771,6 @@ class StatisticsDashboardContent extends StatefulWidget {
   /// Callback when leaderboard type changes.
   final void Function(LeaderboardType type) onLeaderboardTypeChanged;
 
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
-
   /// Callback when a session is tapped.
   final void Function(SessionCardData session)? onSessionTap;
 
@@ -794,6 +797,9 @@ class StatisticsDashboardContent extends StatefulWidget {
 class _StatisticsDashboardContentState extends State<StatisticsDashboardContent>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
   @override
   void initState() {
@@ -828,7 +834,7 @@ class _StatisticsDashboardContentState extends State<StatisticsDashboardContent>
       final newTab = StatisticsDashboardTab.values[_tabController.index];
       if (newTab != widget.selectedTab) {
         // Log tab change event
-        widget.analyticsService.logEvent(
+        _analyticsService.logEvent(
           InteractionEvent.tabSelected(
             tabId: newTab.name,
             tabName: newTab.name,
