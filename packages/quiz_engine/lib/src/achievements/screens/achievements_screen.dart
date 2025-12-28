@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../../l10n/quiz_localizations.dart';
+import '../../services/quiz_services_context.dart';
 import '../../widgets/error_state_widget.dart';
 import '../../widgets/loading_indicator.dart';
 import '../widgets/achievement_card.dart';
@@ -152,6 +153,8 @@ class AchievementsHeaderStyle {
 /// filter chips for filtering achievements, and a scrollable
 /// list of achievements grouped by category.
 ///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
+///
 /// Example:
 /// ```dart
 /// AchievementsScreen(
@@ -173,7 +176,6 @@ class AchievementsScreen extends StatefulWidget {
     this.onAchievementTap,
     this.appBar,
     this.showScaffold = false,
-    required  this.analyticsService,
   });
 
   /// The achievements data to display.
@@ -197,9 +199,6 @@ class AchievementsScreen extends StatefulWidget {
   /// Defaults to `false` for use in QuizHomeScreen tabs.
   final bool showScaffold;
 
-  /// Optional analytics service for tracking achievement views.
-  final AnalyticsService analyticsService;
-
   @override
   State<AchievementsScreen> createState() => _AchievementsScreenState();
 }
@@ -208,15 +207,21 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
   late AchievementFilter _currentFilter;
   AchievementTier? _currentTierFilter;
 
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
   @override
   void initState() {
     super.initState();
     _currentFilter = widget.config.initialFilter;
-    _logScreenView();
+    // Log screen view after first frame when context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _logScreenView();
+    });
   }
 
   void _logScreenView() {
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.achievements(
         unlockedCount: widget.data.unlockedCount,
         totalCount: widget.data.totalCount,
@@ -227,7 +232,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
 
   void _handleAchievementTap(AchievementDisplayData data) {
     // Track the view event
-    _trackAchievementDetailViewed(widget.analyticsService, data);
+    _trackAchievementDetailViewed(_analyticsService, data);
     // Call the original callback
     widget.onAchievementTap?.call(data);
   }
@@ -452,6 +457,8 @@ class _StatCard extends StatelessWidget {
 }
 
 /// A sliver version of the achievements screen for use in CustomScrollView.
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class AchievementsScreenSliver extends StatefulWidget {
   /// Creates an [AchievementsScreenSliver].
   const AchievementsScreenSliver({
@@ -459,7 +466,6 @@ class AchievementsScreenSliver extends StatefulWidget {
     required this.data,
     this.config = const AchievementsScreenConfig(),
     this.onAchievementTap,
-    required this.analyticsService,
   });
 
   /// The achievements data to display.
@@ -471,9 +477,6 @@ class AchievementsScreenSliver extends StatefulWidget {
   /// Callback when an achievement is tapped.
   final void Function(AchievementDisplayData)? onAchievementTap;
 
-  /// Optional analytics service for tracking achievement views.
-  final AnalyticsService analyticsService;
-
   @override
   State<AchievementsScreenSliver> createState() =>
       _AchievementsScreenSliverState();
@@ -483,15 +486,21 @@ class _AchievementsScreenSliverState extends State<AchievementsScreenSliver> {
   late AchievementFilter _currentFilter;
   AchievementTier? _currentTierFilter;
 
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
   @override
   void initState() {
     super.initState();
     _currentFilter = widget.config.initialFilter;
-    _logScreenView();
+    // Log screen view after first frame when context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _logScreenView();
+    });
   }
 
   void _logScreenView() {
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.achievements(
         unlockedCount: widget.data.unlockedCount,
         totalCount: widget.data.totalCount,
@@ -502,7 +511,7 @@ class _AchievementsScreenSliverState extends State<AchievementsScreenSliver> {
 
   void _handleAchievementTap(AchievementDisplayData data) {
     // Track the view event
-    _trackAchievementDetailViewed(widget.analyticsService, data);
+    _trackAchievementDetailViewed(_analyticsService, data);
     // Call the original callback
     widget.onAchievementTap?.call(data);
   }
@@ -565,6 +574,8 @@ class _AchievementsScreenSliverState extends State<AchievementsScreenSliver> {
 /// This widget renders achievements content without managing its own state,
 /// making it suitable for use with [AchievementsBuilder] and BLoC pattern.
 ///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
+///
 /// Example:
 /// ```dart
 /// AchievementsBuilder(
@@ -596,7 +607,6 @@ class AchievementsContent extends StatelessWidget {
     this.onTierFilterChanged,
     this.onRefresh,
     this.onAchievementTap,
-    required this.analyticsService,
   });
 
   /// The achievements data to display.
@@ -626,12 +636,15 @@ class AchievementsContent extends StatelessWidget {
   /// Callback when an achievement is tapped.
   final void Function(AchievementDisplayData)? onAchievementTap;
 
-  /// Optional analytics service for tracking achievement views.
-  final AnalyticsService analyticsService;
-
-  void _handleAchievementTap(AchievementDisplayData achievementData) {
+  void _handleAchievementTap(
+    BuildContext context,
+    AchievementDisplayData achievementData,
+  ) {
     // Track the view event
-    _trackAchievementDetailViewed(analyticsService, achievementData);
+    _trackAchievementDetailViewed(
+      context.screenAnalyticsService,
+      achievementData,
+    );
     // Call the original callback
     onAchievementTap?.call(achievementData);
   }
@@ -683,15 +696,18 @@ class AchievementsContent extends StatelessWidget {
         if (config.showFilterChips || config.showTierFilter)
           const SliverToBoxAdapter(child: SizedBox(height: 8)),
         SliverFillRemaining(
-          child: AchievementsList(
-            achievements: data.achievements,
-            config: config.listConfig.copyWith(
-              filter: filter,
-              tierFilter: tierFilter,
-              groupByCategory: config.groupByCategory,
+          child: Builder(
+            builder: (ctx) => AchievementsList(
+              achievements: data.achievements,
+              config: config.listConfig.copyWith(
+                filter: filter,
+                tierFilter: tierFilter,
+                groupByCategory: config.groupByCategory,
+              ),
+              onAchievementTap: onAchievementTap != null
+                  ? (data) => _handleAchievementTap(ctx, data)
+                  : null,
             ),
-            onAchievementTap:
-                onAchievementTap != null ? _handleAchievementTap : null,
           ),
         ),
       ],
@@ -702,12 +718,13 @@ class AchievementsContent extends StatelessWidget {
 /// An async builder for achievements screen data.
 ///
 /// Handles loading and error states while fetching achievement data.
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class AchievementsScreenBuilder extends StatelessWidget {
   /// Creates an [AchievementsScreenBuilder].
   const AchievementsScreenBuilder({
     super.key,
     required this.dataLoader,
-    required this.analyticsService,
     this.config = const AchievementsScreenConfig(),
     this.onAchievementTap,
     this.loadingBuilder,
@@ -733,9 +750,6 @@ class AchievementsScreenBuilder extends StatelessWidget {
 
   /// Optional custom app bar.
   final PreferredSizeWidget? appBar;
-
-  // Analytics service for tracking achievement views.
-  final AnalyticsService analyticsService;
 
   @override
   Widget build(BuildContext context) {
@@ -765,7 +779,7 @@ class AchievementsScreenBuilder extends StatelessWidget {
             }
           },
           onAchievementTap: onAchievementTap,
-          appBar: appBar, analyticsService: analyticsService,
+          appBar: appBar,
         );
       },
     );
@@ -793,7 +807,6 @@ class AchievementsScreenBuilder extends StatelessWidget {
           ),
       body: ErrorStateWidget(
         message: l10n.initializationError(error.toString()),
-        analyticsService: analyticsService,
       ),
     );
   }
