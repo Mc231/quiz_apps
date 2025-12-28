@@ -147,6 +147,7 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
       vsync: this,
       initialIndex: widget.initialTab.index,
     );
+    _tabController.addListener(_handleTabChange);
     _logScreenView();
   }
 
@@ -159,8 +160,22 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
     );
   }
 
+  void _handleTabChange() {
+    if (!_tabController.indexIsChanging) {
+      final tab = StatisticsDashboardTab.values[_tabController.index];
+      widget.analyticsService.logEvent(
+        InteractionEvent.tabSelected(
+          tabId: tab.name,
+          tabName: tab.name,
+          tabIndex: _tabController.index,
+        ),
+      );
+    }
+  }
+
   @override
   void dispose() {
+    _tabController.removeListener(_handleTabChange);
     _tabController.dispose();
     super.dispose();
   }
@@ -812,6 +827,14 @@ class _StatisticsDashboardContentState extends State<StatisticsDashboardContent>
     if (!_tabController.indexIsChanging) {
       final newTab = StatisticsDashboardTab.values[_tabController.index];
       if (newTab != widget.selectedTab) {
+        // Log tab change event
+        widget.analyticsService.logEvent(
+          InteractionEvent.tabSelected(
+            tabId: newTab.name,
+            tabName: newTab.name,
+            tabIndex: _tabController.index,
+          ),
+        );
         widget.onTabChanged(newTab);
       }
     }
