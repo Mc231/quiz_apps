@@ -3011,21 +3011,29 @@ extension QuizServicesContext on BuildContext {
 
 ---
 
-### Sprint 10.9: Misc Widgets & Cleanup
+### Sprint 10.9: Misc Widgets & Cleanup ✅
 
 **Goal:** Migrate remaining widgets and ensure all service parameters are removed.
 
 **Tasks:**
-- [ ] Remove service constructor parameters from `LeaderboardWidget`, use context
-- [ ] Audit all widgets for any remaining service constructor parameters
-- [ ] Remove any remaining service constructor parameters found
-- [ ] Update all affected widget tests to use `QuizServicesProvider` wrapper
-- [ ] Verify all tests pass
-- [ ] Run analyzer to check for warnings
+- [x] Remove service constructor parameters from `LeaderboardWidget`, use context
+- [x] Audit all widgets for any remaining service constructor parameters
+- [x] Remove any remaining service constructor parameters found (AchievementNotifications)
+- [x] Update all affected widget tests to use `QuizServicesProvider` wrapper
+- [x] Verify all tests pass
+- [x] Run analyzer to check for warnings
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/widgets/leaderboard_widget.dart`
-- Any other widgets found during audit
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/widgets/leaderboard_widget.dart` (already migrated)
+- ✅ `packages/quiz_engine/lib/src/achievements/achievement_notification_controller.dart` (removed analyticsService param from AchievementNotifications)
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` (removed analyticsService from AchievementNotifications call)
+- ✅ `packages/quiz_engine/test/achievements/achievement_notification_controller_analytics_test.dart` (fixed tests)
+
+**Audit Results:**
+- LeaderboardWidget: Already using context-based service access
+- AchievementNotification: Already using context-based service access
+- AchievementNotifications (provider widget): **Migrated** - removed `analyticsService` constructor parameter
+- Infrastructure classes (controllers, observers): Appropriately retain service parameters
 
 ---
 
@@ -3036,7 +3044,6 @@ extension QuizServicesContext on BuildContext {
 **Tasks:**
 - [ ] Update CLAUDE.md with QuizServices usage patterns (context-only approach)
 - [ ] Update CORE_ARCHITECTURE_GUIDE.md with new DI pattern
-- [ ] Create migration guide for existing apps (BREAKING CHANGE: constructor parameters removed)
 - [ ] Update quiz_engine exports
 - [ ] Write comprehensive integration tests
 - [ ] Performance testing (ensure no regressions)
