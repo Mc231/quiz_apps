@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
-import 'package:shared_services/shared_services.dart';
 
 import '../test_helpers.dart';
 
@@ -106,8 +105,8 @@ void main() {
   group('ErrorStateWidget', () {
     testWidgets('displays error icon', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          ErrorStateWidget(message: 'An error occurred', analyticsService: NoOpAnalyticsService(),),
+        wrapWithServices(
+          const ErrorStateWidget(message: 'An error occurred'),
         ),
       );
 
@@ -116,8 +115,8 @@ void main() {
 
     testWidgets('displays error message', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          ErrorStateWidget(message: 'Failed to load data', analyticsService: NoOpAnalyticsService(),),
+        wrapWithServices(
+          const ErrorStateWidget(message: 'Failed to load data'),
         ),
       );
 
@@ -126,11 +125,10 @@ void main() {
 
     testWidgets('displays title when provided', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          ErrorStateWidget(
+        wrapWithServices(
+          const ErrorStateWidget(
             title: 'Error Title',
             message: 'Error message',
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -141,12 +139,11 @@ void main() {
 
     testWidgets('shows retry button when onRetry is provided', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ErrorStateWidget(
             message: 'An error occurred',
             onRetry: () {},
             retryLabel: 'Retry', // Use explicit label to avoid localization
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -158,8 +155,8 @@ void main() {
 
     testWidgets('hides retry button when onRetry is null', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          ErrorStateWidget(message: 'An error occurred', analyticsService: NoOpAnalyticsService(),),
+        wrapWithServices(
+          const ErrorStateWidget(message: 'An error occurred'),
         ),
       );
 
@@ -170,14 +167,13 @@ void main() {
       var retryTapped = false;
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ErrorStateWidget(
             message: 'An error occurred',
             onRetry: () {
               retryTapped = true;
             },
             retryLabel: 'Retry', // Use explicit label to avoid localization
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -191,12 +187,11 @@ void main() {
 
     testWidgets('uses custom retry label when provided', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           ErrorStateWidget(
             message: 'An error occurred',
             onRetry: () {},
             retryLabel: 'Try Again',
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -208,11 +203,10 @@ void main() {
 
     testWidgets('uses custom icon when provided', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          ErrorStateWidget(
+        wrapWithServices(
+          const ErrorStateWidget(
             message: 'An error occurred',
             icon: Icons.warning,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -222,11 +216,10 @@ void main() {
 
     testWidgets('hides icon when showIcon is false', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          ErrorStateWidget(
+        wrapWithServices(
+          const ErrorStateWidget(
             message: 'An error occurred',
             showIcon: false,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -237,8 +230,8 @@ void main() {
     testWidgets('network factory creates widget with wifi_off icon',
         (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          ErrorStateWidget.network(analyticsService: NoOpAnalyticsService(),),
+        wrapWithServices(
+          ErrorStateWidget.network(),
         ),
       );
 
@@ -248,8 +241,8 @@ void main() {
     testWidgets('server factory creates widget with cloud_off icon',
         (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          ErrorStateWidget.server(analyticsService: NoOpAnalyticsService(),),
+        wrapWithServices(
+          ErrorStateWidget.server(),
         ),
       );
 
