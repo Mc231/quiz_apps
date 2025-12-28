@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
+import '../services/quiz_services_context.dart';
 
 /// Export format identifier for analytics.
 const String _exportFormat = 'json';
@@ -43,6 +44,8 @@ class ExportDataTileConfig {
 /// When tapped, shows a dialog explaining the export and allows
 /// the user to export their data to a JSON file.
 ///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
+///
 /// Example:
 /// ```dart
 /// ExportDataTile(
@@ -51,11 +54,10 @@ class ExportDataTileConfig {
 /// ```
 class ExportDataTile extends StatefulWidget {
   /// Creates an [ExportDataTile].
-  ExportDataTile({
+  const ExportDataTile({
     super.key,
     required this.exportService,
     this.config = const ExportDataTileConfig(),
-    required this.analyticsService,
   });
 
   /// The data export service.
@@ -64,15 +66,15 @@ class ExportDataTile extends StatefulWidget {
   /// Configuration for the tile.
   final ExportDataTileConfig config;
 
-  /// Optional analytics service for tracking export events.
-  final AnalyticsService analyticsService;
-
   @override
   State<ExportDataTile> createState() => _ExportDataTileState();
 }
 
 class _ExportDataTileState extends State<ExportDataTile> {
   bool _isExporting = false;
+
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
   @override
   Widget build(BuildContext context) {
@@ -170,7 +172,7 @@ class _ExportDataTileState extends State<ExportDataTile> {
     final startTime = DateTime.now();
 
     // Track export initiated event
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       InteractionEvent.dataExportInitiated(
         exportFormat: _exportFormat,
         sessionCount: 0, // Count determined after export
@@ -190,7 +192,7 @@ class _ExportDataTileState extends State<ExportDataTile> {
         await file.writeAsString(result.data);
 
         // Track successful export
-        widget.analyticsService.logEvent(
+        _analyticsService.logEvent(
           InteractionEvent.dataExportCompleted(
             exportFormat: _exportFormat,
             sessionCount: result.totalItems,
@@ -220,7 +222,7 @@ class _ExportDataTileState extends State<ExportDataTile> {
         final errorMessage = result.errorMessage ?? 'Unknown error';
 
         // Track failed export
-        widget.analyticsService.logEvent(
+        _analyticsService.logEvent(
           InteractionEvent.dataExportCompleted(
             exportFormat: _exportFormat,
             sessionCount: 0,
@@ -247,7 +249,7 @@ class _ExportDataTileState extends State<ExportDataTile> {
       final exportDuration = DateTime.now().difference(startTime);
 
       // Track export error
-      widget.analyticsService.logEvent(
+      _analyticsService.logEvent(
         InteractionEvent.dataExportCompleted(
           exportFormat: _exportFormat,
           sessionCount: 0,
