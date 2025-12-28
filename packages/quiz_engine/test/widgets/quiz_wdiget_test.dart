@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine/src/quiz/quiz_screen.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
-import 'package:shared_services/shared_services.dart';
 
 import '../test_helpers.dart';
 
@@ -31,7 +30,6 @@ void main() {
       dataProvider: () => Future.value(mockQuestions),
       defaultConfig: defaultConfig,
       quizAnalyticsService: NoOpQuizAnalyticsService(),
-      screenAnalyticsService: NoOpAnalyticsService(),
     );
 
     // Pump the widget into the test environment with localization support
