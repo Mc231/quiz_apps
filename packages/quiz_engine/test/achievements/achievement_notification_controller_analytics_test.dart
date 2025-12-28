@@ -34,6 +34,10 @@ Widget wrapWithServicesAndOverlay(
             settingsService: _MockSettingsService(),
             storageService: _MockStorageService(),
             achievementService: _MockAchievementService(),
+            resourceManager: ResourceManager(
+              config: ResourceConfig.standard(),
+              repository: InMemoryResourceRepository(),
+            ),
           ),
           child: const Scaffold(body: Text('Test')),
         );
