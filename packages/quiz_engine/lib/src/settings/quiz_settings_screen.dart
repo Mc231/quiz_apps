@@ -530,6 +530,14 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   }
 
   void _showAboutDialog(QuizLocalizations l10n) {
+    // Track about screen view
+    widget.analyticsService.logEvent(
+      ScreenViewEvent.about(
+        appVersion: _packageInfo?.version ?? 'unknown',
+        buildNumber: _packageInfo?.buildNumber ?? 'unknown',
+      ),
+    );
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -562,6 +570,9 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   }
 
   void _showLicenses() {
+    // Track licenses screen view
+    widget.analyticsService.logEvent(ScreenViewEvent.licenses());
+
     showLicensePage(
       context: context,
       applicationName: widget.appName ?? _packageInfo?.appName,
@@ -979,6 +990,14 @@ class SettingsContent extends StatelessWidget {
   }
 
   void _showAboutDialog(BuildContext context, QuizLocalizations l10n) {
+    // Track about screen view
+    analyticsService.logEvent(
+      ScreenViewEvent.about(
+        appVersion: packageInfo?.version ?? 'unknown',
+        buildNumber: packageInfo?.buildNumber ?? 'unknown',
+      ),
+    );
+
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -1011,6 +1030,9 @@ class SettingsContent extends StatelessWidget {
   }
 
   void _showLicenses(BuildContext context) {
+    // Track licenses screen view
+    analyticsService.logEvent(ScreenViewEvent.licenses());
+
     showLicensePage(
       context: context,
       applicationName: appName ?? packageInfo?.appName,
