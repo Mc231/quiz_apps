@@ -1,7 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
-import 'package:shared_services/shared_services.dart';
 
 import '../test_helpers.dart';
 
@@ -12,7 +11,6 @@ void main() {
     final quizEntry = QuizWidgetEntry.withDefaultConfig(
       title: testQuizTitle,
       quizAnalyticsService: NoOpQuizAnalyticsService(),
-      screenAnalyticsService: NoOpAnalyticsService(),
       dataProvider: () async => [],
       defaultConfig: defaultConfig,
     );
