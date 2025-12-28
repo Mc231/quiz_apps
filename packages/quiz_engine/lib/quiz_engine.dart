@@ -1,5 +1,8 @@
 library quiz_engine;
 
+// Services
+export 'src/services/services_exports.dart';
+
 // Analytics
 export 'src/analytics/analytics_lifecycle_observer.dart';
 export 'src/analytics/analytics_navigator_observer.dart';
