@@ -461,7 +461,6 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
     return ExportDataTile(
       exportService: exportService,
       config: const ExportDataTileConfig(showIcon: false),
-      analyticsService: widget.analyticsService,
     );
   }
 
@@ -921,7 +920,6 @@ class SettingsContent extends StatelessWidget {
     return ExportDataTile(
       exportService: exportService,
       config: const ExportDataTileConfig(showIcon: false),
-      analyticsService: analyticsService,
     );
   }
 
