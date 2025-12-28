@@ -2908,14 +2908,13 @@ extension QuizServicesContext on BuildContext {
 
 ### Sprint 10.4: Settings Widgets
 
-**Goal:** Migrate settings-related widgets to use QuizServicesProvider.
+**Goal:** Migrate settings-related widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Update `QuizSettingsScreen` to use `context.settingsService` and `context.screenAnalytics`
-- [ ] Update `SettingsContent` to use context services
-- [ ] Update `ExportDataTile` to use `context.screenAnalytics`
-- [ ] Keep constructor parameters as optional fallback during migration
-- [ ] Update widget tests
+- [ ] Remove `analyticsService` constructor parameter from `QuizSettingsScreen`, use `context.screenAnalyticsService`
+- [ ] Remove `settingsService` constructor parameter from `SettingsContent`, use `context.settingsService`
+- [ ] Remove `analyticsService` constructor parameter from `ExportDataTile`, use `context.screenAnalyticsService`
+- [ ] Update widget tests to use `QuizServicesProvider` wrapper
 
 **Files to Modify:**
 - `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
@@ -2927,17 +2926,17 @@ extension QuizServicesContext on BuildContext {
 
 ### Sprint 10.5: History & Statistics Widgets
 
-**Goal:** Migrate history and statistics widgets to use QuizServicesProvider.
+**Goal:** Migrate history and statistics widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Update `SessionHistoryScreen` to use `context.screenAnalytics`
-- [ ] Update `SessionHistoryContent` to use context services
-- [ ] Update `StatisticsDashboardScreen` to use `context.screenAnalytics`
-- [ ] Keep constructor parameters as optional fallback during migration
-- [ ] Update widget tests
+- [ ] Remove `analyticsService` constructor parameter from `SessionHistoryScreen`, use `context.screenAnalyticsService`
+- [ ] Remove `analyticsService` constructor parameter from `SessionDetailScreen`, use `context.screenAnalyticsService`
+- [ ] Remove `analyticsService` constructor parameter from `StatisticsDashboardScreen`, use `context.screenAnalyticsService`
+- [ ] Update widget tests to use `QuizServicesProvider` wrapper
 
 **Files to Modify:**
 - `packages/quiz_engine/lib/src/screens/session_history_screen.dart`
+- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
 - `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
 - `packages/quiz_engine/test/screens/session_history_screen_test.dart` (if exists)
 - `packages/quiz_engine/test/screens/statistics_dashboard_screen_test.dart`
@@ -2946,14 +2945,13 @@ extension QuizServicesContext on BuildContext {
 
 ### Sprint 10.6: Achievements Widgets
 
-**Goal:** Migrate achievement-related widgets to use QuizServicesProvider.
+**Goal:** Migrate achievement-related widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Update `AchievementsScreen` to use `context.screenAnalytics`
-- [ ] Update `AchievementNotificationController` to use context services
-- [ ] Update `AchievementNotifications` to use context services
-- [ ] Keep constructor parameters as optional fallback during migration
-- [ ] Update widget tests
+- [ ] Remove `analyticsService` constructor parameter from `AchievementsScreen`, use `context.screenAnalyticsService`
+- [ ] Remove service constructor parameters from `AchievementNotificationController`, use context
+- [ ] Remove service constructor parameters from `AchievementNotifications`, use context
+- [ ] Update widget tests to use `QuizServicesProvider` wrapper
 
 **Files to Modify:**
 - `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
@@ -2965,15 +2963,14 @@ extension QuizServicesContext on BuildContext {
 
 ### Sprint 10.7: Challenges & Practice Widgets
 
-**Goal:** Migrate challenges and practice widgets to use QuizServicesProvider.
+**Goal:** Migrate challenges and practice widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Update `ChallengesScreen` to use `context.screenAnalytics`, `context.settingsService`, `context.storageService`
-- [ ] Update `ChallengesContent` to use context services
-- [ ] Update `_PracticeTabContent` to use context services
-- [ ] Update `_PracticeQuizScreen` to use context services
-- [ ] Keep constructor parameters as optional fallback during migration
-- [ ] Update widget tests
+- [ ] Remove service constructor parameters from `ChallengesScreen`, use `context.screenAnalyticsService`, `context.settingsService`, `context.storageService`
+- [ ] Remove service constructor parameters from `ChallengesContent`, use context
+- [ ] Remove service constructor parameters from `_PracticeTabContent`, use context
+- [ ] Remove service constructor parameters from `_PracticeQuizScreen`, use context
+- [ ] Update widget tests to use `QuizServicesProvider` wrapper
 
 **Files to Modify:**
 - `packages/quiz_engine/lib/src/screens/challenges_screen.dart`
@@ -2984,16 +2981,15 @@ extension QuizServicesContext on BuildContext {
 
 ### Sprint 10.8: Quiz & Results Widgets
 
-**Goal:** Migrate core quiz widgets to use QuizServicesProvider.
+**Goal:** Migrate core quiz widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Update `QuizScreen` to use `context.screenAnalytics`
-- [ ] Update `QuizWidget` to use context services
-- [ ] Update `QuizWidgetEntry` to optionally use context services (keep parameters for standalone use)
-- [ ] Update `QuizResultsScreen` to use `context.screenAnalytics`
+- [ ] Remove `analyticsService` constructor parameter from `QuizScreen`, use `context.screenAnalyticsService`
+- [ ] Remove service constructor parameters from `QuizWidget`, use context
+- [ ] Remove service constructor parameters from `QuizWidgetEntry`, use context
+- [ ] Remove `analyticsService` constructor parameter from `QuizResultsScreen`, use `context.screenAnalyticsService`
 - [ ] Update `QuizAnalyticsAdapter` if needed
-- [ ] Keep constructor parameters as optional fallback during migration
-- [ ] Update widget tests
+- [ ] Update widget tests to use `QuizServicesProvider` wrapper
 
 **Files to Modify:**
 - `packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
@@ -3007,19 +3003,19 @@ extension QuizServicesContext on BuildContext {
 
 ### Sprint 10.9: Misc Widgets & Cleanup
 
-**Goal:** Migrate remaining widgets and clean up deprecated code.
+**Goal:** Migrate remaining widgets and ensure all service parameters are removed.
 
 **Tasks:**
-- [ ] Update `LeaderboardWidget` to use `context.screenAnalytics`
-- [ ] Update any remaining widgets using services via constructor
-- [ ] Mark old constructor parameters as `@Deprecated`
-- [ ] Update all affected widget tests
+- [ ] Remove service constructor parameters from `LeaderboardWidget`, use context
+- [ ] Audit all widgets for any remaining service constructor parameters
+- [ ] Remove any remaining service constructor parameters found
+- [ ] Update all affected widget tests to use `QuizServicesProvider` wrapper
 - [ ] Verify all tests pass
 - [ ] Run analyzer to check for warnings
 
 **Files to Modify:**
 - `packages/quiz_engine/lib/src/widgets/leaderboard_widget.dart`
-- Any other widgets found during review
+- Any other widgets found during audit
 
 ---
 
@@ -3028,14 +3024,13 @@ extension QuizServicesContext on BuildContext {
 **Goal:** Complete documentation and final cleanup.
 
 **Tasks:**
-- [ ] Update CLAUDE.md with QuizServices usage patterns
+- [ ] Update CLAUDE.md with QuizServices usage patterns (context-only approach)
 - [ ] Update CORE_ARCHITECTURE_GUIDE.md with new DI pattern
-- [ ] Create migration guide for existing apps
-- [ ] Remove all deprecated constructor parameters (BREAKING CHANGE)
+- [ ] Create migration guide for existing apps (BREAKING CHANGE: constructor parameters removed)
 - [ ] Update quiz_engine exports
 - [ ] Write comprehensive integration tests
 - [ ] Performance testing (ensure no regressions)
-- [ ] Update all widget tests to use new pattern exclusively
+- [ ] Final audit: ensure no service constructor parameters remain
 
 **Files to Create/Modify:**
 - `CLAUDE.md`
@@ -3048,16 +3043,16 @@ extension QuizServicesContext on BuildContext {
 
 | Sprint | Status | Description | Files |
 |--------|--------|-------------|-------|
-| 10.1 | ✅ | QuizServices Foundation | 8 new files |
-| 10.2 | ⏳ | QuizApp Integration | 4 files |
-| 10.3 | ⏳ | Home & Navigation Widgets | 3 files |
-| 10.4 | ⏳ | Settings Widgets | 4 files |
-| 10.5 | ⏳ | History & Statistics Widgets | 4 files |
-| 10.6 | ⏳ | Achievements Widgets | 4 files |
-| 10.7 | ⏳ | Challenges & Practice Widgets | 3 files |
-| 10.8 | ⏳ | Quiz & Results Widgets | 6 files |
-| 10.9 | ⏳ | Misc Widgets & Cleanup | Variable |
-| 10.10 | ⏳ | Documentation & Final Polish | 3 files |
+| 10.1   | ✅     | QuizServices Foundation        | 8 new files |
+| 10.2   | ✅     | QuizApp Integration            | 4 files     |
+| 10.3   | ✅     | Home & Navigation Widgets      | 3 files     |
+| 10.4   | ⏳     | Settings Widgets               | 4 files     |
+| 10.5   | ⏳     | History & Statistics Widgets   | 5 files     |
+| 10.6   | ⏳     | Achievements Widgets           | 4 files     |
+| 10.7   | ⏳     | Challenges & Practice Widgets  | 3 files     |
+| 10.8   | ⏳     | Quiz & Results Widgets         | 6 files     |
+| 10.9   | ⏳     | Misc Widgets & Cleanup         | Variable    |
+| 10.10  | ⏳     | Documentation & Final Polish   | 3 files     |
 
 **Total: 10 sprints, ~27+ widget files to update**
 
