@@ -477,6 +477,30 @@ class QuizAnalyticsManager {
     }
   }
 
+  // ============ Timer Events ============
+
+  /// Tracks when timer reaches warning threshold.
+  Future<void> trackTimerWarning({
+    required Question question,
+    required int questionIndex,
+    required int secondsRemaining,
+    required String warningLevel,
+  }) async {
+    if (!isEnabled || _config == null) return;
+
+    try {
+      await _analyticsService.trackTimerWarning(
+        quizId: _config!.quizId,
+        question: question,
+        questionIndex: questionIndex,
+        secondsRemaining: secondsRemaining,
+        warningLevel: warningLevel,
+      );
+    } catch (e) {
+      // Analytics failure should not block quiz
+    }
+  }
+
   // ============ Reset & Dispose ============
 
   /// Resets the manager state.
