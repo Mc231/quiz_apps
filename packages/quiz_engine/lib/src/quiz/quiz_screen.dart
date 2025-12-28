@@ -21,6 +21,9 @@ import 'quiz_layout.dart';
 /// ensuring a consistent experience across devices.
 ///
 ///
+/// Services are obtained from [QuizServicesProvider] via context:
+/// - `context.screenAnalyticsService` for analytics tracking
+///
 class QuizScreen extends StatefulWidget {
   /// Key used for identifying the OK button in the quiz over dialog.
   static const okButtonKey = Key("ok_button");
@@ -28,17 +31,10 @@ class QuizScreen extends StatefulWidget {
   final String title;
   final QuizThemeData themeData;
 
-  /// Analytics service for tracking screen views.
-  ///
-  /// Used for tracking the results screen view.
-  /// If not provided, a no-op service is used.
-  final AnalyticsService screenAnalyticsService;
-
   const QuizScreen({
     super.key,
     required this.title,
     this.themeData = const QuizThemeData(),
-    required this.screenAnalyticsService,
   });
 
   @override
@@ -49,6 +45,9 @@ class QuizScreen extends StatefulWidget {
 
 /// The state for the `QuizScreen`, managing the quiz logic and UI updates.
 class QuizScreenState extends State<QuizScreen> {
+  // Service accessor via context
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
   /// The BLoC managing the quiz logic and state transitions.
   late QuizBloc _bloc;
 
@@ -73,7 +72,7 @@ class QuizScreenState extends State<QuizScreen> {
 
   void _logScreenView(int totalQuestions) {
     if (!mounted) return;
-    widget.screenAnalyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.quiz(
         quizId: _bloc.config.quizId,
         quizName: widget.title,
@@ -196,7 +195,7 @@ class QuizScreenState extends State<QuizScreen> {
               final (questionsAnswered, totalQuestions) = _getProgressFromState(state);
 
               // Log exit dialog shown
-              widget.screenAnalyticsService.logEvent(
+              _analyticsService.logEvent(
                 InteractionEvent.exitDialogShown(
                   quizId: _bloc.config.quizId,
                   questionsAnswered: questionsAnswered,
@@ -214,7 +213,7 @@ class QuizScreenState extends State<QuizScreen> {
 
               if (shouldExit && context.mounted) {
                 // Log exit dialog confirmed
-                widget.screenAnalyticsService.logEvent(
+                _analyticsService.logEvent(
                   InteractionEvent.exitDialogConfirmed(
                     quizId: _bloc.config.quizId,
                     questionsAnswered: questionsAnswered,
@@ -230,7 +229,7 @@ class QuizScreenState extends State<QuizScreen> {
                 }
               } else {
                 // Log exit dialog cancelled
-                widget.screenAnalyticsService.logEvent(
+                _analyticsService.logEvent(
                   InteractionEvent.exitDialogCancelled(
                     quizId: _bloc.config.quizId,
                     questionsAnswered: questionsAnswered,
@@ -370,7 +369,6 @@ class QuizScreenState extends State<QuizScreen> {
       // Show results screen when quiz is completed
       return QuizResultsScreen(
         results: state.results,
-        analyticsService: widget.screenAnalyticsService,
         onDone: () {
           Navigator.of(context).pop();
         },
