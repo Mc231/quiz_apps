@@ -1,8 +1,6 @@
 import 'package:flags_quiz/data/country_counts.dart';
 import 'package:flags_quiz/data/flags_categories.dart';
 import 'package:flags_quiz/data/flags_data_provider.dart';
-import 'package:flags_quiz/l10n/app_localizations.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_preferences/shared_preferences.dart';
