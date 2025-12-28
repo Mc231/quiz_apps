@@ -69,6 +69,19 @@ class QuizWidgetEntry {
   /// questions but need all questions for option generation.
   final bool Function(QuestionEntry)? filter;
 
+  /// Whether to use the ResourceManager for tracking resources.
+  ///
+  /// When true, the quiz will use the global ResourceManager from
+  /// [QuizServicesProvider] to track and consume hints, skips, and lives.
+  /// Resources persist across quiz sessions and reset daily.
+  ///
+  /// When false (default), resources are managed per-quiz based on the
+  /// quiz configuration. This is appropriate for challenge modes where
+  /// lives/hints are part of the challenge rules, not the global pool.
+  ///
+  /// Defaults to false for backward compatibility.
+  final bool useResourceManager;
+
   /// Creates a `QuizWidgetEntry` with a ConfigManager.
   ///
   /// [title] - Title for the quiz UI
@@ -81,6 +94,7 @@ class QuizWidgetEntry {
   /// [categoryName] - Category name for analytics (defaults to empty string)
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
   /// [filter] - Optional filter for question selection
+  /// [useResourceManager] - Whether to use global ResourceManager (defaults to false)
   QuizWidgetEntry({
     required this.title,
     required this.dataProvider,
@@ -92,6 +106,7 @@ class QuizWidgetEntry {
     this.categoryName = '',
     this.onQuizCompleted,
     this.filter,
+    this.useResourceManager = false,
   });
 
   /// Creates a `QuizWidgetEntry` with a default configuration.
@@ -109,6 +124,7 @@ class QuizWidgetEntry {
   /// [categoryName] - Category name for analytics (defaults to empty string)
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
   /// [filter] - Optional filter for question selection
+  /// [useResourceManager] - Whether to use global ResourceManager (defaults to false)
   QuizWidgetEntry.withDefaultConfig({
     required this.title,
     required this.dataProvider,
@@ -120,5 +136,6 @@ class QuizWidgetEntry {
     this.categoryName = '',
     this.onQuizCompleted,
     this.filter,
+    this.useResourceManager = false,
   })  : configManager = ConfigManager(defaultConfig: defaultConfig);
 }
