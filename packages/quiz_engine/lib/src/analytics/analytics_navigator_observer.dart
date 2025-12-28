@@ -45,18 +45,21 @@ class AnalyticsNavigatorObserver extends NavigatorObserver {
   /// Creates an [AnalyticsNavigatorObserver].
   ///
   /// [analyticsService] - The analytics service to use for logging events.
+  ///   If not provided, screen tracking will be skipped.
   /// [screenNameExtractor] - Optional custom function to extract screen names.
   /// [excludedRoutes] - Set of route names to exclude from tracking.
   /// [trackScreenClass] - Whether to include screen class in events.
   AnalyticsNavigatorObserver({
-    required this.analyticsService,
+    this.analyticsService,
     this.screenNameExtractor,
     this.excludedRoutes = const {},
     this.trackScreenClass = true,
   });
 
   /// The analytics service for logging screen views.
-  final AnalyticsService analyticsService;
+  ///
+  /// If null, screen tracking will be skipped silently.
+  final AnalyticsService? analyticsService;
 
   /// Optional custom function to extract screen names from routes.
   ///
@@ -96,6 +99,10 @@ class AnalyticsNavigatorObserver extends NavigatorObserver {
 
   /// Tracks a screen view for the given route.
   void _trackScreenView(Route<dynamic> route) {
+    // Skip if no analytics service
+    final service = analyticsService;
+    if (service == null) return;
+
     final screenName = _extractScreenName(route);
 
     // Skip if no screen name or excluded
@@ -105,7 +112,7 @@ class AnalyticsNavigatorObserver extends NavigatorObserver {
 
     final screenClass = trackScreenClass ? _extractScreenClass(route) : null;
 
-    analyticsService.setCurrentScreen(
+    service.setCurrentScreen(
       screenName: screenName,
       screenClass: screenClass,
     );
