@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
-import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../achievements/flags_achievements_data_provider.dart';
