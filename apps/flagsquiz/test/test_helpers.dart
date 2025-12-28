@@ -25,6 +25,10 @@ Widget wrapWithServices(
   final effectiveSettings = settingsService ?? _MockSettingsService();
   final effectiveStorage = storageService ?? _MockStorageService();
   final effectiveAchievements = achievementService ?? _MockAchievementService();
+  final effectiveResourceManager = ResourceManager(
+    config: ResourceConfig.standard(),
+    repository: InMemoryResourceRepository(),
+  );
 
   return MaterialApp(
     localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -37,6 +41,7 @@ Widget wrapWithServices(
         settingsService: effectiveSettings,
         storageService: effectiveStorage,
         achievementService: effectiveAchievements,
+        resourceManager: effectiveResourceManager,
       ),
       child: child,
     ),
