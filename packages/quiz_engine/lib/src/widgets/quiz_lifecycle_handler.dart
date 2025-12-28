@@ -5,6 +5,7 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../bloc/bloc_provider.dart';
+import '../services/quiz_services_context.dart';
 
 /// Callback type for background time changes.
 typedef BackgroundTimeCallback = void Function(Duration backgroundDuration);
@@ -15,15 +16,14 @@ typedef BackgroundTimeCallback = void Function(Duration backgroundDuration);
 /// goes to background or returns to foreground. It gets the QuizBloc
 /// from the nearest BlocProvider in the widget tree.
 ///
-/// Additionally, it tracks background time and can optionally log analytics
-/// events for quiz pause/resume.
+/// Additionally, it tracks background time and logs analytics events
+/// for quiz pause/resume using the service from [QuizServicesProvider].
 ///
 /// Usage:
 /// ```dart
 /// BlocProvider(
 ///   bloc: quizBloc,
 ///   child: QuizLifecycleHandler(
-///     analyticsService: analyticsService, // Optional
 ///     onBackgroundTimeChanged: (duration) {
 ///       print('Was in background for $duration');
 ///     },
@@ -34,9 +34,6 @@ typedef BackgroundTimeCallback = void Function(Duration backgroundDuration);
 class QuizLifecycleHandler extends StatefulWidget {
   /// The child widget (typically the quiz screen)
   final Widget child;
-
-  /// Optional analytics service for logging pause/resume events.
-  final AnalyticsService analyticsService;
 
   /// Callback when the app returns from background with the duration.
   final BackgroundTimeCallback? onBackgroundTimeChanged;
@@ -50,7 +47,6 @@ class QuizLifecycleHandler extends StatefulWidget {
   const QuizLifecycleHandler({
     super.key,
     required this.child,
-    required this.analyticsService,
     this.onBackgroundTimeChanged,
     this.quizId,
     this.quizName,
@@ -62,6 +58,9 @@ class QuizLifecycleHandler extends StatefulWidget {
 
 class _QuizLifecycleHandlerState extends State<QuizLifecycleHandler>
     with WidgetsBindingObserver {
+  // Service accessor via context
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
   late QuizBloc _bloc;
   StreamSubscription<QuizState>? _stateSubscription;
 
@@ -167,7 +166,7 @@ class _QuizLifecycleHandlerState extends State<QuizLifecycleHandler>
   void _logPauseEvent() {
     if (widget.quizId == null || widget.quizName == null) return;
 
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       QuizEvent.paused(
         quizId: widget.quizId!,
         quizName: widget.quizName!,
@@ -180,7 +179,7 @@ class _QuizLifecycleHandlerState extends State<QuizLifecycleHandler>
   void _logResumeEvent(Duration pauseDuration) {
     if (widget.quizId == null || widget.quizName == null) return;
 
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       QuizEvent.resumed(
         quizId: widget.quizId!,
         quizName: widget.quizName!,
