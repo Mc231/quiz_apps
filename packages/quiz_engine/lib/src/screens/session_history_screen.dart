@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../services/quiz_services_context.dart';
 import '../widgets/empty_state_widget.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/session_card.dart';
@@ -40,6 +41,8 @@ class SessionHistoryTexts {
 ///
 /// Supports infinite scroll for loading more sessions when the user
 /// reaches the bottom of the list.
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class SessionHistoryScreen extends StatefulWidget {
   /// Creates a [SessionHistoryScreen].
   const SessionHistoryScreen({
@@ -47,7 +50,6 @@ class SessionHistoryScreen extends StatefulWidget {
     required this.sessions,
     required this.texts,
     required this.onSessionTap,
-    required this.analyticsService,
     this.isLoading = false,
     this.onRefresh,
     this.onLoadMore,
@@ -64,9 +66,6 @@ class SessionHistoryScreen extends StatefulWidget {
 
   /// Callback when a session card is tapped.
   final void Function(SessionCardData session) onSessionTap;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
 
   /// Whether initial data is being loaded.
   final bool isLoading;
@@ -96,14 +95,20 @@ class SessionHistoryScreen extends StatefulWidget {
 }
 
 class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
   @override
   void initState() {
     super.initState();
-    _logScreenView();
+    // Log screen view after first frame when context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _logScreenView();
+    });
   }
 
   void _logScreenView() {
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.history(sessionCount: widget.sessions.length),
     );
   }
@@ -187,7 +192,7 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
       rethrow;
     } finally {
       stopwatch.stop();
-      widget.analyticsService.logEvent(
+      _analyticsService.logEvent(
         InteractionEvent.pullToRefresh(
           screenName: 'session_history',
           refreshDuration: stopwatch.elapsed,
@@ -202,6 +207,8 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
 ///
 /// This widget receives all state and callbacks externally, making it
 /// suitable for use with [SessionHistoryBloc] via [SessionHistoryBuilder].
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class SessionHistoryContent extends StatelessWidget {
   /// Creates a [SessionHistoryContent].
   const SessionHistoryContent({
@@ -209,7 +216,6 @@ class SessionHistoryContent extends StatelessWidget {
     required this.sessions,
     required this.texts,
     required this.onSessionTap,
-    required this.analyticsService,
     this.hasMore = false,
     this.isLoadingMore = false,
     this.loadMoreThreshold = 3,
@@ -225,9 +231,6 @@ class SessionHistoryContent extends StatelessWidget {
 
   /// Callback when a session card is tapped.
   final void Function(SessionCardData session) onSessionTap;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
 
   /// Whether there are more items to load.
   final bool hasMore;
@@ -298,9 +301,11 @@ class SessionHistoryContent extends StatelessWidget {
     );
 
     if (onRefresh != null) {
-      return RefreshIndicator(
-        onRefresh: () => _handleRefresh(onRefresh!),
-        child: content,
+      return Builder(
+        builder: (ctx) => RefreshIndicator(
+          onRefresh: () => _handleRefresh(ctx, onRefresh!),
+          child: content,
+        ),
       );
     }
 
@@ -308,7 +313,10 @@ class SessionHistoryContent extends StatelessWidget {
   }
 
   /// Handles pull-to-refresh with analytics tracking.
-  Future<void> _handleRefresh(Future<void> Function() originalOnRefresh) async {
+  Future<void> _handleRefresh(
+    BuildContext context,
+    Future<void> Function() originalOnRefresh,
+  ) async {
     final stopwatch = Stopwatch()..start();
     bool success = true;
 
@@ -319,7 +327,7 @@ class SessionHistoryContent extends StatelessWidget {
       rethrow;
     } finally {
       stopwatch.stop();
-      analyticsService.logEvent(
+      context.screenAnalyticsService.logEvent(
         InteractionEvent.pullToRefresh(
           screenName: 'session_history',
           refreshDuration: stopwatch.elapsed,
