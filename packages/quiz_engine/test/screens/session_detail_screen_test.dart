@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
-import 'package:shared_services/shared_services.dart';
 
 import '../test_helpers.dart';
 
@@ -96,7 +95,7 @@ void main() {
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
-            analyticsService: NoOpAnalyticsService(),
+            
           ),
         ),
       );
@@ -112,7 +111,7 @@ void main() {
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
-            analyticsService: NoOpAnalyticsService(),
+            
           ),
         ),
       );
@@ -127,7 +126,7 @@ void main() {
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
-            analyticsService: NoOpAnalyticsService(),
+            
           ),
         ),
       );
@@ -142,7 +141,7 @@ void main() {
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
-            analyticsService: NoOpAnalyticsService(),
+            
           ),
         ),
       );
@@ -171,7 +170,7 @@ void main() {
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
-            analyticsService: NoOpAnalyticsService(),
+            
           ),
         ),
       );
@@ -231,7 +230,7 @@ void main() {
           SessionDetailScreen(
             session: perfectSession,
             texts: texts,
-            analyticsService: NoOpAnalyticsService(),
+            
           ),
         ),
       );
@@ -250,7 +249,7 @@ void main() {
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
-            analyticsService: NoOpAnalyticsService(),
+            
             onPracticeWrongAnswers: () {
               practicePressed = true;
             },
