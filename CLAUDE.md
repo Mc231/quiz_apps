@@ -979,6 +979,168 @@ To verify events appear in Firebase DebugView:
 3. Perform actions in the app
 4. Events should appear within seconds
 
+### 8. QuizServices Dependency Injection (MANDATORY)
+
+**Use `QuizServices` for accessing core services via context.**
+
+Located at `packages/quiz_engine/lib/src/services/`.
+
+#### Overview
+
+`QuizServices` is an immutable container providing access to 5 core services through `BuildContext`. This eliminates the need for service locators or manual constructor injection.
+
+#### Services Provided
+
+| Service | Type | Purpose |
+|---------|------|---------|
+| `settingsService` | `SettingsService` | Manage quiz settings (sound, haptics, theme) |
+| `storageService` | `StorageService` | Persistent storage of quiz sessions |
+| `achievementService` | `AchievementService` | Manage achievements and unlock tracking |
+| `screenAnalyticsService` | `AnalyticsService` | Screen/navigation analytics |
+| `quizAnalyticsService` | `QuizAnalyticsService` | Quiz-specific analytics |
+
+#### Setup in App
+
+Wrap your app with `QuizServicesProvider`:
+
+```dart
+import 'package:quiz_engine/quiz_engine.dart';
+
+class MyQuizApp extends StatelessWidget {
+  final QuizServices services;
+
+  @override
+  Widget build(BuildContext context) {
+    return QuizServicesProvider(
+      services: services,
+      child: MaterialApp(
+        home: QuizHomeScreen(),
+      ),
+    );
+  }
+}
+```
+
+#### Accessing Services in Widgets
+
+Use the context extension for clean access:
+
+```dart
+import 'package:quiz_engine/quiz_engine.dart';
+
+// ❌ WRONG - Service passed as constructor parameter
+class MyScreen extends StatelessWidget {
+  final AnalyticsService analyticsService;  // Don't do this!
+
+  MyScreen({required this.analyticsService});
+}
+
+// ✅ CORRECT - Access via context
+class MyScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final analytics = context.screenAnalyticsService;
+    final settings = context.settingsService;
+
+    return ElevatedButton(
+      onPressed: () {
+        analytics.logEvent(InteractionEvent.buttonTapped(
+          buttonName: 'my_button',
+          context: 'my_screen',
+        ));
+      },
+      child: Text('Tap me'),
+    );
+  }
+}
+```
+
+#### Context Extension Methods
+
+```dart
+// Access full services container
+final services = context.services;
+
+// Direct access to individual services
+final settings = context.settingsService;
+final storage = context.storageService;
+final achievements = context.achievementService;
+final screenAnalytics = context.screenAnalyticsService;
+final quizAnalytics = context.quizAnalyticsService;
+
+// Safe access (returns null if not in tree)
+final maybeServices = context.maybeServices;
+```
+
+#### StatefulWidget Pattern
+
+For `StatefulWidget`, use getters or `didChangeDependencies()`:
+
+```dart
+class _MyScreenState extends State<MyScreen> {
+  // Option 1: Getter for deferred access
+  AnalyticsService get _analytics => context.screenAnalyticsService;
+
+  // Option 2: Store in didChangeDependencies
+  late AnalyticsService _analyticsService;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _analyticsService = context.screenAnalyticsService;
+  }
+
+  void _handleTap() {
+    _analytics.logEvent(...);  // or _analyticsService.logEvent(...)
+  }
+}
+```
+
+**Important:** Don't access services in `initState()` - context is not fully available there.
+
+#### Testing with QuizServices
+
+Use test helpers for widget testing:
+
+```dart
+import 'package:quiz_engine/quiz_engine.dart';
+
+testWidgets('my test', (tester) async {
+  final mockAnalytics = MockAnalyticsService();
+
+  await tester.pumpWidget(
+    wrapWithQuizServices(
+      screenAnalyticsService: mockAnalytics,
+      child: MyWidget(),
+    ),
+  );
+
+  // Widget can now access services via context
+  await tester.tap(find.byType(ElevatedButton));
+  verify(() => mockAnalytics.logEvent(any())).called(1);
+});
+```
+
+#### Scoped Overrides
+
+Use `QuizServicesScope` to override specific services locally:
+
+```dart
+// Override only analytics for a specific subtree
+QuizServicesScope(
+  screenAnalyticsService: NoOpAnalyticsService(),
+  child: MyWidget(),  // Inherits other services from parent
+)
+```
+
+#### Key Rules
+
+1. **Never pass services as constructor parameters** - Use `context.serviceType` instead
+2. **Access services in `didChangeDependencies()` or `build()`** - Not in `initState()`
+3. **Check `mounted` before async operations** - Prevent access after disposal
+4. **Use `maybeServices` for optional access** - Returns null if not in tree
+5. **Use `wrapWithQuizServices()` in tests** - Provides mock services automatically
+
 ## Troubleshooting
 
 ### "Package not found" errors

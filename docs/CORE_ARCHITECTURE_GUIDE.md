@@ -11,12 +11,13 @@
 ## Table of Contents
 
 1. [Architecture Principles](#architecture-principles)
-2. [Package Responsibilities](#package-responsibilities)
-3. [Core Features Implementation](#core-features-implementation)
-4. [Configuration System](#configuration-system)
-5. [App-Specific vs Core Code](#app-specific-vs-core-code)
-6. [Implementation Roadmap](#implementation-roadmap)
-7. [Phase 11: QuizApp Refactoring](#phase-11-quizapp-refactoring)
+2. [Dependency Injection Pattern](#dependency-injection-pattern)
+3. [Package Responsibilities](#package-responsibilities)
+4. [Core Features Implementation](#core-features-implementation)
+5. [Configuration System](#configuration-system)
+6. [App-Specific vs Core Code](#app-specific-vs-core-code)
+7. [Implementation Roadmap](#implementation-roadmap)
+8. [Phase 11: QuizApp Refactoring](#phase-11-quizapp-refactoring)
 
 ---
 
@@ -83,6 +84,129 @@
 4. **Configuration over Hardcoding**: Everything is configurable
 5. **Composition over Inheritance**: Use builders and strategies
 6. **Services are Abstract**: Define interfaces in core, implement in shared_services
+7. **Context-Based DI**: Access services via `BuildContext` extensions, not constructor injection
+
+---
+
+## Dependency Injection Pattern
+
+### QuizServices Architecture
+
+The codebase uses **context-based dependency injection** via `QuizServicesProvider`, eliminating the need for service locators like `get_it`.
+
+```
+┌───────────────────────────────────────────────────────┐
+│  QuizServicesProvider (InheritedWidget)               │
+│  ┌─────────────────────────────────────────────────┐  │
+│  │  QuizServices (Immutable Container)             │  │
+│  │  ├── settingsService: SettingsService           │  │
+│  │  ├── storageService: StorageService             │  │
+│  │  ├── achievementService: AchievementService     │  │
+│  │  ├── screenAnalyticsService: AnalyticsService   │  │
+│  │  └── quizAnalyticsService: QuizAnalyticsService │  │
+│  └─────────────────────────────────────────────────┘  │
+│                                                       │
+│  Child Widgets access via:                            │
+│    context.settingsService                            │
+│    context.storageService                             │
+│    context.screenAnalyticsService                     │
+│    etc.                                               │
+└───────────────────────────────────────────────────────┘
+```
+
+### Core Components
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| `QuizServices` | `quiz_engine/src/services/` | Immutable container for all services |
+| `QuizServicesProvider` | `quiz_engine/src/services/` | InheritedWidget to provide services |
+| `QuizServicesContext` | `quiz_engine/src/services/` | Extension methods for context access |
+| `QuizServicesScope` | `quiz_engine/src/services/` | Widget for scoped service overrides |
+
+### Usage Pattern
+
+**App Setup:**
+```dart
+// In app initialization
+QuizServicesProvider(
+  services: QuizServices(
+    settingsService: settingsService,
+    storageService: storageService,
+    achievementService: achievementService,
+    screenAnalyticsService: analyticsService,
+    quizAnalyticsService: quizAnalyticsAdapter,
+  ),
+  child: QuizApp(...),
+)
+```
+
+**Widget Access:**
+```dart
+class MyWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Direct access via context extension
+    final analytics = context.screenAnalyticsService;
+
+    analytics.logEvent(
+      ScreenViewEvent.home(tabName: 'play'),
+    );
+
+    return ...;
+  }
+}
+```
+
+**StatefulWidget Pattern:**
+```dart
+class _MyScreenState extends State<MyScreen> {
+  // Use getter for deferred access
+  AnalyticsService get _analytics => context.screenAnalyticsService;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Context is available here
+    _logScreenView();
+  }
+}
+```
+
+### Testing Support
+
+**Test Helpers:**
+```dart
+await tester.pumpWidget(
+  wrapWithQuizServices(
+    screenAnalyticsService: MockAnalyticsService(),
+    child: MyWidget(),
+  ),
+);
+```
+
+**Scoped Overrides:**
+```dart
+// Override only specific services for a subtree
+QuizServicesScope(
+  screenAnalyticsService: NoOpAnalyticsService(),
+  child: MyWidget(),  // Inherits other services from parent
+)
+```
+
+### Why Context-Based DI?
+
+| Approach | Pros | Cons |
+|----------|------|------|
+| Service Locator (`get_it`) | Simple, global access | Hidden dependencies, harder to test |
+| Constructor Injection | Explicit dependencies | Verbose, prop drilling |
+| **Context-Based (chosen)** | Type-safe, testable, Flutter-native | Requires widget tree |
+
+The context-based approach:
+- Uses Flutter's `InheritedWidget` for efficient rebuilds
+- Makes dependencies explicit and discoverable
+- Enables easy mocking in tests via `wrapWithQuizServices()`
+- Avoids global state and hidden dependencies
+- Supports scoped overrides via `QuizServicesScope`
 
 ---
 
@@ -118,6 +242,7 @@
 - Statistics UI components
 - Theme configuration system
 - Animation and feedback widgets
+- **QuizServices DI system** (QuizServicesProvider, QuizServicesScope, QuizServicesContext)
 
 **Does NOT own:**
 - Business logic
@@ -1264,18 +1389,35 @@ packages/shared_services/lib/src/storage/
 
 ### Sprint 5.3.1: Dependency Injection Setup
 
-> **Status:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for progress
+> **Status:** ✅ Completed - Using Context-Based DI (Phase 10)
 
-**ServiceLocator Pattern:**
+**Context-Based DI Pattern (Chosen Approach):**
 
-**Module Pattern:**
+The codebase uses `QuizServicesProvider` (InheritedWidget) instead of a service locator like `get_it`. This provides:
+- Type-safe access via context extensions
+- Easy mocking in tests via `wrapWithQuizServices()`
+- No global state or hidden dependencies
+- Scoped overrides via `QuizServicesScope`
+
+See [Dependency Injection Pattern](#dependency-injection-pattern) section for full documentation.
 
 **App Initialization:**
 ```dart
-Future<void> initializeSharedServices() async {
-  StorageModule().register(sl);
-  await sl.get<AppDatabase>().database;
-}
+// In app main.dart
+final services = QuizServices(
+  settingsService: settingsService,
+  storageService: storageService,
+  achievementService: achievementService,
+  screenAnalyticsService: analyticsService,
+  quizAnalyticsService: quizAnalyticsAdapter,
+);
+
+runApp(
+  QuizServicesProvider(
+    services: services,
+    child: QuizApp(...),
+  ),
+);
 ```
 
 ---
