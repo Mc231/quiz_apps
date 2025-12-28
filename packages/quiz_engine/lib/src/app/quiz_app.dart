@@ -736,6 +736,7 @@ class _QuizAppState extends State<QuizApp> {
                   categoryId: category.id,
                   categoryName: category.title(context),
                   onQuizCompleted: (results) => _handleQuizCompleted(results),
+                  useResourceManager: true,
                 ),
               ),
         ),
