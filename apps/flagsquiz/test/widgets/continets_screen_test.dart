@@ -8,6 +8,8 @@ import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../test_helpers.dart';
+
 void main() {
   late SettingsService settingsService;
 
@@ -60,12 +62,9 @@ void main() {
       final categories = createFlagsCategories(CountryCounts.forTest);
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: QuizHomeScreen(
+        wrapWithServices(
+          QuizHomeScreen(
             categories: categories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig(
                 tabs: [QuizTab.play(), QuizTab.history()],
@@ -88,17 +87,14 @@ void main() {
       final categories = createFlagsCategories(CountryCounts.forTest);
 
       await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('en'),
-          home: QuizHomeScreen(
+        wrapWithServices(
+          QuizHomeScreen(
             categories: categories,
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig(
                 tabs: [QuizTab.play(), QuizTab.history()],
               ),
-            ), analyticsService: NoOpAnalyticsService(),
+            ),
           ),
         ),
       );

@@ -82,7 +82,7 @@ void main() {
   group('LeaderboardWidget', () {
     testWidgets('shows empty state when no entries', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           const LeaderboardWidget(
             entries: [],
           ),
@@ -111,7 +111,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           LeaderboardWidget(
             entries: entries,
           ),
@@ -148,7 +148,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           LeaderboardWidget(
             entries: entries,
             showMedals: true,
@@ -173,7 +173,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           LeaderboardWidget(
             entries: entries,
           ),
@@ -197,7 +197,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           LeaderboardWidget(
             entries: entries,
             onEntryTap: (entry) {
@@ -234,7 +234,7 @@ void main() {
       ];
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           LeaderboardWidget(
             entries: entries,
             highlightSessionId: 'session-2',
@@ -259,7 +259,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           LeaderboardWidget(
             entries: entries,
             maxEntries: 5,
@@ -277,7 +277,7 @@ void main() {
   group('LeaderboardTypeSelector', () {
     testWidgets('renders without error', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           LeaderboardTypeSelector(
             selectedType: LeaderboardType.bestScores,
             onTypeChanged: (_) {},

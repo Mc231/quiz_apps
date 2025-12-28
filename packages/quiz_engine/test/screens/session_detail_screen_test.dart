@@ -91,7 +91,7 @@ void main() {
   group('SessionDetailScreen', () {
     testWidgets('displays session summary', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
@@ -107,7 +107,7 @@ void main() {
     testWidgets('shows filter toggle when there are wrong answers',
         (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
@@ -122,7 +122,7 @@ void main() {
 
     testWidgets('shows first question by default', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
@@ -137,7 +137,7 @@ void main() {
 
     testWidgets('filter toggle interaction works', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
@@ -166,7 +166,7 @@ void main() {
 
     testWidgets('can toggle back to show all questions', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
@@ -226,7 +226,7 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SessionDetailScreen(
             session: perfectSession,
             texts: texts,
@@ -245,7 +245,7 @@ void main() {
       var practicePressed = false;
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SessionDetailScreen(
             session: sessionWithWrongAnswers,
             texts: texts,
