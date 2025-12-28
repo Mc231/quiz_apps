@@ -3,67 +3,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
-import 'package:shared_services/shared_services.dart';
+import 'package:shared_services/shared_services.dart' show AppThemeMode;
 
-/// A mock SettingsService for testing.
-class MockSettingsService implements SettingsService {
-  QuizSettings _settings = QuizSettings.defaultSettings();
-  final _controller = StreamController<QuizSettings>.broadcast();
-
-  @override
-  QuizSettings get currentSettings => _settings;
-
-  @override
-  Stream<QuizSettings> get settingsStream => _controller.stream;
-
-  @override
-  Future<void> initialize() async {}
-
-  @override
-  Future<void> updateSettings(QuizSettings newSettings) async {
-    _settings = newSettings;
-    _controller.add(_settings);
-  }
-
-  @override
-  Future<bool> toggleSound() async {
-    _settings = _settings.copyWith(soundEnabled: !_settings.soundEnabled);
-    _controller.add(_settings);
-    return _settings.soundEnabled;
-  }
-
-  @override
-  Future<bool> toggleMusic() async {
-    _settings = _settings.copyWith(musicEnabled: !_settings.musicEnabled);
-    _controller.add(_settings);
-    return _settings.musicEnabled;
-  }
-
-  @override
-  Future<bool> toggleHaptic() async {
-    _settings = _settings.copyWith(hapticEnabled: !_settings.hapticEnabled);
-    _controller.add(_settings);
-    return _settings.hapticEnabled;
-  }
-
-  @override
-  Future<void> setThemeMode(AppThemeMode mode) async {
-    _settings = _settings.copyWith(themeMode: mode);
-    _controller.add(_settings);
-  }
-
-  @override
-  Future<QuizSettings> resetToDefaults() async {
-    _settings = QuizSettings.defaultSettings();
-    _controller.add(_settings);
-    return _settings;
-  }
-
-  @override
-  void dispose() {
-    _controller.close();
-  }
-}
+import '../services/quiz_services_test_helper.dart';
 
 /// Test categories for the quiz app.
 final List<QuizCategory> testCategories = [
@@ -96,9 +38,7 @@ void main() {
     testWidgets('renders MaterialApp with QuizHomeScreen', (tester) async {
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
         ),
       );
@@ -115,9 +55,7 @@ void main() {
     testWidgets('hides debug banner when configured', (tester) async {
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           config: const QuizAppConfig(debugShowCheckedModeBanner: false),
         ),
@@ -131,9 +69,7 @@ void main() {
     testWidgets('shows debug banner when configured', (tester) async {
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           config: const QuizAppConfig(debugShowCheckedModeBanner: true),
         ),
@@ -147,9 +83,7 @@ void main() {
     testWidgets('applies title from config', (tester) async {
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           config: const QuizAppConfig(title: 'My Quiz App'),
         ),
@@ -163,9 +97,7 @@ void main() {
     testWidgets('uses custom home builder when provided', (tester) async {
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           homeBuilder:
               (context) =>
                   const Scaffold(body: Center(child: Text('Custom Home'))),
@@ -179,9 +111,7 @@ void main() {
     testWidgets('responds to theme mode changes', (tester) async {
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
         ),
       );
@@ -209,9 +139,7 @@ void main() {
     testWidgets('includes engine localization delegate', (tester) async {
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
         ),
       );
@@ -230,9 +158,7 @@ void main() {
 
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           config: QuizAppConfig(appLocalizationDelegates: [customDelegate]),
         ),
@@ -252,9 +178,7 @@ void main() {
 
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           config: QuizAppConfig(navigatorObservers: [observer]),
         ),
@@ -270,9 +194,7 @@ void main() {
 
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           callbacks: QuizAppCallbacks(
             onCategorySelected: (category) => selectedCategory = category,
@@ -296,9 +218,7 @@ void main() {
 
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           config: QuizAppConfig(lightTheme: customTheme),
         ),
@@ -319,9 +239,7 @@ void main() {
 
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           config: QuizAppConfig(darkTheme: customDarkTheme),
         ),
@@ -388,18 +306,14 @@ void main() {
 
   group('QuizAppBuilder', () {
     testWidgets('shows loading widget while initializing', (tester) async {
-      final completer = Completer<SettingsService>();
+      final completer = Completer<QuizServices>();
 
       await tester.pumpWidget(
         QuizAppBuilder(
           initializeServices: () => completer.future,
           builder:
-              (context, service) => QuizApp(
-                quizAnalyticsService: QuizAnalyticsAdapter(
-                  NoOpAnalyticsService(),
-                ),
-                screenAnalyticsService: NoOpAnalyticsService(),
-                settingsService: service,
+              (context, services) => QuizApp(
+                services: services,
                 categories: testCategories,
               ),
           loadingWidget: const MaterialApp(
@@ -412,7 +326,7 @@ void main() {
       expect(find.text('Loading...'), findsOneWidget);
 
       // Complete initialization
-      completer.complete(settingsService);
+      completer.complete(createMockQuizServices(settingsService: settingsService));
       await tester.pumpAndSettle();
 
       expect(find.text('Loading...'), findsNothing);
@@ -420,18 +334,14 @@ void main() {
     });
 
     testWidgets('shows default loading indicator', (tester) async {
-      final completer = Completer<SettingsService>();
+      final completer = Completer<QuizServices>();
 
       await tester.pumpWidget(
         QuizAppBuilder(
           initializeServices: () => completer.future,
           builder:
-              (context, service) => QuizApp(
-                quizAnalyticsService: QuizAnalyticsAdapter(
-                  NoOpAnalyticsService(),
-                ),
-                screenAnalyticsService: NoOpAnalyticsService(),
-                settingsService: service,
+              (context, services) => QuizApp(
+                services: services,
                 categories: testCategories,
               ),
         ),
@@ -441,7 +351,7 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
       // Complete initialization
-      completer.complete(settingsService);
+      completer.complete(createMockQuizServices(settingsService: settingsService));
       await tester.pumpAndSettle();
     });
 
@@ -450,12 +360,8 @@ void main() {
         QuizAppBuilder(
           initializeServices: () => Future.error('Init failed'),
           builder:
-              (context, service) => QuizApp(
-                quizAnalyticsService: QuizAnalyticsAdapter(
-                  NoOpAnalyticsService(),
-                ),
-                screenAnalyticsService: NoOpAnalyticsService(),
-                settingsService: service,
+              (context, services) => QuizApp(
+                services: services,
                 categories: testCategories,
               ),
           errorBuilder:
@@ -473,12 +379,8 @@ void main() {
         QuizAppBuilder(
           initializeServices: () => Future.error('Test error'),
           builder:
-              (context, service) => QuizApp(
-                quizAnalyticsService: QuizAnalyticsAdapter(
-                  NoOpAnalyticsService(),
-                ),
-                screenAnalyticsService: NoOpAnalyticsService(),
-                settingsService: service,
+              (context, services) => QuizApp(
+                services: services,
                 categories: testCategories,
               ),
         ),
@@ -494,17 +396,13 @@ void main() {
       await tester.pumpWidget(
         QuizAppBuilder(
           initializeServices: () async {
-            final service = MockSettingsService();
-            await service.initialize();
-            return service;
+            final mockSettingsService = MockSettingsService();
+            await mockSettingsService.initialize();
+            return createMockQuizServices(settingsService: mockSettingsService);
           },
           builder:
-              (context, service) => QuizApp(
-                quizAnalyticsService: QuizAnalyticsAdapter(
-                  NoOpAnalyticsService(),
-                ),
-                screenAnalyticsService: NoOpAnalyticsService(),
-                settingsService: service,
+              (context, services) => QuizApp(
+                services: services,
                 categories: testCategories,
               ),
         ),
@@ -520,9 +418,7 @@ void main() {
     testWidgets('shows Play tab by default', (tester) async {
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           homeConfig: QuizHomeScreenConfig(
             tabConfig: QuizTabConfig.defaultConfig(),
@@ -538,9 +434,7 @@ void main() {
     testWidgets('uses all tabs configuration', (tester) async {
       await tester.pumpWidget(
         QuizApp(
-          quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
-          screenAnalyticsService: NoOpAnalyticsService(),
-          settingsService: settingsService,
+          services: createMockQuizServices(settingsService: settingsService),
           categories: testCategories,
           homeConfig: QuizHomeScreenConfig(tabConfig: QuizTabConfig.allTabs()),
           settingsConfig: const QuizSettingsConfig(showDataExport: false),

@@ -16,25 +16,24 @@ import '../data/flags_data_provider.dart';
 class FlagsQuizDependencies {
   /// Creates [FlagsQuizDependencies]. Internal use only.
   const FlagsQuizDependencies({
-    required this.settingsService,
-    required this.storageService,
-    required this.achievementService,
+    required this.services,
     required this.achievementsProvider,
     required this.dataProvider,
     required this.categories,
-    required this.screenAnalyticsService,
-    required this.quizAnalyticsService,
     required this.navigatorObserver,
   });
 
-  final SettingsService settingsService;
-  final StorageService storageService;
-  final AchievementService achievementService;
+  /// All core services bundled together.
+  final QuizServices services;
+
+  /// Achievements data provider.
   final FlagsAchievementsDataProvider achievementsProvider;
+
+  /// Data provider for loading quiz data.
   final FlagsDataProvider dataProvider;
+
+  /// Quiz categories.
   final List<QuizCategory> categories;
-  final AnalyticsService screenAnalyticsService;
-  final QuizAnalyticsService quizAnalyticsService;
 
   /// Navigator observer for automatic screen tracking.
   final AnalyticsNavigatorObserver navigatorObserver;
@@ -97,7 +96,7 @@ class FlagsQuizAppProvider {
     await achievementService.checkAll();
 
     // Initialize analytics with console logging for debugging
-    final analytics = CompositeAnalyticsService(
+    final screenAnalyticsService = CompositeAnalyticsService(
       providers: [
         AnalyticsProviderConfig(
           provider: ConsoleAnalyticsService(),
@@ -105,25 +104,30 @@ class FlagsQuizAppProvider {
         ),
       ],
     );
-    await analytics.initialize();
+    await screenAnalyticsService.initialize();
 
     // Wrap with adapter to implement QuizAnalyticsService interface
-    final quizAnalytics = QuizAnalyticsAdapter(analytics);
+    final quizAnalyticsService = QuizAnalyticsAdapter(screenAnalyticsService);
 
     // Create navigator observer for automatic screen tracking
     final navigatorObserver = AnalyticsNavigatorObserver(
-      analyticsService: analytics,
+      analyticsService: screenAnalyticsService,
     );
 
-    return FlagsQuizDependencies(
+    // Bundle all services together
+    final services = QuizServices(
       settingsService: settingsService,
       storageService: storageService,
       achievementService: achievementService,
+      screenAnalyticsService: screenAnalyticsService,
+      quizAnalyticsService: quizAnalyticsService,
+    );
+
+    return FlagsQuizDependencies(
+      services: services,
       achievementsProvider: achievementsProvider,
       dataProvider: dataProvider,
       categories: categories,
-      screenAnalyticsService: analytics,
-      quizAnalyticsService: quizAnalytics,
       navigatorObserver: navigatorObserver,
     );
   }

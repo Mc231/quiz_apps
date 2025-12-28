@@ -21,6 +21,8 @@ import '../quiz_widget_entry.dart';
 import '../screens/challenges_screen.dart';
 import '../screens/practice_start_screen.dart';
 import '../screens/practice_complete_screen.dart';
+import '../services/quiz_services.dart';
+import '../services/quiz_services_provider.dart';
 import '../settings/quiz_settings_screen.dart';
 import '../widgets/practice_empty_state.dart';
 import '../widgets/session_card.dart';
@@ -156,12 +158,19 @@ class QuizAppCallbacks {
 /// - Settings-based theme mode switching
 /// - Navigation observer support
 /// - QuizHomeScreen integration
+/// - QuizServicesProvider for dependency injection
 ///
 /// ## Basic Usage
 ///
 /// ```dart
 /// QuizApp(
-///   settingsService: settingsService,
+///   services: QuizServices(
+///     settingsService: settingsService,
+///     storageService: storageService,
+///     achievementService: achievementService,
+///     screenAnalyticsService: analyticsService,
+///     quizAnalyticsService: quizAnalyticsService,
+///   ),
 ///   categories: myCategories,
 ///   callbacks: QuizAppCallbacks(
 ///     onCategorySelected: (category) => startQuiz(category),
@@ -173,7 +182,7 @@ class QuizAppCallbacks {
 ///
 /// ```dart
 /// QuizApp(
-///   settingsService: settingsService,
+///   services: services,
 ///   homeBuilder: (context) => MyCustomHomeScreen(),
 /// )
 /// ```
@@ -182,7 +191,7 @@ class QuizAppCallbacks {
 ///
 /// ```dart
 /// QuizApp(
-///   settingsService: settingsService,
+///   services: services,
 ///   categories: categories,
 ///   config: QuizAppConfig(
 ///     title: 'My Quiz App',
@@ -196,8 +205,14 @@ class QuizAppCallbacks {
 /// )
 /// ```
 class QuizApp extends StatefulWidget {
-  /// Service for managing app settings.
-  final SettingsService settingsService;
+  /// All core services for the quiz app.
+  ///
+  /// Services are made available to all descendant widgets via
+  /// [QuizServicesProvider] and can be accessed using:
+  /// - `QuizServicesProvider.of(context)`
+  /// - `context.services` (using the extension)
+  /// - `context.settingsService`, `context.storageService`, etc.
+  final QuizServices services;
 
   /// Categories to display in the Play tab.
   ///
@@ -212,12 +227,6 @@ class QuizApp extends StatefulWidget {
   ///
   /// If not provided, you must handle navigation via [callbacks].
   final QuizDataProvider? dataProvider;
-
-  /// Storage service for persisting quiz sessions.
-  ///
-  /// Required when [dataProvider] is provided.
-  /// Used for saving quiz history and statistics.
-  final StorageService? storageService;
 
   /// Configuration for the QuizHomeScreen.
   final QuizHomeScreenConfig homeConfig;
@@ -293,12 +302,6 @@ class QuizApp extends StatefulWidget {
   /// are unlocked. Defaults to true.
   final bool showAchievementNotifications;
 
-  /// Optional achievement service for listening to unlock events.
-  ///
-  /// If provided and [showAchievementNotifications] is true, the app
-  /// will automatically show notifications when achievements are unlocked.
-  final AchievementService? achievementService;
-
   /// Builder for the Settings tab content.
   ///
   /// If not provided and Settings tab is in tabs, uses [QuizSettingsScreen].
@@ -308,21 +311,6 @@ class QuizApp extends StatefulWidget {
   ///
   /// Used when [settingsBuilder] is not provided.
   final QuizSettingsConfig? settingsConfig;
-
-  /// Analytics service for tracking quiz events.
-  ///
-  /// When provided, quiz events will be tracked through this service.
-  final QuizAnalyticsService quizAnalyticsService;
-
-  /// Analytics service for tracking screen views and user interactions.
-  ///
-  /// Tracks:
-  /// - Screen views when tabs change
-  /// - Tab selection events
-  /// - Category selection events
-  ///
-  /// This is separate from [quizAnalyticsService] which tracks quiz-specific events.
-  final AnalyticsService screenAnalyticsService;
 
   /// Locale override.
   final Locale? locale;
@@ -339,11 +327,9 @@ class QuizApp extends StatefulWidget {
   /// Creates a [QuizApp].
   const QuizApp({
     super.key,
-    required this.settingsService,
-    required this.screenAnalyticsService,
+    required this.services,
     this.categories,
     this.dataProvider,
-    this.storageService,
     this.homeConfig = const QuizHomeScreenConfig(),
     this.callbacks = const QuizAppCallbacks(),
     this.config = const QuizAppConfig(),
@@ -358,10 +344,8 @@ class QuizApp extends StatefulWidget {
     this.practiceDataProvider,
     this.onAchievementsUnlocked,
     this.showAchievementNotifications = true,
-    this.achievementService,
     this.settingsBuilder,
     this.settingsConfig,
-    required this.quizAnalyticsService,
     this.locale,
     this.formatDate,
     this.formatStatus,
@@ -379,25 +363,32 @@ class _QuizAppState extends State<QuizApp> {
   AchievementNotificationController? _notificationController;
   StreamSubscription<List<Achievement>>? _achievementSubscription;
 
+  // Convenience getters for services
+  QuizServices get _services => widget.services;
+  SettingsService get _settingsService => _services.settingsService;
+  StorageService get _storageService => _services.storageService;
+  AchievementService get _achievementService => _services.achievementService;
+  AnalyticsService get _screenAnalyticsService => _services.screenAnalyticsService;
+  QuizAnalyticsService get _quizAnalyticsService => _services.quizAnalyticsService;
+
   @override
   void initState() {
     super.initState();
-    _currentSettings = widget.settingsService.currentSettings;
-    _settingsSubscription = widget.settingsService.settingsStream.listen(
+    _currentSettings = _settingsService.currentSettings;
+    _settingsSubscription = _settingsService.settingsStream.listen(
       _onSettingsChanged,
     );
 
     // Create notification controller if notifications are enabled
     if (widget.showAchievementNotifications) {
-      _notificationController = AchievementNotificationController(analyticsService: widget.screenAnalyticsService);
+      _notificationController = AchievementNotificationController(
+        analyticsService: _screenAnalyticsService,
+      );
 
-      // Listen to achievement unlocks if service is provided
-      if (widget.achievementService != null) {
-        _achievementSubscription = widget
-            .achievementService!
-            .onAchievementsUnlocked
-            .listen(_showAchievementNotifications);
-      }
+      // Listen to achievement unlocks
+      _achievementSubscription = _achievementService
+          .onAchievementsUnlocked
+          .listen(_showAchievementNotifications);
     }
   }
 
@@ -419,21 +410,24 @@ class _QuizAppState extends State<QuizApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: _navigatorKey,
-      title: widget.config.title ?? '',
-      debugShowCheckedModeBanner: widget.config.debugShowCheckedModeBanner,
-      theme: _buildLightTheme(),
-      darkTheme: _buildDarkTheme(),
-      themeMode: _currentSettings.flutterThemeMode,
-      localizationsDelegates: _buildLocalizationDelegates(),
-      supportedLocales: widget.config.supportedLocales,
-      locale: widget.locale,
-      localeResolutionCallback:
-          widget.config.localeResolutionCallback ??
-          _defaultLocaleResolutionCallback,
-      navigatorObservers: widget.config.navigatorObservers,
-      home: _wrapWithNotifications(_buildHome(context)),
+    return QuizServicesProvider(
+      services: _services,
+      child: MaterialApp(
+        navigatorKey: _navigatorKey,
+        title: widget.config.title ?? '',
+        debugShowCheckedModeBanner: widget.config.debugShowCheckedModeBanner,
+        theme: _buildLightTheme(),
+        darkTheme: _buildDarkTheme(),
+        themeMode: _currentSettings.flutterThemeMode,
+        localizationsDelegates: _buildLocalizationDelegates(),
+        supportedLocales: widget.config.supportedLocales,
+        locale: widget.locale,
+        localeResolutionCallback:
+            widget.config.localeResolutionCallback ??
+            _defaultLocaleResolutionCallback,
+        navigatorObservers: widget.config.navigatorObservers,
+        home: _wrapWithNotifications(_buildHome(context)),
+      ),
     );
   }
 
@@ -445,7 +439,7 @@ class _QuizAppState extends State<QuizApp> {
     return AchievementNotifications(
       controller: _notificationController,
       child: child,
-      analyticsService: widget.screenAnalyticsService,
+      analyticsService: _screenAnalyticsService,
     );
   }
 
@@ -519,7 +513,7 @@ class _QuizAppState extends State<QuizApp> {
 
         return QuizHomeScreen(
           categories: widget.categories ?? [],
-          storageService: widget.storageService,
+          storageService: _storageService,
           config: homeConfig,
           onCategorySelected:
               hasDataProvider
@@ -549,7 +543,7 @@ class _QuizAppState extends State<QuizApp> {
           formatDate: widget.formatDate,
           formatStatus: widget.formatStatus,
           formatDuration: widget.formatDuration,
-          analyticsService: widget.screenAnalyticsService,
+          analyticsService: _screenAnalyticsService,
         );
       },
     );
@@ -606,9 +600,9 @@ class _QuizAppState extends State<QuizApp> {
                       challenges: widget.challenges!,
                       categories: widget.categories ?? [],
                       dataProvider: widget.dataProvider!,
-                      settingsService: widget.settingsService,
-                      analyticsService: widget.screenAnalyticsService,
-                      storageService: widget.storageService,
+                      settingsService: _settingsService,
+                      analyticsService: _screenAnalyticsService,
+                      storageService: _storageService,
                       onQuizCompleted: _handleQuizCompleted,
                     ),
               ),
@@ -625,12 +619,12 @@ class _QuizAppState extends State<QuizApp> {
                 builder:
                     (ctx) => _PracticeTabContent(
                       practiceDataProvider: widget.practiceDataProvider!,
-                      screenAnalyticsService: widget.screenAnalyticsService,
+                      screenAnalyticsService: _screenAnalyticsService,
                       dataProvider: widget.dataProvider,
-                      settingsService: widget.settingsService,
+                      settingsService: _settingsService,
                       onPracticeCompleted: _handlePracticeCompleted,
                       onStartQuiz: () => _navigateToPlayTab(),
-                      quizAnalyticsService: widget.quizAnalyticsService,
+                      quizAnalyticsService: _quizAnalyticsService,
                     ),
               ),
             );
@@ -660,10 +654,10 @@ class _QuizAppState extends State<QuizApp> {
 
     // Provide default settings screen
     return (context) => QuizSettingsScreen(
-      settingsService: widget.settingsService,
+      settingsService: _settingsService,
       config:
           widget.settingsConfig ?? const QuizSettingsConfig(showAppBar: false),
-      analyticsService: widget.screenAnalyticsService,
+      analyticsService: _screenAnalyticsService,
     );
   }
 
@@ -685,7 +679,7 @@ class _QuizAppState extends State<QuizApp> {
       categoryIndex: categoryIndex >= 0 ? categoryIndex : 0,
     );
 
-    widget.screenAnalyticsService.logEvent(event);
+    _screenAnalyticsService.logEvent(event);
   }
 
   /// Starts a quiz for the given category.
@@ -697,7 +691,7 @@ class _QuizAppState extends State<QuizApp> {
   /// - Calling [achievementsDataProvider.onSessionCompleted] after quiz ends
   void _startQuiz(BuildContext context, QuizCategory category) async {
     final dataProvider = widget.dataProvider;
-    final storageService = widget.storageService;
+    final storageService = _storageService;
 
     if (dataProvider == null) {
       // Fallback to callback if no data provider
@@ -719,11 +713,8 @@ class _QuizAppState extends State<QuizApp> {
     // Apply storage config to quiz config
     final configWithStorage = quizConfig.copyWith(storageConfig: storageConfig);
 
-    // Create storage adapter if storage service is available
-    QuizStorageAdapter? storageAdapter;
-    if (storageService != null) {
-      storageAdapter = QuizStorageAdapter(storageService);
-    }
+    // Create storage adapter
+    final storageAdapter = QuizStorageAdapter(storageService);
 
     // Create config manager that applies user settings
     // Note: showAnswerFeedback now comes from category/mode, not global settings
@@ -731,9 +722,9 @@ class _QuizAppState extends State<QuizApp> {
       defaultConfig: configWithStorage,
       getSettings:
           () => {
-            'soundEnabled': widget.settingsService.currentSettings.soundEnabled,
+            'soundEnabled': _settingsService.currentSettings.soundEnabled,
             'hapticEnabled':
-                widget.settingsService.currentSettings.hapticEnabled,
+                _settingsService.currentSettings.hapticEnabled,
             'showAnswerFeedback': category.showAnswerFeedback,
           },
     );
@@ -750,11 +741,11 @@ class _QuizAppState extends State<QuizApp> {
                   dataProvider: () async => questions,
                   configManager: configManager,
                   storageService: storageAdapter,
-                  quizAnalyticsService: widget.quizAnalyticsService,
+                  quizAnalyticsService: _quizAnalyticsService,
                   categoryId: category.id,
                   categoryName: category.title(context),
                   onQuizCompleted: (results) => _handleQuizCompleted(results),
-                  screenAnalyticsService: widget.screenAnalyticsService,
+                  screenAnalyticsService: _screenAnalyticsService,
                 ),
               ),
         ),
@@ -769,33 +760,31 @@ class _QuizAppState extends State<QuizApp> {
 
     // Handle achievements if provider is available
     final achievementsProvider = widget.achievementsDataProvider;
-    final storageService = widget.storageService;
+    final storageService = _storageService;
+    final sessionId = results.sessionId;
 
-    if (storageService != null) {
-      final sessionId = results.sessionId;
-      if (sessionId != null) {
-        final sessionResult = await storageService.getQuizSession(sessionId);
-        final session = sessionResult.valueOrNull;
-        if (session != null) {
-          // Notify achievements provider
-          if (achievementsProvider != null) {
-            await achievementsProvider.onSessionCompleted(session);
-          }
+    if (sessionId != null) {
+      final sessionResult = await storageService.getQuizSession(sessionId);
+      final session = sessionResult.valueOrNull;
+      if (session != null) {
+        // Notify achievements provider
+        if (achievementsProvider != null) {
+          await achievementsProvider.onSessionCompleted(session);
+        }
 
-          // Update practice progress with wrong answers
-          // Get wrong answers from the session repository
-          final practiceProvider = widget.practiceDataProvider;
-          if (practiceProvider != null) {
-            final sessionWithAnswers = await storageService
-                .getSessionWithAnswers(sessionId);
-            final wrongAnswers =
-                sessionWithAnswers.valueOrNull?.wrongAnswers ?? [];
-            if (wrongAnswers.isNotEmpty) {
-              await practiceProvider.updatePracticeProgress(
-                session,
-                wrongAnswers,
-              );
-            }
+        // Update practice progress with wrong answers
+        // Get wrong answers from the session repository
+        final practiceProvider = widget.practiceDataProvider;
+        if (practiceProvider != null) {
+          final sessionWithAnswers = await storageService
+              .getSessionWithAnswers(sessionId);
+          final wrongAnswers =
+              sessionWithAnswers.valueOrNull?.wrongAnswers ?? [];
+          if (wrongAnswers.isNotEmpty) {
+            await practiceProvider.updatePracticeProgress(
+              session,
+              wrongAnswers,
+            );
           }
         }
       }
@@ -825,9 +814,9 @@ class _QuizAppState extends State<QuizApp> {
     final settingsWidget =
         widget.settingsBuilder?.call(context) ??
         QuizSettingsScreen(
-          settingsService: widget.settingsService,
+          settingsService: _settingsService,
           config: widget.settingsConfig ?? const QuizSettingsConfig(),
-          analyticsService: widget.screenAnalyticsService,
+          analyticsService: _screenAnalyticsService,
         );
 
     _navigatorKey.currentState?.push(
@@ -847,13 +836,17 @@ class _QuizAppState extends State<QuizApp> {
 /// ```dart
 /// QuizAppBuilder(
 ///   initializeServices: () async {
-///     final settingsService = SettingsService();
-///     await settingsService.initialize();
 ///     await SharedServicesInitializer.initialize();
-///     return settingsService;
+///     final settingsService = sl.get<SettingsService>();
+///     final storageService = sl.get<StorageService>();
+///     return QuizServices(
+///       settingsService: settingsService,
+///       storageService: storageService,
+///       // ... other services
+///     );
 ///   },
-///   builder: (context, settingsService) => QuizApp(
-///     settingsService: settingsService,
+///   builder: (context, services) => QuizApp(
+///     services: services,
 ///     categories: myCategories,
 ///   ),
 /// )
@@ -861,12 +854,11 @@ class _QuizAppState extends State<QuizApp> {
 class QuizAppBuilder extends StatefulWidget {
   /// Function to initialize services.
   ///
-  /// Should return the initialized SettingsService.
-  final Future<SettingsService> Function() initializeServices;
+  /// Should return the initialized [QuizServices] bundle.
+  final Future<QuizServices> Function() initializeServices;
 
   /// Builder for the QuizApp once services are initialized.
-  final Widget Function(BuildContext context, SettingsService settingsService)
-  builder;
+  final Widget Function(BuildContext context, QuizServices services) builder;
 
   /// Widget to show while initializing.
   final Widget? loadingWidget;
@@ -888,7 +880,7 @@ class QuizAppBuilder extends StatefulWidget {
 }
 
 class _QuizAppBuilderState extends State<QuizAppBuilder> {
-  late Future<SettingsService> _initFuture;
+  late Future<QuizServices> _initFuture;
 
   @override
   void initState() {
@@ -898,7 +890,7 @@ class _QuizAppBuilderState extends State<QuizAppBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<SettingsService>(
+    return FutureBuilder<QuizServices>(
       future: _initFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -1156,7 +1148,8 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
           final wrongCount = results.answers.where((a) => !a.isCorrect).length;
 
           widget.onPracticeCompleted(correctIds, wrongCount);
-        }, quizAnalyticsService: widget.quizAnalyticsService,
+        },
+        quizAnalyticsService: widget.quizAnalyticsService,
       ),
     );
   }

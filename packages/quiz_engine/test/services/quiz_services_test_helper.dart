@@ -103,6 +103,13 @@ class MockStorageService implements StorageService {
 ///
 /// Uses noSuchMethod to handle all abstract methods.
 class MockAchievementService implements AchievementService {
+  final _achievementsUnlockedController =
+      StreamController<List<Achievement>>.broadcast();
+
+  @override
+  Stream<List<Achievement>> get onAchievementsUnlocked =>
+      _achievementsUnlockedController.stream;
+
   @override
   dynamic noSuchMethod(Invocation invocation) {
     final memberName = invocation.memberName.toString();
@@ -111,8 +118,7 @@ class MockAchievementService implements AchievementService {
     if (memberName.contains('allAchievements')) {
       return <Achievement>[];
     }
-    if (memberName.contains('achievementUnlockedStream') ||
-        memberName.contains('onAchievementsUnlocked')) {
+    if (memberName.contains('achievementUnlockedStream')) {
       return const Stream<UnlockedAchievement>.empty();
     }
     if (memberName.contains('totalPoints')) {
@@ -162,7 +168,6 @@ class MockAchievementService implements AchievementService {
       if (memberName.contains('initialize') ||
           memberName.contains('resetAllAchievements') ||
           memberName.contains('resetAll') ||
-          memberName.contains('dispose') ||
           memberName.contains('markNotificationShown') ||
           memberName.contains('markAllNotificationsShown')) {
         return Future<void>.value();
@@ -176,7 +181,9 @@ class MockAchievementService implements AchievementService {
   }
 
   @override
-  void dispose() {}
+  void dispose() {
+    _achievementsUnlockedController.close();
+  }
 }
 
 /// A mock QuizAnalyticsService for testing.

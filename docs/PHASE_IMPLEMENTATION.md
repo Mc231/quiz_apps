@@ -2858,26 +2858,30 @@ extension QuizServicesContext on BuildContext {
 
 ---
 
-### Sprint 10.2: QuizApp Integration
+### Sprint 10.2: QuizApp Integration ✅
 
 **Goal:** Integrate QuizServicesProvider into QuizApp as the root provider.
 
 **Tasks:**
-- [ ] Add `QuizServices` parameter to `QuizApp` constructor
-- [ ] Wrap MaterialApp with `QuizServicesProvider` in QuizApp.build()
-- [ ] Remove individual service parameters from QuizApp (settingsService, storageService, etc.)
-- [ ] Update `QuizAppConfig` if needed
-- [ ] Update FlagsQuizApp to create and pass `QuizServices`
-- [ ] Update `FlagsQuizDependencies` to use `QuizServices`
-- [ ] Update `FlagsQuizAppProvider` to build `QuizServices`
-- [ ] Write integration tests
-- [ ] Ensure backward compatibility (deprecated parameters still work)
+- [x] Add `QuizServices` parameter to `QuizApp` constructor
+- [x] Wrap MaterialApp with `QuizServicesProvider` in QuizApp.build()
+- [x] Remove individual service parameters from QuizApp (settingsService, storageService, etc.)
+- [x] Update `QuizAppBuilder` to use `QuizServices` instead of `SettingsService`
+- [x] Update FlagsQuizApp to create and pass `QuizServices`
+- [x] Update `FlagsQuizDependencies` to use `QuizServices`
+- [x] Update `FlagsQuizAppProvider` to build `QuizServices`
+- [x] Update tests to use `createMockQuizServices()` helper
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/app/quiz_app.dart`
-- `apps/flagsquiz/lib/app/flags_quiz_app.dart`
-- `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
-- `packages/quiz_engine/test/app/quiz_app_test.dart`
+**Notes:**
+- Clean migration without backward compatibility (no deprecated parameters)
+- All 23 QuizApp tests passing
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added services parameter, wrapped with QuizServicesProvider
+- ✅ `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Uses dependencies.services
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - FlagsQuizDependencies now has QuizServices
+- ✅ `packages/quiz_engine/test/app/quiz_app_test.dart` - Updated to use createMockQuizServices()
+- ✅ `packages/quiz_engine/test/services/quiz_services_test_helper.dart` - Fixed MockAchievementService
 
 ---
 

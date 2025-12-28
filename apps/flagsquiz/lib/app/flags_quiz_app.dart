@@ -31,14 +31,10 @@ class FlagsQuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return QuizApp(
-      settingsService: dependencies.settingsService,
+      services: dependencies.services,
       categories: dependencies.categories,
       dataProvider: dependencies.dataProvider,
-      storageService: dependencies.storageService,
-      achievementService: dependencies.achievementService,
       achievementsDataProvider: dependencies.achievementsProvider,
-      quizAnalyticsService: dependencies.quizAnalyticsService,
-      screenAnalyticsService: dependencies.screenAnalyticsService,
       challenges: FlagsChallenges.all,
       practiceDataProvider: FlagsPracticeDataProvider.fromServiceLocator(),
       config: QuizAppConfig(
