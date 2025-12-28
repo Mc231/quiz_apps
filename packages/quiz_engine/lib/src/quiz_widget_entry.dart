@@ -1,6 +1,4 @@
 import 'package:quiz_engine_core/quiz_engine_core.dart';
-import 'package:shared_services/shared_services.dart'
-    show AnalyticsService;
 
 import 'theme/quiz_theme_data.dart';
 
@@ -13,9 +11,12 @@ import 'theme/quiz_theme_data.dart';
 /// - Quiz configuration (via ConfigManager or defaultConfig)
 /// - Optional theme customization
 /// - Optional storage service for persisting quiz sessions
-/// - Optional analytics service for event tracking
+/// - Optional analytics service for quiz event tracking
 /// - Optional quiz completion callback for achievements/analytics
 /// - Optional filter for question selection
+///
+/// Screen analytics (for screen views like results screen) are obtained from
+/// [QuizServicesProvider] via context.screenAnalyticsService.
 ///
 /// All localized UI strings (exit dialog, feedback, hints, etc.) are now
 /// provided by [QuizLocalizations] from the quiz_engine l10n system.
@@ -37,7 +38,10 @@ class QuizWidgetEntry {
   /// Optional storage service for persisting quiz sessions.
   final QuizStorageService? storageService;
 
-  /// Optional analytics service for tracking quiz events.
+  /// Analytics service for tracking quiz-specific events.
+  ///
+  /// This tracks events like quiz_started, question_answered, quiz_completed.
+  /// Screen views are tracked using context.screenAnalyticsService.
   final QuizAnalyticsService quizAnalyticsService;
 
   /// Category ID for analytics tracking.
@@ -65,12 +69,6 @@ class QuizWidgetEntry {
   /// questions but need all questions for option generation.
   final bool Function(QuestionEntry)? filter;
 
-  /// Analytics service for tracking screen views in the quiz UI.
-  ///
-  /// This is separate from [quizAnalyticsService] which tracks quiz-specific events.
-  /// Used for tracking screen views like the results screen.
-  final AnalyticsService screenAnalyticsService;
-
   /// Creates a `QuizWidgetEntry` with a ConfigManager.
   ///
   /// [title] - Title for the quiz UI
@@ -78,7 +76,7 @@ class QuizWidgetEntry {
   /// [configManager] - Configuration manager with settings integration
   /// [themeData] - Theme customization (defaults to QuizThemeData())
   /// [storageService] - Optional storage service for persisting sessions
-  /// [quizAnalyticsService] - Optional analytics service for event tracking
+  /// [quizAnalyticsService] - Analytics service for quiz event tracking
   /// [categoryId] - Category ID for analytics (defaults to empty string)
   /// [categoryName] - Category name for analytics (defaults to empty string)
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
@@ -90,7 +88,6 @@ class QuizWidgetEntry {
     this.themeData = const QuizThemeData(),
     this.storageService,
     required this.quizAnalyticsService,
-    required this.screenAnalyticsService,
     this.categoryId = '',
     this.categoryName = '',
     this.onQuizCompleted,
@@ -107,7 +104,7 @@ class QuizWidgetEntry {
   /// [defaultConfig] - Default quiz configuration
   /// [themeData] - Theme customization (defaults to QuizThemeData())
   /// [storageService] - Optional storage service for persisting sessions
-  /// [quizAnalyticsService] - Optional analytics service for event tracking
+  /// [quizAnalyticsService] - Analytics service for quiz event tracking
   /// [categoryId] - Category ID for analytics (defaults to empty string)
   /// [categoryName] - Category name for analytics (defaults to empty string)
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
@@ -119,7 +116,6 @@ class QuizWidgetEntry {
     this.themeData = const QuizThemeData(),
     this.storageService,
     required this.quizAnalyticsService,
-    required this.screenAnalyticsService,
     this.categoryId = '',
     this.categoryName = '',
     this.onQuizCompleted,
