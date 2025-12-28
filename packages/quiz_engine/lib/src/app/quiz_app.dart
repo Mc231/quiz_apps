@@ -514,7 +514,6 @@ class _QuizAppState extends State<QuizApp> {
 
         return QuizHomeScreen(
           categories: widget.categories ?? [],
-          storageService: _storageService,
           config: homeConfig,
           onCategorySelected:
               hasDataProvider
@@ -544,7 +543,7 @@ class _QuizAppState extends State<QuizApp> {
           formatDate: widget.formatDate,
           formatStatus: widget.formatStatus,
           formatDuration: widget.formatDuration,
-          // analyticsService is now obtained from QuizServicesProvider via context
+          // Services (analytics, storage) are obtained from QuizServicesProvider via context
         );
       },
     );
