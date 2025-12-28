@@ -742,6 +742,7 @@ class _QuizAppState extends State<QuizApp> {
     if (context.mounted) {
       _navigatorKey.currentState?.push(
         MaterialPageRoute(
+          settings: const RouteSettings(name: 'quiz'),
           builder:
               (ctx) => QuizWidget(
                 quizEntry: QuizWidgetEntry(
@@ -830,7 +831,10 @@ class _QuizAppState extends State<QuizApp> {
         );
 
     _navigatorKey.currentState?.push(
-      MaterialPageRoute(builder: (context) => settingsWidget),
+      MaterialPageRoute(
+        settings: const RouteSettings(name: 'settings'),
+        builder: (context) => settingsWidget,
+      ),
     );
   }
 }
@@ -1038,6 +1042,7 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
   void _startPractice(BuildContext context, PracticeTabData data) {
     Navigator.of(context).push(
       MaterialPageRoute(
+        settings: const RouteSettings(name: 'practice_quiz'),
         builder:
             (ctx) => _PracticeQuizScreen(
               practiceData: data,
@@ -1061,6 +1066,7 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
   ) {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
+        settings: const RouteSettings(name: 'practice_complete'),
         builder:
             (ctx) => PracticeCompleteScreen(
               correctCount: correctCount,

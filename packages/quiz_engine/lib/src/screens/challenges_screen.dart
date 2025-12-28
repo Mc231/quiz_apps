@@ -192,6 +192,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     if (context.mounted) {
       Navigator.of(context).push(
         MaterialPageRoute(
+          settings: const RouteSettings(name: 'challenge_quiz'),
           builder: (ctx) => QuizWidget(
             quizEntry: QuizWidgetEntry(
               title: '${challenge.name}: ${category.title(context)}',

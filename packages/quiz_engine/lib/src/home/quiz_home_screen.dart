@@ -533,6 +533,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     Navigator.push(
       context,
       MaterialPageRoute(
+        settings: const RouteSettings(name: 'session_detail'),
         builder: (context) => Scaffold(
           appBar: AppBar(
             title: Text(texts.title),

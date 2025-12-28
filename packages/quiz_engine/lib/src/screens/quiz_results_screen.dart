@@ -449,6 +449,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
     // Navigate to inline session detail screen
     Navigator.of(context).push(
       MaterialPageRoute(
+        settings: const RouteSettings(name: 'session_detail'),
         builder: (context) => Scaffold(
           appBar: AppBar(
             title: Text(l10n.sessionDetails),
