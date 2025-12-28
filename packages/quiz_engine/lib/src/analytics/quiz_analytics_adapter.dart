@@ -391,6 +391,25 @@ class QuizAnalyticsAdapter implements QuizAnalyticsService {
     ));
   }
 
+  // ============ Timer Events ============
+
+  @override
+  Future<void> trackTimerWarning({
+    required String quizId,
+    required Question question,
+    required int questionIndex,
+    required int secondsRemaining,
+    required String warningLevel,
+  }) async {
+    await _analytics.logEvent(HintEvent.timerWarning(
+      quizId: quizId,
+      questionId: _getQuestionId(question, questionIndex),
+      questionIndex: questionIndex,
+      secondsRemaining: secondsRemaining,
+      warningLevel: warningLevel,
+    ));
+  }
+
   @override
   void dispose() {
     // AnalyticsService is managed externally, don't dispose it here
