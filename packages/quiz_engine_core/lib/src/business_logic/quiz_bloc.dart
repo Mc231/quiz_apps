@@ -265,7 +265,11 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
     // Track life lost before recording (to get accurate remaining count)
     final livesBeforeAnswer = _progressTracker.remainingLives;
-    final initialLives = _config.modeConfig.lives;
+    // Use ResourceManager lives when enabled, otherwise use config
+    final initialLives = (useResourceManager && resourceManager != null)
+        ? resourceManager!.getAvailableCount(ResourceType.lives()) +
+          (livesBeforeAnswer ?? 0) - (_progressTracker.remainingLives ?? 0)
+        : _config.modeConfig.lives;
 
     // Update progress
     _progressTracker.recordAnswer(result.answer);
@@ -281,11 +285,14 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       livesRemaining: _progressTracker.remainingLives,
     );
 
-    // Track life lost if incorrect and lives mode is active
+    // Track life lost if incorrect and lives are being tracked
+    final isTrackingLives = (useResourceManager && resourceManager != null) ||
+                            _config.modeConfig.lives != null;
     if (!result.isCorrect &&
-        initialLives != null &&
+        isTrackingLives &&
         _progressTracker.remainingLives != null &&
-        _progressTracker.remainingLives! < livesBeforeAnswer!) {
+        livesBeforeAnswer != null &&
+        _progressTracker.remainingLives! < livesBeforeAnswer) {
       // Consume from ResourceManager if enabled
       if (useResourceManager && resourceManager != null) {
         await resourceManager!.useResource(ResourceType.lives());
@@ -295,7 +302,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         question: currentQuestion,
         questionIndex: _progressTracker.currentProgress - 1,
         livesRemaining: _progressTracker.remainingLives!,
-        livesTotal: initialLives,
+        livesTotal: initialLives ?? livesBeforeAnswer,
         reason: 'incorrect_answer',
       );
     }
