@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart';
+import 'package:shared_services/shared_services.dart';
 
 /// Test title for quiz tests.
 const testQuizTitle = 'Test Quiz';
@@ -21,3 +24,56 @@ Widget wrapWithLocalizations(Widget child) {
     home: Scaffold(body: child),
   );
 }
+
+/// Wraps a widget with localizations and QuizServicesProvider for testing.
+///
+/// Use this when testing widgets that require analytics services from context.
+Widget wrapWithServices(
+  Widget child, {
+  AnalyticsService? screenAnalyticsService,
+  QuizAnalyticsService? quizAnalyticsService,
+  SettingsService? settingsService,
+  StorageService? storageService,
+  AchievementService? achievementService,
+}) {
+  final effectiveScreenAnalytics = screenAnalyticsService ?? NoOpAnalyticsService();
+  final effectiveQuizAnalytics = quizAnalyticsService ?? NoOpQuizAnalyticsService();
+  final effectiveSettings = settingsService ?? _MockSettingsService();
+  final effectiveStorage = storageService ?? _MockStorageService();
+  final effectiveAchievements = achievementService ?? _MockAchievementService();
+
+  return MaterialApp(
+    localizationsDelegates: const [
+      QuizLocalizationsDelegate(),
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: const [Locale('en')],
+    home: QuizServicesProvider(
+      services: QuizServices(
+        screenAnalyticsService: effectiveScreenAnalytics,
+        quizAnalyticsService: effectiveQuizAnalytics,
+        settingsService: effectiveSettings,
+        storageService: effectiveStorage,
+        achievementService: effectiveAchievements,
+      ),
+      child: Scaffold(body: child),
+    ),
+  );
+}
+
+/// Mock settings service for testing.
+///
+/// Uses noSuchMethod to handle all interface methods.
+class _MockSettingsService extends Fake implements SettingsService {}
+
+/// Mock storage service for testing.
+///
+/// Uses noSuchMethod to handle all interface methods.
+class _MockStorageService extends Fake implements StorageService {}
+
+/// Mock achievement service for testing.
+///
+/// Uses noSuchMethod to handle all interface methods.
+class _MockAchievementService extends Fake implements AchievementService {}
