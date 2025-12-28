@@ -39,6 +39,7 @@ class QuizServicesScope extends StatelessWidget {
     this.achievementService,
     this.screenAnalyticsService,
     this.quizAnalyticsService,
+    this.resourceManager,
     required this.child,
   });
 
@@ -57,6 +58,9 @@ class QuizServicesScope extends StatelessWidget {
   /// The quiz analytics service override, or null to inherit from parent.
   final QuizAnalyticsService? quizAnalyticsService;
 
+  /// The resource manager override, or null to inherit from parent.
+  final ResourceManager? resourceManager;
+
   /// The child widget.
   final Widget child;
 
@@ -73,6 +77,7 @@ class QuizServicesScope extends StatelessWidget {
           screenAnalyticsService ?? parentServices.screenAnalyticsService,
       quizAnalyticsService:
           quizAnalyticsService ?? parentServices.quizAnalyticsService,
+      resourceManager: resourceManager ?? parentServices.resourceManager,
     );
 
     return QuizServicesProvider(
