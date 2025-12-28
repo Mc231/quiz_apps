@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
 import 'empty_state_widget.dart';
@@ -76,7 +77,7 @@ enum LeaderboardType {
 }
 
 /// Widget displaying a local leaderboard.
-class LeaderboardWidget extends StatelessWidget {
+class LeaderboardWidget extends StatefulWidget {
   /// Creates a [LeaderboardWidget].
   const LeaderboardWidget({
     super.key,
@@ -87,6 +88,8 @@ class LeaderboardWidget extends StatelessWidget {
     this.maxEntries = 10,
     this.highlightSessionId,
     this.showMedals = true,
+    this.analyticsService,
+    this.categoryId,
   });
 
   /// Leaderboard entries (already sorted by rank).
@@ -110,11 +113,55 @@ class LeaderboardWidget extends StatelessWidget {
   /// Whether to show medal icons for top 3.
   final bool showMedals;
 
+  /// Analytics service for tracking leaderboard views.
+  final AnalyticsService? analyticsService;
+
+  /// Optional category ID for analytics.
+  final String? categoryId;
+
+  @override
+  State<LeaderboardWidget> createState() => _LeaderboardWidgetState();
+}
+
+class _LeaderboardWidgetState extends State<LeaderboardWidget> {
+  bool _viewLogged = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _logLeaderboardViewed();
+  }
+
+  void _logLeaderboardViewed() {
+    if (_viewLogged || widget.analyticsService == null) return;
+    _viewLogged = true;
+
+    // Find user's rank if a highlight session is provided
+    int userRank = 0;
+    if (widget.highlightSessionId != null) {
+      final index = widget.entries.indexWhere(
+        (e) => e.sessionId == widget.highlightSessionId,
+      );
+      if (index >= 0) {
+        userRank = widget.entries[index].rank;
+      }
+    }
+
+    widget.analyticsService!.logEvent(
+      InteractionEvent.leaderboardViewed(
+        leaderboardType: widget.type.name,
+        userRank: userRank,
+        totalEntries: widget.entries.length,
+        categoryId: widget.categoryId,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = QuizL10n.of(context);
-    final displayEntries = entries.take(maxEntries).toList();
+    final displayEntries = widget.entries.take(widget.maxEntries).toList();
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -131,13 +178,13 @@ class LeaderboardWidget extends StatelessWidget {
             child: Row(
               children: [
                 Icon(
-                  _getLeaderboardIcon(type),
+                  _getLeaderboardIcon(widget.type),
                   color: Colors.amber,
                   size: 24,
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  title ?? _getDefaultTitle(type, l10n),
+                  widget.title ?? _getDefaultTitle(widget.type, l10n),
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -200,14 +247,14 @@ class LeaderboardWidget extends StatelessWidget {
     QuizLocalizations l10n,
   ) {
     final theme = Theme.of(context);
-    final isHighlighted = entry.sessionId == highlightSessionId;
+    final isHighlighted = entry.sessionId == widget.highlightSessionId;
 
     return Container(
       color: isHighlighted
           ? theme.primaryColor.withValues(alpha: 0.1)
           : null,
       child: InkWell(
-        onTap: onEntryTap != null ? () => onEntryTap!(entry) : null,
+        onTap: widget.onEntryTap != null ? () => widget.onEntryTap!(entry) : null,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           child: Row(
@@ -262,7 +309,7 @@ class LeaderboardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   _buildScoreBadge(context, entry.score),
-                  if (type == LeaderboardType.fastestPerfect) ...[
+                  if (widget.type == LeaderboardType.fastestPerfect) ...[
                     const SizedBox(height: 4),
                     Text(
                       entry.formattedDuration,
@@ -275,7 +322,7 @@ class LeaderboardWidget extends StatelessWidget {
               ),
 
               // Chevron
-              if (onEntryTap != null) ...[
+              if (widget.onEntryTap != null) ...[
                 const SizedBox(width: 8),
                 Icon(
                   Icons.chevron_right,
@@ -290,7 +337,7 @@ class LeaderboardWidget extends StatelessWidget {
   }
 
   Widget _buildRankBadge(BuildContext context, int rank) {
-    if (showMedals && rank <= 3) {
+    if (widget.showMedals && rank <= 3) {
       final medalColor = switch (rank) {
         1 => const Color(0xFFFFD700), // Gold
         2 => const Color(0xFFC0C0C0), // Silver
