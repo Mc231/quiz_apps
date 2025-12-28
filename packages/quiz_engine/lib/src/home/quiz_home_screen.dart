@@ -541,7 +541,11 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
             session: detailData,
             texts: texts,
             analyticsService: widget.analyticsService,
-            onDelete: () => _deleteSession(sessionWithAnswers.session.id),
+            onDelete: () => _deleteSession(
+              sessionWithAnswers.session.id,
+              quizName: sessionWithAnswers.session.quizName,
+              startTime: sessionWithAnswers.session.startTime,
+            ),
             imageBuilder: _buildQuestionImage,
           ),
         ),
@@ -635,10 +639,26 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   }
 
   /// Deletes a session and refreshes data.
-  Future<void> _deleteSession(String sessionId) async {
+  Future<void> _deleteSession(
+    String sessionId, {
+    String? quizName,
+    DateTime? startTime,
+  }) async {
     if (widget.storageService == null) return;
 
     await widget.storageService!.deleteSession(sessionId);
+
+    // Log analytics event
+    if (quizName != null && startTime != null) {
+      final daysAgo = DateTime.now().difference(startTime).inDays;
+      widget.analyticsService.logEvent(
+        InteractionEvent.sessionDeleted(
+          sessionId: sessionId,
+          quizName: quizName,
+          daysAgo: daysAgo,
+        ),
+      );
+    }
 
     // Refresh data
     _loadHistoryData();
