@@ -151,14 +151,13 @@ class AchievementsTabData {
 /// Integrates PlayScreen, SessionHistoryScreen, and StatisticsScreen
 /// with configurable tabs and navigation.
 ///
-/// When [storageService] is provided, default data loading and session
-/// navigation are enabled, making the widget usage much simpler:
+/// Storage service is obtained from [QuizServicesProvider] via context,
+/// enabling default data loading and session navigation automatically:
 ///
 /// ```dart
-/// // Minimal usage with defaults
+/// // Minimal usage with defaults (services from context)
 /// QuizHomeScreen(
 ///   categories: myCategories,
-///   storageService: storageService,
 ///   onCategorySelected: (category) => navigateToQuiz(category),
 ///   onSettingsPressed: () => openSettings(),
 /// )
@@ -178,17 +177,6 @@ class QuizHomeScreen extends StatefulWidget {
   /// Configuration for the home screen.
   final QuizHomeScreenConfig config;
 
-  /// Storage service for default data loading.
-  ///
-  /// When provided, enables:
-  /// - Automatic history data loading
-  /// - Automatic statistics data loading
-  /// - Default session tap navigation to [SessionDetailScreen]
-  ///
-  /// Custom providers ([historyDataProvider], [statisticsDataProvider])
-  /// take precedence over default loading when both are provided.
-  final StorageService? storageService;
-
   /// Callback when a category is selected in the Play tab.
   final void Function(QuizCategory category)? onCategorySelected;
 
@@ -197,8 +185,8 @@ class QuizHomeScreen extends StatefulWidget {
 
   /// Callback when a session is tapped in History/Statistics.
   ///
-  /// When [storageService] is provided and this is null, default
-  /// navigation to [SessionDetailScreen] is used.
+  /// When storage service is available from context and this is null,
+  /// default navigation to [SessionDetailScreen] is used.
   final void Function(SessionCardData session)? onSessionTap;
 
   /// Callback when "View All Sessions" is tapped in Statistics.
@@ -207,13 +195,13 @@ class QuizHomeScreen extends StatefulWidget {
   /// Data provider for the History tab.
   ///
   /// Called when the History tab is selected or refreshed.
-  /// If null and [storageService] is provided, default loading is used.
+  /// If null, default loading is used via storage service from context.
   final Future<HistoryTabData> Function()? historyDataProvider;
 
   /// Data provider for the Statistics tab.
   ///
   /// Called when the Statistics tab is selected or refreshed.
-  /// If null and [storageService] is provided, default loading is used.
+  /// If null, default loading is used via storage service from context.
   final Future<StatisticsTabData> Function()? statisticsDataProvider;
 
   /// Data provider for the Achievements tab.
@@ -248,12 +236,11 @@ class QuizHomeScreen extends StatefulWidget {
 
   /// Creates a [QuizHomeScreen].
   ///
-  /// Analytics service is obtained from [QuizServicesProvider] via context.
+  /// Services (analytics, storage) are obtained from [QuizServicesProvider] via context.
   const QuizHomeScreen({
     super.key,
     required this.categories,
     this.config = const QuizHomeScreenConfig(),
-    this.storageService,
     this.onCategorySelected,
     this.onSettingsPressed,
     this.onSessionTap,
@@ -283,9 +270,13 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   bool _dashboardLoading = false;
   AchievementsTabData _achievementsData = AchievementsTabData.empty();
   DefaultDataLoader? _dataLoader;
+  bool _dataLoaderInitialized = false;
 
   /// Gets the analytics service from context.
   AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
+  /// Gets the storage service from context.
+  StorageService get _storageService => context.storageService;
 
   List<QuizTab> get _tabs {
     final configTabs = widget.config.tabConfig.tabs;
@@ -293,7 +284,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   }
 
   /// Whether default data loading is enabled.
-  bool get _useDefaults => widget.storageService != null;
+  bool get _useDefaults => _dataLoader != null;
 
   /// Gets the effective history data provider.
   Future<HistoryTabData> Function()? get _effectiveHistoryProvider {
@@ -322,15 +313,22 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _currentIndex = widget.config.tabConfig.initialIndex;
-    if (widget.storageService != null) {
-      _dataLoader = DefaultDataLoader(widget.storageService!);
-    }
-    _loadDataForCurrentTab();
 
-    // Track initial screen view after first frame
+    // Defer data loader initialization and data loading to after first frame
+    // when context is available
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeDataLoader();
+      _loadDataForCurrentTab();
       _trackInitialScreenView();
     });
+  }
+
+  /// Initializes the data loader using storage service from context.
+  void _initializeDataLoader() {
+    if (!_dataLoaderInitialized && mounted) {
+      _dataLoader = DefaultDataLoader(_storageService);
+      _dataLoaderInitialized = true;
+    }
   }
 
   /// Tracks the initial screen view when the home screen loads.
@@ -344,17 +342,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     );
   }
 
-  @override
-  void didUpdateWidget(QuizHomeScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.storageService != oldWidget.storageService) {
-      if (widget.storageService != null) {
-        _dataLoader = DefaultDataLoader(widget.storageService!);
-      } else {
-        _dataLoader = null;
-      }
-    }
-  }
 
   @override
   void dispose() {
@@ -641,9 +628,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     String? quizName,
     DateTime? startTime,
   }) async {
-    if (widget.storageService == null) return;
-
-    await widget.storageService!.deleteSession(sessionId);
+    await _storageService.deleteSession(sessionId);
 
     // Log analytics event
     if (quizName != null && startTime != null) {
