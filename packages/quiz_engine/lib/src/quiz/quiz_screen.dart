@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:shared_services/shared_services.dart' show AnalyticsService, ScreenViewEvent;
+import 'package:shared_services/shared_services.dart'
+    show AnalyticsService, InteractionEvent, ScreenViewEvent;
 
 import '../../quiz_engine.dart';
 import 'quiz_layout.dart';
@@ -151,6 +152,17 @@ class QuizScreenState extends State<QuizScreen> {
     super.dispose();
   }
 
+  /// Extracts progress information from the current quiz state.
+  ///
+  /// Returns a tuple of (questionsAnswered, totalQuestions).
+  (int, int) _getProgressFromState(QuizState? state) {
+    return switch (state) {
+      QuestionState(:final progress, :final total) => (progress, total),
+      AnswerFeedbackState(:final progress, :final total) => (progress, total),
+      _ => (0, 0),
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = QuizL10n.of(context);
@@ -180,6 +192,18 @@ class QuizScreenState extends State<QuizScreen> {
 
             // Show exit confirmation dialog if enabled
             if (_showExitConfirmation) {
+              // Get progress info for analytics
+              final (questionsAnswered, totalQuestions) = _getProgressFromState(state);
+
+              // Log exit dialog shown
+              widget.screenAnalyticsService.logEvent(
+                InteractionEvent.exitDialogShown(
+                  quizId: _bloc.config.quizId,
+                  questionsAnswered: questionsAnswered,
+                  totalQuestions: totalQuestions,
+                ),
+              );
+
               final shouldExit = await ExitConfirmationDialog.show(
                 context,
                 title: l10n.exitDialogTitle,
@@ -187,12 +211,32 @@ class QuizScreenState extends State<QuizScreen> {
                 confirmButtonText: l10n.exitDialogConfirm,
                 cancelButtonText: l10n.exitDialogCancel,
               );
+
               if (shouldExit && context.mounted) {
+                // Log exit dialog confirmed
+                widget.screenAnalyticsService.logEvent(
+                  InteractionEvent.exitDialogConfirmed(
+                    quizId: _bloc.config.quizId,
+                    questionsAnswered: questionsAnswered,
+                    totalQuestions: totalQuestions,
+                    timeSpent: _bloc.sessionDuration,
+                  ),
+                );
+
                 // Cancel the quiz (deletes session if no answers given)
                 await _bloc.cancelQuiz();
                 if (context.mounted) {
                   Navigator.of(context).pop();
                 }
+              } else {
+                // Log exit dialog cancelled
+                widget.screenAnalyticsService.logEvent(
+                  InteractionEvent.exitDialogCancelled(
+                    quizId: _bloc.config.quizId,
+                    questionsAnswered: questionsAnswered,
+                    totalQuestions: totalQuestions,
+                  ),
+                );
               }
             }
           },
