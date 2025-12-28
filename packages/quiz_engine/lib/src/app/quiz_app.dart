@@ -440,7 +440,6 @@ class _QuizAppState extends State<QuizApp> {
     return AchievementNotifications(
       controller: _notificationController,
       child: child,
-      analyticsService: _screenAnalyticsService,
     );
   }
 
