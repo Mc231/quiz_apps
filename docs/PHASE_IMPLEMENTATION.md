@@ -2969,43 +2969,45 @@ extension QuizServicesContext on BuildContext {
 
 ---
 
-### Sprint 10.7: Challenges & Practice Widgets
+### Sprint 10.7: Challenges & Practice Widgets ✅
 
 **Goal:** Migrate challenges and practice widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Remove service constructor parameters from `ChallengesScreen`, use `context.screenAnalyticsService`, `context.settingsService`, `context.storageService`
-- [ ] Remove service constructor parameters from `ChallengesContent`, use context
-- [ ] Remove service constructor parameters from `_PracticeTabContent`, use context
-- [ ] Remove service constructor parameters from `_PracticeQuizScreen`, use context
-- [ ] Update widget tests to use `QuizServicesProvider` wrapper
+- [x] Remove service constructor parameters from `ChallengesScreen`, use `context.screenAnalyticsService`, `context.settingsService`, `context.storageService`
+- [x] Remove service constructor parameters from `ChallengesContent`, use context
+- [x] Remove service constructor parameters from `_PracticeTabContent`, use context
+- [x] Remove service constructor parameters from `_PracticeQuizScreen`, use context
+- [x] Update widget tests to use `QuizServicesProvider` wrapper
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/screens/challenges_screen.dart`
-- `packages/quiz_engine/lib/src/app/quiz_app.dart` (practice widgets are internal)
-- `packages/quiz_engine/test/screens/challenges_screen_test.dart` (if exists)
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/screens/challenges_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` (practice widgets are internal)
 
 ---
 
-### Sprint 10.8: Quiz & Results Widgets
+### Sprint 10.8: Quiz & Results Widgets ✅
 
 **Goal:** Migrate core quiz widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Remove `analyticsService` constructor parameter from `QuizScreen`, use `context.screenAnalyticsService`
-- [ ] Remove service constructor parameters from `QuizWidget`, use context
-- [ ] Remove service constructor parameters from `QuizWidgetEntry`, use context
-- [ ] Remove `analyticsService` constructor parameter from `QuizResultsScreen`, use `context.screenAnalyticsService`
-- [ ] Update `QuizAnalyticsAdapter` if needed
-- [ ] Update widget tests to use `QuizServicesProvider` wrapper
+- [x] Remove `analyticsService` constructor parameter from `QuizScreen`, use `context.screenAnalyticsService`
+- [x] Remove `screenAnalyticsService` constructor parameter from `QuizWidget`, use context
+- [x] Remove `screenAnalyticsService` constructor parameter from `QuizWidgetEntry`
+- [x] Remove `analyticsService` constructor parameter from `QuizResultsScreen`, use `context.screenAnalyticsService`
+- [x] Remove `analyticsService` constructor parameter from `QuizLifecycleHandler`, use `context.screenAnalyticsService`
+- [x] Update widget tests to use `QuizServicesProvider` wrapper
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
-- `packages/quiz_engine/lib/src/quiz_widget.dart`
-- `packages/quiz_engine/lib/src/quiz_widget_entry.dart`
-- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
-- `packages/quiz_engine/lib/src/analytics/quiz_analytics_adapter.dart`
-- `packages/quiz_engine/test/quiz/quiz_screen_test.dart` (if exists)
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/quiz_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/quiz_widget_entry.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/quiz_lifecycle_handler.dart`
+- ✅ `packages/quiz_engine/test/widgets/quiz_screen_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/quiz_wdiget_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/quiz_wdiget_entry_test.dart`
+- ✅ `packages/quiz_engine/test/screens/session_detail_screen_test.dart`
 
 ---
 
@@ -3049,16 +3051,16 @@ extension QuizServicesContext on BuildContext {
 
 ### Phase 10 Summary
 
-| Sprint | Status | Description | Files |
-|--------|--------|-------------|-------|
+| Sprint | Status | Description                    | Files       |
+|--------|--------|--------------------------------|-------------|
 | 10.1   | ✅     | QuizServices Foundation        | 8 new files |
 | 10.2   | ✅     | QuizApp Integration            | 4 files     |
 | 10.3   | ✅     | Home & Navigation Widgets      | 3 files     |
-| 10.4   | ⏳     | Settings Widgets               | 4 files     |
-| 10.5   | ⏳     | History & Statistics Widgets   | 5 files     |
-| 10.6   | ⏳     | Achievements Widgets           | 4 files     |
-| 10.7   | ⏳     | Challenges & Practice Widgets  | 3 files     |
-| 10.8   | ⏳     | Quiz & Results Widgets         | 6 files     |
+| 10.4   | ✅     | Settings Widgets               | 4 files     |
+| 10.5   | ✅     | History & Statistics Widgets   | 5 files     |
+| 10.6   | ✅     | Achievements Widgets           | 4 files     |
+| 10.7   | ✅     | Challenges & Practice Widgets  | 2 files     |
+| 10.8   | ✅     | Quiz & Results Widgets         | 9 files     |
 | 10.9   | ⏳     | Misc Widgets & Cleanup         | Variable    |
 | 10.10  | ⏳     | Documentation & Final Polish   | 3 files     |
 
