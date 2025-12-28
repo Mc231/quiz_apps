@@ -181,7 +181,6 @@ class AchievementNotificationController {
             style: style,
             hapticService: hapticService,
             audioService: audioService,
-            analyticsService: analyticsService,
             shownAt: _currentNotificationShownAt,
             onDismiss: () => _onNotificationDismissed(achievement),
           ),
