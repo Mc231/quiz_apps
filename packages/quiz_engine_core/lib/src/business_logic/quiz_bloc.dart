@@ -175,8 +175,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
     // Determine initial lives - use ResourceManager if enabled
     int? initialLives = _config.modeConfig.lives;
-    if (useResourceManager && resourceManager != null && initialLives != null) {
-      // Use ResourceManager's available lives count directly
+    if (useResourceManager && resourceManager != null) {
+      // When using ResourceManager, always use its lives count (overrides config)
       initialLives = resourceManager!.getAvailableCount(ResourceType.lives());
     }
 
