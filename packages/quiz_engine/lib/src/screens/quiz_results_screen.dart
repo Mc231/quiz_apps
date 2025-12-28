@@ -457,7 +457,6 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
           body: SessionDetailScreen(
             session: _createSessionDetailData(l10n),
             texts: _createSessionDetailTexts(l10n),
-            analyticsService: widget.analyticsService,
             imageBuilder: widget.imageBuilder,
           ),
         ),
