@@ -148,11 +148,10 @@ void main() {
       final data = createTestData();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             showScaffold: true,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -175,10 +174,9 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -193,10 +191,9 @@ void main() {
       final data = createTestData();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -213,11 +210,10 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             config: const AchievementsScreenConfig(showHeader: false),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -231,11 +227,10 @@ void main() {
       final data = createTestData();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             config: const AchievementsScreenConfig(showFilterChips: false),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -247,11 +242,10 @@ void main() {
       final data = createTestData();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             config: const AchievementsScreenConfig(showTierFilter: true),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -264,11 +258,10 @@ void main() {
       final data = createTestData(unlockedCount: 3, totalCount: 5);
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             config: const AchievementsScreenConfig(groupByCategory: false),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -281,11 +274,10 @@ void main() {
       final data = createTestData(unlockedCount: 3, totalCount: 10);
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             config: const AchievementsScreenConfig(groupByCategory: false),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -308,7 +300,7 @@ void main() {
       final data = createTestData(unlockedCount: 1, totalCount: 1);
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             config: const AchievementsScreenConfig(
@@ -317,7 +309,6 @@ void main() {
               showFilterChips: false,
             ),
             onAchievementTap: (achievement) => tappedAchievement = achievement,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -334,11 +325,10 @@ void main() {
       final data = createTestData();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             onRefresh: () async {},
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -353,12 +343,11 @@ void main() {
       final data = createTestData();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             config: const AchievementsScreenConfig(enablePullToRefresh: false),
             onRefresh: () async {},
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -371,12 +360,11 @@ void main() {
       final data = createTestData();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
             showScaffold: true,
             appBar: AppBar(title: const Text('Custom Title')),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -396,10 +384,9 @@ void main() {
       final data = createTestData(unlockedCount: 10, totalCount: 20);
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -434,10 +421,9 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -474,10 +460,9 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreen(
             data: data,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -501,10 +486,9 @@ void main() {
       final completer = Completer<AchievementsScreenData>();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreenBuilder(
             dataLoader: () => completer.future,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -518,9 +502,8 @@ void main() {
 
     testWidgets('shows data after loading', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreenBuilder(
-            analyticsService: NoOpAnalyticsService(),
             dataLoader:
                 () async => AchievementsScreenData(
                   achievements: [
@@ -556,9 +539,8 @@ void main() {
 
     testWidgets('shows error state on failure', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementsScreenBuilder(
-            analyticsService: NoOpAnalyticsService(),
             dataLoader: () async => throw Exception('Test error'),
           ),
         ),
