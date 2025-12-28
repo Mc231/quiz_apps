@@ -195,6 +195,17 @@ abstract class QuizAnalyticsService {
     required Duration duration,
   });
 
+  // ============ Timer Events ============
+
+  /// Tracks when timer reaches warning threshold.
+  Future<void> trackTimerWarning({
+    required String quizId,
+    required Question question,
+    required int questionIndex,
+    required int secondsRemaining,
+    required String warningLevel,
+  });
+
   /// Disposes of resources.
   void dispose();
 }
@@ -369,6 +380,15 @@ class NoOpQuizAnalyticsService implements QuizAnalyticsService {
     required int correctAnswers,
     required double scorePercentage,
     required Duration duration,
+  }) async {}
+
+  @override
+  Future<void> trackTimerWarning({
+    required String quizId,
+    required Question question,
+    required int questionIndex,
+    required int secondsRemaining,
+    required String warningLevel,
   }) async {}
 
   @override
