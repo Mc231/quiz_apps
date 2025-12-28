@@ -93,6 +93,7 @@ sealed class ScreenViewEvent extends AnalyticsEvent {
     required int completedCount,
   }) = ChallengesScreenView;
 
+
   /// Practice mode screen.
   factory ScreenViewEvent.practice({
     required String categoryId,
