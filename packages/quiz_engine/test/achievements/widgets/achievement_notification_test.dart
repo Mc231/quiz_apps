@@ -72,9 +72,8 @@ void main() {
       final achievement = createTestAchievement(icon: '⭐');
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementNotification(
-            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -89,9 +88,8 @@ void main() {
       final achievement = createTestAchievement(name: 'First Steps');
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementNotification(
-            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -106,9 +104,8 @@ void main() {
       final achievement = createTestAchievement();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementNotification(
-            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -123,9 +120,8 @@ void main() {
       final achievement = createTestAchievement(tier: AchievementTier.rare);
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementNotification(
-            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -141,9 +137,8 @@ void main() {
       // Uncommon = 25 points
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementNotification(
-            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
@@ -159,9 +154,8 @@ void main() {
       final achievement = createTestAchievement();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementNotification(
-            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
             onDismiss: () => dismissed = true,
@@ -181,9 +175,8 @@ void main() {
       final achievement = createTestAchievement();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementNotification(
-            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
             onDismiss: () => dismissed = true,
@@ -203,9 +196,8 @@ void main() {
       final achievement = createTestAchievement();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementNotification(
-            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: const AchievementNotificationStyle(
               showGlow: true,
@@ -225,9 +217,8 @@ void main() {
       final achievement = createTestAchievement();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           AchievementNotification(
-            analyticsService: NoOpAnalyticsService(),
             achievement: achievement,
             style: testStyle,
           ),
