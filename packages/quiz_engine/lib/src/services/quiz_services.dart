@@ -17,6 +17,7 @@ import 'package:shared_services/shared_services.dart';
 ///   achievementService: achievementService,
 ///   screenAnalyticsService: analyticsService,
 ///   quizAnalyticsService: quizAnalyticsService,
+///   resourceManager: resourceManager,
 /// );
 ///
 /// // Wrap your widget tree
@@ -43,6 +44,7 @@ class QuizServices {
     required this.achievementService,
     required this.screenAnalyticsService,
     required this.quizAnalyticsService,
+    required this.resourceManager,
   });
 
   /// Creates a [QuizServices] with no-op implementations for analytics.
@@ -52,6 +54,7 @@ class QuizServices {
     required SettingsService settingsService,
     required StorageService storageService,
     required AchievementService achievementService,
+    required ResourceManager resourceManager,
   }) {
     return QuizServices(
       settingsService: settingsService,
@@ -59,6 +62,7 @@ class QuizServices {
       achievementService: achievementService,
       screenAnalyticsService: NoOpAnalyticsService(),
       quizAnalyticsService: NoOpQuizAnalyticsService(),
+      resourceManager: resourceManager,
     );
   }
 
@@ -77,6 +81,16 @@ class QuizServices {
   /// Service for quiz-specific analytics events.
   final QuizAnalyticsService quizAnalyticsService;
 
+  /// Resource manager for tracking hints, lives, and skips.
+  ///
+  /// Manages:
+  /// - Daily free limits with midnight reset
+  /// - Permanent purchased resources
+  /// - Resource consumption during gameplay
+  ///
+  /// For testing or when persistence isn't needed, use [InMemoryResourceRepository].
+  final ResourceManager resourceManager;
+
   /// Creates a copy of this [QuizServices] with the given fields replaced.
   QuizServices copyWith({
     SettingsService? settingsService,
@@ -84,6 +98,7 @@ class QuizServices {
     AchievementService? achievementService,
     AnalyticsService? screenAnalyticsService,
     QuizAnalyticsService? quizAnalyticsService,
+    ResourceManager? resourceManager,
   }) {
     return QuizServices(
       settingsService: settingsService ?? this.settingsService,
@@ -92,6 +107,7 @@ class QuizServices {
       screenAnalyticsService:
           screenAnalyticsService ?? this.screenAnalyticsService,
       quizAnalyticsService: quizAnalyticsService ?? this.quizAnalyticsService,
+      resourceManager: resourceManager ?? this.resourceManager,
     );
   }
 
@@ -104,7 +120,8 @@ class QuizServices {
           storageService == other.storageService &&
           achievementService == other.achievementService &&
           screenAnalyticsService == other.screenAnalyticsService &&
-          quizAnalyticsService == other.quizAnalyticsService;
+          quizAnalyticsService == other.quizAnalyticsService &&
+          resourceManager == other.resourceManager;
 
   @override
   int get hashCode => Object.hash(
@@ -113,5 +130,6 @@ class QuizServices {
         achievementService,
         screenAnalyticsService,
         quizAnalyticsService,
+        resourceManager,
       );
 }
