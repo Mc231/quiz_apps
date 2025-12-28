@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../../l10n/quiz_localizations.dart';
+import '../../services/quiz_services_context.dart';
 import '../../theme/quiz_animations.dart';
 
 // Re-export for convenience
@@ -54,6 +55,8 @@ class AchievementNotificationStyle {
 /// Shows the achievement icon, name, and points earned with
 /// celebration animations.
 ///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
+///
 /// Example:
 /// ```dart
 /// AchievementNotification(
@@ -71,7 +74,6 @@ class AchievementNotification extends StatefulWidget {
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
-    required this.analyticsService,
     this.shownAt,
   });
 
@@ -93,9 +95,6 @@ class AchievementNotification extends StatefulWidget {
   /// Optional audio service for sound effects.
   final AudioService? audioService;
 
-  /// Optional analytics service for tracking tap events.
-  final AnalyticsService analyticsService;
-
   /// When the notification was shown (for calculating time to tap).
   final DateTime? shownAt;
 
@@ -106,6 +105,9 @@ class AchievementNotification extends StatefulWidget {
 
 class _AchievementNotificationState extends State<AchievementNotification>
     with TickerProviderStateMixin {
+  // Service accessor via context
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
   late final AnimationController _slideController;
   late final AnimationController _scaleController;
   late final AnimationController _glowController;
@@ -195,7 +197,7 @@ class _AchievementNotificationState extends State<AchievementNotification>
     final shownAt = widget.shownAt;
     if (shownAt != null) {
       final timeToTap = DateTime.now().difference(shownAt);
-      widget.analyticsService.logEvent(
+      _analyticsService.logEvent(
         AchievementEvent.notificationTapped(
           achievementId: widget.achievement.id,
           achievementName: widget.achievement.id, // Name requires context
