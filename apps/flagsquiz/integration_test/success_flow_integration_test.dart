@@ -28,13 +28,24 @@ void main() {
 
   /// Creates the FlagsQuiz app widget for testing.
   Widget createTestApp(SettingsService settingsService) {
+    final storageService = sl.get<StorageService>();
+    final achievementService = sl.get<AchievementService>();
+    final resourceManager = ResourceManager(
+      config: ResourceConfig.standard(),
+      repository: InMemoryResourceRepository(),
+    );
+
     return QuizApp(
-      settingsService: settingsService,
+      services: QuizServices(
+        settingsService: settingsService,
+        storageService: storageService,
+        achievementService: achievementService,
+        screenAnalyticsService: NoOpAnalyticsService(),
+        quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
+        resourceManager: resourceManager,
+      ),
       categories: createFlagsCategories(CountryCounts.forTest),
       dataProvider: const FlagsDataProvider(),
-      storageService: sl.get<StorageService>(),
-      screenAnalyticsService: NoOpAnalyticsService(),
-      quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
       config: QuizAppConfig(
         title: 'Flags Quiz',
         appLocalizationDelegates: AppLocalizations.localizationsDelegates,
