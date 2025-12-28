@@ -35,12 +35,14 @@ Widget wrapWithServices(
   SettingsService? settingsService,
   StorageService? storageService,
   AchievementService? achievementService,
+  ResourceManager? resourceManager,
 }) {
   final effectiveScreenAnalytics = screenAnalyticsService ?? NoOpAnalyticsService();
   final effectiveQuizAnalytics = quizAnalyticsService ?? NoOpQuizAnalyticsService();
   final effectiveSettings = settingsService ?? _MockSettingsService();
   final effectiveStorage = storageService ?? _MockStorageService();
   final effectiveAchievements = achievementService ?? _MockAchievementService();
+  final effectiveResourceManager = resourceManager ?? _createDefaultResourceManager();
 
   return MaterialApp(
     localizationsDelegates: const [
@@ -57,9 +59,18 @@ Widget wrapWithServices(
         settingsService: effectiveSettings,
         storageService: effectiveStorage,
         achievementService: effectiveAchievements,
+        resourceManager: effectiveResourceManager,
       ),
       child: Scaffold(body: child),
     ),
+  );
+}
+
+/// Creates a default ResourceManager with in-memory storage for testing.
+ResourceManager _createDefaultResourceManager() {
+  return ResourceManager(
+    config: ResourceConfig.standard(),
+    repository: InMemoryResourceRepository(),
   );
 }
 
