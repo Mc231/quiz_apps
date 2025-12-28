@@ -8,6 +8,7 @@ import '../models/quiz_category.dart';
 import '../models/quiz_data_provider.dart' as models;
 import '../quiz_widget.dart';
 import '../quiz_widget_entry.dart';
+import '../services/quiz_services_context.dart';
 import '../widgets/challenge_list.dart';
 
 /// A screen that displays challenge modes and handles the challenge flow.
@@ -16,14 +17,17 @@ import '../widgets/challenge_list.dart';
 /// 1. Shows a category picker dialog
 /// 2. Starts the quiz with the challenge configuration
 ///
+/// Services are obtained from [QuizServicesProvider] via context:
+/// - `context.settingsService` for user settings
+/// - `context.screenAnalyticsService` for analytics tracking
+/// - `context.storageService` for persisting results
+///
 /// Example:
 /// ```dart
 /// ChallengesScreen(
 ///   challenges: FlagsChallenges.all,
 ///   categories: allCategories,
 ///   dataProvider: FlagsDataProvider(),
-///   settingsService: settingsService,
-///   storageService: storageService,
 /// )
 /// ```
 class ChallengesScreen extends StatefulWidget {
@@ -33,9 +37,6 @@ class ChallengesScreen extends StatefulWidget {
     required this.challenges,
     required this.categories,
     required this.dataProvider,
-    required this.settingsService,
-    required this.analyticsService,
-    this.storageService,
     this.listConfig = const ChallengeListConfig(),
     this.categoryPickerTitle,
     this.onChallengeStarted,
@@ -51,15 +52,6 @@ class ChallengesScreen extends StatefulWidget {
 
   /// Data provider for loading questions.
   final models.QuizDataProvider dataProvider;
-
-  /// Settings service for applying user settings.
-  final SettingsService settingsService;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
-
-  /// Optional storage service for persisting results.
-  final StorageService? storageService;
 
   /// Configuration for the challenge list.
   final ChallengeListConfig listConfig;
@@ -85,27 +77,34 @@ class ChallengesScreen extends StatefulWidget {
 }
 
 class _ChallengesScreenState extends State<ChallengesScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _logScreenView();
-  }
+  // Service accessors via context
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+  SettingsService get _settingsService => context.settingsService;
+  StorageService get _storageService => context.storageService;
 
-  void _logScreenView() {
-    widget.analyticsService.logEvent(
-      ScreenViewEvent.challenges(
-        challengeCount: widget.challenges.length,
-        completedCount: widget.completedChallengeCount,
-      ),
-    );
-  }
+  bool _screenViewLogged = false;
 
   @override
   Widget build(BuildContext context) {
+    // Log screen view on first build when context is available
+    if (!_screenViewLogged) {
+      _screenViewLogged = true;
+      _logScreenView();
+    }
+
     return ChallengeListWidget(
       challenges: widget.challenges,
       config: widget.listConfig,
       onChallengeSelected: (challenge) => _onChallengeSelected(context, challenge),
+    );
+  }
+
+  void _logScreenView() {
+    _analyticsService.logEvent(
+      ScreenViewEvent.challenges(
+        challengeCount: widget.challenges.length,
+        completedCount: widget.completedChallengeCount,
+      ),
     );
   }
 
@@ -141,7 +140,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     widget.onChallengeStarted?.call(challenge, category);
 
     // Log challenge selected event
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       InteractionEvent.categorySelected(
         categoryId: category.id,
         categoryName: category.title(context),
@@ -169,21 +168,18 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     );
 
     // Create storage adapter
-    QuizStorageAdapter? storageAdapter;
-    if (widget.storageService != null) {
-      storageAdapter = QuizStorageAdapter(widget.storageService!);
-    }
+    final storageAdapter = QuizStorageAdapter(_storageService);
 
     // Create analytics adapter
-    final quizAnalyticsAdapter = QuizAnalyticsAdapter(widget.analyticsService);
+    final quizAnalyticsAdapter = QuizAnalyticsAdapter(_analyticsService);
 
     // Create config manager
     // Note: showAnswerFeedback comes from challenge mode, falling back to category
     final configManager = ConfigManager(
       defaultConfig: configWithStorage,
       getSettings: () => {
-        'soundEnabled': widget.settingsService.currentSettings.soundEnabled,
-        'hapticEnabled': widget.settingsService.currentSettings.hapticEnabled,
+        'soundEnabled': _settingsService.currentSettings.soundEnabled,
+        'hapticEnabled': _settingsService.currentSettings.hapticEnabled,
         'showAnswerFeedback': challenge.showAnswerFeedback,
       },
     );
@@ -201,7 +197,6 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
               storageService: storageAdapter,
               quizAnalyticsService: quizAnalyticsAdapter,
               onQuizCompleted: widget.onQuizCompleted,
-              screenAnalyticsService: widget.analyticsService,
             ),
           ),
         ),
@@ -282,6 +277,8 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
 ///
 /// This widget receives all state and callbacks externally, making it
 /// suitable for use with [ChallengesBloc] via [ChallengesBuilder].
+///
+/// Services are obtained from [QuizServicesProvider] via context.
 class ChallengesContent extends StatelessWidget {
   /// Creates a [ChallengesContent].
   const ChallengesContent({
@@ -289,7 +286,6 @@ class ChallengesContent extends StatelessWidget {
     required this.challenges,
     required this.categories,
     required this.onChallengeSelected,
-    required this.analyticsService,
     this.listConfig = const ChallengeListConfig(),
     this.isRefreshing = false,
     this.onRefresh,
@@ -306,9 +302,6 @@ class ChallengesContent extends StatelessWidget {
   /// Callback when a challenge and category are selected.
   final void Function(ChallengeMode challenge, QuizCategory category)
       onChallengeSelected;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
 
   /// Configuration for the challenge list.
   final ChallengeListConfig listConfig;
