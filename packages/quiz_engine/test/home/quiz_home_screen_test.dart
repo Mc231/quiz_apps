@@ -5,8 +5,10 @@ import 'package:quiz_engine/src/home/quiz_home_screen.dart';
 import 'package:quiz_engine/src/l10n/quiz_localizations_delegate.dart';
 import 'package:quiz_engine/src/models/quiz_category.dart';
 import 'package:quiz_engine/src/screens/statistics_screen.dart';
+import 'package:quiz_engine/src/services/quiz_services_provider.dart';
 import 'package:quiz_engine/src/widgets/session_card.dart';
-import 'package:shared_services/shared_services.dart';
+
+import '../services/quiz_services_test_helper.dart';
 
 void main() {
   final testCategories = [
@@ -30,13 +32,16 @@ void main() {
     required Widget child,
     Size size = const Size(400, 800),
   }) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        QuizLocalizationsDelegate(),
-      ],
-      home: MediaQuery(
-        data: MediaQueryData(size: size),
-        child: child,
+    return QuizServicesProvider(
+      services: createMockQuizServices(),
+      child: MaterialApp(
+        localizationsDelegates: const [
+          QuizLocalizationsDelegate(),
+        ],
+        home: MediaQuery(
+          data: MediaQueryData(size: size),
+          child: child,
+        ),
       ),
     );
   }
@@ -47,7 +52,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -66,7 +70,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -83,7 +86,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -99,7 +101,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -121,7 +122,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
             onCategorySelected: (category) => selectedCategory = category,
           ),
@@ -143,7 +143,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: const QuizHomeScreenConfig(
               showSettingsInAppBar: true,
             ),
@@ -166,7 +165,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
             isPlayLoading: true,
           ),
@@ -183,7 +181,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig.allTabs(),
             ),
@@ -204,7 +201,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig.allTabs(),
             ),
@@ -226,7 +222,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig.allTabs(),
             ),
@@ -327,7 +322,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig(
               tabConfig: QuizTabConfig(
                 tabs: [
@@ -359,7 +353,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
           ),
         ),
@@ -377,7 +370,6 @@ void main() {
         buildTestWidget(
           child: QuizHomeScreen(
             categories: testCategories,
-            analyticsService: NoOpAnalyticsService(),
             config: QuizHomeScreenConfig.defaultConfig(),
             historyDataProvider: () async {
               return HistoryTabData(
