@@ -538,7 +538,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
           body: SessionDetailScreen(
             session: detailData,
             texts: texts,
-            analyticsService: _analyticsService,
             onDelete: () => _deleteSession(
               sessionWithAnswers.session.id,
               quizName: sessionWithAnswers.session.quizName,
@@ -846,7 +845,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     return SessionHistoryScreen(
       sessions: _historyData.sessions,
       texts: texts,
-      analyticsService: _analyticsService,
       isLoading: _historyData.isLoading,
       onSessionTap: _handleSessionTap,
       onRefresh: _effectiveHistoryProvider != null ? _loadHistoryData : null,
@@ -865,7 +863,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
 
     return StatisticsDashboardScreen(
       data: dashboardData,
-      analyticsService: _analyticsService,
       isLoading: _dashboardLoading || _statisticsData.isLoading,
       onSessionTap: _handleSessionTap,
       onViewAllSessions: widget.onViewAllSessions,
@@ -909,7 +906,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     return AchievementsScreen(
       data: _achievementsData.screenData,
       onAchievementTap: widget.onAchievementTap,
-      analyticsService: _analyticsService,
       onRefresh: widget.achievementsDataProvider != null
           ? _loadAchievementsData
           : null,
@@ -1067,7 +1063,6 @@ class HomeTabContent extends StatelessWidget {
     return SessionHistoryScreen(
       sessions: historySessions,
       texts: historyTexts,
-      analyticsService: context.screenAnalyticsService,
       isLoading: isHistoryLoading,
       onSessionTap: onSessionTap ?? (_) {},
       onRefresh: onRefreshHistory,
@@ -1082,7 +1077,6 @@ class HomeTabContent extends StatelessWidget {
 
     return StatisticsDashboardScreen(
       data: dashboardData ?? StatisticsDashboardData.empty,
-      analyticsService: context.screenAnalyticsService,
       isLoading: isDashboardLoading,
       onSessionTap: onSessionTap,
       onViewAllSessions: onViewAllSessions,
@@ -1100,7 +1094,6 @@ class HomeTabContent extends StatelessWidget {
       data: achievementsData ?? const AchievementsScreenData.empty(),
       onAchievementTap: onAchievementTap,
       onRefresh: onRefreshAchievements,
-      analyticsService: context.screenAnalyticsService,
     );
   }
 
