@@ -2544,6 +2544,29 @@ await compositeService.logEvent(QuizEvent.started(...));
 
 ---
 
+### Sprint 9.1.11: Analytics Integration - Resource & Hint Buttons
+
+**Goal:** Complete analytics integration for resource buttons with quiz context.
+
+**Background:** `ResourceEvent.buttonTapped` and `HintEvent.unavailableTapped` require quiz context (quizId, questionIndex) that is not available in `GameResourceButton`. These events need to be tracked at the parent widget level where the button callbacks are defined.
+
+**Tasks:**
+- [ ] Track `ResourceEvent.buttonTapped` when resource buttons are tapped (lives, 50/50, skip)
+- [ ] Track `HintEvent.unavailableTapped` when hint button is tapped with no hints available
+- [ ] Pass quiz context from `QuizScreen` to button callbacks
+- [ ] Write integration tests
+
+**Implementation Notes:**
+- The `GameResourceButton` widget doesn't have access to `quizId` or `questionIndex`
+- Analytics should be logged in the callback handlers in `QuizScreen` or `QuizBloc`
+- Consider using `QuizFeedbackProvider` pattern for passing analytics service
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Add analytics logging in button callbacks
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Alternative: track in BLoC event handlers
+
+---
+
 ### Sprint 9.2: Ads Service
 
 **Goal:** Implement ads service with AdMob integration.
