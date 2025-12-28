@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
+import '../services/quiz_services_context.dart';
 import 'empty_state_widget.dart';
 
 /// Entry in a leaderboard.
@@ -77,6 +78,8 @@ enum LeaderboardType {
 }
 
 /// Widget displaying a local leaderboard.
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class LeaderboardWidget extends StatefulWidget {
   /// Creates a [LeaderboardWidget].
   const LeaderboardWidget({
@@ -88,7 +91,6 @@ class LeaderboardWidget extends StatefulWidget {
     this.maxEntries = 10,
     this.highlightSessionId,
     this.showMedals = true,
-    this.analyticsService,
     this.categoryId,
   });
 
@@ -113,9 +115,6 @@ class LeaderboardWidget extends StatefulWidget {
   /// Whether to show medal icons for top 3.
   final bool showMedals;
 
-  /// Analytics service for tracking leaderboard views.
-  final AnalyticsService? analyticsService;
-
   /// Optional category ID for analytics.
   final String? categoryId;
 
@@ -133,7 +132,7 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
   }
 
   void _logLeaderboardViewed() {
-    if (_viewLogged || widget.analyticsService == null) return;
+    if (_viewLogged) return;
     _viewLogged = true;
 
     // Find user's rank if a highlight session is provided
@@ -147,7 +146,7 @@ class _LeaderboardWidgetState extends State<LeaderboardWidget> {
       }
     }
 
-    widget.analyticsService!.logEvent(
+    context.screenAnalyticsService.logEvent(
       InteractionEvent.leaderboardViewed(
         leaderboardType: widget.type.name,
         userRank: userRank,
