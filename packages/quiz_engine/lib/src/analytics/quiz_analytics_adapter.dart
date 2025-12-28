@@ -273,6 +273,43 @@ class QuizAnalyticsAdapter implements QuizAnalyticsService {
     ));
   }
 
+  @override
+  Future<void> trackOptionSelected({
+    required String quizId,
+    required Question question,
+    required int questionIndex,
+    required QuestionEntry selectedOption,
+    required int optionIndex,
+    required Duration timeSinceDisplayed,
+  }) async {
+    await _analytics.logEvent(QuestionEvent.optionSelected(
+      quizId: quizId,
+      questionId: _getQuestionId(question, questionIndex),
+      questionIndex: questionIndex,
+      selectedOption: _getEntryIdentifier(selectedOption),
+      optionIndex: optionIndex,
+      timeSinceDisplayed: timeSinceDisplayed,
+      isFirstSelection: true, // Always true since we submit immediately
+    ));
+  }
+
+  @override
+  Future<void> trackFeedbackShown({
+    required String quizId,
+    required Question question,
+    required int questionIndex,
+    required bool wasCorrect,
+    required Duration feedbackDuration,
+  }) async {
+    await _analytics.logEvent(QuestionEvent.feedbackShown(
+      quizId: quizId,
+      questionId: _getQuestionId(question, questionIndex),
+      questionIndex: questionIndex,
+      wasCorrect: wasCorrect,
+      feedbackDuration: feedbackDuration,
+    ));
+  }
+
   // ============ Hint Events ============
 
   @override
