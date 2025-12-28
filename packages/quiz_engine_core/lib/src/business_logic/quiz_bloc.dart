@@ -208,6 +208,16 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _timerManager.cancelQuestionTimer();
     final timeSpentSeconds = _timerManager.stopQuestionStopwatch();
 
+    // Track option selected
+    final optionIndex = currentQuestion.options.indexOf(selectedItem);
+    await _analyticsManager.trackOptionSelected(
+      question: currentQuestion,
+      questionIndex: _progressTracker.currentProgress,
+      selectedOption: selectedItem,
+      optionIndex: optionIndex,
+      timeSinceDisplayed: Duration(seconds: timeSpentSeconds),
+    );
+
     // Process the answer
     final result = _answerProcessor.processUserAnswer(selectedItem, currentQuestion);
 
@@ -257,10 +267,20 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
     // Show feedback if enabled
     if (_config.modeConfig.showAnswerFeedback) {
-      _emitFeedbackState(selectedItem, result.isCorrect);
-      await Future.delayed(
-        Duration(milliseconds: _config.uiBehaviorConfig.answerFeedbackDuration),
+      final feedbackDuration = Duration(
+        milliseconds: _config.uiBehaviorConfig.answerFeedbackDuration,
       );
+      _emitFeedbackState(selectedItem, result.isCorrect);
+
+      // Track feedback shown
+      await _analyticsManager.trackFeedbackShown(
+        question: currentQuestion,
+        questionIndex: _progressTracker.currentProgress - 1,
+        wasCorrect: result.isCorrect,
+        feedbackDuration: feedbackDuration,
+      );
+
+      await Future.delayed(feedbackDuration);
     }
 
     _pickQuestion();
