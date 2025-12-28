@@ -22,7 +22,7 @@
 | Phase 8 | Achievements & Core Features | ✅ Completed (12/12 sprints)                    |
 | Phase 8.5 | Production Polish | ✅ Completed (7/7 sprints)                      |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | 🔄 In Progress (Analytics ✅), Ads/IAP pending) |
-| Phase 10 | QuizServices DI Refactoring | Not Started                                    |
+| Phase 10 | QuizServices DI Refactoring | 🔄 In Progress (3/10 sprints)                  |
 | Phase 11 | Second App Validation | Not Started                                    |
 
 ---
@@ -2885,21 +2885,24 @@ extension QuizServicesContext on BuildContext {
 
 ---
 
-### Sprint 10.3: Home & Navigation Widgets
+### Sprint 10.3: Home & Navigation Widgets ✅
 
 **Goal:** Migrate home screen and navigation widgets to use QuizServicesProvider.
 
 **Tasks:**
-- [ ] Update `QuizHomeScreen` to use `context.screenAnalytics` instead of constructor parameter
-- [ ] Update `HomeTabContent` to use context services
-- [ ] Update `AnalyticsNavigatorObserver` to optionally get service from context
-- [ ] Keep constructor parameters as optional fallback during migration
-- [ ] Update widget tests with `wrapWithQuizServices()`
+- [x] Update `QuizHomeScreen` to use `context.screenAnalyticsService` (removed constructor parameter)
+- [x] Update `HomeTabContent` to use `context.screenAnalyticsService` (removed constructor parameter)
+- [x] Update `AnalyticsNavigatorObserver` to keep optional constructor parameter (NavigatorObserver has no context access)
+- [x] Update widget tests with `QuizServicesProvider` wrapper
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
-- `packages/quiz_engine/lib/src/analytics/analytics_navigator_observer.dart`
-- `packages/quiz_engine/test/home/quiz_home_screen_test.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/analytics/analytics_navigator_observer.dart`
+- ✅ `packages/quiz_engine/test/home/quiz_home_screen_test.dart`
+
+**Notes:**
+- `AnalyticsNavigatorObserver` keeps the constructor parameter because `NavigatorObserver` callbacks (didPush, didPop, didReplace) don't receive `BuildContext`, so we cannot access `QuizServicesProvider` from the observer.
+- Tests now use `QuizServicesProvider` wrapper instead of passing `analyticsService` directly.
 
 ---
 
