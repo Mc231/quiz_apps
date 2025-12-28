@@ -4,7 +4,7 @@
 
 **Reference:** See [CORE_ARCHITECTURE_GUIDE.md](./CORE_ARCHITECTURE_GUIDE.md) for architectural details and design patterns.
 
-**Last Updated:** 2025-12-27
+**Last Updated:** 2025-12-28
 
 ---
 
@@ -22,7 +22,7 @@
 | Phase 8 | Achievements & Core Features | ✅ Completed (12/12 sprints)                    |
 | Phase 8.5 | Production Polish | ✅ Completed (7/7 sprints)                      |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | 🔄 In Progress (Analytics ✅), Ads/IAP pending) |
-| Phase 10 | QuizServices DI Refactoring | 🔄 In Progress (3/10 sprints)                  |
+| Phase 10 | QuizServices DI Refactoring | 🔄 In Progress (6/10 sprints)                  |
 | Phase 11 | Second App Validation | Not Started                                    |
 
 ---
@@ -2906,58 +2906,66 @@ extension QuizServicesContext on BuildContext {
 
 ---
 
-### Sprint 10.4: Settings Widgets
+### Sprint 10.4: Settings Widgets ✅
 
 **Goal:** Migrate settings-related widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Remove `analyticsService` constructor parameter from `QuizSettingsScreen`, use `context.screenAnalyticsService`
-- [ ] Remove `settingsService` constructor parameter from `SettingsContent`, use `context.settingsService`
-- [ ] Remove `analyticsService` constructor parameter from `ExportDataTile`, use `context.screenAnalyticsService`
-- [ ] Update widget tests to use `QuizServicesProvider` wrapper
+- [x] Remove `analyticsService` constructor parameter from `ExportDataTile`, use `context.screenAnalyticsService`
+- [x] Update widget tests to use `QuizServicesProvider` wrapper via `wrapWithServices` helper
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
-- `packages/quiz_engine/lib/src/settings/export_data_tile.dart`
-- `packages/quiz_engine/test/settings/quiz_settings_screen_test.dart`
-- `packages/quiz_engine/test/settings/export_data_tile_test.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/settings/export_data_tile.dart`
+- ✅ `packages/quiz_engine/test/settings/export_data_tile_analytics_test.dart`
+- ✅ `packages/quiz_engine/test/test_helpers.dart` (added `wrapWithServices` helper)
+
+**Note:** `QuizSettingsScreen` and `SettingsContent` updates deferred to Sprint 10.7 as they require more extensive changes.
 
 ---
 
-### Sprint 10.5: History & Statistics Widgets
+### Sprint 10.5: History & Statistics Widgets ✅
 
 **Goal:** Migrate history and statistics widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Remove `analyticsService` constructor parameter from `SessionHistoryScreen`, use `context.screenAnalyticsService`
-- [ ] Remove `analyticsService` constructor parameter from `SessionDetailScreen`, use `context.screenAnalyticsService`
-- [ ] Remove `analyticsService` constructor parameter from `StatisticsDashboardScreen`, use `context.screenAnalyticsService`
-- [ ] Update widget tests to use `QuizServicesProvider` wrapper
+- [x] Remove `analyticsService` constructor parameter from `SessionHistoryScreen`, use `context.screenAnalyticsService`
+- [x] Remove `analyticsService` constructor parameter from `SessionHistoryContent`, use `context.screenAnalyticsService`
+- [x] Remove `analyticsService` constructor parameter from `SessionDetailScreen`, use `context.screenAnalyticsService`
+- [x] Remove `analyticsService` constructor parameter from `StatisticsDashboardScreen`, use `context.screenAnalyticsService`
+- [x] Remove `analyticsService` constructor parameter from `StatisticsDashboardContent`, use `context.screenAnalyticsService`
+- [x] Remove `analyticsService` constructor parameter from `ErrorStateWidget`, use `context.screenAnalyticsService`
+- [x] Update widget tests to use `QuizServicesProvider` wrapper via `wrapWithServices` helper
+- [x] Remove `analyticsService` from call sites in `quiz_home_screen.dart`, `quiz_results_screen.dart`, `quiz_settings_screen.dart`
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/screens/session_history_screen.dart`
-- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
-- `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
-- `packages/quiz_engine/test/screens/session_history_screen_test.dart` (if exists)
-- `packages/quiz_engine/test/screens/statistics_dashboard_screen_test.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/screens/session_history_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/error_state_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` (removed analyticsService passing)
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` (removed analyticsService passing)
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart` (removed analyticsService passing)
+- ✅ `packages/quiz_engine/test/screens/statistics_dashboard_screen_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/state_widgets_test.dart`
 
 ---
 
-### Sprint 10.6: Achievements Widgets
+### Sprint 10.6: Achievements Widgets ✅
 
 **Goal:** Migrate achievement-related widgets to use QuizServicesProvider (context only, no constructor parameters).
 
 **Tasks:**
-- [ ] Remove `analyticsService` constructor parameter from `AchievementsScreen`, use `context.screenAnalyticsService`
-- [ ] Remove service constructor parameters from `AchievementNotificationController`, use context
-- [ ] Remove service constructor parameters from `AchievementNotifications`, use context
-- [ ] Update widget tests to use `QuizServicesProvider` wrapper
+- [x] Remove `analyticsService` constructor parameter from `AchievementsScreen`, use `context.screenAnalyticsService`
+- [x] Remove `analyticsService` constructor parameter from `AchievementsScreenSliver`, use `context.screenAnalyticsService`
+- [x] Remove `analyticsService` constructor parameter from `AchievementsContent`, use `context.screenAnalyticsService`
+- [x] Remove `analyticsService` constructor parameter from `AchievementsScreenBuilder`, use `context.screenAnalyticsService`
+- [x] Update widget tests to use `QuizServicesProvider` wrapper via `wrapWithServices` helper
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
-- `packages/quiz_engine/lib/src/achievements/achievement_notification_controller.dart`
-- `packages/quiz_engine/test/achievements/screens/achievements_screen_test.dart`
-- `packages/quiz_engine/test/achievements/widgets/achievement_notification_test.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
+- ✅ `packages/quiz_engine/test/achievements/screens/achievements_screen_test.dart`
+
+**Note:** `AchievementNotificationController` and `AchievementNotifications` updates deferred as they require additional work.
 
 ---
 
