@@ -14,6 +14,12 @@ typedef OnQuestionTimeout = void Function(int timeSpentSeconds);
 /// Callback signature for total time expired events.
 typedef OnTotalTimeExpired = void Function();
 
+/// Callback signature for timer warning events.
+typedef OnTimerWarning = void Function({
+  required int secondsRemaining,
+  required String warningLevel,
+});
+
 /// Manages quiz timers including question timers, total timers, and stopwatches.
 ///
 /// This manager is responsible for:
@@ -56,15 +62,26 @@ class QuizTimerManager {
   /// Callback invoked when total quiz time expires.
   final OnTotalTimeExpired? onTotalTimeExpired;
 
+  /// Callback invoked when timer reaches warning threshold.
+  final OnTimerWarning? onTimerWarning;
+
+  /// Warning threshold in seconds (triggers warning event when time remaining equals this).
+  static const int warningThreshold = 10;
+
+  /// Whether the warning has been fired for the current question.
+  bool _warningFired = false;
+
   /// Creates a new timer manager.
   ///
   /// [onTick] - Called on each timer tick with remaining times
   /// [onQuestionTimeout] - Called when question time expires
   /// [onTotalTimeExpired] - Called when total quiz time expires
+  /// [onTimerWarning] - Called when timer reaches warning threshold
   QuizTimerManager({
     this.onTick,
     this.onQuestionTimeout,
     this.onTotalTimeExpired,
+    this.onTimerWarning,
   });
 
   // ============ Getters ============
@@ -188,6 +205,7 @@ class QuizTimerManager {
     // Reset time if this is a fresh question
     if (resetTime || _questionTimeRemaining == null || _questionTimeRemaining! <= 0) {
       _questionTimeRemaining = _timePerQuestion;
+      _warningFired = false; // Reset warning flag for new question
     }
 
     // Don't start actual timer if paused
@@ -198,6 +216,7 @@ class QuizTimerManager {
       if (_questionTimeRemaining != null && _questionTimeRemaining! > 0) {
         _questionTimeRemaining = _questionTimeRemaining! - 1;
         _notifyTick();
+        _checkForWarning();
       } else {
         _handleQuestionTimeExpired();
       }
@@ -265,6 +284,22 @@ class QuizTimerManager {
     );
   }
 
+  /// Checks if timer has reached warning threshold and fires callback.
+  void _checkForWarning() {
+    if (_warningFired) return;
+    if (_questionTimeRemaining == null) return;
+    if (_questionTimeRemaining! > warningThreshold) return;
+
+    // Fire warning only when we cross the threshold (equals exactly)
+    if (_questionTimeRemaining == warningThreshold) {
+      _warningFired = true;
+      onTimerWarning?.call(
+        secondsRemaining: _questionTimeRemaining!,
+        warningLevel: 'question',
+      );
+    }
+  }
+
   // ============ Cleanup ============
 
   /// Disposes all timers and stops all stopwatches.
@@ -284,6 +319,7 @@ class QuizTimerManager {
     _totalTimeRemaining = null;
     _timersPaused = false;
     _timePerQuestion = null;
+    _warningFired = false;
     _sessionStopwatch.reset();
     _questionStopwatch.reset();
   }
