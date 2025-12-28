@@ -3,6 +3,7 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
+import '../services/quiz_services_context.dart';
 import '../widgets/question_review_widget.dart';
 import '../widgets/score_breakdown.dart';
 import '../widgets/score_display.dart';
@@ -16,13 +17,15 @@ import 'session_detail_screen.dart';
 /// - Score percentage
 /// - Statistics (correct, incorrect, skipped, duration)
 /// - Action buttons for reviewing the session and returning home
+///
+/// Services are obtained from [QuizServicesProvider] via context:
+/// - `context.screenAnalyticsService` for analytics tracking
 class QuizResultsScreen extends StatefulWidget {
   /// Creates a [QuizResultsScreen].
   const QuizResultsScreen({
     super.key,
     required this.results,
     required this.onDone,
-    required this.analyticsService,
     this.onReviewSession,
     this.onReviewWrongAnswers,
     this.onPlayAgain,
@@ -34,9 +37,6 @@ class QuizResultsScreen extends StatefulWidget {
 
   /// Callback when user taps "Done" to return home.
   final VoidCallback onDone;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
 
   /// Optional callback when user wants to review the session.
   /// If null, the button will navigate to the session detail screen inline.
@@ -57,14 +57,24 @@ class QuizResultsScreen extends StatefulWidget {
 }
 
 class _QuizResultsScreenState extends State<QuizResultsScreen> {
+  // Service accessor via context
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
+  bool _screenViewLogged = false;
+
   @override
-  void initState() {
-    super.initState();
-    _logScreenView();
+  Widget build(BuildContext context) {
+    // Log screen view on first build when context is available
+    if (!_screenViewLogged) {
+      _screenViewLogged = true;
+      _logScreenView();
+    }
+
+    return _buildScreen(context);
   }
 
   void _logScreenView() {
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.results(
         quizId: widget.results.quizId,
         quizName: widget.results.quizName,
@@ -75,8 +85,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildScreen(BuildContext context) {
     final l10n = QuizL10n.of(context);
     final theme = Theme.of(context);
 
