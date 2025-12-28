@@ -24,6 +24,7 @@ class FlagsQuizDependencies {
     required this.categories,
     required this.screenAnalyticsService,
     required this.quizAnalyticsService,
+    required this.navigatorObserver,
   });
 
   final SettingsService settingsService;
@@ -34,6 +35,9 @@ class FlagsQuizDependencies {
   final List<QuizCategory> categories;
   final AnalyticsService screenAnalyticsService;
   final QuizAnalyticsService quizAnalyticsService;
+
+  /// Navigator observer for automatic screen tracking.
+  final AnalyticsNavigatorObserver navigatorObserver;
 }
 
 /// Provides a fully initialized [FlagsQuizApp] instance.
@@ -106,6 +110,11 @@ class FlagsQuizAppProvider {
     // Wrap with adapter to implement QuizAnalyticsService interface
     final quizAnalytics = QuizAnalyticsAdapter(analytics);
 
+    // Create navigator observer for automatic screen tracking
+    final navigatorObserver = AnalyticsNavigatorObserver(
+      analyticsService: analytics,
+    );
+
     return FlagsQuizDependencies(
       settingsService: settingsService,
       storageService: storageService,
@@ -115,6 +124,7 @@ class FlagsQuizAppProvider {
       categories: categories,
       screenAnalyticsService: analytics,
       quizAnalyticsService: quizAnalytics,
+      navigatorObserver: navigatorObserver,
     );
   }
 }

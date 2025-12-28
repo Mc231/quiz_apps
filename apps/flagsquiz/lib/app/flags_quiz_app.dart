@@ -49,6 +49,7 @@ class FlagsQuizApp extends StatelessWidget {
         primaryColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(elevation: 0),
+        navigatorObservers: [dependencies.navigatorObserver],
       ),
       homeConfig: QuizHomeScreenConfig(
         tabConfig: QuizTabConfig(
