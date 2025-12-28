@@ -22,7 +22,7 @@
 | Phase 8 | Achievements & Core Features | ✅ Completed (12/12 sprints)                    |
 | Phase 8.5 | Production Polish | ✅ Completed (7/7 sprints)                      |
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | 🔄 In Progress (Analytics ✅), Ads/IAP pending) |
-| Phase 10 | Polish & Integration | Not Started                                    |
+| Phase 10 | QuizServices DI Refactoring | Not Started                                    |
 | Phase 11 | Second App Validation | Not Started                                    |
 
 ---
@@ -1932,6 +1932,64 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 
 ---
 
+### Sprint 8.20: ResourceManager Integration
+
+**Goal:** Wire up the existing ResourceManager (from Sprint 8.15) to the quiz system so hints, skips, and lives are tracked and persisted.
+
+**Prerequisites:**
+- Sprint 8.15 (ResourceManager architecture) - ✅ Completed
+
+**Background:**
+Sprint 8.15 created the full ResourceManager infrastructure (manager, repositories, UI dialogs) but did NOT integrate it with QuizBloc/QuizScreen. This sprint completes that integration.
+
+**Tasks:**
+
+*App Initialization:*
+- [ ] Create `ResourceManagerProvider` widget for dependency injection
+- [ ] Initialize `ResourceManager` in `FlagsQuizApp` with `SqliteResourceRepository`
+- [ ] Call `resourceManager.initialize()` during app startup
+- [ ] Pass `ResourceManager` down via provider to quiz screens
+
+*QuizBloc Integration:*
+- [ ] Add optional `ResourceManager` parameter to `QuizBloc`
+- [ ] On 50/50 hint use → call `resourceManager.useResource(ResourceType.fiftyFifty())`
+- [ ] On skip use → call `resourceManager.useResource(ResourceType.skip())`
+- [ ] On wrong answer (lives mode) → call `resourceManager.useResource(ResourceType.lives())`
+- [ ] Check resource availability before allowing use
+
+*QuizScreen Integration:*
+- [ ] Pass `ResourceManager` to `QuizScreen` / `QuizWidget`
+- [ ] Update `GameResourcePanel` to show counts from `ResourceManager` (not just QuizState)
+- [ ] Wire `onDepletedTap` callback to show `RestoreResourceDialog`
+- [ ] Handle resource restoration (dialog → ad/purchase → update UI)
+
+*Mode Considerations:*
+- [ ] Standard/Practice mode: Use ResourceManager for hints/skips (lives if configured)
+- [ ] Challenge mode: Use fixed challenge resources (NOT from ResourceManager pool)
+- [ ] Document which modes use ResourceManager vs fixed resources
+
+*Testing:*
+- [ ] Write integration tests for ResourceManager → QuizBloc flow
+- [ ] Write widget tests for RestoreResourceDialog appearing on depleted tap
+- [ ] Test daily reset mechanism
+- [ ] Test resource persistence across app restarts
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/providers/resource_manager_provider.dart`
+
+**Files to Modify:**
+- `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Initialize ResourceManager
+- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Add ResourceManager integration
+- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Wire up ResourceManager
+- `packages/quiz_engine/lib/src/quiz_widget.dart` - Pass ResourceManager
+- `packages/quiz_engine/lib/src/quiz_widget_entry.dart` - Add ResourceManager parameter
+
+**Notes:**
+- IAP and Ads providers remain as stubs (`NoIAPProvider`, `NoAdsProvider`) until Sprint 9.2/9.3
+- This sprint enables the resource tracking; real monetization comes later
+
+---
+
 ## Completed Technical Improvements
 
 ### QuizBloc Refactoring ✅
@@ -2699,17 +2757,302 @@ dependencies:
 
 ---
 
-## Phase 10: Polish & Integration
+## Phase 10: QuizServices DI Refactoring
+
+**Goal:** Replace constructor-based service injection with InheritedWidget-based `QuizServicesProvider` for cleaner, more maintainable service access throughout the widget tree.
+
+**Benefits:**
+- Eliminates verbose constructor drilling (services passed through 3-4 widget levels)
+- Reduces boilerplate when adding new services
+- More Flutter-idiomatic pattern (like Theme.of, MediaQuery.of)
+- Easier to add new services without changing widget signatures
+- Cleaner widget constructors
+
+**Services to Include:**
+- `SettingsService` - App settings management
+- `StorageService` - Quiz session persistence
+- `AchievementService` - Achievement tracking
+- `AnalyticsService` (screenAnalyticsService) - Screen view and UI interaction tracking
+- `QuizAnalyticsService` - Quiz-specific event tracking
+
+**Affected Widgets (27 files):**
+
+| Category | Widget | Services Used |
+|----------|--------|---------------|
+| **Root** | QuizApp | All 5 services |
+| **Home** | QuizHomeScreen, HomeTabContent | Analytics, Storage |
+| **Quiz** | QuizScreen, QuizWidget, QuizWidgetEntry | Analytics (both), Settings |
+| **Results** | QuizResultsScreen | Analytics |
+| **Settings** | QuizSettingsScreen, SettingsContent, ExportDataTile | Analytics, Settings |
+| **History** | SessionHistoryScreen, SessionHistoryContent | Analytics, Storage |
+| **Statistics** | StatisticsDashboardScreen | Analytics |
+| **Achievements** | AchievementsScreen, AchievementNotificationController, AchievementNotifications | Analytics, Achievement |
+| **Challenges** | ChallengesScreen, ChallengesContent | Analytics, Settings, Storage |
+| **Practice** | _PracticeTabContent, _PracticeQuizScreen | Analytics (both), Settings |
+| **Widgets** | LeaderboardWidget | Analytics |
+| **Navigation** | AnalyticsNavigatorObserver | Analytics |
+| **Adapters** | QuizAnalyticsAdapter | Analytics |
+
+---
+
+### Sprint 10.1: QuizServices Foundation ✅
+
+**Goal:** Create the core infrastructure for the QuizServices InheritedWidget pattern.
 
 **Tasks:**
-- [ ] Review all animations
-- [ ] Optimize performance
-- [ ] Add loading states
-- [ ] Error handling
-- [ ] Add comprehensive tests
-- [ ] Update documentation
-- [ ] Create migration guide for flagsquiz
-- [ ] Test complete flow end-to-end
+- [x] Create `QuizServices` immutable container class
+- [x] Create `QuizServicesProvider` InheritedWidget with `of()` and `maybeOf()` methods
+- [x] Create `QuizServicesContext` extension for convenient access (e.g., `context.settingsService`)
+- [x] Add `QuizServicesScope` widget for scoped overrides (testing)
+- [x] Export from quiz_engine package
+- [x] Write unit tests for QuizServicesProvider
+- [x] Write unit tests for context extensions
+- [x] Create test helper `wrapWithQuizServices()` for widget tests
+
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services.dart`
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services_provider.dart`
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services_context.dart`
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services_scope.dart`
+- ✅ `packages/quiz_engine/lib/src/services/services_exports.dart`
+- ✅ `packages/quiz_engine/test/services/quiz_services_provider_test.dart`
+- ✅ `packages/quiz_engine/test/services/quiz_services_context_test.dart`
+- ✅ `packages/quiz_engine/test/services/quiz_services_test_helper.dart`
+
+**API Design:**
+```dart
+/// Immutable container for all core services.
+@immutable
+class QuizServices {
+  const QuizServices({
+    required this.settingsService,
+    required this.storageService,
+    required this.achievementService,
+    required this.screenAnalyticsService,
+    required this.quizAnalyticsService,
+  });
+
+  final SettingsService settingsService;
+  final StorageService storageService;
+  final AchievementService achievementService;
+  final AnalyticsService screenAnalyticsService;
+  final QuizAnalyticsService quizAnalyticsService;
+}
+
+/// InheritedWidget for providing services to descendants.
+class QuizServicesProvider extends InheritedWidget {
+  static QuizServices of(BuildContext context);
+  static QuizServices? maybeOf(BuildContext context);
+}
+
+/// Extension for convenient access.
+extension QuizServicesContext on BuildContext {
+  QuizServices get services => QuizServicesProvider.of(this);
+  SettingsService get settingsService => services.settingsService;
+  StorageService get storageService => services.storageService;
+  AchievementService get achievementService => services.achievementService;
+  AnalyticsService get screenAnalytics => services.screenAnalyticsService;
+  QuizAnalyticsService get quizAnalytics => services.quizAnalyticsService;
+}
+```
+
+---
+
+### Sprint 10.2: QuizApp Integration
+
+**Goal:** Integrate QuizServicesProvider into QuizApp as the root provider.
+
+**Tasks:**
+- [ ] Add `QuizServices` parameter to `QuizApp` constructor
+- [ ] Wrap MaterialApp with `QuizServicesProvider` in QuizApp.build()
+- [ ] Remove individual service parameters from QuizApp (settingsService, storageService, etc.)
+- [ ] Update `QuizAppConfig` if needed
+- [ ] Update FlagsQuizApp to create and pass `QuizServices`
+- [ ] Update `FlagsQuizDependencies` to use `QuizServices`
+- [ ] Update `FlagsQuizAppProvider` to build `QuizServices`
+- [ ] Write integration tests
+- [ ] Ensure backward compatibility (deprecated parameters still work)
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/app/quiz_app.dart`
+- `apps/flagsquiz/lib/app/flags_quiz_app.dart`
+- `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
+- `packages/quiz_engine/test/app/quiz_app_test.dart`
+
+---
+
+### Sprint 10.3: Home & Navigation Widgets
+
+**Goal:** Migrate home screen and navigation widgets to use QuizServicesProvider.
+
+**Tasks:**
+- [ ] Update `QuizHomeScreen` to use `context.screenAnalytics` instead of constructor parameter
+- [ ] Update `HomeTabContent` to use context services
+- [ ] Update `AnalyticsNavigatorObserver` to optionally get service from context
+- [ ] Keep constructor parameters as optional fallback during migration
+- [ ] Update widget tests with `wrapWithQuizServices()`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
+- `packages/quiz_engine/lib/src/analytics/analytics_navigator_observer.dart`
+- `packages/quiz_engine/test/home/quiz_home_screen_test.dart`
+
+---
+
+### Sprint 10.4: Settings Widgets
+
+**Goal:** Migrate settings-related widgets to use QuizServicesProvider.
+
+**Tasks:**
+- [ ] Update `QuizSettingsScreen` to use `context.settingsService` and `context.screenAnalytics`
+- [ ] Update `SettingsContent` to use context services
+- [ ] Update `ExportDataTile` to use `context.screenAnalytics`
+- [ ] Keep constructor parameters as optional fallback during migration
+- [ ] Update widget tests
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+- `packages/quiz_engine/lib/src/settings/export_data_tile.dart`
+- `packages/quiz_engine/test/settings/quiz_settings_screen_test.dart`
+- `packages/quiz_engine/test/settings/export_data_tile_test.dart`
+
+---
+
+### Sprint 10.5: History & Statistics Widgets
+
+**Goal:** Migrate history and statistics widgets to use QuizServicesProvider.
+
+**Tasks:**
+- [ ] Update `SessionHistoryScreen` to use `context.screenAnalytics`
+- [ ] Update `SessionHistoryContent` to use context services
+- [ ] Update `StatisticsDashboardScreen` to use `context.screenAnalytics`
+- [ ] Keep constructor parameters as optional fallback during migration
+- [ ] Update widget tests
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/screens/session_history_screen.dart`
+- `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
+- `packages/quiz_engine/test/screens/session_history_screen_test.dart` (if exists)
+- `packages/quiz_engine/test/screens/statistics_dashboard_screen_test.dart`
+
+---
+
+### Sprint 10.6: Achievements Widgets
+
+**Goal:** Migrate achievement-related widgets to use QuizServicesProvider.
+
+**Tasks:**
+- [ ] Update `AchievementsScreen` to use `context.screenAnalytics`
+- [ ] Update `AchievementNotificationController` to use context services
+- [ ] Update `AchievementNotifications` to use context services
+- [ ] Keep constructor parameters as optional fallback during migration
+- [ ] Update widget tests
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
+- `packages/quiz_engine/lib/src/achievements/achievement_notification_controller.dart`
+- `packages/quiz_engine/test/achievements/screens/achievements_screen_test.dart`
+- `packages/quiz_engine/test/achievements/widgets/achievement_notification_test.dart`
+
+---
+
+### Sprint 10.7: Challenges & Practice Widgets
+
+**Goal:** Migrate challenges and practice widgets to use QuizServicesProvider.
+
+**Tasks:**
+- [ ] Update `ChallengesScreen` to use `context.screenAnalytics`, `context.settingsService`, `context.storageService`
+- [ ] Update `ChallengesContent` to use context services
+- [ ] Update `_PracticeTabContent` to use context services
+- [ ] Update `_PracticeQuizScreen` to use context services
+- [ ] Keep constructor parameters as optional fallback during migration
+- [ ] Update widget tests
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/screens/challenges_screen.dart`
+- `packages/quiz_engine/lib/src/app/quiz_app.dart` (practice widgets are internal)
+- `packages/quiz_engine/test/screens/challenges_screen_test.dart` (if exists)
+
+---
+
+### Sprint 10.8: Quiz & Results Widgets
+
+**Goal:** Migrate core quiz widgets to use QuizServicesProvider.
+
+**Tasks:**
+- [ ] Update `QuizScreen` to use `context.screenAnalytics`
+- [ ] Update `QuizWidget` to use context services
+- [ ] Update `QuizWidgetEntry` to optionally use context services (keep parameters for standalone use)
+- [ ] Update `QuizResultsScreen` to use `context.screenAnalytics`
+- [ ] Update `QuizAnalyticsAdapter` if needed
+- [ ] Keep constructor parameters as optional fallback during migration
+- [ ] Update widget tests
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
+- `packages/quiz_engine/lib/src/quiz_widget.dart`
+- `packages/quiz_engine/lib/src/quiz_widget_entry.dart`
+- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
+- `packages/quiz_engine/lib/src/analytics/quiz_analytics_adapter.dart`
+- `packages/quiz_engine/test/quiz/quiz_screen_test.dart` (if exists)
+
+---
+
+### Sprint 10.9: Misc Widgets & Cleanup
+
+**Goal:** Migrate remaining widgets and clean up deprecated code.
+
+**Tasks:**
+- [ ] Update `LeaderboardWidget` to use `context.screenAnalytics`
+- [ ] Update any remaining widgets using services via constructor
+- [ ] Mark old constructor parameters as `@Deprecated`
+- [ ] Update all affected widget tests
+- [ ] Verify all tests pass
+- [ ] Run analyzer to check for warnings
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/widgets/leaderboard_widget.dart`
+- Any other widgets found during review
+
+---
+
+### Sprint 10.10: Documentation & Final Polish
+
+**Goal:** Complete documentation and final cleanup.
+
+**Tasks:**
+- [ ] Update CLAUDE.md with QuizServices usage patterns
+- [ ] Update CORE_ARCHITECTURE_GUIDE.md with new DI pattern
+- [ ] Create migration guide for existing apps
+- [ ] Remove all deprecated constructor parameters (BREAKING CHANGE)
+- [ ] Update quiz_engine exports
+- [ ] Write comprehensive integration tests
+- [ ] Performance testing (ensure no regressions)
+- [ ] Update all widget tests to use new pattern exclusively
+
+**Files to Create/Modify:**
+- `CLAUDE.md`
+- `docs/CORE_ARCHITECTURE_GUIDE.md`
+- `packages/quiz_engine/lib/quiz_engine.dart`
+
+---
+
+### Phase 10 Summary
+
+| Sprint | Status | Description | Files |
+|--------|--------|-------------|-------|
+| 10.1 | ✅ | QuizServices Foundation | 8 new files |
+| 10.2 | ⏳ | QuizApp Integration | 4 files |
+| 10.3 | ⏳ | Home & Navigation Widgets | 3 files |
+| 10.4 | ⏳ | Settings Widgets | 4 files |
+| 10.5 | ⏳ | History & Statistics Widgets | 4 files |
+| 10.6 | ⏳ | Achievements Widgets | 4 files |
+| 10.7 | ⏳ | Challenges & Practice Widgets | 3 files |
+| 10.8 | ⏳ | Quiz & Results Widgets | 6 files |
+| 10.9 | ⏳ | Misc Widgets & Cleanup | Variable |
+| 10.10 | ⏳ | Documentation & Final Polish | 3 files |
+
+**Total: 10 sprints, ~27+ widget files to update**
 
 ---
 
