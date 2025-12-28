@@ -22,6 +22,7 @@ import '../screens/challenges_screen.dart';
 import '../screens/practice_start_screen.dart';
 import '../screens/practice_complete_screen.dart';
 import '../services/quiz_services.dart';
+import '../services/quiz_services_context.dart';
 import '../services/quiz_services_provider.dart';
 import '../settings/quiz_settings_screen.dart';
 import '../widgets/practice_empty_state.dart';
@@ -600,9 +601,6 @@ class _QuizAppState extends State<QuizApp> {
                       challenges: widget.challenges!,
                       categories: widget.categories ?? [],
                       dataProvider: widget.dataProvider!,
-                      settingsService: _settingsService,
-                      analyticsService: _screenAnalyticsService,
-                      storageService: _storageService,
                       onQuizCompleted: _handleQuizCompleted,
                     ),
               ),
@@ -619,12 +617,9 @@ class _QuizAppState extends State<QuizApp> {
                 builder:
                     (ctx) => _PracticeTabContent(
                       practiceDataProvider: widget.practiceDataProvider!,
-                      screenAnalyticsService: _screenAnalyticsService,
                       dataProvider: widget.dataProvider,
-                      settingsService: _settingsService,
                       onPracticeCompleted: _handlePracticeCompleted,
                       onStartQuiz: () => _navigateToPlayTab(),
-                      quizAnalyticsService: _quizAnalyticsService,
                     ),
               ),
             );
@@ -743,7 +738,6 @@ class _QuizAppState extends State<QuizApp> {
                   categoryId: category.id,
                   categoryName: category.title(context),
                   onQuizCompleted: (results) => _handleQuizCompleted(results),
-                  screenAnalyticsService: _screenAnalyticsService,
                 ),
               ),
         ),
@@ -934,22 +928,18 @@ class _QuizAppBuilderState extends State<QuizAppBuilder> {
 ///
 /// Handles loading practice data, showing the start screen,
 /// running the practice quiz, and showing completion results.
+///
+/// Services are obtained from [QuizServicesProvider] via context.
 class _PracticeTabContent extends StatefulWidget {
   const _PracticeTabContent({
     required this.practiceDataProvider,
-    required this.screenAnalyticsService,
-    required this.quizAnalyticsService,
     this.dataProvider,
-    this.settingsService,
     this.onPracticeCompleted,
     this.onStartQuiz,
   });
 
   final PracticeDataProvider practiceDataProvider;
-  final AnalyticsService screenAnalyticsService;
-  final QuizAnalyticsService quizAnalyticsService;
   final QuizDataProvider? dataProvider;
-  final SettingsService? settingsService;
   final void Function(List<String> correctQuestionIds)? onPracticeCompleted;
   final VoidCallback? onStartQuiz;
 
@@ -958,6 +948,9 @@ class _PracticeTabContent extends StatefulWidget {
 }
 
 class _PracticeTabContentState extends State<_PracticeTabContent> {
+  // Service accessor via context
+  AnalyticsService get _screenAnalyticsService => context.screenAnalyticsService;
+
   PracticeTabData? _practiceData;
   bool _isLoading = true;
   String? _error;
@@ -965,10 +958,15 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
   @override
   void initState() {
     super.initState();
-    _loadPracticeData();
+    // Defer data loading to after first frame when context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadPracticeData();
+    });
   }
 
   Future<void> _loadPracticeData() async {
+    if (!mounted) return;
+
     setState(() {
       _isLoading = true;
       _error = null;
@@ -1023,7 +1021,7 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
     return PracticeStartScreen(
       questionCount: data.questionCount,
       onStartPractice: () => _startPractice(context, data),
-      analyticsService: widget.screenAnalyticsService,
+      analyticsService: _screenAnalyticsService,
     );
   }
 
@@ -1034,14 +1032,11 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
         builder:
             (ctx) => _PracticeQuizScreen(
               practiceData: data,
-              screenAnalyticsService: widget.screenAnalyticsService,
-              settingsService: widget.settingsService,
               onPracticeCompleted: (correctIds, wrongCount) {
                 widget.onPracticeCompleted?.call(correctIds);
                 _showPracticeComplete(ctx, correctIds.length, wrongCount);
               },
               onCancel: () => Navigator.of(ctx).pop(),
-              quizAnalyticsService: widget.quizAnalyticsService,
             ),
       ),
     );
@@ -1059,7 +1054,7 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
             (ctx) => PracticeCompleteScreen(
               correctCount: correctCount,
               needMorePracticeCount: wrongCount,
-              analyticsService: widget.screenAnalyticsService,
+              analyticsService: _screenAnalyticsService,
               onDone: () {
                 Navigator.of(ctx).pop();
                 // Refresh the practice data
@@ -1072,20 +1067,16 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
 }
 
 /// Internal widget for the practice quiz itself.
+///
+/// Services are obtained from [QuizServicesProvider] via context.
 class _PracticeQuizScreen extends StatefulWidget {
   const _PracticeQuizScreen({
     required this.practiceData,
-    required this.quizAnalyticsService,
-    this.settingsService,
     required this.onPracticeCompleted,
     required this.onCancel,
-    required this.screenAnalyticsService,
   });
 
   final PracticeTabData practiceData;
-  final QuizAnalyticsService quizAnalyticsService;
-  final AnalyticsService screenAnalyticsService;
-  final SettingsService? settingsService;
   final void Function(List<String> correctIds, int wrongCount)
   onPracticeCompleted;
   final VoidCallback onCancel;
@@ -1095,6 +1086,10 @@ class _PracticeQuizScreen extends StatefulWidget {
 }
 
 class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
+  // Service accessors via context
+  SettingsService get _settingsService => context.settingsService;
+  QuizAnalyticsService get _quizAnalyticsService => context.quizAnalyticsService;
+
   @override
   Widget build(BuildContext context) {
     final l10n = QuizL10n.of(context);
@@ -1112,10 +1107,8 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
       defaultConfig: practiceConfig,
       getSettings:
           () => {
-            'soundEnabled':
-                widget.settingsService?.currentSettings.soundEnabled ?? true,
-            'hapticEnabled':
-                widget.settingsService?.currentSettings.hapticEnabled ?? true,
+            'soundEnabled': _settingsService.currentSettings.soundEnabled,
+            'hapticEnabled': _settingsService.currentSettings.hapticEnabled,
             'showAnswerFeedback': true,
           },
     );
@@ -1128,7 +1121,6 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
         dataProvider: () async => widget.practiceData.allQuestions,
         configManager: configManager,
         storageService: null,
-        screenAnalyticsService: widget.screenAnalyticsService,
         // Practice sessions are not stored
         // Filter to only ask practice questions
         filter: widget.practiceData.filter,
@@ -1145,7 +1137,7 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
 
           widget.onPracticeCompleted(correctIds, wrongCount);
         },
-        quizAnalyticsService: widget.quizAnalyticsService,
+        quizAnalyticsService: _quizAnalyticsService,
       ),
     );
   }
