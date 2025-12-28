@@ -167,12 +167,34 @@ class _SessionHistoryScreenState extends State<SessionHistoryScreen> {
 
     if (widget.onRefresh != null) {
       return RefreshIndicator(
-        onRefresh: widget.onRefresh!,
+        onRefresh: _handleRefresh,
         child: content,
       );
     }
 
     return content;
+  }
+
+  /// Handles pull-to-refresh with analytics tracking.
+  Future<void> _handleRefresh() async {
+    final stopwatch = Stopwatch()..start();
+    bool success = true;
+
+    try {
+      await widget.onRefresh!();
+    } catch (e) {
+      success = false;
+      rethrow;
+    } finally {
+      stopwatch.stop();
+      widget.analyticsService.logEvent(
+        InteractionEvent.pullToRefresh(
+          screenName: 'session_history',
+          refreshDuration: stopwatch.elapsed,
+          success: success,
+        ),
+      );
+    }
   }
 }
 
@@ -277,11 +299,33 @@ class SessionHistoryContent extends StatelessWidget {
 
     if (onRefresh != null) {
       return RefreshIndicator(
-        onRefresh: onRefresh!,
+        onRefresh: () => _handleRefresh(onRefresh!),
         child: content,
       );
     }
 
     return content;
+  }
+
+  /// Handles pull-to-refresh with analytics tracking.
+  Future<void> _handleRefresh(Future<void> Function() originalOnRefresh) async {
+    final stopwatch = Stopwatch()..start();
+    bool success = true;
+
+    try {
+      await originalOnRefresh();
+    } catch (e) {
+      success = false;
+      rethrow;
+    } finally {
+      stopwatch.stop();
+      analyticsService.logEvent(
+        InteractionEvent.pullToRefresh(
+          screenName: 'session_history',
+          refreshDuration: stopwatch.elapsed,
+          success: success,
+        ),
+      );
+    }
   }
 }
