@@ -948,9 +948,6 @@ class _PracticeTabContent extends StatefulWidget {
 }
 
 class _PracticeTabContentState extends State<_PracticeTabContent> {
-  // Service accessor via context
-  AnalyticsService get _screenAnalyticsService => context.screenAnalyticsService;
-
   PracticeTabData? _practiceData;
   bool _isLoading = true;
   String? _error;
@@ -1021,7 +1018,6 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
     return PracticeStartScreen(
       questionCount: data.questionCount,
       onStartPractice: () => _startPractice(context, data),
-      analyticsService: _screenAnalyticsService,
     );
   }
 
@@ -1054,7 +1050,6 @@ class _PracticeTabContentState extends State<_PracticeTabContent> {
             (ctx) => PracticeCompleteScreen(
               correctCount: correctCount,
               needMorePracticeCount: wrongCount,
-              analyticsService: _screenAnalyticsService,
               onDone: () {
                 Navigator.of(ctx).pop();
                 // Refresh the practice data
