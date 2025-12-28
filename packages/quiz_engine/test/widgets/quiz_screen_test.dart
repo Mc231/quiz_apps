@@ -41,7 +41,7 @@ void main() {
     );
   });
 
-  /// Helper to wrap widgets with localization support for tests.
+  /// Helper to wrap widgets with localization and services support for tests.
   Widget wrapWithLocalizationsForBloc(Widget child, QuizBloc bloc) {
     return MaterialApp(
       localizationsDelegates: const [
@@ -51,7 +51,14 @@ void main() {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [Locale('en')],
-      home: BlocProvider(bloc: bloc, child: child),
+      home: QuizServicesProvider(
+        services: QuizServices.noOp(
+          settingsService: _MockSettingsService(),
+          storageService: _MockStorageService(),
+          achievementService: _MockAchievementService(),
+        ),
+        child: BlocProvider(bloc: bloc, child: child),
+      ),
     );
   }
 
@@ -71,10 +78,7 @@ void main() {
     when(randomItemPicker.pick()).thenReturn(randomPickResult);
     await tester.pumpWidget(
       wrapWithLocalizationsForBloc(
-        QuizScreen(
-          title: "Test",
-          screenAnalyticsService: NoOpAnalyticsService(),
-        ),
+        const QuizScreen(title: "Test"),
         bloc,
       ),
     );
@@ -114,10 +118,7 @@ void main() {
     when(randomItemPicker.pick()).thenReturn(null);
     await tester.pumpWidget(
       wrapWithLocalizationsForBloc(
-        QuizScreen(
-          title: "Test",
-          screenAnalyticsService: NoOpAnalyticsService(),
-        ),
+        const QuizScreen(title: "Test"),
         bloc2,
       ),
     );
@@ -132,3 +133,12 @@ void main() {
     expect(doneButtonFinder, findsOneWidget);
   });
 }
+
+/// Mock settings service for testing.
+class _MockSettingsService extends Fake implements SettingsService {}
+
+/// Mock storage service for testing.
+class _MockStorageService extends Fake implements StorageService {}
+
+/// Mock achievement service for testing.
+class _MockAchievementService extends Fake implements AchievementService {}
