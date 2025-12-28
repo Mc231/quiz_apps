@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
+import '../services/quiz_services_context.dart';
 
 
 /// A consistent error state widget used throughout the app.
 ///
 /// Displays an error icon, message, and optional retry button.
 /// Adapts to the current theme's color scheme.
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 ///
 /// Example usage:
 /// ```dart
@@ -18,7 +21,7 @@ import '../l10n/quiz_localizations.dart';
 /// ```
 class ErrorStateWidget extends StatefulWidget {
   /// Creates an [ErrorStateWidget].
-  ErrorStateWidget({
+  const ErrorStateWidget({
     super.key,
     required this.message,
     this.title,
@@ -29,7 +32,6 @@ class ErrorStateWidget extends StatefulWidget {
     this.iconColor,
     this.showIcon = true,
     this.padding = const EdgeInsets.all(32),
-    required this.analyticsService,
     this.errorType,
     this.errorContext,
   });
@@ -41,7 +43,6 @@ class ErrorStateWidget extends StatefulWidget {
     String? title,
     VoidCallback? onRetry,
     String? retryLabel,
-    required AnalyticsService analyticsService,
     String? errorContext,
   }) {
     return ErrorStateWidget(
@@ -51,7 +52,6 @@ class ErrorStateWidget extends StatefulWidget {
       onRetry: onRetry,
       retryLabel: retryLabel,
       icon: Icons.wifi_off_rounded,
-      analyticsService: analyticsService,
       errorType: 'network',
       errorContext: errorContext,
     );
@@ -64,7 +64,6 @@ class ErrorStateWidget extends StatefulWidget {
     String? title,
     VoidCallback? onRetry,
     String? retryLabel,
-    required AnalyticsService analyticsService,
     String? errorContext,
   }) {
     return ErrorStateWidget(
@@ -74,7 +73,6 @@ class ErrorStateWidget extends StatefulWidget {
       onRetry: onRetry,
       retryLabel: retryLabel,
       icon: Icons.cloud_off_rounded,
-      analyticsService: analyticsService,
       errorType: 'server',
       errorContext: errorContext,
     );
@@ -113,9 +111,6 @@ class ErrorStateWidget extends StatefulWidget {
   /// Padding around the widget.
   final EdgeInsets padding;
 
-  /// Optional analytics service for tracking error events.
-  final AnalyticsService analyticsService;
-
   /// The type of error (e.g., 'network', 'server', 'data_load').
   final String? errorType;
 
@@ -129,6 +124,9 @@ class ErrorStateWidget extends StatefulWidget {
 class _ErrorStateWidgetState extends State<ErrorStateWidget> {
   int _retryCount = 0;
   DateTime? _errorShownAt;
+
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
   @override
   void initState() {
@@ -145,7 +143,7 @@ class _ErrorStateWidgetState extends State<ErrorStateWidget> {
             ? DateTime.now().difference(_errorShownAt!)
             : null;
 
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ErrorEvent.retryTapped(
         errorType: widget.errorType ?? 'unknown',
         context: widget.errorContext ?? 'unknown',
