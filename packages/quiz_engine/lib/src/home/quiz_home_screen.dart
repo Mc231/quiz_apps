@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../achievements/screens/achievements_screen.dart';
+import '../services/quiz_services_context.dart';
 import '../achievements/widgets/achievement_card.dart';
 import '../app/quiz_tab.dart';
 import '../l10n/quiz_localizations.dart';
@@ -245,19 +246,12 @@ class QuizHomeScreen extends StatefulWidget {
   /// Called after successful deletion from [SessionDetailScreen].
   final VoidCallback? onSessionDeleted;
 
-  /// Analytics service for tracking screen views and user interactions.
-  ///
-  /// Tracks:
-  /// - Screen views when tabs change
-  /// - Tab selection events
-  /// - Category selection events
-  final AnalyticsService analyticsService;
-
   /// Creates a [QuizHomeScreen].
+  ///
+  /// Analytics service is obtained from [QuizServicesProvider] via context.
   const QuizHomeScreen({
     super.key,
     required this.categories,
-    required this.analyticsService,
     this.config = const QuizHomeScreenConfig(),
     this.storageService,
     this.onCategorySelected,
@@ -289,6 +283,9 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   bool _dashboardLoading = false;
   AchievementsTabData _achievementsData = AchievementsTabData.empty();
   DefaultDataLoader? _dataLoader;
+
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
   List<QuizTab> get _tabs {
     final configTabs = widget.config.tabConfig.tabs;
@@ -340,8 +337,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   void _trackInitialScreenView() {
     final currentTab = _tabs[_currentIndex];
     final screenEvent = ScreenViewEvent.home(activeTab: _getTabId(currentTab));
-    widget.analyticsService.logEvent(screenEvent);
-    widget.analyticsService.setCurrentScreen(
+    _analyticsService.logEvent(screenEvent);
+    _analyticsService.setCurrentScreen(
       screenName: screenEvent.screenName,
       screenClass: screenEvent.screenClass,
     );
@@ -541,7 +538,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
           body: SessionDetailScreen(
             session: detailData,
             texts: texts,
-            analyticsService: widget.analyticsService,
+            analyticsService: _analyticsService,
             onDelete: () => _deleteSession(
               sessionWithAnswers.session.id,
               quizName: sessionWithAnswers.session.quizName,
@@ -652,7 +649,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     // Log analytics event
     if (quizName != null && startTime != null) {
       final daysAgo = DateTime.now().difference(startTime).inDays;
-      widget.analyticsService.logEvent(
+      _analyticsService.logEvent(
         InteractionEvent.sessionDeleted(
           sessionId: sessionId,
           quizName: quizName,
@@ -729,7 +726,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
       previousTabId: previousTabId,
     );
 
-    widget.analyticsService.logEvent(event);
+    _analyticsService.logEvent(event);
   }
 
   @override
@@ -849,7 +846,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     return SessionHistoryScreen(
       sessions: _historyData.sessions,
       texts: texts,
-      analyticsService: widget.analyticsService,
+      analyticsService: _analyticsService,
       isLoading: _historyData.isLoading,
       onSessionTap: _handleSessionTap,
       onRefresh: _effectiveHistoryProvider != null ? _loadHistoryData : null,
@@ -868,7 +865,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
 
     return StatisticsDashboardScreen(
       data: dashboardData,
-      analyticsService: widget.analyticsService,
+      analyticsService: _analyticsService,
       isLoading: _dashboardLoading || _statisticsData.isLoading,
       onSessionTap: _handleSessionTap,
       onViewAllSessions: widget.onViewAllSessions,
@@ -912,7 +909,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     return AchievementsScreen(
       data: _achievementsData.screenData,
       onAchievementTap: widget.onAchievementTap,
-      analyticsService: widget.analyticsService,
+      analyticsService: _analyticsService,
       onRefresh: widget.achievementsDataProvider != null
           ? _loadAchievementsData
           : null,
@@ -1001,6 +998,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
 ///
 /// This widget receives tab data and callbacks externally, making it
 /// suitable for use with [HomeBloc] via [HomeBuilder].
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class HomeTabContent extends StatelessWidget {
   /// Creates a [HomeTabContent].
   const HomeTabContent({
@@ -1008,7 +1007,6 @@ class HomeTabContent extends StatelessWidget {
     required this.currentTabIndex,
     required this.historySessions,
     required this.historyTexts,
-    required this.analyticsService,
     this.isHistoryLoading = false,
     this.dashboardData,
     this.isDashboardLoading = false,
@@ -1030,9 +1028,6 @@ class HomeTabContent extends StatelessWidget {
 
   /// Texts for history screen.
   final SessionHistoryTexts historyTexts;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
 
   /// Whether history is loading.
   final bool isHistoryLoading;
@@ -1068,11 +1063,11 @@ class HomeTabContent extends StatelessWidget {
   final Future<void> Function()? onRefreshAchievements;
 
   /// Builds the history tab content.
-  Widget buildHistoryTab() {
+  Widget buildHistoryTab(BuildContext context) {
     return SessionHistoryScreen(
       sessions: historySessions,
       texts: historyTexts,
-      analyticsService: analyticsService,
+      analyticsService: context.screenAnalyticsService,
       isLoading: isHistoryLoading,
       onSessionTap: onSessionTap ?? (_) {},
       onRefresh: onRefreshHistory,
@@ -1080,14 +1075,14 @@ class HomeTabContent extends StatelessWidget {
   }
 
   /// Builds the statistics tab content.
-  Widget buildStatisticsTab() {
+  Widget buildStatisticsTab(BuildContext context) {
     if (dashboardData == null && !isDashboardLoading) {
       return const LoadingIndicator();
     }
 
     return StatisticsDashboardScreen(
       data: dashboardData ?? StatisticsDashboardData.empty,
-      analyticsService: analyticsService,
+      analyticsService: context.screenAnalyticsService,
       isLoading: isDashboardLoading,
       onSessionTap: onSessionTap,
       onViewAllSessions: onViewAllSessions,
@@ -1096,7 +1091,7 @@ class HomeTabContent extends StatelessWidget {
   }
 
   /// Builds the achievements tab content.
-  Widget buildAchievementsTab() {
+  Widget buildAchievementsTab(BuildContext context) {
     if (achievementsData == null && !isAchievementsLoading) {
       return const LoadingIndicator();
     }
@@ -1105,7 +1100,7 @@ class HomeTabContent extends StatelessWidget {
       data: achievementsData ?? const AchievementsScreenData.empty(),
       onAchievementTap: onAchievementTap,
       onRefresh: onRefreshAchievements,
-      analyticsService: analyticsService
+      analyticsService: context.screenAnalyticsService,
     );
   }
 
