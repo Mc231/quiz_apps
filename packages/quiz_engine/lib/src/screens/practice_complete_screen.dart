@@ -3,10 +3,13 @@ import 'package:shared_services/shared_services.dart';
 
 import 'practice_state.dart';
 import '../l10n/quiz_localizations.dart';
+import '../services/quiz_services_context.dart';
 
 /// Screen displayed when a practice session is complete.
 ///
 /// Shows the number of correct answers and questions needing more practice.
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class PracticeCompleteScreen extends StatefulWidget {
   /// Creates a [PracticeCompleteScreen].
   const PracticeCompleteScreen({
@@ -14,7 +17,6 @@ class PracticeCompleteScreen extends StatefulWidget {
     required this.correctCount,
     required this.needMorePracticeCount,
     required this.onDone,
-    required this.analyticsService,
   });
 
   /// The number of questions answered correctly.
@@ -25,9 +27,6 @@ class PracticeCompleteScreen extends StatefulWidget {
 
   /// Called when the user taps the "Done" button.
   final VoidCallback onDone;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
 
   /// Total number of questions in the practice session.
   int get totalCount => correctCount + needMorePracticeCount;
@@ -40,19 +39,17 @@ class PracticeCompleteScreen extends StatefulWidget {
 }
 
 class _PracticeCompleteScreenState extends State<PracticeCompleteScreen> {
-  @override
-  void initState() {
-    super.initState();
-    // Log practice complete screen view
-    _logScreenView();
-  }
+  // Service accessor via context
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
+  bool _screenViewLogged = false;
 
   void _logScreenView() {
     final scorePercentage = widget.totalCount > 0
         ? (widget.correctCount / widget.totalCount * 100)
         : 0.0;
 
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.custom(
         name: 'practice_complete',
         className: 'PracticeCompleteScreen',
@@ -69,6 +66,12 @@ class _PracticeCompleteScreenState extends State<PracticeCompleteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Log screen view on first build (deferred from initState for context access)
+    if (!_screenViewLogged) {
+      _screenViewLogged = true;
+      _logScreenView();
+    }
+
     final l10n = QuizL10n.of(context);
     final theme = Theme.of(context);
 
@@ -167,6 +170,8 @@ class _PracticeCompleteScreenState extends State<PracticeCompleteScreen> {
 /// This widget receives BLoC state directly, making it suitable for use
 /// with [PracticeBuilder].
 ///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
+///
 /// Example:
 /// ```dart
 /// PracticeBuilder(
@@ -184,7 +189,6 @@ class PracticeCompleteContent extends StatelessWidget {
     super.key,
     required this.state,
     required this.onDone,
-    required this.analyticsService,
   });
 
   /// The practice complete state from BLoC.
@@ -193,16 +197,12 @@ class PracticeCompleteContent extends StatelessWidget {
   /// Called when the user taps the "Done" button.
   final VoidCallback onDone;
 
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
-
   @override
   Widget build(BuildContext context) {
     return PracticeCompleteScreen(
       correctCount: state.correctCount,
       needMorePracticeCount: state.needMorePracticeCount,
       onDone: onDone,
-      analyticsService: analyticsService,
     );
   }
 }
