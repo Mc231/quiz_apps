@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../services/quiz_services_context.dart';
 import '../widgets/question_review_widget.dart';
 
 /// Data model for session details.
@@ -163,13 +164,14 @@ class SessionDetailTexts {
 }
 
 /// Screen displaying session details with question review.
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class SessionDetailScreen extends StatefulWidget {
   /// Creates a [SessionDetailScreen].
   const SessionDetailScreen({
     super.key,
     required this.session,
     required this.texts,
-    required this.analyticsService,
     this.onPracticeWrongAnswers,
     this.onExport,
     this.onDelete,
@@ -181,9 +183,6 @@ class SessionDetailScreen extends StatefulWidget {
 
   /// Localization texts.
   final SessionDetailTexts texts;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
 
   /// Callback to practice wrong answers.
   final VoidCallback? onPracticeWrongAnswers;
@@ -204,17 +203,23 @@ class SessionDetailScreen extends StatefulWidget {
 class _SessionDetailScreenState extends State<SessionDetailScreen> {
   QuestionFilterMode _filterMode = QuestionFilterMode.all;
 
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
   @override
   void initState() {
     super.initState();
-    _logScreenView();
+    // Log screen view after first frame when context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _logScreenView();
+    });
   }
 
   void _logScreenView() {
     final daysAgo = DateTime.now().difference(widget.session.startTime).inDays;
 
     // Screen view event
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.sessionDetail(
         sessionId: widget.session.id,
         quizName: widget.session.quizName,
@@ -224,7 +229,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
     );
 
     // Interaction event for session viewed
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       InteractionEvent.sessionViewed(
         sessionId: widget.session.id,
         quizName: widget.session.quizName,
