@@ -224,6 +224,7 @@ QuizServices createMockQuizServices({
   AchievementService? achievementService,
   AnalyticsService? screenAnalyticsService,
   QuizAnalyticsService? quizAnalyticsService,
+  ResourceManager? resourceManager,
 }) {
   return QuizServices(
     settingsService: settingsService ?? MockSettingsService(),
@@ -231,6 +232,15 @@ QuizServices createMockQuizServices({
     achievementService: achievementService ?? MockAchievementService(),
     screenAnalyticsService: screenAnalyticsService ?? MockAnalyticsService(),
     quizAnalyticsService: quizAnalyticsService ?? MockQuizAnalyticsService(),
+    resourceManager: resourceManager ?? _createTestResourceManager(),
+  );
+}
+
+/// Creates a default ResourceManager with in-memory storage for testing.
+ResourceManager _createTestResourceManager() {
+  return ResourceManager(
+    config: ResourceConfig.standard(),
+    repository: InMemoryResourceRepository(),
   );
 }
 
