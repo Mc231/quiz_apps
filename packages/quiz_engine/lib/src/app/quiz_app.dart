@@ -543,7 +543,7 @@ class _QuizAppState extends State<QuizApp> {
           formatDate: widget.formatDate,
           formatStatus: widget.formatStatus,
           formatDuration: widget.formatDuration,
-          analyticsService: _screenAnalyticsService,
+          // analyticsService is now obtained from QuizServicesProvider via context
         );
       },
     );
