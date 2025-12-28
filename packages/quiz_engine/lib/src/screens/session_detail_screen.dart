@@ -212,8 +212,20 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
 
   void _logScreenView() {
     final daysAgo = DateTime.now().difference(widget.session.startTime).inDays;
+
+    // Screen view event
     widget.analyticsService.logEvent(
       ScreenViewEvent.sessionDetail(
+        sessionId: widget.session.id,
+        quizName: widget.session.quizName,
+        scorePercentage: widget.session.scorePercentage,
+        daysAgo: daysAgo,
+      ),
+    );
+
+    // Interaction event for session viewed
+    widget.analyticsService.logEvent(
+      InteractionEvent.sessionViewed(
         sessionId: widget.session.id,
         quizName: widget.session.quizName,
         scorePercentage: widget.session.scorePercentage,
