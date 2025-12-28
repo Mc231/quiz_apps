@@ -113,6 +113,14 @@ class FlagsQuizAppProvider {
       analyticsService: screenAnalyticsService,
     );
 
+    // Create and initialize resource manager with SQLite persistence
+    final resourceManager = ResourceManager(
+      config: ResourceConfig.standard(),
+      repository: SqliteResourceRepository(sl.get<AppDatabase>()),
+      analyticsService: screenAnalyticsService,
+    );
+    await resourceManager.initialize();
+
     // Bundle all services together
     final services = QuizServices(
       settingsService: settingsService,
@@ -120,6 +128,7 @@ class FlagsQuizAppProvider {
       achievementService: achievementService,
       screenAnalyticsService: screenAnalyticsService,
       quizAnalyticsService: quizAnalyticsService,
+      resourceManager: resourceManager,
     );
 
     return FlagsQuizDependencies(
