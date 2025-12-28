@@ -22,6 +22,7 @@ import 'quiz_services_provider.dart';
 /// final achievements = context.achievementService;
 /// final screenAnalytics = context.screenAnalyticsService;
 /// final quizAnalytics = context.quizAnalyticsService;
+/// final resources = context.resourceManager;
 /// ```
 ///
 /// ## Nullable Access
@@ -70,4 +71,9 @@ extension QuizServicesContext on BuildContext {
   /// Throws a [FlutterError] if no [QuizServicesProvider] is found.
   QuizAnalyticsService get quizAnalyticsService =>
       services.quizAnalyticsService;
+
+  /// Returns the [ResourceManager] from the closest [QuizServicesProvider] ancestor.
+  ///
+  /// Throws a [FlutterError] if no [QuizServicesProvider] is found.
+  ResourceManager get resourceManager => services.resourceManager;
 }
