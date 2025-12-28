@@ -27,6 +27,17 @@
 
 ---
 
+## 🎯 Priority Queue (Next Session)
+
+| Priority | Sprint | Description | Phase |
+|----------|--------|-------------|-------|
+| 1 | **Sprint 8.21** | Resource UI Integration & Pre-Quiz Validation | Phase 8.6 |
+| 2 | **Sprint 9.2** | Ads Service (AdMob integration) | Phase 9 |
+
+**Sprint 8.21** wires up `RestoreResourceDialog` to UI (with stub ads). **Sprint 9.2** implements real AdMob so "Watch Ad" button works.
+
+---
+
 ## Phase 1: Quiz Engine Foundation ✅
 
 ### Sprint 1.1: Core Quiz Models ✅
@@ -1932,15 +1943,27 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 
 ---
 
-### Sprint 8.20: ResourceManager Integration ✅
+## Phase 8.6: Resource Management Integration
 
-**Goal:** Wire up the existing ResourceManager (from Sprint 8.15) to the quiz system so hints, skips, and lives are tracked and persisted.
+**Overview:** Complete the ResourceManager integration to enable freemium resource tracking (lives, hints, skips) with daily limits, persistence, and restoration via ads/purchases.
 
 **Prerequisites:**
 - Sprint 8.15 (ResourceManager architecture) - ✅ Completed
 
-**Background:**
-Sprint 8.15 created the full ResourceManager infrastructure (manager, repositories, UI dialogs) but did NOT integrate it with QuizBloc/QuizScreen. This sprint completes that integration.
+**Design Decision - Challenges vs Regular Play:**
+- **Regular Play (categories):** Uses global ResourceManager pool (`useResourceManager=true`)
+  - Check lives before starting → show RestoreResourceDialog if depleted
+  - Lives/hints/skips persist across sessions, reset daily at midnight
+- **Challenges:** Uses fixed challenge-specific resources (`useResourceManager=false`)
+  - Each challenge defines its own lives/hints/skips in config
+  - No pre-quiz validation needed - challenges manage their own resources
+  - Resources don't affect or consume from the global pool
+
+---
+
+### Sprint 8.20: ResourceManager QuizBloc Integration ✅
+
+**Goal:** Wire up ResourceManager to QuizBloc so hints, skips, and lives are consumed from the global pool.
 
 **Tasks:**
 
@@ -1959,39 +1982,55 @@ Sprint 8.15 created the full ResourceManager infrastructure (manager, repositori
 - [x] On timeout (lives mode) → call `resourceManager.useResource(ResourceType.lives())`
 - [x] Check resource availability before allowing use
 
-*QuizScreen Integration:*
-- [ ] Update `GameResourcePanel` to show counts from `ResourceManager` (not just QuizState)
-- [ ] Wire `onDepletedTap` callback to show `RestoreResourceDialog`
-- [ ] Handle resource restoration (dialog → ad/purchase → update UI)
-
 *Mode Considerations:*
 - [x] Standard/Practice mode: Use ResourceManager for hints/skips via `useResourceManager=true`
 - [x] Challenge mode: Use fixed challenge resources via `useResourceManager=false` (default)
 - [x] Documented in QuizBloc via `useResourceManager` flag doc comments
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services.dart` - Added `resourceManager` field
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services_context.dart` - Added `resourceManager` getter
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services_scope.dart` - Added `resourceManager` override support
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Added ResourceManager integration
+- ✅ `packages/quiz_engine_core/pubspec.yaml` - Added shared_services dependency
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Initialize ResourceManager
+
+**Bug Fixes Applied:**
+- Fixed QuizBloc to read initial lives from ResourceManager when `useResourceManager=true`
+- Fixed skip consumption to also update HintManager UI state
+- Fixed lives consumption condition to check ResourceManager availability
+- Lives are now correctly consumed and persisted across quiz sessions
+
+---
+
+### Sprint 8.21: Resource UI Integration & Pre-Quiz Validation
+
+**Goal:** Complete UI integration for resource restoration dialogs and add pre-quiz lives validation.
+
+**Tasks:**
+
+*UI Integration (GameResourcePanel):*
+- [ ] Wire `onDepletedTap` in GameResourcePanel to show `RestoreResourceDialog`
+- [ ] Update GameResourcePanel to read counts from ResourceManager instead of QuizState
+- [ ] Handle resource restoration flow (dialog → ad/purchase → refresh UI)
+
+*Pre-Quiz Lives Validation (Play Tab):*
+- [ ] Check lives availability when user taps category on Play tab
+- [ ] If lives == 0, show `RestoreResourceDialog` before starting quiz
+- [ ] Only start quiz if user has lives OR successfully restores via dialog
+- [ ] Challenges bypass this check (they use their own fixed resources)
 
 *Testing:*
 - [ ] Write integration tests for ResourceManager → QuizBloc flow
 - [ ] Write widget tests for RestoreResourceDialog appearing on depleted tap
 - [ ] Test daily reset mechanism
 - [ ] Test resource persistence across app restarts
-
-**Files Modified:**
-- ✅ `packages/quiz_engine/lib/src/services/quiz_services.dart` - Added `resourceManager` field
-- ✅ `packages/quiz_engine/lib/src/services/quiz_services_context.dart` - Added `resourceManager` getter
-- ✅ `packages/quiz_engine/lib/src/services/quiz_services_scope.dart` - Added `resourceManager` override support
-- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Added ResourceManager integration with `useResourceManager` flag
-- ✅ `packages/quiz_engine_core/pubspec.yaml` - Added shared_services dependency
-- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Initialize ResourceManager
+- [ ] Add user-friendly way to test daily reset (Settings toggle or wait until midnight)
 
 **Notes:**
-- ResourceManager is required in QuizServices but widgets can opt-in/out via `useResourceManager` flag in QuizBloc
+- `RestoreResourceDialog` and `PurchaseResourceSheet` are already implemented (Sprint 8.15)
+- IAP and Ads providers remain as stubs (`NoIAPProvider`, `NoAdsProvider`) until Phase 9
 - For testing, use `InMemoryResourceRepository` instead of `SqliteResourceRepository`
-- IAP and Ads providers remain as stubs (`NoIAPProvider`, `NoAdsProvider`) until Sprint 9.2/9.3
-- This sprint enables the resource tracking; real monetization comes later
-
-**Pending Integrations (for future sprints):**
-- [ ] Update GameResourcePanel to read counts from ResourceManager
-- [ ] Integrate RestoreResourceDialog with GameResourceButton.onDepletedTap
 
 ---
 

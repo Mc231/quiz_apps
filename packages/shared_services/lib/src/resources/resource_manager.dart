@@ -229,7 +229,8 @@ class ResourceManager {
     }
 
     // Check if we've crossed midnight since last reset
-    final lastResetDate = DateTime(lastReset.year, lastReset.month, lastReset.day);
+    final lastResetDate =
+        DateTime(lastReset.year, lastReset.month, lastReset.day);
     final todayDate = DateTime(now.year, now.month, now.day);
 
     if (todayDate.isAfter(lastResetDate)) {

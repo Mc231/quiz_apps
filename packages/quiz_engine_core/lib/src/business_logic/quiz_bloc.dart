@@ -288,6 +288,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Track life lost if incorrect and lives are being tracked
     final isTrackingLives = (useResourceManager && resourceManager != null) ||
                             _config.modeConfig.lives != null;
+
     if (!result.isCorrect &&
         isTrackingLives &&
         _progressTracker.remainingLives != null &&
