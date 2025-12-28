@@ -108,6 +108,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       onTick: _handleTimerTick,
       onQuestionTimeout: _handleQuestionTimeout,
       onTotalTimeExpired: _handleTotalTimeExpired,
+      onTimerWarning: _handleTimerWarning,
     );
 
     // Initialize game flow manager with callbacks
@@ -127,6 +128,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
   /// Gets the current session ID (for external use if needed).
   String? get currentSessionId => _sessionManager.currentSessionId;
+
+  /// Gets the elapsed session duration.
+  Duration get sessionDuration =>
+      Duration(seconds: _timerManager.sessionDurationSeconds);
 
   /// The current question being asked to the player.
   Question get currentQuestion => _gameFlowManager.currentQuestion!;
@@ -501,6 +506,19 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   void _handleTotalTimeExpired() {
     _emitQuestionState();
     _notifyGameOver();
+  }
+
+  void _handleTimerWarning({
+    required int secondsRemaining,
+    required String warningLevel,
+  }) {
+    // Track timer warning analytics
+    _analyticsManager.trackTimerWarning(
+      question: currentQuestion,
+      questionIndex: _progressTracker.currentProgress,
+      secondsRemaining: secondsRemaining,
+      warningLevel: warningLevel,
+    );
   }
 
   // ============ Private Methods - Game Flow Callbacks ============
