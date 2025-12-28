@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../services/quiz_services_context.dart';
 import '../widgets/statistics_card.dart';
 import '../widgets/trends_widget.dart';
 import '../widgets/session_card.dart';
@@ -175,13 +176,14 @@ class StatisticsTexts {
 }
 
 /// Screen displaying global statistics and trends.
+///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
 class StatisticsScreen extends StatefulWidget {
   /// Creates a [StatisticsScreen].
   const StatisticsScreen({
     super.key,
     required this.statistics,
     required this.texts,
-    required this.analyticsService,
     this.recentSessions = const [],
     this.onSessionTap,
     this.onViewAllSessions,
@@ -193,9 +195,6 @@ class StatisticsScreen extends StatefulWidget {
 
   /// Localization texts.
   final StatisticsTexts texts;
-
-  /// Analytics service for tracking events.
-  final AnalyticsService analyticsService;
 
   /// Recent sessions for quick access.
   final List<SessionCardData> recentSessions;
@@ -214,14 +213,13 @@ class StatisticsScreen extends StatefulWidget {
 }
 
 class _StatisticsScreenState extends State<StatisticsScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _logScreenView();
-  }
+  // Service accessor via context
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
+
+  bool _screenViewLogged = false;
 
   void _logScreenView() {
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.statistics(
         totalSessions: widget.statistics.totalSessions,
         averageScore: widget.statistics.averageScore,
@@ -231,6 +229,12 @@ class _StatisticsScreenState extends State<StatisticsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Log screen view on first build (deferred from initState for context access)
+    if (!_screenViewLogged) {
+      _screenViewLogged = true;
+      _logScreenView();
+    }
+
     if (widget.isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
