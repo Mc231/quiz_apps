@@ -329,6 +329,52 @@ class QuizAnalyticsManager {
     }
   }
 
+  /// Tracks when a user selects an answer option.
+  Future<void> trackOptionSelected({
+    required Question question,
+    required int questionIndex,
+    required QuestionEntry selectedOption,
+    required int optionIndex,
+    required Duration timeSinceDisplayed,
+  }) async {
+    if (!isEnabled || _config == null) return;
+
+    try {
+      await _analyticsService.trackOptionSelected(
+        quizId: _config!.quizId,
+        question: question,
+        questionIndex: questionIndex,
+        selectedOption: selectedOption,
+        optionIndex: optionIndex,
+        timeSinceDisplayed: timeSinceDisplayed,
+      );
+    } catch (e) {
+      // Analytics failure should not block option selection
+    }
+  }
+
+  /// Tracks when answer feedback is shown to the user.
+  Future<void> trackFeedbackShown({
+    required Question question,
+    required int questionIndex,
+    required bool wasCorrect,
+    required Duration feedbackDuration,
+  }) async {
+    if (!isEnabled || _config == null) return;
+
+    try {
+      await _analyticsService.trackFeedbackShown(
+        quizId: _config!.quizId,
+        question: question,
+        questionIndex: questionIndex,
+        wasCorrect: wasCorrect,
+        feedbackDuration: feedbackDuration,
+      );
+    } catch (e) {
+      // Analytics failure should not block feedback display
+    }
+  }
+
   // ============ Hint Events ============
 
   /// Tracks when a 50/50 hint is used.
