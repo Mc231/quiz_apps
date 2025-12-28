@@ -4,6 +4,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../services/quiz_services_context.dart';
 import 'widgets/achievement_notification.dart';
 
 /// Controller for managing achievement unlock notifications.
@@ -228,6 +229,8 @@ enum AchievementNotificationPosition {
 /// This widget automatically attaches the controller to the overlay and
 /// provides it via [AchievementNotifications.of(context)].
 ///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
+///
 /// Example:
 /// ```dart
 /// AchievementNotifications(
@@ -247,7 +250,6 @@ class AchievementNotifications extends StatefulWidget {
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
-    required this.analyticsService,
     this.position = AchievementNotificationPosition.top,
   });
 
@@ -265,9 +267,6 @@ class AchievementNotifications extends StatefulWidget {
 
   /// Optional audio service.
   final AudioService? audioService;
-
-  /// Optional analytics service.
-  final AnalyticsService analyticsService;
 
   /// Position where notifications appear.
   final AchievementNotificationPosition position;
@@ -299,34 +298,54 @@ class AchievementNotifications extends StatefulWidget {
 }
 
 class _AchievementNotificationsState extends State<AchievementNotifications> {
-  late AchievementNotificationController _controller;
+  AchievementNotificationController? _internalController;
   bool _ownsController = false;
+  bool _initialized = false;
+
+  AchievementNotificationController get _controller {
+    if (widget.controller != null) {
+      return widget.controller!;
+    }
+    assert(_internalController != null,
+        'Controller not initialized. Call didChangeDependencies first.');
+    return _internalController!;
+  }
 
   @override
   void initState() {
     super.initState();
-    _initController();
+    // If external controller is provided, use it immediately
+    if (widget.controller != null) {
+      _ownsController = false;
+    }
   }
 
-  void _initController() {
-    if (widget.controller != null) {
-      _controller = widget.controller!;
-      _ownsController = false;
-    } else {
-      _controller = AchievementNotificationController(
-        style: widget.style,
-        hapticService: widget.hapticService,
-        audioService: widget.audioService,
-        analyticsService: widget.analyticsService,
-        position: widget.position,
-      );
-      _ownsController = true;
-    }
+  void _initInternalController() {
+    if (_internalController != null) return;
+
+    // Get analytics service from context
+    final analyticsService = context.screenAnalyticsService;
+
+    _internalController = AchievementNotificationController(
+      style: widget.style,
+      hapticService: widget.hapticService,
+      audioService: widget.audioService,
+      analyticsService: analyticsService,
+      position: widget.position,
+    );
+    _ownsController = true;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
+    // Initialize internal controller if needed (context is now available)
+    if (widget.controller == null && !_initialized) {
+      _initInternalController();
+      _initialized = true;
+    }
+
     // Attach to overlay when available
     final overlay = Overlay.maybeOf(context);
     if (overlay != null) {
@@ -338,17 +357,24 @@ class _AchievementNotificationsState extends State<AchievementNotifications> {
   void didUpdateWidget(AchievementNotifications oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
-      if (_ownsController) {
-        _controller.dispose();
+      // Switching from external to internal controller
+      if (widget.controller == null && oldWidget.controller != null) {
+        _initInternalController();
+        _ownsController = true;
       }
-      _initController();
+      // Switching from internal to external controller
+      else if (widget.controller != null && oldWidget.controller == null) {
+        _internalController?.dispose();
+        _internalController = null;
+        _ownsController = false;
+      }
     }
   }
 
   @override
   void dispose() {
     if (_ownsController) {
-      _controller.dispose();
+      _internalController?.dispose();
     }
     super.dispose();
   }
