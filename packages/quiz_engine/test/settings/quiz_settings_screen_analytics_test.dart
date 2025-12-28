@@ -29,15 +29,15 @@ void main() {
 
     testWidgets('tracks sound effects toggle', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: analyticsService,
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAppBar: false,
               showDataExport: false, // Disable to avoid service locator
             ),
           ),
+          settingsService: settingsService,
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -62,15 +62,15 @@ void main() {
 
     testWidgets('tracks haptic feedback toggle', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: analyticsService,
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAppBar: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -96,15 +96,15 @@ void main() {
 
     testWidgets('tracks theme change', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: analyticsService,
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAppBar: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -119,8 +119,8 @@ void main() {
       await tester.tap(themeTile);
       await tester.pumpAndSettle();
 
-      // Select dark theme
-      final darkThemeOption = find.widgetWithText(RadioListTile, 'Dark');
+      // Select dark theme (use find.text since RadioListTile is generic)
+      final darkThemeOption = find.text('Dark');
       expect(darkThemeOption, findsOneWidget);
 
       await tester.tap(darkThemeOption);
@@ -137,21 +137,25 @@ void main() {
 
     testWidgets('tracks settings reset', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: analyticsService,
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAppBar: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
 
       // Reset analytics after screen view event is logged
       analyticsService.reset();
+
+      // Scroll to find reset to defaults at the bottom
+      await tester.drag(find.byType(ListView), const Offset(0, -500));
+      await tester.pumpAndSettle();
 
       // Find and tap reset to defaults
       final resetTile = find.widgetWithText(ListTile, 'Reset to Defaults');
@@ -178,15 +182,15 @@ void main() {
 
     testWidgets('tracks background music toggle', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: analyticsService,
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAppBar: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -212,18 +216,18 @@ void main() {
       expect(event.parameters['setting_category'], 'audio');
     });
 
-    testWidgets('does not track events when analytics service is null',
+    testWidgets('does not track events when NoOp analytics service is used',
         (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAppBar: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
+          screenAnalyticsService: NoOpAnalyticsService(),
         ),
       );
       await tester.pumpAndSettle();
@@ -240,15 +244,15 @@ void main() {
 
     testWidgets('tracks multiple settings changes', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
-          QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: analyticsService,
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAppBar: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
+          screenAnalyticsService: analyticsService,
         ),
       );
       await tester.pumpAndSettle();

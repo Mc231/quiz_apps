@@ -654,10 +654,8 @@ class _QuizAppState extends State<QuizApp> {
 
     // Provide default settings screen
     return (context) => QuizSettingsScreen(
-      settingsService: _settingsService,
       config:
           widget.settingsConfig ?? const QuizSettingsConfig(showAppBar: false),
-      analyticsService: _screenAnalyticsService,
     );
   }
 
@@ -814,9 +812,7 @@ class _QuizAppState extends State<QuizApp> {
     final settingsWidget =
         widget.settingsBuilder?.call(context) ??
         QuizSettingsScreen(
-          settingsService: _settingsService,
           config: widget.settingsConfig ?? const QuizSettingsConfig(),
-          analyticsService: _screenAnalyticsService,
         );
 
     _navigatorKey.currentState?.push(

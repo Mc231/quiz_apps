@@ -156,36 +156,29 @@ class QuizSettingsConfig {
 
 /// A configurable settings screen for quiz apps.
 ///
-/// Uses [SettingsService] from shared_services for persistence
+/// Uses [SettingsService] from [QuizServicesProvider] for persistence
 /// and [QuizLocalizations] for all text.
+///
+/// Services are obtained from [QuizServicesProvider] via context.
 ///
 /// Example:
 /// ```dart
 /// QuizSettingsScreen(
-///   settingsService: settingsService,
 ///   config: const QuizSettingsConfig(),
 /// )
 /// ```
 class QuizSettingsScreen extends StatefulWidget {
-  /// The settings service for reading and updating settings.
-  final SettingsService settingsService;
-
   /// Configuration for which sections to show.
   final QuizSettingsConfig config;
 
   /// Optional app name override for about dialog.
   final String? appName;
 
-  /// Optional analytics service for tracking settings changes.
-  final AnalyticsService analyticsService;
-
   /// Creates a [QuizSettingsScreen].
-  QuizSettingsScreen({
+  const QuizSettingsScreen({
     super.key,
-    required this.settingsService,
     this.config = const QuizSettingsConfig(),
     this.appName,
-    required this.analyticsService,
   });
 
   @override
@@ -195,15 +188,33 @@ class QuizSettingsScreen extends StatefulWidget {
 class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   late QuizSettings _currentSettings;
   PackageInfo? _packageInfo;
+  bool _isInitialized = false;
+
+  /// Gets the settings service from context.
+  SettingsService get _settingsService => context.settingsService;
+
+  /// Gets the analytics service from context.
+  AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
   @override
   void initState() {
     super.initState();
-    _currentSettings = widget.settingsService.currentSettings;
     _loadPackageInfo();
-    _logScreenView();
+  }
 
-    widget.settingsService.settingsStream.listen((settings) {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_isInitialized) {
+      _isInitialized = true;
+      _initializeSettings();
+      _logScreenView();
+    }
+  }
+
+  void _initializeSettings() {
+    _currentSettings = _settingsService.currentSettings;
+    _settingsService.settingsStream.listen((settings) {
       if (mounted) {
         setState(() {
           _currentSettings = settings;
@@ -213,7 +224,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   }
 
   void _logScreenView() {
-    widget.analyticsService.logEvent(ScreenViewEvent.settings());
+    _analyticsService.logEvent(ScreenViewEvent.settings());
   }
 
   Future<void> _loadPackageInfo() async {
@@ -266,8 +277,8 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             subtitle: Text(l10n.soundEffectsDescription),
             value: _currentSettings.soundEnabled,
             onChanged: (value) async {
-              await widget.settingsService.toggleSound();
-              widget.analyticsService.logEvent(
+              await _settingsService.toggleSound();
+              _analyticsService.logEvent(
                 SettingsEvent.soundEffectsToggled(
                   enabled: value,
                   source: _settingsSource,
@@ -286,8 +297,8 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             value: _currentSettings.musicEnabled,
             onChanged: (value) async {
               final oldValue = _currentSettings.musicEnabled;
-              await widget.settingsService.toggleMusic();
-              widget.analyticsService.logEvent(
+              await _settingsService.toggleMusic();
+              _analyticsService.logEvent(
                 SettingsEvent.changed(
                   settingName: 'background_music',
                   oldValue: oldValue.toString(),
@@ -307,8 +318,8 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             subtitle: Text(l10n.hapticFeedbackDescription),
             value: _currentSettings.hapticEnabled,
             onChanged: (value) async {
-              await widget.settingsService.toggleHaptic();
-              widget.analyticsService.logEvent(
+              await _settingsService.toggleHaptic();
+              _analyticsService.logEvent(
                 SettingsEvent.hapticFeedbackToggled(
                   enabled: value,
                   source: _settingsSource,
@@ -488,8 +499,8 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
               groupValue: _currentSettings.themeMode,
               onChanged: (value) async {
                 if (value == null) return;
-                await widget.settingsService.setThemeMode(value);
-                widget.analyticsService.logEvent(
+                await _settingsService.setThemeMode(value);
+                _analyticsService.logEvent(
                   SettingsEvent.themeChanged(
                     newTheme: value.name,
                     previousTheme: previousTheme.name,
@@ -530,7 +541,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
 
   void _showAboutDialog(QuizLocalizations l10n) {
     // Track about screen view
-    widget.analyticsService.logEvent(
+    _analyticsService.logEvent(
       ScreenViewEvent.about(
         appVersion: _packageInfo?.version ?? 'unknown',
         buildNumber: _packageInfo?.buildNumber ?? 'unknown',
@@ -570,7 +581,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
 
   void _showLicenses() {
     // Track licenses screen view
-    widget.analyticsService.logEvent(ScreenViewEvent.licenses());
+    _analyticsService.logEvent(ScreenViewEvent.licenses());
 
     showLicensePage(
       context: context,
@@ -592,8 +603,8 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
           ),
           TextButton(
             onPressed: () async {
-              await widget.settingsService.resetToDefaults();
-              widget.analyticsService.logEvent(
+              await _settingsService.resetToDefaults();
+              _analyticsService.logEvent(
                 SettingsEvent.resetConfirmed(
                   resetType: 'settings_only',
                   sessionsDeleted: 0,
@@ -620,6 +631,8 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
 /// This widget receives all data and callbacks externally, making it
 /// suitable for use with a BLoC pattern via [SettingsBuilder].
 ///
+/// Analytics service is obtained from [QuizServicesProvider] via context.
+///
 /// Example:
 /// ```dart
 /// SettingsBuilder(
@@ -644,7 +657,6 @@ class SettingsContent extends StatelessWidget {
     this.packageInfo,
     this.config = const QuizSettingsConfig(),
     this.appName,
-    required this.analyticsService,
     this.onToggleSound,
     this.onToggleMusic,
     this.onToggleHaptic,
@@ -663,9 +675,6 @@ class SettingsContent extends StatelessWidget {
 
   /// Optional app name override for about dialog.
   final String? appName;
-
-  /// Optional analytics service for tracking settings changes.
-  final AnalyticsService analyticsService;
 
   /// Callback when sound is toggled.
   final VoidCallback? onToggleSound;
@@ -721,7 +730,7 @@ class SettingsContent extends StatelessWidget {
             onChanged: onToggleSound != null
                 ? (value) {
                     onToggleSound!();
-                    analyticsService.logEvent(
+                    context.screenAnalyticsService.logEvent(
                       SettingsEvent.soundEffectsToggled(
                         enabled: value,
                         source: _settingsSource,
@@ -743,7 +752,7 @@ class SettingsContent extends StatelessWidget {
                 ? (value) {
                     final oldValue = settings.musicEnabled;
                     onToggleMusic!();
-                    analyticsService.logEvent(
+                    context.screenAnalyticsService.logEvent(
                       SettingsEvent.changed(
                         settingName: 'background_music',
                         oldValue: oldValue.toString(),
@@ -766,7 +775,7 @@ class SettingsContent extends StatelessWidget {
             onChanged: onToggleHaptic != null
                 ? (value) {
                     onToggleHaptic!();
-                    analyticsService.logEvent(
+                    context.screenAnalyticsService.logEvent(
                       SettingsEvent.hapticFeedbackToggled(
                         enabled: value,
                         source: _settingsSource,
@@ -936,6 +945,7 @@ class SettingsContent extends StatelessWidget {
 
   void _showThemeDialog(BuildContext context, QuizLocalizations l10n) {
     final previousTheme = settings.themeMode;
+    final analyticsService = context.screenAnalyticsService;
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -989,7 +999,7 @@ class SettingsContent extends StatelessWidget {
 
   void _showAboutDialog(BuildContext context, QuizLocalizations l10n) {
     // Track about screen view
-    analyticsService.logEvent(
+    context.screenAnalyticsService.logEvent(
       ScreenViewEvent.about(
         appVersion: packageInfo?.version ?? 'unknown',
         buildNumber: packageInfo?.buildNumber ?? 'unknown',
@@ -1029,7 +1039,7 @@ class SettingsContent extends StatelessWidget {
 
   void _showLicenses(BuildContext context) {
     // Track licenses screen view
-    analyticsService.logEvent(ScreenViewEvent.licenses());
+    context.screenAnalyticsService.logEvent(ScreenViewEvent.licenses());
 
     showLicensePage(
       context: context,
@@ -1039,6 +1049,7 @@ class SettingsContent extends StatelessWidget {
   }
 
   void _showResetDialog(BuildContext context, QuizLocalizations l10n) {
+    final analyticsService = context.screenAnalyticsService;
     showDialog(
       context: context,
       builder: (dialogContext) => AlertDialog(

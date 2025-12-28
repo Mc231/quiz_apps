@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:quiz_engine/src/l10n/quiz_localizations_delegate.dart';
-import 'package:quiz_engine/src/settings/quiz_settings_screen.dart';
+import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_services/shared_services.dart';
+
+import '../test_helpers.dart';
 
 /// A mock SettingsService for testing.
 class MockSettingsService implements SettingsService {
@@ -77,26 +78,14 @@ void main() {
     settingsService.dispose();
   });
 
-  Widget buildTestWidget({
-    required Widget child,
-  }) {
-    return MaterialApp(
-      localizationsDelegates: const [
-        QuizLocalizationsDelegate(),
-      ],
-      home: child,
-    );
-  }
-
   group('QuizSettingsScreen', () {
     testWidgets('displays app bar with title', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            config: const QuizSettingsConfig(showDataExport: false),
-            analyticsService: NoOpAnalyticsService(),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -107,15 +96,14 @@ void main() {
 
     testWidgets('displays custom title', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               title: 'My Settings',
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -125,22 +113,19 @@ void main() {
 
     testWidgets('hides app bar when showAppBar is false', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: Scaffold(
-            body: QuizSettingsScreen(
-              settingsService: settingsService,
-              analyticsService: NoOpAnalyticsService(),
-              config: const QuizSettingsConfig(
-                showAppBar: false,
-                showDataExport: false,
-              ),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
+              showAppBar: false,
+              showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
 
-      // Should not find a second AppBar (the Scaffold adds one)
+      // Should not find Settings title (no app bar)
       expect(find.text('Settings'), findsNothing);
     });
   });
@@ -148,12 +133,11 @@ void main() {
   group('Audio & Haptics Section', () {
     testWidgets('displays sound effects toggle', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(showDataExport: false),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -165,12 +149,11 @@ void main() {
 
     testWidgets('toggles sound effects', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(showDataExport: false),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -185,12 +168,11 @@ void main() {
 
     testWidgets('displays haptic feedback toggle', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(showDataExport: false),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -200,15 +182,14 @@ void main() {
 
     testWidgets('hides section when disabled', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAudioHapticsSection: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -223,12 +204,11 @@ void main() {
   group('Appearance Section', () {
     testWidgets('displays theme selector', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(showDataExport: false),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -239,12 +219,11 @@ void main() {
 
     testWidgets('shows theme dialog on tap', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(showDataExport: false),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -260,12 +239,11 @@ void main() {
 
     testWidgets('changes theme when selected', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(showDataExport: false),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -281,15 +259,14 @@ void main() {
 
     testWidgets('hides section when disabled', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAppearanceSection: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -302,12 +279,11 @@ void main() {
   group('About Section', () {
     testWidgets('displays about items', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(showDataExport: false),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -322,15 +298,14 @@ void main() {
 
     testWidgets('hides section when disabled', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAboutSection: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -342,12 +317,11 @@ void main() {
   group('Advanced Section', () {
     testWidgets('displays reset to defaults', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(showDataExport: false),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -361,12 +335,11 @@ void main() {
 
     testWidgets('shows reset dialog on tap', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(showDataExport: false),
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(showDataExport: false),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -385,15 +358,14 @@ void main() {
 
     testWidgets('hides section when disabled', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
-            config: const QuizSettingsConfig(
+        wrapWithServices(
+          const QuizSettingsScreen(
+            config: QuizSettingsConfig(
               showAdvancedSection: false,
               showDataExport: false,
             ),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -447,10 +419,8 @@ void main() {
   group('Custom sections', () {
     testWidgets('displays custom sections at end', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            analyticsService: NoOpAnalyticsService(),
-            settingsService: settingsService,
+        wrapWithServices(
+          QuizSettingsScreen(
             config: QuizSettingsConfig(
               showDataExport: false,
               customSections: (context) => [
@@ -460,6 +430,7 @@ void main() {
               ],
             ),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -473,10 +444,8 @@ void main() {
 
     testWidgets('displays custom sections before About', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: QuizSettingsScreen(
-            settingsService: settingsService,
-            analyticsService: NoOpAnalyticsService(),
+        wrapWithServices(
+          QuizSettingsScreen(
             config: QuizSettingsConfig(
               showDataExport: false,
               customSectionsBeforeAbout: (context) => [
@@ -489,6 +458,7 @@ void main() {
               ],
             ),
           ),
+          settingsService: settingsService,
         ),
       );
       await tester.pumpAndSettle();
@@ -505,19 +475,17 @@ void main() {
   group('SettingsSection widget', () {
     testWidgets('displays header and children', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: Scaffold(
-            body: ListView(
-              children: [
-                SettingsSection(
-                  header: 'Test Section',
-                  children: [
-                    const ListTile(title: Text('Item 1')),
-                    const ListTile(title: Text('Item 2')),
-                  ],
-                ),
-              ],
-            ),
+        wrapWithLocalizations(
+          ListView(
+            children: [
+              SettingsSection(
+                header: 'Test Section',
+                children: [
+                  const ListTile(title: Text('Item 1')),
+                  const ListTile(title: Text('Item 2')),
+                ],
+              ),
+            ],
           ),
         ),
       );
@@ -531,19 +499,17 @@ void main() {
 
     testWidgets('hides divider when showDivider is false', (tester) async {
       await tester.pumpWidget(
-        buildTestWidget(
-          child: Scaffold(
-            body: ListView(
-              children: [
-                SettingsSection(
-                  header: 'Test Section',
-                  showDivider: false,
-                  children: [
-                    const ListTile(title: Text('Item 1')),
-                  ],
-                ),
-              ],
-            ),
+        wrapWithLocalizations(
+          ListView(
+            children: [
+              SettingsSection(
+                header: 'Test Section',
+                showDivider: false,
+                children: [
+                  const ListTile(title: Text('Item 1')),
+                ],
+              ),
+            ],
           ),
         ),
       );
