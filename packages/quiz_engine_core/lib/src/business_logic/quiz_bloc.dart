@@ -173,14 +173,28 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Load configuration first
     _config = await configManager.getConfig(source: const DefaultSource());
 
+    // Determine initial lives - use ResourceManager if enabled
+    int? initialLives = _config.modeConfig.lives;
+    if (useResourceManager && resourceManager != null && initialLives != null) {
+      // Use the minimum of config lives and available ResourceManager lives
+      final availableLives = resourceManager!.getAvailableCount(ResourceType.lives());
+      initialLives = availableLives > 0 ? availableLives.clamp(1, initialLives) : 0;
+    }
+
     // Initialize managers
     _progressTracker.initialize(
       totalCount: 0, // Will be set after loading items
-      initialLives: _config.modeConfig.lives,
+      initialLives: initialLives,
     );
 
     _timerManager.initialize(_config.modeConfig);
-    _hintManager.initialize(_config.hintConfig);
+
+    // Initialize hint manager - use ResourceManager counts if enabled
+    if (useResourceManager && resourceManager != null) {
+      _hintManager.initialize(_createResourceManagedHintConfig());
+    } else {
+      _hintManager.initialize(_config.hintConfig);
+    }
 
     // Load quiz data
     var items = await dataProvider();
@@ -458,6 +472,26 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       hintsUsed5050: _hintManager.hintsUsed5050,
       hintsUsedSkip: _hintManager.hintsUsedSkip,
       bestStreak: _progressTracker.bestStreak,
+    );
+  }
+
+  // ============ Private Methods - ResourceManager Integration ============
+
+  /// Creates a HintConfig that uses ResourceManager counts instead of config defaults.
+  ///
+  /// This is called when [useResourceManager] is true to initialize hints
+  /// based on the global resource pool rather than per-quiz config.
+  HintConfig _createResourceManagedHintConfig() {
+    final fiftyFiftyCount = resourceManager!.getAvailableCount(ResourceType.fiftyFifty());
+    final skipCount = resourceManager!.getAvailableCount(ResourceType.skip());
+
+    return HintConfig(
+      initialHints: {
+        HintType.fiftyFifty: fiftyFiftyCount,
+        HintType.skip: skipCount,
+      },
+      canEarnHints: false, // Can't earn hints when using ResourceManager
+      allowAdForHint: false,
     );
   }
 
