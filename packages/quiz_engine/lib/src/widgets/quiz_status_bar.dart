@@ -1,8 +1,9 @@
-// ignore_for_file: deprecated_member_use_from_same_package
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'lives_display.dart';
+
+import '../theme/game_resource_theme.dart';
+import 'game_resource_button.dart';
 import 'timer_display.dart';
 
 /// A status bar widget that displays game status information below the app bar.
@@ -134,11 +135,13 @@ class QuizStatusBar extends StatelessWidget {
       return null;
     }
 
-    return LivesDisplay(
-      remainingLives: remainingLives,
-      totalLives: totalLives,
-      filledColor: livesColor,
-      emptyColor: lostLivesColor,
+    return GameResourceButton(
+      icon: Icons.favorite,
+      count: remainingLives,
+      resourceType: GameResourceType.lives,
+      activeColor: livesColor,
+      enabled: false, // Display-only in status bar
+      semanticLabel: '$remainingLives of $totalLives lives remaining',
     );
   }
 
