@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/src/quiz/quiz_screen.dart';
 import 'package:quiz_engine/src/quiz_widget_entry.dart';
+import 'package:quiz_engine/src/services/quiz_services_context.dart';
 import 'package:quiz_engine/src/widgets/quiz_lifecycle_handler.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'bloc/bloc_provider.dart';
@@ -34,6 +35,11 @@ class QuizWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get resourceManager from QuizServicesProvider if useResourceManager is true
+    final resourceManager = quizEntry.useResourceManager
+        ? context.maybeServices?.resourceManager
+        : null;
+
     final bloc = QuizBloc(
       quizEntry.dataProvider,
       RandomItemPicker([]),
@@ -45,6 +51,8 @@ class QuizWidget extends StatelessWidget {
       categoryName: quizEntry.categoryName,
       onQuizCompleted: quizEntry.onQuizCompleted,
       filter: quizEntry.filter,
+      resourceManager: resourceManager,
+      useResourceManager: quizEntry.useResourceManager,
     );
 
     return BlocProvider(
