@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:quiz_engine_core/src/business_logic/quiz_state/quiz_state.dart';
 import 'package:quiz_engine_core/src/model/question_entry.dart';
+import 'package:shared_services/shared_services.dart' show ResourceManager, ResourceType;
 
 import '../analytics/quiz_analytics_service.dart';
 import '../bloc/single_subscription_bloc.dart';
@@ -78,6 +79,25 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// Manages game flow and question picking.
   late final QuizGameFlowManager _gameFlowManager;
 
+  /// Optional resource manager for tracking and persisting resources.
+  ///
+  /// When provided and [useResourceManager] is true, resources (hints, lives)
+  /// are consumed from the global pool managed by ResourceManager.
+  /// When null or [useResourceManager] is false, resources are managed
+  /// per-quiz via the HintConfig in QuizConfig.
+  final ResourceManager? resourceManager;
+
+  /// Whether to use the ResourceManager for resource tracking.
+  ///
+  /// When true and [resourceManager] is provided:
+  /// - 50/50 hints consume from ResourceManager's fiftyFifty pool
+  /// - Skip hints consume from ResourceManager's skip pool
+  /// - Lives (in lives mode) consume from ResourceManager's lives pool
+  ///
+  /// When false (default), resources are managed per-quiz via HintConfig.
+  /// Challenge modes should set this to false to use fixed challenge resources.
+  final bool useResourceManager;
+
   /// Creates a `QuizBloc` with a provided data fetch function.
   ///
   /// [dataProvider] - Function to fetch quiz data
@@ -90,6 +110,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   /// [quizName] - Human-readable name of the quiz (for display in results)
   /// [categoryId] - Category ID for analytics tracking
   /// [categoryName] - Category name for analytics tracking
+  /// [resourceManager] - Optional resource manager for persistent resource tracking
+  /// [useResourceManager] - Whether to use ResourceManager for this quiz (default: false)
   QuizBloc(
     this.dataProvider,
     this.randomItemPicker, {
@@ -101,6 +123,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     this.quizName = 'Quiz',
     this.categoryId = '',
     this.categoryName = '',
+    this.resourceManager,
+    this.useResourceManager = false,
   })  : _sessionManager = QuizSessionManager(storageService: storageService),
         _analyticsManager = QuizAnalyticsManager(analyticsService: analyticsService) {
     // Initialize timer manager with callbacks
@@ -249,6 +273,11 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         initialLives != null &&
         _progressTracker.remainingLives != null &&
         _progressTracker.remainingLives! < livesBeforeAnswer!) {
+      // Consume from ResourceManager if enabled
+      if (useResourceManager && resourceManager != null) {
+        await resourceManager!.useResource(ResourceType.lives());
+      }
+
       await _analyticsManager.trackLifeLost(
         question: currentQuestion,
         questionIndex: _progressTracker.currentProgress - 1,
@@ -294,14 +323,25 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   // ============ Hints ============
 
   /// Uses the 50/50 hint to disable 2 incorrect options.
-  void use50_50Hint() {
+  ///
+  /// If [useResourceManager] is true and [resourceManager] is available,
+  /// consumes from the global resource pool. Otherwise uses per-quiz hints.
+  Future<void> use50_50Hint() async {
+    // If using ResourceManager, consume from global pool
+    if (useResourceManager && resourceManager != null) {
+      final consumed = await resourceManager!.useResource(ResourceType.fiftyFifty());
+      if (!consumed) return; // Resource not available
+    }
+
     final disabled = _hintManager.use5050Hint(currentQuestion);
     if (disabled.isNotEmpty) {
       // Track hint usage
       _analyticsManager.trackHintFiftyFiftyUsed(
         question: currentQuestion,
         questionIndex: _progressTracker.currentProgress,
-        hintsRemaining: _hintManager.hintState?.remainingHints[HintType.fiftyFifty] ?? 0,
+        hintsRemaining: useResourceManager && resourceManager != null
+            ? resourceManager!.getAvailableCount(ResourceType.fiftyFifty())
+            : (_hintManager.hintState?.remainingHints[HintType.fiftyFifty] ?? 0),
         eliminatedOptions: disabled.toList(),
       );
 
@@ -310,8 +350,17 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
   }
 
   /// Skips the current question.
+  ///
+  /// If [useResourceManager] is true and [resourceManager] is available,
+  /// consumes from the global resource pool. Otherwise uses per-quiz hints.
   Future<void> skipQuestion() async {
-    if (!_hintManager.useSkipHint()) return;
+    // If using ResourceManager, consume from global pool
+    if (useResourceManager && resourceManager != null) {
+      final consumed = await resourceManager!.useResource(ResourceType.skip());
+      if (!consumed) return; // Resource not available
+    } else {
+      if (!_hintManager.useSkipHint()) return;
+    }
 
     _timerManager.cancelQuestionTimer();
     final timeSpentSeconds = _timerManager.stopQuestionStopwatch();
@@ -320,7 +369,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     await _analyticsManager.trackHintSkipUsed(
       question: currentQuestion,
       questionIndex: _progressTracker.currentProgress,
-      hintsRemaining: _hintManager.hintState?.remainingHints[HintType.skip] ?? 0,
+      hintsRemaining: useResourceManager && resourceManager != null
+          ? resourceManager!.getAvailableCount(ResourceType.skip())
+          : (_hintManager.hintState?.remainingHints[HintType.skip] ?? 0),
       timeBeforeSkip: Duration(seconds: timeSpentSeconds),
     );
 
@@ -336,7 +387,9 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       questionIndex: _progressTracker.currentProgress - 1,
       timeBeforeSkip: Duration(seconds: timeSpentSeconds),
       usedHint: true,
-      hintsRemaining: _hintManager.hintState?.remainingHints[HintType.skip],
+      hintsRemaining: useResourceManager && resourceManager != null
+          ? resourceManager!.getAvailableCount(ResourceType.skip())
+          : _hintManager.hintState?.remainingHints[HintType.skip],
     );
 
     // Save to storage
@@ -444,7 +497,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _emitQuestionState();
   }
 
-  void _handleQuestionTimeout(int timeSpentSeconds) {
+  Future<void> _handleQuestionTimeout(int timeSpentSeconds) async {
     final mode = _config.modeConfig;
     if (mode is! TimedMode && mode is! SurvivalMode) return;
 
@@ -476,6 +529,11 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
         _progressTracker.remainingLives != null &&
         livesBeforeDeduct != null &&
         _progressTracker.remainingLives! < livesBeforeDeduct) {
+      // Consume from ResourceManager if enabled
+      if (useResourceManager && resourceManager != null) {
+        await resourceManager!.useResource(ResourceType.lives());
+      }
+
       _analyticsManager.trackLifeLost(
         question: currentQuestion,
         questionIndex: _progressTracker.currentProgress,
@@ -489,7 +547,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     _progressTracker.recordAnswer(result.answer);
 
     // Save to storage
-    _sessionManager.saveAnswer(
+    await _sessionManager.saveAnswer(
       questionNumber: _progressTracker.currentProgress,
       question: currentQuestion,
       selectedAnswer: null,
