@@ -176,9 +176,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Determine initial lives - use ResourceManager if enabled
     int? initialLives = _config.modeConfig.lives;
     if (useResourceManager && resourceManager != null && initialLives != null) {
-      // Use the minimum of config lives and available ResourceManager lives
-      final availableLives = resourceManager!.getAvailableCount(ResourceType.lives());
-      initialLives = availableLives > 0 ? availableLives.clamp(1, initialLives) : 0;
+      // Use ResourceManager's available lives count directly
+      initialLives = resourceManager!.getAvailableCount(ResourceType.lives());
     }
 
     // Initialize managers
@@ -372,6 +371,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     if (useResourceManager && resourceManager != null) {
       final consumed = await resourceManager!.useResource(ResourceType.skip());
       if (!consumed) return; // Resource not available
+      // Also update hint manager to keep UI in sync
+      _hintManager.useSkipHint();
     } else {
       if (!_hintManager.useSkipHint()) return;
     }
