@@ -13,11 +13,18 @@ import 'bloc/bloc_provider.dart';
 /// Automatically handles app lifecycle to pause/resume timers when
 /// the app goes to background or returns to foreground.
 ///
+/// Services are obtained from [QuizServicesProvider] via context.
+/// The QuizScreen and QuizResultsScreen will use `context.screenAnalyticsService`.
+///
 /// Usage:
 /// ```dart
 /// QuizWidget(
-///   title: "Flags Quiz",
-///   dataProvider: () async => loadCountriesForContinent(Continent.europe),
+///   quizEntry: QuizWidgetEntry(
+///     title: "Flags Quiz",
+///     dataProvider: () async => loadCountriesForContinent(Continent.europe),
+///     configManager: configManager,
+///     quizAnalyticsService: quizAnalyticsService,
+///   ),
 /// );
 /// ```
 class QuizWidget extends StatelessWidget {
@@ -43,11 +50,9 @@ class QuizWidget extends StatelessWidget {
     return BlocProvider(
       bloc: bloc,
       child: QuizLifecycleHandler(
-        analyticsService: quizEntry.screenAnalyticsService,
         child: QuizScreen(
           title: quizEntry.title,
           themeData: quizEntry.themeData,
-          screenAnalyticsService: quizEntry.screenAnalyticsService,
         ),
       ),
     );
