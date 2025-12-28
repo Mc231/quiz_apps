@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
-import 'package:shared_services/shared_services.dart';
 
 import '../test_helpers.dart';
 
@@ -75,10 +74,9 @@ void main() {
     testWidgets('shows loading indicator when isLoading is true',
         (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: StatisticsDashboardData.empty,
-            analyticsService: NoOpAnalyticsService(),
             isLoading: true,
           ),
         ),
@@ -89,10 +87,9 @@ void main() {
 
     testWidgets('shows empty state when no data', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: StatisticsDashboardData.empty,
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -102,10 +99,9 @@ void main() {
 
     testWidgets('shows tabs when data exists', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -117,11 +113,10 @@ void main() {
 
     testWidgets('hides tabs when showTabs is false', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SingleChildScrollView(
             child: StatisticsDashboardScreen(
               data: _createTestData(),
-              analyticsService: NoOpAnalyticsService(),
               showTabs: false,
             ),
           ),
@@ -133,10 +128,9 @@ void main() {
 
     testWidgets('displays overview tab by default', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -147,10 +141,9 @@ void main() {
 
     testWidgets('can navigate to progress tab', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -168,10 +161,9 @@ void main() {
 
     testWidgets('can navigate to categories tab', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -189,10 +181,9 @@ void main() {
 
     testWidgets('can navigate to leaderboard tab', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -210,10 +201,9 @@ void main() {
 
     testWidgets('shows global leaderboard coming soon banner', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -230,10 +220,9 @@ void main() {
 
     testWidgets('starts on specified initial tab', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
             initialTab: StatisticsDashboardTab.leaderboard,
           ),
         ),
@@ -249,12 +238,11 @@ void main() {
       final data = _createTestData();
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SizedBox(
             height: 1200,
             child: StatisticsDashboardScreen(
               data: data,
-              analyticsService: NoOpAnalyticsService(),
               onSessionTap: (session) {
                 tappedSession = session;
               },
@@ -282,11 +270,10 @@ void main() {
       CategoryStatisticsData? tappedCategory;
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SizedBox(
             height: 800,
             child: StatisticsDashboardScreen(
-              analyticsService: NoOpAnalyticsService(),
               data: _createTestData(),
               onCategoryTap: (category) {
                 tappedCategory = category;
@@ -317,9 +304,8 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
-            analyticsService: NoOpAnalyticsService(),
             data: data,
           ),
         ),
@@ -335,10 +321,9 @@ void main() {
 
     testWidgets('progress time range selector changes range', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -360,10 +345,9 @@ void main() {
 
     testWidgets('leaderboard type selector changes type', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -395,9 +379,8 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
-            analyticsService: NoOpAnalyticsService(),
             data: data,
           ),
         ),
@@ -414,9 +397,8 @@ void main() {
       );
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
-            analyticsService: NoOpAnalyticsService(),
             data: data,
           ),
         ),
@@ -428,10 +410,9 @@ void main() {
 
     testWidgets('displays recent sessions in overview', (tester) async {
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           StatisticsDashboardScreen(
             data: _createTestData(),
-            analyticsService: NoOpAnalyticsService(),
           ),
         ),
       );
@@ -445,11 +426,10 @@ void main() {
       var viewAllCalled = false;
 
       await tester.pumpWidget(
-        wrapWithLocalizations(
+        wrapWithServices(
           SizedBox(
             height: 1200,
             child: StatisticsDashboardScreen(
-              analyticsService: NoOpAnalyticsService(),
               data: _createTestData(),
               onViewAllSessions: () {
                 viewAllCalled = true;
