@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import '../analytics/analytics_service.dart';
+import '../analytics/events/resource_event.dart';
 import 'providers/ad_reward_provider.dart';
 import 'providers/iap_provider.dart';
 import 'resource_config.dart';
@@ -44,6 +46,9 @@ class ResourceManager {
   /// Repository for persisting inventory.
   final ResourceRepository repository;
 
+  /// Analytics service for tracking resource events.
+  final AnalyticsService? analyticsService;
+
   /// Current inventory state.
   final Map<ResourceType, ResourceInventory> _inventories = {};
 
@@ -60,6 +65,7 @@ class ResourceManager {
     this.adProvider = const NoAdsProvider(),
     this.iapProvider = const NoIAPProvider(),
     required this.repository,
+    this.analyticsService,
   });
 
   /// Whether the manager has been initialized.
@@ -163,6 +169,18 @@ class ResourceManager {
 
     final rewardAmount = config.getAdReward(type);
     await addPurchasedResources(type, rewardAmount);
+
+    // Log analytics event
+    analyticsService?.logEvent(
+      ResourceEvent.added(
+        quizId: '', // Global context, not within a specific quiz
+        resourceType: type.id,
+        amountAdded: rewardAmount,
+        newTotal: getAvailableCount(type),
+        source: 'rewarded_ad',
+      ),
+    );
+
     return true;
   }
 
@@ -181,6 +199,17 @@ class ResourceManager {
 
     if (result == PurchaseResult.success) {
       await addPurchasedResources(pack.type, pack.amount);
+
+      // Log analytics event
+      analyticsService?.logEvent(
+        ResourceEvent.added(
+          quizId: '', // Global context, not within a specific quiz
+          resourceType: pack.type.id,
+          amountAdded: pack.amount,
+          newTotal: getAvailableCount(pack.type),
+          source: 'purchase',
+        ),
+      );
     }
 
     return result;
