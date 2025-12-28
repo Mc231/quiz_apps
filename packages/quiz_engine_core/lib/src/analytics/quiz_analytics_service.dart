@@ -132,6 +132,25 @@ abstract class QuizAnalyticsService {
     int? livesRemaining,
   });
 
+  /// Tracks when a user selects an answer option.
+  Future<void> trackOptionSelected({
+    required String quizId,
+    required Question question,
+    required int questionIndex,
+    required QuestionEntry selectedOption,
+    required int optionIndex,
+    required Duration timeSinceDisplayed,
+  });
+
+  /// Tracks when answer feedback is shown to the user.
+  Future<void> trackFeedbackShown({
+    required String quizId,
+    required Question question,
+    required int questionIndex,
+    required bool wasCorrect,
+    required Duration feedbackDuration,
+  });
+
   // ============ Hint Events ============
 
   /// Tracks when a 50/50 hint is used.
@@ -291,6 +310,25 @@ class NoOpQuizAnalyticsService implements QuizAnalyticsService {
     required int questionIndex,
     required int timeLimit,
     int? livesRemaining,
+  }) async {}
+
+  @override
+  Future<void> trackOptionSelected({
+    required String quizId,
+    required Question question,
+    required int questionIndex,
+    required QuestionEntry selectedOption,
+    required int optionIndex,
+    required Duration timeSinceDisplayed,
+  }) async {}
+
+  @override
+  Future<void> trackFeedbackShown({
+    required String quizId,
+    required Question question,
+    required int questionIndex,
+    required bool wasCorrect,
+    required Duration feedbackDuration,
   }) async {}
 
   @override
