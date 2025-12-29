@@ -21,9 +21,10 @@
 | Phase 7 | QuizApp Refactoring | ✅ Completed                                    |
 | Phase 8 | Achievements & Core Features | ✅ Completed (12/12 sprints)                    |
 | Phase 8.5 | Production Polish | ✅ Completed (7/7 sprints)                      |
-| Phase 9 | Shared Services (Ads, Analytics, IAP) | 🔄 In Progress (Analytics ✅), Ads/IAP pending) |
-| Phase 10 | QuizServices DI Refactoring | 🔄 In Progress (6/10 sprints)                  |
+| Phase 9 | Shared Services (Ads, Analytics, IAP) | 🔄 In Progress (Analytics ✅, Ads ✅, IAP pending) |
+| Phase 10 | QuizServices DI Refactoring | ✅ Completed (10/10 sprints)                    |
 | Phase 11 | Second App Validation | Not Started                                    |
+| Phase 12 | Rate App Dialog | Not Started                                    |
 
 ---
 
