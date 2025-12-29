@@ -1,7 +1,11 @@
 plugins {
     id "com.android.application"
+    // START: FlutterFire Configuration
+    id 'com.google.gms.google-services'
+    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
+
 }
 
 def localProperties = new Properties()
@@ -22,6 +26,21 @@ def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
+
+// Parse dart-defines for AdMob configuration
+def dartDefines = [:]
+if (project.hasProperty('dart-defines')) {
+    dartDefines = project.property('dart-defines')
+        .split(',')
+        .collectEntries { entry ->
+            def pair = new String(entry.decodeBase64(), 'UTF-8').split('=')
+            [(pair[0]): pair.length > 1 ? pair[1] : '']
+        }
+}
+
+// AdMob App ID - defaults to Google's test ID for development
+// For production, provide via: --dart-define-from-file=config/env.json
+def admobAppId = dartDefines['ADMOB_APP_ID_ANDROID'] ?: 'ca-app-pub-3940256099942544~3347511713'
 
 android {
     namespace "com.flagsquiz"
@@ -48,7 +67,8 @@ android {
         versionName flutterVersionName
         resourceConfigurations += ['en', 'af', 'am', 'ar', 'az', 'bg', 'bn', 'bs', 'ca', 'hr', 'cs', 'da', 'nl', 'et', 'fi', 'fr', 'ka', 'de', 'el', 'gu', 'he', 'hi', 'hu', 'is', 'id', 'it', 'ja', 'kn', 'kk', 'ko', 'lv', 'lt', 'ms', 'ml', 'mt', 'mr', 'mn', 'no', 'fa', 'pl', 'pt', 'pa', 'ro', 'sr', 'si', 'sk', 'sl', 'es', 'sw', 'sv', 'tl', 'ta', 'te', 'th', 'tr', 'uk', 'ur', 'uz', 'vi', 'cy', 'zh']
 
-
+        // AdMob App ID from dart-defines or default test ID
+        manifestPlaceholders += [admobAppId: admobAppId]
     }
 
     signingConfigs {

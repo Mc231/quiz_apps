@@ -1,0 +1,5 @@
+// AdMob Configuration
+// Default: Google's test App ID for development
+// For production, override via environment or update this file in CI/CD
+
+ADMOB_APP_ID_IOS=ca-app-pub-3940256099942544~1458002511
