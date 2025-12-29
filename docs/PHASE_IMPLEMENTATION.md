@@ -2891,7 +2891,10 @@ dependencies:
 | 9.1.9 | ✅ | User properties & lifecycle |
 | 9.1.10 | ✅ | Testing & documentation |
 | **Ads & IAP (9.2-9.4)** | | |
-| 9.2 | ⏳ | Ads service (AdMob) |
+| 9.2 | ✅ | Ads service (AdMob) |
+| 9.1.11 | ⏳ | Resource & hint button analytics |
+| 9.1.12 | ✅ | Secrets configuration system |
+| 9.1.13 | ✅ | Firebase Analytics app configuration |
 | 9.3 | ⏳ | IAP service |
 | 9.4 | ⏳ | Final integration |
 | **BLoC Architecture (9.5.x)** | | |
