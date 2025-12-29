@@ -68,3 +68,4 @@ flutter:
   assets:
     - assets/Countries.json
     - assets/images/
+    - config/
