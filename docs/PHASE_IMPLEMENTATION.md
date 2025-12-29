@@ -3306,6 +3306,62 @@ QuizFeedbackService _feedbackService = QuizFeedbackService();
 
 ---
 
+### Sprint 9.2: Screen File Refactoring ✅
+
+**Goal:** Extract configuration classes, data models, and helper widgets from screen files to separate standalone files. Screen files should contain only the widget and its state.
+
+**Tasks:**
+- [x] Extract QuizSettingsConfig, SettingsSection from quiz_settings_screen.dart
+- [x] Extract PlayScreenConfig, PlayScreenLayout, PlayScreenSliver from play_screen.dart
+- [x] Extract TabbedPlayScreenConfig from tabbed_play_screen.dart
+- [x] Extract QuizHomeScreenConfig and data models from quiz_home_screen.dart
+- [x] Extract SessionHistoryTexts from session_history_screen.dart
+- [x] Extract SessionDetailData, SessionDetailTexts from session_detail_screen.dart
+- [x] Extract StatisticsDashboardData from statistics_dashboard_screen.dart
+- [x] Extract GlobalStatisticsData, StatisticsTexts from statistics_screen.dart
+- [x] Extract AchievementsScreenConfig, AchievementsScreenData from achievements_screen.dart
+- [x] Extract FlagsQuizDependencies from flags_quiz_app_provider.dart
+- [x] Update quiz_engine.dart barrel exports
+- [x] Run analyze and tests to verify refactoring
+
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_config.dart`
+- ✅ `packages/quiz_engine/lib/src/home/play_screen_config.dart`
+- ✅ `packages/quiz_engine/lib/src/home/tabbed_play_screen_config.dart`
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_config.dart`
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_data.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/session_history_texts.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/session_detail_data.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/session_detail_texts.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_data.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_data.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_texts.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/screens/achievements_screen_config.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/screens/achievements_screen_data.dart`
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_dependencies.dart`
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/home/play_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/home/tabbed_play_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/session_history_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/achievements/screens/achievements_screen.dart`
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
+- ✅ `apps/flagsquiz/lib/app/flags_quiz_app.dart`
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart`
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart`
+- ✅ `packages/quiz_engine/lib/src/models/achievements_data_provider.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/utils/default_data_loader.dart`
+- ✅ `packages/quiz_engine/test/home/play_screen_test.dart`
+- ✅ `packages/quiz_engine/test/home/quiz_home_screen_test.dart`
+
+---
+
 ## Completion Checklist
 
 When completing a sprint:
