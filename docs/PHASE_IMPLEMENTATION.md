@@ -25,6 +25,7 @@
 | Phase 10 | QuizServices DI Refactoring | ✅ Completed (10/10 sprints)                    |
 | Phase 11 | Second App Validation | Not Started                                    |
 | Phase 12 | Rate App Dialog | Not Started                                    |
+| Phase 13 | Onboarding | Not Started                                    |
 
 ---
 
@@ -3325,6 +3326,201 @@ The context-based DI pattern is correctly implemented:
 **Files to Create:**
 - `packages/shared_services/lib/src/analytics/events/rate_app_event.dart`
 - `packages/shared_services/test/analytics/rate_app_event_test.dart`
+
+---
+
+## Phase 13: Onboarding
+
+**Goal:** Implement a welcoming onboarding experience for first-time users that introduces app features and guides them through their first quiz.
+
+**Benefits:**
+- Better first-time user experience
+- Higher retention rates
+- Feature discovery (hints, modes, achievements)
+- Reduced confusion for new users
+
+---
+
+### Sprint 13.1: Onboarding Service & State
+
+**Goal:** Create the core onboarding infrastructure with state persistence.
+
+**Tasks:**
+- [ ] Create `OnboardingService` class with:
+  - `isOnboardingComplete()` - Check if user has completed onboarding
+  - `markOnboardingComplete()` - Mark onboarding as finished
+  - `resetOnboarding()` - Reset for testing/re-show
+  - `getCurrentStep()` - Get current onboarding step
+  - `setCurrentStep()` - Save progress
+- [ ] Create `OnboardingState` enum:
+  - `notStarted`, `inProgress`, `completed`, `skipped`
+- [ ] Create `OnboardingConfig` model with:
+  - `isEnabled` - Enable/disable onboarding (from quiz config)
+  - `showOnFirstLaunch` - Auto-show on first launch
+  - `allowSkip` - Allow users to skip onboarding
+  - `totalSteps` - Number of onboarding screens
+- [ ] Store onboarding state in SharedPreferences:
+  - `onboardingCompleted` - Boolean flag
+  - `onboardingCurrentStep` - Current step index
+  - `onboardingSkipped` - User chose to skip
+- [ ] Write unit tests
+
+**Files to Create:**
+- `packages/shared_services/lib/src/onboarding/onboarding_service.dart`
+- `packages/shared_services/lib/src/onboarding/onboarding_config.dart`
+- `packages/shared_services/lib/src/onboarding/onboarding_state.dart`
+- `packages/shared_services/lib/src/onboarding/onboarding_exports.dart`
+- `packages/shared_services/test/onboarding/onboarding_service_test.dart`
+
+---
+
+### Sprint 13.2: Onboarding Screens UI
+
+**Goal:** Create beautiful, engaging onboarding screens.
+
+**Tasks:**
+- [ ] Create `OnboardingScreen` main container with PageView
+- [ ] Create `OnboardingPage` widget for individual pages:
+  - Image/illustration area (top 60%)
+  - Title and description (bottom 40%)
+  - Page indicator dots
+- [ ] Create onboarding content pages:
+  - **Page 1: Welcome** - App introduction, logo, tagline
+  - **Page 2: Quiz Modes** - Standard, Timed, Lives, Survival modes
+  - **Page 3: Hints & Resources** - 50/50, Skip, Lives system
+  - **Page 4: Achievements** - Unlock achievements, track progress
+  - **Page 5: Get Started** - CTA to start first quiz
+- [ ] Add page transition animations
+- [ ] Add "Skip" button (if allowSkip is true)
+- [ ] Add "Next" / "Get Started" buttons
+- [ ] Support localization for all text
+- [ ] Write widget tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/onboarding/onboarding_screen.dart`
+- `packages/quiz_engine/lib/src/onboarding/onboarding_page.dart`
+- `packages/quiz_engine/lib/src/onboarding/onboarding_page_indicator.dart`
+- `packages/quiz_engine/lib/src/onboarding/onboarding_exports.dart`
+- `packages/quiz_engine/test/onboarding/onboarding_screen_test.dart`
+
+**Assets to Create:**
+- `packages/quiz_engine/assets/onboarding/` - Illustrations for each page
+
+**Localization Strings:**
+```json
+{
+  "onboardingWelcomeTitle": "Welcome to {appName}!",
+  "onboardingWelcomeDescription": "Test your knowledge and have fun learning",
+  "onboardingModesTitle": "Multiple Quiz Modes",
+  "onboardingModesDescription": "Play Standard, Timed, Lives, or Survival mode",
+  "onboardingHintsTitle": "Hints & Resources",
+  "onboardingHintsDescription": "Use 50/50, Skip, or watch ads to restore lives",
+  "onboardingAchievementsTitle": "Earn Achievements",
+  "onboardingAchievementsDescription": "Complete challenges and unlock rewards",
+  "onboardingGetStartedTitle": "Ready to Play?",
+  "onboardingGetStartedDescription": "Start your first quiz now!",
+  "onboardingSkip": "Skip",
+  "onboardingNext": "Next",
+  "onboardingGetStarted": "Get Started"
+}
+```
+
+---
+
+### Sprint 13.3: First Quiz Tutorial
+
+**Goal:** Create an optional guided tutorial for the user's first quiz.
+
+**Tasks:**
+- [ ] Create `TutorialOverlay` widget for highlighting UI elements
+- [ ] Create `TutorialStep` model with:
+  - `targetKey` - GlobalKey of widget to highlight
+  - `title` - Tutorial step title
+  - `description` - Tutorial step description
+  - `position` - Tooltip position (top, bottom, left, right)
+- [ ] Create `TutorialController` to manage tutorial flow
+- [ ] Define tutorial steps for first quiz:
+  - **Step 1:** "This is the question" - Highlight question area
+  - **Step 2:** "Tap an answer" - Highlight answer options
+  - **Step 3:** "Use hints if stuck" - Highlight hint buttons
+  - **Step 4:** "Track your progress" - Highlight progress bar
+- [ ] Add "Don't show again" checkbox
+- [ ] Write widget tests
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/onboarding/tutorial_overlay.dart`
+- `packages/quiz_engine/lib/src/onboarding/tutorial_step.dart`
+- `packages/quiz_engine/lib/src/onboarding/tutorial_controller.dart`
+- `packages/quiz_engine/test/onboarding/tutorial_overlay_test.dart`
+
+---
+
+### Sprint 13.4: Onboarding Analytics Events
+
+**Goal:** Track onboarding funnel for optimization.
+
+**Tasks:**
+- [ ] Create `OnboardingEvent` sealed class:
+  - `started` - User started onboarding
+  - `pageViewed` - User viewed a specific page
+  - `skipped` - User skipped onboarding (with step number)
+  - `completed` - User completed all steps
+  - `tutorialStarted` - User started first quiz tutorial
+  - `tutorialStepViewed` - User viewed tutorial step
+  - `tutorialSkipped` - User skipped tutorial
+  - `tutorialCompleted` - User completed tutorial
+- [ ] Add to analytics exports
+- [ ] Integrate with OnboardingScreen
+- [ ] Integrate with TutorialController
+- [ ] Write unit tests
+
+**Files to Create:**
+- `packages/shared_services/lib/src/analytics/events/onboarding_event.dart`
+- `packages/shared_services/test/analytics/events/onboarding_event_test.dart`
+
+**Files to Modify:**
+- `packages/shared_services/lib/src/analytics/analytics_exports.dart`
+
+---
+
+### Sprint 13.5: Onboarding Integration
+
+**Goal:** Integrate onboarding with the app startup flow.
+
+**Tasks:**
+- [ ] Create `OnboardingModule` for DI registration
+- [ ] Add `onboardingConfig` to `QuizConfig`
+- [ ] Modify app startup to check onboarding state:
+  - If not complete → Show OnboardingScreen
+  - If complete → Show HomeScreen
+- [ ] Add "Replay Onboarding" option in Settings
+- [ ] Add onboarding service to `QuizServices`
+- [ ] Update FlagsQuiz app to configure onboarding
+- [ ] Write integration tests
+
+**Files to Create:**
+- `packages/shared_services/lib/src/di/modules/onboarding_module.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/app/quiz_app.dart`
+- `packages/quiz_engine/lib/src/config/quiz_config.dart`
+- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+- `packages/quiz_engine/lib/src/services/quiz_services.dart`
+- `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
+
+---
+
+### Phase 13 Summary
+
+| Sprint | Description | Effort |
+|--------|-------------|--------|
+| 13.1 | Onboarding Service & State | Small |
+| 13.2 | Onboarding Screens UI | Medium |
+| 13.3 | First Quiz Tutorial | Medium |
+| 13.4 | Onboarding Analytics Events | Small |
+| 13.5 | Onboarding Integration | Medium |
+
+**Total: 5 sprints**
 
 ---
 
