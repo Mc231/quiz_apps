@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_services/shared_services.dart'
-    show AnalyticsService, InteractionEvent, ScreenViewEvent;
+    show AnalyticsService, InteractionEvent, ResourceManager, ResourceType, ScreenViewEvent;
 
 import '../../quiz_engine.dart';
+import '../widgets/restore_resource_dialog.dart';
 import 'quiz_layout.dart';
 
 /// A screen that displays the quiz interface, handling questions and user interaction.
@@ -266,6 +267,10 @@ class QuizScreenState extends State<QuizScreen> {
   }
 
   /// Builds the game resource panel data from the current quiz state.
+  ///
+  /// When ResourceManager is available (via context) and useResourceManager is enabled,
+  /// resources are read from ResourceManager instead of QuizState.
+  /// Includes `onDepletedTap` callbacks that show [RestoreResourceDialog].
   GameResourcePanelData? _buildResourceData(QuizState? state) {
     if (state == null || state is LoadingState || state is QuizCompletedState) {
       return null;
@@ -284,14 +289,18 @@ class QuizScreenState extends State<QuizScreen> {
       remainingLives = state.remainingLives;
     }
 
+    // Try to get ResourceManager from context for depleted tap handling
+    final resourceManager = context.maybeServices?.resourceManager;
+
     // Build lives config if lives mode is enabled
     GameResourceConfig? livesConfig;
     if (remainingLives != null && totalLives != null) {
       livesConfig = GameResourceConfig(
         count: remainingLives,
-        onTap: () {
-          // TODO: Show "Get More Lives" dialog (Sprint 8.15)
-        },
+        onTap: null, // Lives are not manually usable
+        onDepletedTap: resourceManager != null
+            ? () => _showRestoreDialog(ResourceType.lives(), resourceManager)
+            : null,
         enabled: remainingLives > 0,
       );
     }
@@ -305,6 +314,9 @@ class QuizScreenState extends State<QuizScreen> {
       fiftyFiftyConfig = GameResourceConfig(
         count: fiftyFiftyCount,
         onTap: () => _bloc.use50_50Hint(),
+        onDepletedTap: resourceManager != null
+            ? () => _showRestoreDialog(ResourceType.fiftyFifty(), resourceManager)
+            : null,
         enabled: hintState.canUseHint(HintType.fiftyFifty),
       );
     }
@@ -318,6 +330,9 @@ class QuizScreenState extends State<QuizScreen> {
       skipConfig = GameResourceConfig(
         count: skipCount,
         onTap: () => _bloc.skipQuestion(),
+        onDepletedTap: resourceManager != null
+            ? () => _showRestoreDialog(ResourceType.skip(), resourceManager)
+            : null,
         enabled: hintState.canUseHint(HintType.skip),
       );
     }
@@ -332,6 +347,27 @@ class QuizScreenState extends State<QuizScreen> {
       fiftyFifty: fiftyFiftyConfig,
       skip: skipConfig,
     );
+  }
+
+  /// Shows the restore resource dialog for a depleted resource.
+  ///
+  /// When resource is restored successfully, triggers a UI refresh.
+  Future<void> _showRestoreDialog(
+    ResourceType resourceType,
+    ResourceManager manager,
+  ) async {
+    final restored = await RestoreResourceDialog.show(
+      context: context,
+      resourceType: resourceType,
+      manager: manager,
+    );
+
+    // If resource was restored, the ResourceManager stream will update
+    // and QuizBloc will pick up the new counts on next question
+    if (restored && mounted) {
+      // Trigger haptic feedback for successful restoration
+      await _feedbackService.trigger(QuizFeedbackPattern.resourceTap);
+    }
   }
 
   /// Builds an image widget for question review.
