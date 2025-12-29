@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
@@ -42,6 +43,10 @@ class FlagsQuizAppProvider {
   /// Initializes all dependencies for the Flags Quiz app.
   static Future<FlagsQuizDependencies> _initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
+
+    // Initialize Firebase before any Firebase services are used
+    await Firebase.initializeApp();
+
     await SharedServicesInitializer.initialize();
 
     // Load secrets from config file (falls back to empty config if not found)
@@ -84,6 +89,10 @@ class FlagsQuizAppProvider {
           provider: ConsoleAnalyticsService(),
           name: 'Console',
         ),
+        AnalyticsProviderConfig(
+          provider: FirebaseAnalyticsService(),
+          name: 'Firebase',
+        ),
       ],
     );
     await screenAnalyticsService.initialize();
@@ -96,9 +105,24 @@ class FlagsQuizAppProvider {
       analyticsService: screenAnalyticsService,
     );
 
-    // Create and initialize resource manager with SQLite persistence
+    // Initialize ads service with test IDs for development
+    // Production IDs come from --dart-define-from-file=config/env.json
+    final adsService = AdMobService(config: AdsConfig.test());
+    await adsService.initialize();
+
+    // Preload rewarded ad so it's ready when user needs it
+    await adsService.loadRewardedAd();
+
+    // Wrap with analytics tracking
+    final analyticsAdsService = AnalyticsAdsService(
+      adsService: adsService,
+      analyticsService: screenAnalyticsService,
+    );
+
+    // Create and initialize resource manager with SQLite persistence and ad support
     final resourceManager = ResourceManager(
       config: ResourceConfig.standard(),
+      adProvider: AdMobRewardProvider(analyticsAdsService),
       repository: SqliteResourceRepository(sl.get<AppDatabase>()),
       analyticsService: screenAnalyticsService,
     );

@@ -4,7 +4,7 @@
 
 **Reference:** See [CORE_ARCHITECTURE_GUIDE.md](./CORE_ARCHITECTURE_GUIDE.md) for architectural details and design patterns.
 
-**Last Updated:** 2025-12-28
+**Last Updated:** 2025-12-29
 
 ---
 
@@ -31,10 +31,11 @@
 
 | Priority | Sprint | Description | Phase |
 |----------|--------|-------------|-------|
-| 1 | **Sprint 8.21** | Resource UI Integration & Pre-Quiz Validation | Phase 8.6 |
-| 2 | **Sprint 9.2** | Ads Service (AdMob integration) | Phase 9 |
+| 1 | **Sprint 9.3** | In-App Purchases Service | Phase 9 |
+| 2 | **Sprint 9.4** | Services Integration & Polish | Phase 9 |
+| 3 | **Sprint 9.1.11** | Analytics - Resource & Hint Button Tracking | Phase 9 |
 
-**Sprint 8.21** wires up `RestoreResourceDialog` to UI (with stub ads). **Sprint 9.2** implements real AdMob so "Watch Ad" button works.
+**Sprint 9.1.13** ✅ is complete - Firebase Analytics is now live in production, tracking all quiz events.
 
 ---
 
@@ -2013,6 +2014,7 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 - [x] Wire `onDepletedTap` in GameResourcePanel to show `RestoreResourceDialog`
 - [x] Update GameResourcePanel to read counts from ResourceManager instead of QuizState
 - [x] Handle resource restoration flow (dialog → ad/purchase → refresh UI)
+- [x] Sync QuizBloc hint state after ad watch to immediately update UI button counts
 
 *Pre-Quiz Lives Validation (Play Tab):*
 - [x] Check lives availability when user taps category on Play tab
@@ -2028,9 +2030,10 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 - [ ] Add user-friendly way to test daily reset (Settings toggle or wait until midnight)
 
 **Files Modified:**
-- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Wired `onDepletedTap` in `_buildResourceData()`, added `_showRestoreDialog()` method
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Wired `onDepletedTap` in `_buildResourceData()`, added `_showRestoreDialog()` method, sync hint state after successful ad watch
 - ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added pre-quiz lives validation in `_startQuiz()` method
 - ✅ `packages/quiz_engine/lib/src/widgets/game_resource_button.dart` - Fixed `_handleTap()` to call `onDepletedTap` when count is 0
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Added `addRestoredHint()` method to sync hint counts from ad rewards
 
 **Files Created:**
 - ✅ `packages/quiz_engine/test/widgets/resource_manager_integration_test.dart` - Tests for onDepletedTap behavior
@@ -2714,6 +2717,55 @@ final firebaseKey = secrets.firebase.apiKey;
 final adMobAppId = secrets.adMob.appId;
 if (secrets.features.enableAds) { /* show ads */ }
 ```
+
+---
+
+### Sprint 9.1.13: Firebase Analytics App Configuration ✅
+
+**Goal:** Configure real Firebase Analytics in FlagsQuiz app to track user behavior in production.
+
+**Prerequisites:**
+- Sprint 9.1.4 ✅ (FirebaseAnalyticsService code is ready)
+- Sprint 9.1.12 ✅ (Secrets configuration system is ready)
+
+**Tasks:**
+
+*Firebase Project Setup:*
+- [x] Create Firebase project in Firebase Console
+- [x] Enable Google Analytics in Firebase project
+- [x] Add iOS app to Firebase project, download `GoogleService-Info.plist`
+- [x] Add Android app to Firebase project, download `google-services.json`
+
+*iOS Configuration:*
+- [x] Add `GoogleService-Info.plist` to `apps/flagsquiz/ios/Runner/`
+- [x] Add file to Xcode project via "Add Files to Runner"
+- [ ] Add `NSUserTrackingUsageDescription` to Info.plist (optional, for ad tracking)
+
+*Android Configuration:*
+- [x] Add `google-services.json` to `apps/flagsquiz/android/app/`
+- [x] Update `android/build.gradle` with google-services classpath
+- [x] Update `android/app/build.gradle` with google-services plugin
+
+*App Integration:*
+- [x] Initialize Firebase in `FlagsQuizAppProvider` before analytics
+- [x] Replace `ConsoleAnalyticsService` with `FirebaseAnalyticsService` in production
+- [x] Use `CompositeAnalyticsService` to log to both Console (debug) and Firebase (production)
+- [ ] Add `FirebaseAnalyticsObserver` to MaterialApp navigatorObservers (using AnalyticsNavigatorObserver instead)
+
+*Testing:*
+- [x] Enable Firebase DebugView mode
+- [x] Verify events appear in Firebase Console → Analytics → DebugView
+- [x] Test on iOS device/simulator
+- [ ] Test on Android device/emulator
+
+**Files Modified:**
+- ✅ `apps/flagsquiz/ios/Runner/GoogleService-Info.plist` (added)
+- ✅ `apps/flagsquiz/android/app/google-services.json` (added)
+- ✅ `apps/flagsquiz/android/build.gradle` (added google-services classpath)
+- ✅ `apps/flagsquiz/android/app/build.gradle` (added google-services plugin)
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` (Firebase.initializeApp, FirebaseAnalyticsService)
+
+**Reference:** See Sprint 9.1.4 for detailed Firebase setup guide.
 
 ---
 
