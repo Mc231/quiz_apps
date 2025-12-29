@@ -1,4 +1,5 @@
 import 'package:quiz_engine/quiz_engine.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../achievements/flags_achievements_data_provider.dart';
 import '../data/flags_data_provider.dart';
@@ -11,6 +12,7 @@ class FlagsQuizDependencies {
   /// Creates [FlagsQuizDependencies]. Internal use only.
   const FlagsQuizDependencies({
     required this.services,
+    required this.secrets,
     required this.achievementsProvider,
     required this.dataProvider,
     required this.categories,
@@ -19,6 +21,9 @@ class FlagsQuizDependencies {
 
   /// All core services bundled together.
   final QuizServices services;
+
+  /// Secrets configuration loaded from JSON.
+  final SecretsConfig secrets;
 
   /// Achievements data provider.
   final FlagsAchievementsDataProvider achievementsProvider;
