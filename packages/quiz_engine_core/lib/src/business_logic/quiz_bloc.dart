@@ -343,6 +343,19 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
 
   // ============ Hints ============
 
+  /// Adds restored hints (e.g., from watching ads) and updates the UI.
+  ///
+  /// This method should be called after a successful resource restoration
+  /// to sync the QuizBloc's hint state with the ResourceManager.
+  ///
+  /// [type] - The type of hint to add
+  /// [count] - The number of hints to add (default: 1)
+  void addRestoredHint(HintType type, [int count = 1]) {
+    _hintManager.addHint(type, count);
+    // Re-emit current state to update UI with new hint count
+    _emitQuestionState();
+  }
+
   /// Uses the 50/50 hint to disable 2 incorrect options.
   ///
   /// If [useResourceManager] is true and [resourceManager] is available,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_services/shared_services.dart'
-    show AnalyticsService, InteractionEvent, ResourceManager, ResourceType, ScreenViewEvent;
+    show AnalyticsService, FiftyFiftyResource, InteractionEvent, ResourceManager, ResourceType, ScreenViewEvent, SkipResource;
 
 import '../../quiz_engine.dart';
 import '../widgets/restore_resource_dialog.dart';
@@ -351,7 +351,8 @@ class QuizScreenState extends State<QuizScreen> {
 
   /// Shows the restore resource dialog for a depleted resource.
   ///
-  /// When resource is restored successfully, triggers a UI refresh.
+  /// When resource is restored successfully, syncs the QuizBloc hint state
+  /// to reflect the new resource count in the UI immediately.
   Future<void> _showRestoreDialog(
     ResourceType resourceType,
     ResourceManager manager,
@@ -362,9 +363,17 @@ class QuizScreenState extends State<QuizScreen> {
       manager: manager,
     );
 
-    // If resource was restored, the ResourceManager stream will update
-    // and QuizBloc will pick up the new counts on next question
     if (restored && mounted) {
+      // Sync QuizBloc hint state with ResourceManager
+      // This updates the UI immediately after ad watch
+      if (resourceType is FiftyFiftyResource) {
+        _bloc.addRestoredHint(HintType.fiftyFifty);
+      } else if (resourceType is SkipResource) {
+        _bloc.addRestoredHint(HintType.skip);
+      }
+      // Lives are handled via QuizBloc._progressTracker, not hints
+      // The UI will update automatically when the next state is emitted
+
       // Trigger haptic feedback for successful restoration
       await _feedbackService.trigger(QuizFeedbackPattern.resourceTap);
     }
