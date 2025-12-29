@@ -255,14 +255,15 @@ class _GameResourceButtonState extends State<GameResourceButton>
   }
 
   void _handleTap() {
-    if (!widget.enabled) return;
-
+    // Handle depleted state (count == 0) - show restore dialog regardless of enabled
     if (widget.count == 0) {
-      // Trigger depleted callback for showing restore dialog
       widget.onDepletedTap?.call();
       _triggerHaptic(QuizFeedbackPattern.buttonTap);
       return;
     }
+
+    // Handle normal tap only if enabled
+    if (!widget.enabled) return;
 
     widget.onTap?.call();
     _triggerHaptic(QuizFeedbackPattern.resourceTap);
