@@ -42,3 +42,6 @@ export 'src/resources/resources.dart';
 
 // Config (Secrets and configuration loading)
 export 'src/config/config_exports.dart';
+
+// Ads (AdMob integration)
+export 'src/ads/ads_exports.dart';
