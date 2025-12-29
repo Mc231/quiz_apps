@@ -84,6 +84,9 @@ export 'src/widgets/loading_indicator.dart';
 export 'src/widgets/error_state_widget.dart';
 export 'src/widgets/empty_state_widget.dart';
 
+// Ad Widgets
+export 'src/widgets/banner_ad_widget.dart';
+
 // Screens
 export 'src/screens/challenges_screen.dart';
 export 'src/screens/practice_complete_screen.dart';
