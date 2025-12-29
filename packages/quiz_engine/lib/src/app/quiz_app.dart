@@ -26,6 +26,7 @@ import '../services/quiz_services_context.dart';
 import '../services/quiz_services_provider.dart';
 import '../settings/quiz_settings_screen.dart';
 import '../widgets/practice_empty_state.dart';
+import '../widgets/restore_resource_dialog.dart';
 import '../widgets/session_card.dart';
 import 'play_tab_type.dart';
 import 'quiz_tab.dart';
@@ -676,13 +677,15 @@ class _QuizAppState extends State<QuizApp> {
   /// Starts a quiz for the given category.
   ///
   /// This is called when [dataProvider] is provided and handles:
+  /// - Pre-quiz lives validation (shows restore dialog if no lives)
   /// - Loading questions from the data provider
   /// - Creating quiz configuration
   /// - Navigating to the QuizWidget
   /// - Calling [achievementsDataProvider.onSessionCompleted] after quiz ends
-  void _startQuiz(BuildContext context, QuizCategory category) async {
+  Future<void> _startQuiz(BuildContext context, QuizCategory category) async {
     final dataProvider = widget.dataProvider;
     final storageService = _storageService;
+    final resourceManager = _services.resourceManager;
 
     if (dataProvider == null) {
       // Fallback to callback if no data provider
@@ -690,16 +693,37 @@ class _QuizAppState extends State<QuizApp> {
       return;
     }
 
+    // Create quiz config to check if lives mode is enabled
+    final quizConfig =
+        dataProvider.createQuizConfig(context, category) ??
+        QuizConfig(quizId: category.id, hintConfig: HintConfig.noHints());
+
+    // Pre-quiz lives validation:
+    // Check if this quiz uses lives mode and ResourceManager is available
+    final usesLives = quizConfig.modeConfig.lives != null;
+    if (usesLives && resourceManager.isInitialized) {
+      final livesAvailable = resourceManager.isAvailable(ResourceType.lives());
+
+      // If no lives available, show restore dialog
+      if (!livesAvailable && context.mounted) {
+        final restored = await RestoreResourceDialog.show(
+          context: context,
+          resourceType: ResourceType.lives(),
+          manager: resourceManager,
+        );
+
+        // If user didn't restore lives, don't start the quiz
+        if (!restored) {
+          return;
+        }
+      }
+    }
+
     // Load questions
     final questions = await dataProvider.loadQuestions(context, category);
 
     // Create storage config
     final storageConfig = dataProvider.createStorageConfig(context, category);
-
-    // Create quiz config
-    final quizConfig =
-        dataProvider.createQuizConfig(context, category) ??
-        QuizConfig(quizId: category.id, hintConfig: HintConfig.noHints());
 
     // Apply storage config to quiz config
     final configWithStorage = quizConfig.copyWith(storageConfig: storageConfig);
