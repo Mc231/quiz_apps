@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_services/shared_services.dart';
@@ -28,10 +29,11 @@ class FlagsQuizAppProvider {
   /// This method:
   /// 1. Ensures Flutter bindings are initialized
   /// 2. Initializes shared services (database, settings, etc.)
-  /// 3. Loads country data for accurate question counts
-  /// 4. Creates and initializes the achievements provider
-  /// 5. Syncs achievements to catch any missed unlocks
-  /// 6. Returns a configured [FlagsQuizApp] widget
+  /// 3. Loads secrets configuration from JSON
+  /// 4. Loads country data for accurate question counts
+  /// 5. Creates and initializes the achievements provider
+  /// 6. Syncs achievements to catch any missed unlocks
+  /// 7. Returns a configured [FlagsQuizApp] widget
   static Future<Widget> provideApp() async {
     final dependencies = await _initialize();
     return FlagsQuizApp(dependencies: dependencies);
@@ -41,6 +43,16 @@ class FlagsQuizAppProvider {
   static Future<FlagsQuizDependencies> _initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
     await SharedServicesInitializer.initialize();
+
+    // Load secrets from config file (falls back to empty config if not found)
+    final secrets = await SecretsLoader.load(
+      'config/secrets.json',
+      onWarning: (message) {
+        if (kDebugMode) {
+          debugPrint('[Secrets] $message');
+        }
+      },
+    );
 
     // Load country counts from JSON to display accurate question counts
     final countryCounts = await CountryCounts.load();
@@ -104,6 +116,7 @@ class FlagsQuizAppProvider {
 
     return FlagsQuizDependencies(
       services: services,
+      secrets: secrets,
       achievementsProvider: achievementsProvider,
       dataProvider: dataProvider,
       categories: categories,
