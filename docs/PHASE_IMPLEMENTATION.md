@@ -2717,36 +2717,51 @@ if (secrets.features.enableAds) { /* show ads */ }
 
 ---
 
-### Sprint 9.2: Ads Service
+### Sprint 9.2: Ads Service ✅
 
 **Goal:** Implement ads service with AdMob integration.
 
 **Tasks:**
-- [ ] Create `AdsService` abstract class
-- [ ] Create `AdMobService` implementation
-- [ ] Create `NoAdsService` implementation (premium users/testing)
-- [ ] Create `BannerAdWidget` for displaying banner ads
-- [ ] Add interstitial ad trigger points (after quiz completion)
-- [ ] Add rewarded ad for free resources (lives, hints)
-- [ ] Integrate with `ResourceManager` for ad rewards
-- [ ] Track ad events via analytics
-- [ ] Write unit tests
-- [ ] Test on iOS and Android
+- [x] Create `AdsService` abstract class
+- [x] Create `AdMobService` implementation
+- [x] Create `NoAdsService` implementation (premium users/testing)
+- [x] Create `BannerAdWidget` for displaying banner ads
+- [x] Add interstitial ad trigger points (after quiz completion)
+- [x] Add rewarded ad for free resources (lives, hints)
+- [x] Integrate with `ResourceManager` for ad rewards
+- [x] Track ad events via analytics
+- [x] Write unit tests
+- [ ] Test on iOS and Android (requires device testing)
 
-**Files to Create:**
-- `packages/shared_services/lib/src/ads/ads_service.dart`
-- `packages/shared_services/lib/src/ads/admob_service.dart`
-- `packages/shared_services/lib/src/ads/no_ads_service.dart`
-- `packages/shared_services/lib/src/ads/ads_exports.dart`
-- `packages/quiz_engine/lib/src/widgets/banner_ad_widget.dart`
-- `packages/shared_services/test/ads/admob_service_test.dart`
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/ads/ads_service.dart` - Abstract service interface with AdsConfig, AdResult, AdPlacement, AdEvent types
+- ✅ `packages/shared_services/lib/src/ads/admob_service.dart` - AdMob implementation with banner, interstitial, rewarded ads
+- ✅ `packages/shared_services/lib/src/ads/no_ads_service.dart` - No-op implementation for premium users/testing
+- ✅ `packages/shared_services/lib/src/ads/ads_exports.dart` - Barrel exports
+- ✅ `packages/shared_services/lib/src/ads/admob_reward_provider.dart` - Adapter connecting AdsService to ResourceManager
+- ✅ `packages/shared_services/lib/src/ads/analytics_ads_service.dart` - Analytics wrapper for tracking ad events
+- ✅ `packages/quiz_engine/lib/src/widgets/banner_ad_widget.dart` - Widget for displaying banner ads
+- ✅ `packages/shared_services/test/ads/no_ads_service_test.dart` - Unit tests for NoAdsService
+- ✅ `packages/shared_services/test/ads/admob_reward_provider_test.dart` - Unit tests for AdMobRewardProvider
+- ✅ `packages/shared_services/test/ads/analytics_ads_service_test.dart` - Unit tests for AnalyticsAdsService
 
-**Dependencies to Add:**
+**Dependencies Added:**
 ```yaml
 # packages/shared_services/pubspec.yaml
 dependencies:
-  google_mobile_ads: ^5.0.0
+  google_mobile_ads: ^5.3.0
+
+# packages/quiz_engine/pubspec.yaml
+dependencies:
+  google_mobile_ads: ^5.3.0
 ```
+
+**Notes:**
+- `AdsService` implements `AdRewardProvider` interface for compatibility with `ResourceManager`
+- `AdMobRewardProvider` bridges `AdsService` to `AdRewardProvider` for `ResourceManager` integration
+- `AnalyticsAdsService` wraps any `AdsService` to automatically log `MonetizationEvent.adWatched` and `MonetizationEvent.adFailed`
+- Use `AdsConfig.test()` for development with Google's official test ad IDs
+- `BannerAdWidget` handles loading/disposing and respects ads enabled/disabled state
 
 ---
 
