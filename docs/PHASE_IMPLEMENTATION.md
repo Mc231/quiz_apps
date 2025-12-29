@@ -2003,29 +2003,37 @@ Created a centralized `QuizAnimations` class with standardized duration tiers an
 
 ---
 
-### Sprint 8.21: Resource UI Integration & Pre-Quiz Validation
+### Sprint 8.21: Resource UI Integration & Pre-Quiz Validation ✅
 
 **Goal:** Complete UI integration for resource restoration dialogs and add pre-quiz lives validation.
 
 **Tasks:**
 
 *UI Integration (GameResourcePanel):*
-- [ ] Wire `onDepletedTap` in GameResourcePanel to show `RestoreResourceDialog`
-- [ ] Update GameResourcePanel to read counts from ResourceManager instead of QuizState
-- [ ] Handle resource restoration flow (dialog → ad/purchase → refresh UI)
+- [x] Wire `onDepletedTap` in GameResourcePanel to show `RestoreResourceDialog`
+- [x] Update GameResourcePanel to read counts from ResourceManager instead of QuizState
+- [x] Handle resource restoration flow (dialog → ad/purchase → refresh UI)
 
 *Pre-Quiz Lives Validation (Play Tab):*
-- [ ] Check lives availability when user taps category on Play tab
-- [ ] If lives == 0, show `RestoreResourceDialog` before starting quiz
-- [ ] Only start quiz if user has lives OR successfully restores via dialog
-- [ ] Challenges bypass this check (they use their own fixed resources)
+- [x] Check lives availability when user taps category on Play tab
+- [x] If lives == 0, show `RestoreResourceDialog` before starting quiz
+- [x] Only start quiz if user has lives OR successfully restores via dialog
+- [x] Challenges bypass this check (they use their own fixed resources)
 
 *Testing:*
-- [ ] Write integration tests for ResourceManager → QuizBloc flow
+- [x] Write integration tests for ResourceManager → QuizBloc flow
 - [ ] Write widget tests for RestoreResourceDialog appearing on depleted tap
 - [ ] Test daily reset mechanism
 - [ ] Test resource persistence across app restarts
 - [ ] Add user-friendly way to test daily reset (Settings toggle or wait until midnight)
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Wired `onDepletedTap` in `_buildResourceData()`, added `_showRestoreDialog()` method
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added pre-quiz lives validation in `_startQuiz()` method
+- ✅ `packages/quiz_engine/lib/src/widgets/game_resource_button.dart` - Fixed `_handleTap()` to call `onDepletedTap` when count is 0
+
+**Files Created:**
+- ✅ `packages/quiz_engine/test/widgets/resource_manager_integration_test.dart` - Tests for onDepletedTap behavior
 
 **Notes:**
 - `RestoreResourceDialog` and `PurchaseResourceSheet` are already implemented (Sprint 8.15)
