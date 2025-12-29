@@ -39,3 +39,6 @@ export 'src/achievements/achievements_exports.dart';
 
 // Resources (Lives, hints, skips management with IAP/Ads support)
 export 'src/resources/resources.dart';
+
+// Config (Secrets and configuration loading)
+export 'src/config/config_exports.dart';
