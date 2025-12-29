@@ -2677,6 +2677,46 @@ await compositeService.logEvent(QuizEvent.started(...));
 
 ---
 
+### Sprint 9.1.12: Secrets Configuration System ✅
+
+**Goal:** Implement a secure secrets configuration system that loads API keys, credentials, and feature flags from a JSON file excluded from source control.
+
+**Tasks:**
+- [x] Create `SecretsConfig` class with typed access to all secrets
+- [x] Create `FirebaseSecrets`, `AdMobSecrets`, `ApiSecrets` sub-configs
+- [x] Create `FeatureFlags` for conditional feature enabling
+- [x] Create `SecretsLoader` utility for loading from JSON assets
+- [x] Add fallback to empty config when secrets file is missing
+- [x] Create `secrets.template.json` for apps (committed to git)
+- [x] Update `.gitignore` to exclude `secrets.json` files
+- [x] Integrate with `FlagsQuizAppProvider` initialization
+- [x] Write unit tests for all config classes
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/config/secrets_config.dart`
+- ✅ `packages/shared_services/lib/src/config/secrets_loader.dart`
+- ✅ `packages/shared_services/lib/src/config/config_exports.dart`
+- ✅ `packages/shared_services/test/config/secrets_config_test.dart`
+- ✅ `apps/flagsquiz/config/secrets.template.json`
+
+**Files Modified:**
+- ✅ `.gitignore` - Added secrets exclusion pattern
+- ✅ `packages/shared_services/lib/shared_services.dart` - Export config
+- ✅ `apps/flagsquiz/pubspec.yaml` - Added config/ to assets
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_dependencies.dart` - Added secrets field
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Load secrets at startup
+
+**Usage:**
+```dart
+// Copy secrets.template.json to secrets.json and fill in values
+final secrets = dependencies.secrets;
+final firebaseKey = secrets.firebase.apiKey;
+final adMobAppId = secrets.adMob.appId;
+if (secrets.features.enableAds) { /* show ads */ }
+```
+
+---
+
 ### Sprint 9.2: Ads Service
 
 **Goal:** Implement ads service with AdMob integration.
