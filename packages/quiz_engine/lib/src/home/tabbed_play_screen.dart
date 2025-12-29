@@ -5,57 +5,9 @@ import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
 import '../widgets/loading_indicator.dart';
 import 'category_card.dart';
-import 'play_screen.dart';
+import 'play_screen_config.dart';
 import 'play_screen_tab.dart';
-
-/// Configuration for [TabbedPlayScreen].
-class TabbedPlayScreenConfig {
-  /// Creates a [TabbedPlayScreenConfig].
-  const TabbedPlayScreenConfig({
-    this.title,
-    this.showAppBar = true,
-    this.showSettingsAction = true,
-    this.appBarActions,
-    this.tabBarIndicatorColor,
-    this.tabBarLabelColor,
-    this.tabBarUnselectedLabelColor,
-    this.tabBarIndicatorWeight = 2.0,
-    this.tabBarIsScrollable = false,
-    this.playScreenConfig = const PlayScreenConfig(showAppBar: false),
-  });
-
-  /// Title for the app bar.
-  final String? title;
-
-  /// Whether to show the app bar.
-  final bool showAppBar;
-
-  /// Whether to show settings action in app bar.
-  final bool showSettingsAction;
-
-  /// Custom app bar actions.
-  final List<Widget>? appBarActions;
-
-  /// Color for the tab indicator.
-  final Color? tabBarIndicatorColor;
-
-  /// Color for selected tab label.
-  final Color? tabBarLabelColor;
-
-  /// Color for unselected tab labels.
-  final Color? tabBarUnselectedLabelColor;
-
-  /// Weight of the tab indicator.
-  final double tabBarIndicatorWeight;
-
-  /// Whether tabs should be scrollable.
-  ///
-  /// Set to true when you have many tabs that don't fit on screen.
-  final bool tabBarIsScrollable;
-
-  /// Configuration for the play screen content (grid/list layout).
-  final PlayScreenConfig playScreenConfig;
-}
+import 'tabbed_play_screen_config.dart';
 
 /// A play screen with swipable tabs for different content types.
 ///

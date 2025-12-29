@@ -1,6 +1,6 @@
 import 'package:shared_services/shared_services.dart';
 
-import '../home/quiz_home_screen.dart';
+import '../home/quiz_home_data.dart';
 
 /// Interface for providing achievements data and handling session completion.
 ///

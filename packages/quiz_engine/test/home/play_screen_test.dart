@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/src/home/play_screen.dart';
+import 'package:quiz_engine/src/home/play_screen_config.dart';
 import 'package:quiz_engine/src/l10n/quiz_localizations_delegate.dart';
 import 'package:quiz_engine/src/models/quiz_category.dart';
 

@@ -27,9 +27,13 @@ export 'src/l10n/quiz_localizations_delegate.dart';
 // Home
 export 'src/home/category_card.dart';
 export 'src/home/play_screen.dart';
+export 'src/home/play_screen_config.dart';
 export 'src/home/play_screen_tab.dart';
 export 'src/home/tabbed_play_screen.dart';
+export 'src/home/tabbed_play_screen_config.dart';
 export 'src/home/quiz_home_screen.dart';
+export 'src/home/quiz_home_config.dart';
+export 'src/home/quiz_home_data.dart';
 
 // Widgets
 export 'src/quiz_widget.dart';
@@ -85,13 +89,20 @@ export 'src/screens/challenges_screen.dart';
 export 'src/screens/practice_complete_screen.dart';
 export 'src/screens/practice_start_screen.dart';
 export 'src/screens/session_history_screen.dart';
+export 'src/screens/session_history_texts.dart';
 export 'src/screens/session_detail_screen.dart';
+export 'src/screens/session_detail_data.dart';
+export 'src/screens/session_detail_texts.dart';
 export 'src/screens/statistics_screen.dart';
+export 'src/screens/statistics_data.dart';
+export 'src/screens/statistics_texts.dart';
 export 'src/screens/statistics_dashboard_screen.dart';
+export 'src/screens/statistics_dashboard_data.dart';
 export 'src/screens/quiz_results_screen.dart';
 
 // Settings
 export 'src/settings/quiz_settings_screen.dart';
+export 'src/settings/quiz_settings_config.dart';
 export 'src/settings/export_data_tile.dart';
 
 // Theme
@@ -117,6 +128,8 @@ export 'src/achievements/achievement_category.dart';
 export 'src/achievements/achievement_notification_controller.dart';
 export 'src/achievements/base_achievements.dart';
 export 'src/achievements/screens/achievements_screen.dart';
+export 'src/achievements/screens/achievements_screen_config.dart';
+export 'src/achievements/screens/achievements_screen_data.dart';
 export 'src/achievements/widgets/achievement_card.dart';
 export 'src/achievements/widgets/achievement_notification.dart';
 export 'src/achievements/widgets/achievement_tier_badge.dart';

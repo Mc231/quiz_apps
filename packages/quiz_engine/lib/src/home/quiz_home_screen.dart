@@ -2,149 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../achievements/screens/achievements_screen.dart';
+import '../achievements/screens/achievements_screen_data.dart';
 import '../services/quiz_services_context.dart';
 import '../achievements/widgets/achievement_card.dart';
 import '../app/quiz_tab.dart';
 import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
 import '../screens/session_detail_screen.dart';
+import '../screens/session_detail_data.dart';
+import '../screens/session_detail_texts.dart';
 import '../screens/session_history_screen.dart';
+import '../screens/session_history_texts.dart';
 import '../screens/statistics_dashboard_screen.dart';
-import '../screens/statistics_screen.dart';
+import '../screens/statistics_dashboard_data.dart';
 import '../utils/default_data_loader.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/question_review_widget.dart';
 import '../widgets/session_card.dart';
-import 'category_card.dart';
-import 'play_screen.dart';
+import 'play_screen_config.dart';
 import 'play_screen_tab.dart';
+import 'quiz_home_config.dart';
+import 'quiz_home_data.dart';
 import 'tabbed_play_screen.dart';
-
-/// Default empty tab config for const initialization.
-const _emptyTabConfig = QuizTabConfig(tabs: []);
-
-/// Configuration for the QuizHomeScreen.
-class QuizHomeScreenConfig {
-  /// Tab configuration.
-  final QuizTabConfig tabConfig;
-
-  /// Configuration for the PlayScreen.
-  final PlayScreenConfig playScreenConfig;
-
-  /// Optional tabs for TabbedPlayScreen.
-  ///
-  /// When provided, uses [TabbedPlayScreen] instead of [PlayScreen].
-  /// Each tab can be a [CategoriesTab], [PracticeTab], or [CustomContentTab].
-  final List<PlayScreenTab>? playScreenTabs;
-
-  /// Initial tab ID for TabbedPlayScreen.
-  ///
-  /// Only used when [playScreenTabs] is provided.
-  final String? initialPlayTabId;
-
-  /// Configuration for TabbedPlayScreen.
-  ///
-  /// Only used when [playScreenTabs] is provided.
-  final TabbedPlayScreenConfig? tabbedPlayScreenConfig;
-
-  /// Whether to show settings button in app bar.
-  final bool showSettingsInAppBar;
-
-  /// Custom app bar actions.
-  final List<Widget>? appBarActions;
-
-  /// Creates a [QuizHomeScreenConfig].
-  const QuizHomeScreenConfig({
-    this.tabConfig = _emptyTabConfig,
-    this.playScreenConfig = const PlayScreenConfig(),
-    this.playScreenTabs,
-    this.initialPlayTabId,
-    this.tabbedPlayScreenConfig,
-    this.showSettingsInAppBar = false,
-    this.appBarActions,
-  });
-
-  /// Default configuration with Play, History, and Statistics tabs.
-  factory QuizHomeScreenConfig.defaultConfig() {
-    return QuizHomeScreenConfig(
-      tabConfig: QuizTabConfig.defaultConfig(),
-    );
-  }
-}
-
-/// Data provider for the History tab.
-class HistoryTabData {
-  /// Session history data.
-  final List<SessionCardData> sessions;
-
-  /// Whether data is loading.
-  final bool isLoading;
-
-  /// Creates [HistoryTabData].
-  const HistoryTabData({
-    this.sessions = const [],
-    this.isLoading = false,
-  });
-}
-
-/// Data provider for the Statistics tab.
-class StatisticsTabData {
-  /// Global statistics.
-  final GlobalStatisticsData statistics;
-
-  /// Recent sessions for the statistics screen.
-  final List<SessionCardData> recentSessions;
-
-  /// Whether data is loading.
-  final bool isLoading;
-
-  /// Creates [StatisticsTabData].
-  const StatisticsTabData({
-    required this.statistics,
-    this.recentSessions = const [],
-    this.isLoading = false,
-  });
-
-  /// Creates empty statistics data.
-  factory StatisticsTabData.empty() {
-    return const StatisticsTabData(
-      statistics: GlobalStatisticsData(
-        totalSessions: 0,
-        totalQuestions: 0,
-        totalCorrect: 0,
-        totalIncorrect: 0,
-        averageScore: 0,
-        bestScore: 0,
-        totalTimePlayed: 0,
-        perfectScores: 0,
-        currentStreak: 0,
-        bestStreak: 0,
-      ),
-    );
-  }
-}
-
-/// Data provider for the Achievements tab.
-class AchievementsTabData {
-  /// Achievements data for the screen.
-  final AchievementsScreenData screenData;
-
-  /// Whether data is loading.
-  final bool isLoading;
-
-  /// Creates [AchievementsTabData].
-  const AchievementsTabData({
-    required this.screenData,
-    this.isLoading = false,
-  });
-
-  /// Creates empty achievements data.
-  factory AchievementsTabData.empty() {
-    return const AchievementsTabData(
-      screenData: AchievementsScreenData.empty(),
-    );
-  }
-}
+import 'tabbed_play_screen_config.dart';
 
 /// A home screen widget with bottom navigation for quiz apps.
 ///
@@ -1087,43 +967,5 @@ class HomeTabContent extends StatelessWidget {
     // This widget is typically used within a tab-switching context
     // Individual tab builders are provided for flexibility
     return const SizedBox.shrink();
-  }
-}
-
-/// Extension to add copyWith to PlayScreenConfig.
-extension PlayScreenConfigCopyWith on PlayScreenConfig {
-  /// Creates a copy with the given fields replaced.
-  PlayScreenConfig copyWith({
-    String? title,
-    PlayScreenLayout? layout,
-    int? gridColumnsMobile,
-    int? gridColumnsTablet,
-    int? gridColumnsDesktop,
-    double? gridAspectRatio,
-    double? itemSpacing,
-    EdgeInsets? padding,
-    CategoryCardStyle? cardStyle,
-    bool? showSettingsAction,
-    List<Widget>? appBarActions,
-    bool? showAppBar,
-    Widget? emptyStateWidget,
-    Widget? loadingWidget,
-  }) {
-    return PlayScreenConfig(
-      title: title ?? this.title,
-      layout: layout ?? this.layout,
-      gridColumnsMobile: gridColumnsMobile ?? this.gridColumnsMobile,
-      gridColumnsTablet: gridColumnsTablet ?? this.gridColumnsTablet,
-      gridColumnsDesktop: gridColumnsDesktop ?? this.gridColumnsDesktop,
-      gridAspectRatio: gridAspectRatio ?? this.gridAspectRatio,
-      itemSpacing: itemSpacing ?? this.itemSpacing,
-      padding: padding ?? this.padding,
-      cardStyle: cardStyle ?? this.cardStyle,
-      showSettingsAction: showSettingsAction ?? this.showSettingsAction,
-      appBarActions: appBarActions ?? this.appBarActions,
-      showAppBar: showAppBar ?? this.showAppBar,
-      emptyStateWidget: emptyStateWidget ?? this.emptyStateWidget,
-      loadingWidget: loadingWidget ?? this.loadingWidget,
-    );
   }
 }

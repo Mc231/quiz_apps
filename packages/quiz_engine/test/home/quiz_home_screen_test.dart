@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/src/app/quiz_tab.dart';
 import 'package:quiz_engine/src/home/quiz_home_screen.dart';
+import 'package:quiz_engine/src/home/quiz_home_config.dart';
+import 'package:quiz_engine/src/home/quiz_home_data.dart';
 import 'package:quiz_engine/src/l10n/quiz_localizations_delegate.dart';
 import 'package:quiz_engine/src/models/quiz_category.dart';
-import 'package:quiz_engine/src/screens/statistics_screen.dart';
+import 'package:quiz_engine/src/screens/statistics_data.dart';
 import 'package:quiz_engine/src/services/quiz_services_provider.dart';
 import 'package:quiz_engine/src/widgets/session_card.dart';
 

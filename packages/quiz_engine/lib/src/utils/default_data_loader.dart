@@ -1,8 +1,8 @@
 import 'package:shared_services/shared_services.dart';
 
-import '../home/quiz_home_screen.dart';
-import '../screens/statistics_dashboard_screen.dart';
-import '../screens/statistics_screen.dart';
+import '../home/quiz_home_data.dart';
+import '../screens/statistics_dashboard_data.dart';
+import '../screens/statistics_data.dart';
 import '../widgets/category_statistics_widget.dart';
 import '../widgets/leaderboard_widget.dart';
 import '../widgets/progress_chart_widget.dart';

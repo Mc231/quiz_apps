@@ -8,6 +8,8 @@ import '../widgets/question_review_widget.dart';
 import '../widgets/score_breakdown.dart';
 import '../widgets/score_display.dart';
 import 'session_detail_screen.dart';
+import 'session_detail_data.dart';
+import 'session_detail_texts.dart';
 
 /// Screen displaying quiz results with star rating and statistics.
 ///
