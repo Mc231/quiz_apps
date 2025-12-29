@@ -7,14 +7,10 @@
 /// ```dart
 /// final secrets = await SecretsLoader.load('config/secrets.json');
 /// final firebaseApiKey = secrets.firebase.apiKey;
-/// final adMobAppId = secrets.adMob.appId;
 /// ```
 class SecretsConfig {
   /// Firebase configuration
   final FirebaseSecrets firebase;
-
-  /// AdMob configuration for ads
-  final AdMobSecrets adMob;
 
   /// API configuration for backend services
   final ApiSecrets api;
@@ -27,7 +23,6 @@ class SecretsConfig {
 
   const SecretsConfig({
     this.firebase = const FirebaseSecrets(),
-    this.adMob = const AdMobSecrets(),
     this.api = const ApiSecrets(),
     this.features = const FeatureFlags(),
     this.custom = const {},
@@ -37,7 +32,6 @@ class SecretsConfig {
   /// Used when secrets file is missing or invalid.
   const SecretsConfig.empty()
       : firebase = const FirebaseSecrets(),
-        adMob = const AdMobSecrets(),
         api = const ApiSecrets(),
         features = const FeatureFlags(),
         custom = const {};
@@ -48,9 +42,6 @@ class SecretsConfig {
       firebase: json['firebase'] != null
           ? FirebaseSecrets.fromJson(json['firebase'] as Map<String, dynamic>)
           : const FirebaseSecrets(),
-      adMob: json['adMob'] != null
-          ? AdMobSecrets.fromJson(json['adMob'] as Map<String, dynamic>)
-          : const AdMobSecrets(),
       api: json['api'] != null
           ? ApiSecrets.fromJson(json['api'] as Map<String, dynamic>)
           : const ApiSecrets(),
@@ -66,35 +57,30 @@ class SecretsConfig {
   /// Converts config to JSON map.
   Map<String, dynamic> toJson() => {
         'firebase': firebase.toJson(),
-        'adMob': adMob.toJson(),
         'api': api.toJson(),
         'features': features.toJson(),
         'custom': custom,
       };
 
   /// Returns true if all required secrets are configured.
-  bool get isConfigured =>
-      firebase.isConfigured || adMob.isConfigured || api.isConfigured;
+  bool get isConfigured => firebase.isConfigured || api.isConfigured;
 
   /// Returns list of missing required secrets.
   List<String> get missingSecrets {
     final missing = <String>[];
     if (!firebase.isConfigured) missing.add('firebase');
-    if (!adMob.isConfigured) missing.add('adMob');
     if (!api.isConfigured) missing.add('api');
     return missing;
   }
 
   SecretsConfig copyWith({
     FirebaseSecrets? firebase,
-    AdMobSecrets? adMob,
     ApiSecrets? api,
     FeatureFlags? features,
     Map<String, String>? custom,
   }) {
     return SecretsConfig(
       firebase: firebase ?? this.firebase,
-      adMob: adMob ?? this.adMob,
       api: api ?? this.api,
       features: features ?? this.features,
       custom: custom ?? this.custom,
@@ -194,104 +180,6 @@ class FirebasePlatformSecrets {
         'appId': appId,
         'apiKey': apiKey,
         'bundleId': bundleId,
-      };
-}
-
-/// AdMob configuration secrets.
-class AdMobSecrets {
-  /// AdMob App ID
-  final String appId;
-
-  /// Banner ad unit ID
-  final String bannerId;
-
-  /// Interstitial ad unit ID
-  final String interstitialId;
-
-  /// Rewarded ad unit ID
-  final String rewardedId;
-
-  /// Native ad unit ID
-  final String nativeId;
-
-  /// iOS-specific ad unit IDs
-  final AdMobPlatformSecrets ios;
-
-  /// Android-specific ad unit IDs
-  final AdMobPlatformSecrets android;
-
-  const AdMobSecrets({
-    this.appId = '',
-    this.bannerId = '',
-    this.interstitialId = '',
-    this.rewardedId = '',
-    this.nativeId = '',
-    this.ios = const AdMobPlatformSecrets(),
-    this.android = const AdMobPlatformSecrets(),
-  });
-
-  factory AdMobSecrets.fromJson(Map<String, dynamic> json) {
-    return AdMobSecrets(
-      appId: json['appId'] as String? ?? '',
-      bannerId: json['bannerId'] as String? ?? '',
-      interstitialId: json['interstitialId'] as String? ?? '',
-      rewardedId: json['rewardedId'] as String? ?? '',
-      nativeId: json['nativeId'] as String? ?? '',
-      ios: json['ios'] != null
-          ? AdMobPlatformSecrets.fromJson(json['ios'] as Map<String, dynamic>)
-          : const AdMobPlatformSecrets(),
-      android: json['android'] != null
-          ? AdMobPlatformSecrets.fromJson(
-              json['android'] as Map<String, dynamic>)
-          : const AdMobPlatformSecrets(),
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'appId': appId,
-        'bannerId': bannerId,
-        'interstitialId': interstitialId,
-        'rewardedId': rewardedId,
-        'nativeId': nativeId,
-        'ios': ios.toJson(),
-        'android': android.toJson(),
-      };
-
-  bool get isConfigured => appId.isNotEmpty;
-}
-
-/// Platform-specific AdMob configuration.
-class AdMobPlatformSecrets {
-  final String appId;
-  final String bannerId;
-  final String interstitialId;
-  final String rewardedId;
-  final String nativeId;
-
-  const AdMobPlatformSecrets({
-    this.appId = '',
-    this.bannerId = '',
-    this.interstitialId = '',
-    this.rewardedId = '',
-    this.nativeId = '',
-  });
-
-  factory AdMobPlatformSecrets.fromJson(Map<String, dynamic> json) {
-    return AdMobPlatformSecrets(
-      appId: json['appId'] as String? ?? '',
-      bannerId: json['bannerId'] as String? ?? '',
-      interstitialId: json['interstitialId'] as String? ?? '',
-      rewardedId: json['rewardedId'] as String? ?? '',
-      nativeId: json['nativeId'] as String? ?? '',
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'appId': appId,
-        'bannerId': bannerId,
-        'interstitialId': interstitialId,
-        'rewardedId': rewardedId,
-        'nativeId': nativeId,
       };
 }
 

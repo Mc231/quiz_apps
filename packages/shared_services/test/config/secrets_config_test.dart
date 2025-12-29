@@ -8,7 +8,6 @@ void main() {
 
       expect(config.firebase.projectId, isEmpty);
       expect(config.firebase.apiKey, isEmpty);
-      expect(config.adMob.appId, isEmpty);
       expect(config.api.baseUrl, isEmpty);
       expect(config.features.enableAds, isFalse);
       expect(config.features.enableAnalytics, isTrue);
@@ -21,10 +20,6 @@ void main() {
           'projectId': 'test-project',
           'apiKey': 'test-api-key',
           'appId': 'test-app-id',
-        },
-        'adMob': {
-          'appId': 'ca-app-pub-xxx',
-          'bannerId': 'ca-app-pub-xxx/banner',
         },
         'api': {
           'baseUrl': 'https://api.test.com',
@@ -45,8 +40,6 @@ void main() {
 
       expect(config.firebase.projectId, 'test-project');
       expect(config.firebase.apiKey, 'test-api-key');
-      expect(config.adMob.appId, 'ca-app-pub-xxx');
-      expect(config.adMob.bannerId, 'ca-app-pub-xxx/banner');
       expect(config.api.baseUrl, 'https://api.test.com');
       expect(config.api.version, 'v2');
       expect(config.features.enableAds, isTrue);
@@ -61,9 +54,6 @@ void main() {
           projectId: 'my-project',
           apiKey: 'my-key',
         ),
-        adMob: AdMobSecrets(
-          appId: 'admob-app-id',
-        ),
         api: ApiSecrets(
           baseUrl: 'https://api.example.com',
         ),
@@ -77,7 +67,6 @@ void main() {
 
       expect(json['firebase']['projectId'], 'my-project');
       expect(json['firebase']['apiKey'], 'my-key');
-      expect(json['adMob']['appId'], 'admob-app-id');
       expect(json['api']['baseUrl'], 'https://api.example.com');
       expect(json['features']['enableAds'], isTrue);
       expect(json['custom']['key'], 'value');
@@ -95,12 +84,12 @@ void main() {
 
     test('missingSecrets returns list of unconfigured services', () {
       const config = SecretsConfig.empty();
-      expect(config.missingSecrets, containsAll(['firebase', 'adMob', 'api']));
+      expect(config.missingSecrets, containsAll(['firebase', 'api']));
 
       const partialConfig = SecretsConfig(
         firebase: FirebaseSecrets(projectId: 'test', apiKey: 'test'),
       );
-      expect(partialConfig.missingSecrets, containsAll(['adMob', 'api']));
+      expect(partialConfig.missingSecrets, contains('api'));
       expect(partialConfig.missingSecrets, isNot(contains('firebase')));
     });
 
@@ -152,34 +141,6 @@ void main() {
       expect(secrets.ios.bundleId, 'com.test.ios');
       expect(secrets.android.appId, 'android-app-id');
       expect(secrets.android.bundleId, 'com.test.android');
-    });
-  });
-
-  group('AdMobSecrets', () {
-    test('isConfigured requires appId', () {
-      const empty = AdMobSecrets();
-      expect(empty.isConfigured, isFalse);
-
-      const withAppId = AdMobSecrets(appId: 'ca-app-pub-xxx');
-      expect(withAppId.isConfigured, isTrue);
-    });
-
-    test('fromJson parses all ad unit IDs', () {
-      final json = {
-        'appId': 'app-id',
-        'bannerId': 'banner-id',
-        'interstitialId': 'interstitial-id',
-        'rewardedId': 'rewarded-id',
-        'nativeId': 'native-id',
-      };
-
-      final secrets = AdMobSecrets.fromJson(json);
-
-      expect(secrets.appId, 'app-id');
-      expect(secrets.bannerId, 'banner-id');
-      expect(secrets.interstitialId, 'interstitial-id');
-      expect(secrets.rewardedId, 'rewarded-id');
-      expect(secrets.nativeId, 'native-id');
     });
   });
 
