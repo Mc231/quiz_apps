@@ -199,11 +199,11 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     var items = await dataProvider();
     final filteredItems = filter != null ? items.where(filter!).toList() : items;
 
-    // Update progress tracker with actual count
+    // Update progress tracker with actual count (preserve initialLives from above)
     _progressTracker.resetAll();
     _progressTracker.initialize(
       totalCount: filteredItems.length,
-      initialLives: _config.modeConfig.lives,
+      initialLives: initialLives,
     );
 
     // Initialize game flow
