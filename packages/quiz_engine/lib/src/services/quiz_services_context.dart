@@ -76,4 +76,9 @@ extension QuizServicesContext on BuildContext {
   ///
   /// Throws a [FlutterError] if no [QuizServicesProvider] is found.
   ResourceManager get resourceManager => services.resourceManager;
+
+  /// Returns the [AdsService] from the closest [QuizServicesProvider] ancestor.
+  ///
+  /// Throws a [FlutterError] if no [QuizServicesProvider] is found.
+  AdsService get adsService => services.adsService;
 }
