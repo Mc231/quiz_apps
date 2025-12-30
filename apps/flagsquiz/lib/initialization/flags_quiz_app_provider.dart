@@ -147,16 +147,18 @@ class FlagsQuizAppProvider {
     );
 
     // Initialize IAP service
-    // Use MockIAPService for development, StoreIAPService for production
+    // Toggle for testing: true = real store (license/sandbox testing), false = mock
+    const useRealIAPService = true;
+
     final IAPService iapService;
-    if (kDebugMode) {
-      // Mock service for development - simulates working store
+    if (kDebugMode && !useRealIAPService) {
+      // Mock service for UI development - simulates working store
       iapService = MockIAPService(
         config: IAPConfig.test(),
         simulatedDelay: const Duration(milliseconds: 300),
       );
     } else {
-      // Real store service for production releases
+      // Real store for production and license/sandbox testing
       iapService = StoreIAPService(
         config: createProductionIAPConfig(),
       );
@@ -177,16 +179,15 @@ class FlagsQuizAppProvider {
 
     // Define purchaseable resource packs
     // Product IDs must match IAPConfig used by the IAP service
-    // For development (MockIAPService): use IAPConfig.test() product IDs
-    // For production (StoreIAPService): use App Store / Play Console product IDs
-    final purchasePacks = kDebugMode
-        ? _createTestResourcePacks()
-        : createProductionResourcePacks();
+    // When useRealIAPService is true, use production IDs to match StoreIAPService
+    final purchasePacks = useRealIAPService
+        ? createProductionResourcePacks()
+        : _createTestResourcePacks();
 
     // Define bundle packs with their resource contents
-    final bundlePacks = kDebugMode
-        ? _createTestBundlePacks()
-        : createProductionBundlePacks();
+    final bundlePacks = useRealIAPService
+        ? createProductionBundlePacks()
+        : _createTestBundlePacks();
 
     // Create resource config with purchase packs and bundles
     final resourceConfig = ResourceConfig(
