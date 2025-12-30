@@ -16,6 +16,7 @@ import '../screens/session_history_texts.dart';
 import '../screens/statistics_dashboard_screen.dart';
 import '../screens/statistics_dashboard_data.dart';
 import '../utils/default_data_loader.dart';
+import '../widgets/banner_ad_widget.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/question_review_widget.dart';
 import '../widgets/session_card.dart';
@@ -825,16 +826,26 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   Widget _buildBottomNavigation(BuildContext context) {
     final l10n = QuizL10n.of(context);
 
-    return NavigationBar(
-      selectedIndex: _currentIndex,
-      onDestinationSelected: _onTabSelected,
-      destinations: _tabs.map((tab) {
-        return NavigationDestination(
-          icon: Icon(tab.icon),
-          selectedIcon: Icon(tab.effectiveSelectedIcon),
-          label: _getNavigationLabel(context, tab, l10n),
-        );
-      }).toList(),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Banner ad above navigation bar
+        const BannerAdWidget(
+          placement: AdPlacement.bannerBottom,
+        ),
+        // Navigation bar
+        NavigationBar(
+          selectedIndex: _currentIndex,
+          onDestinationSelected: _onTabSelected,
+          destinations: _tabs.map((tab) {
+            return NavigationDestination(
+              icon: Icon(tab.icon),
+              selectedIcon: Icon(tab.effectiveSelectedIcon),
+              label: _getNavigationLabel(context, tab, l10n),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 
