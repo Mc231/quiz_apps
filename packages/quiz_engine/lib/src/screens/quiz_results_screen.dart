@@ -4,6 +4,7 @@ import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../services/quiz_services_context.dart';
+import '../widgets/banner_ad_widget.dart';
 import '../widgets/question_review_widget.dart';
 import '../widgets/score_breakdown.dart';
 import '../widgets/score_display.dart';
@@ -141,6 +142,10 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
             ),
           ],
         ),
+      ),
+      // Banner ad at the bottom of the results screen
+      bottomNavigationBar: const BannerAdWidget(
+        placement: AdPlacement.bannerBottom,
       ),
     );
   }
