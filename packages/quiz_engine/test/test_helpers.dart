@@ -37,6 +37,7 @@ Widget wrapWithServices(
   AchievementService? achievementService,
   ResourceManager? resourceManager,
   AdsService? adsService,
+  IAPService? iapService,
 }) {
   final effectiveScreenAnalytics = screenAnalyticsService ?? NoOpAnalyticsService();
   final effectiveQuizAnalytics = quizAnalyticsService ?? NoOpQuizAnalyticsService();
@@ -45,6 +46,7 @@ Widget wrapWithServices(
   final effectiveAchievements = achievementService ?? _MockAchievementService();
   final effectiveResourceManager = resourceManager ?? _createDefaultResourceManager();
   final effectiveAdsService = adsService ?? NoAdsService();
+  final effectiveIapService = iapService ?? NoOpIAPService();
 
   return MaterialApp(
     localizationsDelegates: const [
@@ -63,6 +65,7 @@ Widget wrapWithServices(
         achievementService: effectiveAchievements,
         resourceManager: effectiveResourceManager,
         adsService: effectiveAdsService,
+        iapService: effectiveIapService,
       ),
       child: Scaffold(body: child),
     ),

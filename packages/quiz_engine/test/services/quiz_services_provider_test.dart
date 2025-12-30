@@ -20,6 +20,8 @@ void main() {
       );
       final adsService = NoAdsService();
 
+      final iapService = NoOpIAPService();
+
       final services = QuizServices(
         settingsService: settingsService,
         storageService: storageService,
@@ -28,6 +30,7 @@ void main() {
         quizAnalyticsService: quizAnalyticsService,
         resourceManager: resourceManager,
         adsService: adsService,
+        iapService: iapService,
       );
 
       expect(services.settingsService, equals(settingsService));
@@ -37,6 +40,7 @@ void main() {
       expect(services.quizAnalyticsService, equals(quizAnalyticsService));
       expect(services.resourceManager, equals(resourceManager));
       expect(services.adsService, equals(adsService));
+      expect(services.iapService, equals(iapService));
     });
 
     test('noOp factory creates instance with NoOp analytics and ads services', () {
@@ -62,6 +66,7 @@ void main() {
       expect(services.quizAnalyticsService, isA<NoOpQuizAnalyticsService>());
       expect(services.resourceManager, equals(resourceManager));
       expect(services.adsService, isA<NoAdsService>());
+      expect(services.iapService, isA<NoOpIAPService>());
     });
 
     test('copyWith creates modified copy', () {
@@ -102,6 +107,8 @@ void main() {
       );
       final adsService = NoAdsService();
 
+      final iapService = NoOpIAPService();
+
       final services1 = QuizServices(
         settingsService: settingsService,
         storageService: storageService,
@@ -110,6 +117,7 @@ void main() {
         quizAnalyticsService: quizAnalyticsService,
         resourceManager: resourceManager,
         adsService: adsService,
+        iapService: iapService,
       );
 
       final services2 = QuizServices(
@@ -120,6 +128,7 @@ void main() {
         quizAnalyticsService: quizAnalyticsService,
         resourceManager: resourceManager,
         adsService: adsService,
+        iapService: iapService,
       );
 
       expect(services1, equals(services2));

@@ -5,7 +5,7 @@
 /// - Daily free limits with midnight reset
 /// - Permanent purchased resources
 /// - Rewarded ad integration
-/// - In-app purchase integration
+/// - In-app purchase integration via [IAPService]
 ///
 /// ## Getting Started
 ///
@@ -34,20 +34,19 @@
 ///
 /// ## Adding Monetization
 ///
-/// When ready to add ads or purchases, implement the provider interfaces:
+/// When ready to add ads or purchases, provide the service implementations:
 ///
 /// ```dart
 /// final manager = ResourceManager(
 ///   config: config,
 ///   repository: repository,
 ///   adProvider: MyAdMobProvider(),     // Implement AdRewardProvider
-///   iapProvider: MyRevenueCatProvider(), // Implement IAPProvider
+///   iapService: StoreIAPService(...),  // Use IAPService from iap_exports
 /// );
 /// ```
 library;
 
 export 'providers/ad_reward_provider.dart';
-export 'providers/iap_provider.dart';
 export 'resource_config.dart';
 export 'resource_inventory.dart';
 export 'resource_manager.dart';

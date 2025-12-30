@@ -1618,6 +1618,12 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get globalLeaderboard => 'Global Leaderboard';
   @override
   String get globalLeaderboardComingSoon => 'Coming soon';
+
+  // Missing purchase methods
+  @override
+  String get purchaseNotAvailable => 'This product is not available.';
+  @override
+  String get purchaseAlreadyOwned => 'You already own this item.';
 }
 
 void main() {

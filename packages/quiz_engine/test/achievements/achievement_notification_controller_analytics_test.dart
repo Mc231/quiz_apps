@@ -39,6 +39,7 @@ Widget wrapWithServicesAndOverlay(
               repository: InMemoryResourceRepository(),
             ),
             adsService: NoAdsService(),
+            iapService: NoOpIAPService(),
           ),
           child: const Scaffold(body: Text('Test')),
         );

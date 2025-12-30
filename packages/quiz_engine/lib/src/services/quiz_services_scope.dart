@@ -41,6 +41,7 @@ class QuizServicesScope extends StatelessWidget {
     this.quizAnalyticsService,
     this.resourceManager,
     this.adsService,
+    this.iapService,
     required this.child,
   });
 
@@ -65,6 +66,9 @@ class QuizServicesScope extends StatelessWidget {
   /// The ads service override, or null to inherit from parent.
   final AdsService? adsService;
 
+  /// The IAP service override, or null to inherit from parent.
+  final IAPService? iapService;
+
   /// The child widget.
   final Widget child;
 
@@ -83,6 +87,7 @@ class QuizServicesScope extends StatelessWidget {
           quizAnalyticsService ?? parentServices.quizAnalyticsService,
       resourceManager: resourceManager ?? parentServices.resourceManager,
       adsService: adsService ?? parentServices.adsService,
+      iapService: iapService ?? parentServices.iapService,
     );
 
     return QuizServicesProvider(

@@ -2,8 +2,10 @@ import 'dart:async';
 
 import '../analytics/analytics_service.dart';
 import '../analytics/events/resource_event.dart';
+import '../iap/iap_service.dart';
+import '../iap/no_op_iap_service.dart';
+import '../iap/purchase_result.dart';
 import 'providers/ad_reward_provider.dart';
-import 'providers/iap_provider.dart';
 import 'resource_config.dart';
 import 'resource_inventory.dart';
 import 'resource_repository.dart';
@@ -40,8 +42,8 @@ class ResourceManager {
   /// Provider for rewarded ads.
   final AdRewardProvider adProvider;
 
-  /// Provider for in-app purchases.
-  final IAPProvider iapProvider;
+  /// Service for in-app purchases.
+  final IAPService iapService;
 
   /// Repository for persisting inventory.
   final ResourceRepository repository;
@@ -60,13 +62,15 @@ class ResourceManager {
   bool _isInitialized = false;
 
   /// Creates a [ResourceManager].
+  ///
+  /// If [iapService] is not provided, a [NoOpIAPService] will be used.
   ResourceManager({
     required this.config,
     this.adProvider = const NoAdsProvider(),
-    this.iapProvider = const NoIAPProvider(),
+    IAPService? iapService,
     required this.repository,
     this.analyticsService,
-  });
+  }) : iapService = iapService ?? NoOpIAPService();
 
   /// Whether the manager has been initialized.
   bool get isInitialized => _isInitialized;
@@ -191,13 +195,18 @@ class ResourceManager {
   Future<PurchaseResult> purchasePack(ResourcePack pack) async {
     _ensureInitialized();
 
-    if (!iapProvider.isStoreAvailable) {
-      return PurchaseResult.failed;
+    if (!iapService.isStoreAvailable) {
+      return PurchaseResult.failed(
+        productId: pack.productId,
+        errorCode: 'store_unavailable',
+        errorMessage: 'Store is not available',
+      );
     }
 
-    final result = await iapProvider.purchase(pack.productId);
+    final result = await iapService.purchase(pack.productId);
 
-    if (result == PurchaseResult.success) {
+    // Handle successful purchase
+    if (result is PurchaseResultSuccess) {
       await addPurchasedResources(pack.type, pack.amount);
 
       // Log analytics event
@@ -303,22 +312,20 @@ class ResourceManager {
   bool get canRestoreViaAd => config.enableAds && adProvider.isAdAvailable;
 
   /// Whether purchases are available.
-  bool get canPurchase => config.enablePurchases && iapProvider.isStoreAvailable;
+  bool get canPurchase => config.enablePurchases && iapService.isStoreAvailable;
 
   /// Get localized price for a pack.
-  Future<String?> getLocalizedPrice(ResourcePack pack) {
-    return iapProvider.getLocalizedPrice(pack.productId);
+  Future<String?> getLocalizedPrice(ResourcePack pack) async {
+    final product = iapService.getProduct(pack.productId);
+    return product?.price;
   }
 
   /// Restore previous purchases.
   ///
   /// This is typically called when user taps "Restore Purchases" button.
-  /// The implementation depends on how your IAP provider tracks purchases.
-  Future<void> restorePurchases() async {
-    await iapProvider.restorePurchases();
-    // Note: The actual resource restoration would need to be handled
-    // by your IAP provider implementation, which should call
-    // addPurchasedResources() for each restored purchase.
+  /// Returns a list of restored product IDs.
+  Future<List<String>> restorePurchases() async {
+    return iapService.restorePurchases();
   }
 
   /// Dispose resources.

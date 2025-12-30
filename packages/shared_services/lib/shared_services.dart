@@ -45,3 +45,6 @@ export 'src/config/config_exports.dart';
 
 // Ads (AdMob integration)
 export 'src/ads/ads_exports.dart';
+
+// In-App Purchases (IAP)
+export 'src/iap/iap_exports.dart';

@@ -44,6 +44,7 @@ void main() {
         quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
         resourceManager: resourceManager,
         adsService: NoAdsService(),
+        iapService: NoOpIAPService(),
       ),
       categories: createFlagsCategories(CountryCounts.forTest),
       dataProvider: const FlagsDataProvider(),

@@ -25,14 +25,56 @@ class MockAdProvider implements AdRewardProvider {
   }
 }
 
-/// Mock IAP provider for testing.
-class MockIAPProvider implements IAPProvider {
+/// Mock IAP service for testing.
+class MockIAPService implements IAPService {
   bool _isAvailable = true;
-  PurchaseResult nextResult = PurchaseResult.success;
+  bool _isInitialized = false;
+  PurchaseResult nextResult = PurchaseResult.success(
+    productId: 'test',
+    transactionId: 'txn_123',
+    purchaseDate: DateTime.now(),
+    productType: IAPProductType.consumable,
+  );
   String? lastProductId;
+  final List<IAPProduct> _products = [];
+
+  @override
+  IAPConfig get config => const IAPConfig.empty();
+
+  @override
+  bool get isInitialized => _isInitialized;
 
   @override
   bool get isStoreAvailable => _isAvailable;
+
+  @override
+  Future<bool> initialize() async {
+    _isInitialized = true;
+    return true;
+  }
+
+  @override
+  List<IAPProduct> get products => _products;
+
+  @override
+  IAPProduct? getProduct(String productId) {
+    try {
+      return _products.firstWhere((p) => p.id == productId);
+    } catch (_) {
+      return IAPProduct(
+        id: productId,
+        type: IAPProductType.consumable,
+        title: 'Test Product',
+        description: 'Test Description',
+        price: '\$0.99',
+        rawPrice: 0.99,
+        currencyCode: 'USD',
+      );
+    }
+  }
+
+  @override
+  Future<List<IAPProduct>> queryProducts() async => _products;
 
   @override
   Future<PurchaseResult> purchase(String productId) async {
@@ -41,15 +83,31 @@ class MockIAPProvider implements IAPProvider {
   }
 
   @override
-  Future<String?> getLocalizedPrice(String productId) async {
-    return '\$0.99';
-  }
+  Future<bool> isPurchased(String productId) async => false;
 
   @override
   Future<List<String>> restorePurchases() async => [];
 
   @override
-  Stream<bool> get onStoreAvailabilityChanged => Stream.value(_isAvailable);
+  Future<bool> isSubscriptionActive() async => false;
+
+  @override
+  Future<String?> getActiveSubscription() async => null;
+
+  @override
+  Stream<bool> get onSubscriptionStatusChanged => Stream.value(false);
+
+  @override
+  bool get isRemoveAdsPurchased => false;
+
+  @override
+  Stream<bool> get onRemoveAdsPurchased => Stream.value(false);
+
+  @override
+  Stream<IAPEvent> get onIAPEvent => const Stream.empty();
+
+  @override
+  void dispose() {}
 
   void setAvailable(bool available) {
     _isAvailable = available;
@@ -320,11 +378,11 @@ void main() {
       });
     });
 
-    group('with IAP provider', () {
-      late MockIAPProvider iapProvider;
+    group('with IAP service', () {
+      late MockIAPService iapService;
 
       setUp(() {
-        iapProvider = MockIAPProvider();
+        iapService = MockIAPService();
         final pack = ResourcePack(
           id: 'lives_10',
           type: ResourceType.lives(),
@@ -344,7 +402,7 @@ void main() {
         manager = ResourceManager(
           config: config,
           repository: repository,
-          iapProvider: iapProvider,
+          iapService: iapService,
         );
       });
 
@@ -361,7 +419,7 @@ void main() {
         final pack = config.purchasePacks.first;
         final result = await manager.purchasePack(pack);
 
-        expect(result, equals(PurchaseResult.success));
+        expect(result, isA<PurchaseResultSuccess>());
         expect(
           manager.getInventory(ResourceType.lives()).purchasedRemaining,
           equals(10),
@@ -369,13 +427,17 @@ void main() {
       });
 
       test('purchasePack does not add resources on failure', () async {
-        iapProvider.nextResult = PurchaseResult.failed;
+        iapService.nextResult = PurchaseResult.failed(
+          productId: 'com.app.lives_10',
+          errorCode: 'test_error',
+          errorMessage: 'Test failure',
+        );
         await manager.initialize();
 
         final pack = config.purchasePacks.first;
         final result = await manager.purchasePack(pack);
 
-        expect(result, equals(PurchaseResult.failed));
+        expect(result, isA<PurchaseResultFailed>());
         expect(
           manager.getInventory(ResourceType.lives()).purchasedRemaining,
           equals(0),

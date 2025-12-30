@@ -275,7 +275,7 @@ class _PurchaseResourceSheetState extends State<PurchaseResourceSheet> {
       if (!mounted) return;
 
       switch (result) {
-        case PurchaseResult.success:
+        case PurchaseResultSuccess():
           widget.onPurchased?.call();
           Navigator.of(context).pop();
 
@@ -291,11 +291,11 @@ class _PurchaseResourceSheetState extends State<PurchaseResourceSheet> {
             ),
           );
 
-        case PurchaseResult.cancelled:
+        case PurchaseResultCancelled():
           // User cancelled, do nothing
           break;
 
-        case PurchaseResult.failed:
+        case PurchaseResultFailed():
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(QuizL10n.of(context).purchaseFailed),
@@ -303,10 +303,26 @@ class _PurchaseResourceSheetState extends State<PurchaseResourceSheet> {
             ),
           );
 
-        case PurchaseResult.pending:
+        case PurchaseResultPending():
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(QuizL10n.of(context).purchasePending),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+
+        case PurchaseResultNotAvailable():
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(QuizL10n.of(context).purchaseNotAvailable),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+
+        case PurchaseResultAlreadyOwned():
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(QuizL10n.of(context).purchaseAlreadyOwned),
               behavior: SnackBarBehavior.floating,
             ),
           );

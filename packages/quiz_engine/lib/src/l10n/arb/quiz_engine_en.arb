@@ -1806,6 +1806,16 @@
     "description": "Message when purchase is pending approval"
   },
 
+  "purchaseNotAvailable": "This product is not available.",
+  "@purchaseNotAvailable": {
+    "description": "Message when product is not available for purchase"
+  },
+
+  "purchaseAlreadyOwned": "You already own this item.",
+  "@purchaseAlreadyOwned": {
+    "description": "Message when user tries to buy an item they already own"
+  },
+
   "purchasesRestored": "Purchases restored successfully.",
   "@purchasesRestored": {
     "description": "Message after restoring purchases"

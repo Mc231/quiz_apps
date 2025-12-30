@@ -2194,6 +2194,18 @@ abstract class QuizEngineLocalizations {
   /// **'Purchase pending. Please wait.'**
   String get purchasePending;
 
+  /// Message when product is not available for purchase
+  ///
+  /// In en, this message translates to:
+  /// **'This product is not available.'**
+  String get purchaseNotAvailable;
+
+  /// Message when user tries to buy an item they already own
+  ///
+  /// In en, this message translates to:
+  /// **'You already own this item.'**
+  String get purchaseAlreadyOwned;
+
   /// Message after restoring purchases
   ///
   /// In en, this message translates to:

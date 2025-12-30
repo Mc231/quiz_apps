@@ -46,11 +46,12 @@ class QuizServices {
     required this.quizAnalyticsService,
     required this.resourceManager,
     required this.adsService,
+    required this.iapService,
   });
 
-  /// Creates a [QuizServices] with no-op implementations for analytics and ads.
+  /// Creates a [QuizServices] with no-op implementations for analytics, ads, and IAP.
   ///
-  /// Useful for testing or development when analytics and ads aren't needed.
+  /// Useful for testing or development when analytics, ads, and IAP aren't needed.
   factory QuizServices.noOp({
     required SettingsService settingsService,
     required StorageService storageService,
@@ -65,6 +66,7 @@ class QuizServices {
       quizAnalyticsService: NoOpQuizAnalyticsService(),
       resourceManager: resourceManager,
       adsService: NoAdsService(),
+      iapService: NoOpIAPService(),
     );
   }
 
@@ -104,6 +106,17 @@ class QuizServices {
   /// Use [NoAdsService] for testing or premium users.
   final AdsService adsService;
 
+  /// Service for managing in-app purchases.
+  ///
+  /// Provides:
+  /// - Consumable products (lives, hints, bundles)
+  /// - Non-consumable products (remove_ads)
+  /// - Subscription management
+  /// - Purchase restoration
+  ///
+  /// Use [NoOpIAPService] for testing or when IAP is disabled.
+  final IAPService iapService;
+
   /// Creates a copy of this [QuizServices] with the given fields replaced.
   QuizServices copyWith({
     SettingsService? settingsService,
@@ -113,6 +126,7 @@ class QuizServices {
     QuizAnalyticsService? quizAnalyticsService,
     ResourceManager? resourceManager,
     AdsService? adsService,
+    IAPService? iapService,
   }) {
     return QuizServices(
       settingsService: settingsService ?? this.settingsService,
@@ -123,6 +137,7 @@ class QuizServices {
       quizAnalyticsService: quizAnalyticsService ?? this.quizAnalyticsService,
       resourceManager: resourceManager ?? this.resourceManager,
       adsService: adsService ?? this.adsService,
+      iapService: iapService ?? this.iapService,
     );
   }
 
@@ -137,7 +152,8 @@ class QuizServices {
           screenAnalyticsService == other.screenAnalyticsService &&
           quizAnalyticsService == other.quizAnalyticsService &&
           resourceManager == other.resourceManager &&
-          adsService == other.adsService;
+          adsService == other.adsService &&
+          iapService == other.iapService;
 
   @override
   int get hashCode => Object.hash(
@@ -148,5 +164,6 @@ class QuizServices {
         quizAnalyticsService,
         resourceManager,
         adsService,
+        iapService,
       );
 }

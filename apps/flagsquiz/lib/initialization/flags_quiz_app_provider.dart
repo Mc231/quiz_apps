@@ -119,10 +119,84 @@ class FlagsQuizAppProvider {
       analyticsService: screenAnalyticsService,
     );
 
+    // Initialize IAP service
+    // Using MockIAPService for development - simulates working store
+    // TODO: Replace with StoreIAPService for production releases
+    final iapService = MockIAPService(
+      config: IAPConfig.test(),
+      simulatedDelay: const Duration(milliseconds: 300),
+    );
+    await iapService.initialize();
+
+    // Define purchaseable resource packs
+    // Product IDs must match IAPConfig used by the IAP service
+    // For development (MockIAPService): use IAPConfig.test() product IDs
+    // For production (StoreIAPService): use App Store / Play Console product IDs
+    final purchasePacks = [
+      // Lives packs - match IAPConfig.test() product IDs
+      const ResourcePack(
+        id: 'lives_small',
+        type: LivesResource(),
+        amount: 5,
+        productId: 'lives_small', // Matches IAPConfig.test()
+      ),
+      const ResourcePack(
+        id: 'lives_medium',
+        type: LivesResource(),
+        amount: 15,
+        productId: 'lives_medium',
+        isBestValue: true,
+      ),
+      const ResourcePack(
+        id: 'lives_large',
+        type: LivesResource(),
+        amount: 50,
+        productId: 'lives_large',
+      ),
+      // Hint packs (50/50)
+      const ResourcePack(
+        id: 'hints_small',
+        type: FiftyFiftyResource(),
+        amount: 10,
+        productId: 'hints_small',
+      ),
+      const ResourcePack(
+        id: 'hints_medium',
+        type: FiftyFiftyResource(),
+        amount: 30,
+        productId: 'hints_medium',
+        isBestValue: true,
+      ),
+      const ResourcePack(
+        id: 'hints_large',
+        type: FiftyFiftyResource(),
+        amount: 100,
+        productId: 'hints_large',
+      ),
+    ];
+
+    // Create resource config with purchase packs
+    final resourceConfig = ResourceConfig(
+      dailyFreeLimits: {
+        ResourceType.lives(): 5,
+        ResourceType.fiftyFifty(): 3,
+        ResourceType.skip(): 2,
+      },
+      adRewardAmounts: {
+        ResourceType.lives(): 1,
+        ResourceType.fiftyFifty(): 1,
+        ResourceType.skip(): 1,
+      },
+      purchasePacks: purchasePacks,
+      enableAds: true,
+      enablePurchases: true,
+    );
+
     // Create and initialize resource manager with SQLite persistence and ad support
     final resourceManager = ResourceManager(
-      config: ResourceConfig.standard(),
+      config: resourceConfig,
       adProvider: AdMobRewardProvider(analyticsAdsService),
+      iapService: iapService,
       repository: SqliteResourceRepository(sl.get<AppDatabase>()),
       analyticsService: screenAnalyticsService,
     );
@@ -137,6 +211,7 @@ class FlagsQuizAppProvider {
       quizAnalyticsService: quizAnalyticsService,
       resourceManager: resourceManager,
       adsService: analyticsAdsService,
+      iapService: iapService,
     );
 
     return FlagsQuizDependencies(

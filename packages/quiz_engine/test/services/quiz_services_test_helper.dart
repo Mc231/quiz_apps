@@ -226,6 +226,7 @@ QuizServices createMockQuizServices({
   QuizAnalyticsService? quizAnalyticsService,
   ResourceManager? resourceManager,
   AdsService? adsService,
+  IAPService? iapService,
 }) {
   return QuizServices(
     settingsService: settingsService ?? MockSettingsService(),
@@ -235,6 +236,7 @@ QuizServices createMockQuizServices({
     quizAnalyticsService: quizAnalyticsService ?? MockQuizAnalyticsService(),
     resourceManager: resourceManager ?? _createTestResourceManager(),
     adsService: adsService ?? NoAdsService(),
+    iapService: iapService ?? NoOpIAPService(),
   );
 }
 

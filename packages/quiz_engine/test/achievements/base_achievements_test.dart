@@ -808,6 +808,10 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get exportDataError => 'Export failed';
   @override
   String get dataAndPrivacy => 'Data & Privacy';
+  @override
+  String get purchaseNotAvailable => 'This product is not available.';
+  @override
+  String get purchaseAlreadyOwned => 'You already own this item.';
 }
 
 void main() {

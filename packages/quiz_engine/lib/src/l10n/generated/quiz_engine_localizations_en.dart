@@ -1207,6 +1207,12 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String get purchasePending => 'Purchase pending. Please wait.';
 
   @override
+  String get purchaseNotAvailable => 'This product is not available.';
+
+  @override
+  String get purchaseAlreadyOwned => 'You already own this item.';
+
+  @override
   String get purchasesRestored => 'Purchases restored successfully.';
 
   @override

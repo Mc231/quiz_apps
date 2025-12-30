@@ -248,6 +248,7 @@ void main() {
             repository: InMemoryResourceRepository(),
           ),
           adsService: NoAdsService(),
+          iapService: NoOpIAPService(),
         );
 
         final copied = original.copyWith(settingsService: newSettings);
