@@ -43,6 +43,7 @@ void main() {
         screenAnalyticsService: NoOpAnalyticsService(),
         quizAnalyticsService: QuizAnalyticsAdapter(NoOpAnalyticsService()),
         resourceManager: resourceManager,
+        adsService: NoAdsService(),
       ),
       categories: createFlagsCategories(CountryCounts.forTest),
       dataProvider: const FlagsDataProvider(),
