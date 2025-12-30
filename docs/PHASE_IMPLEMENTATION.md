@@ -3078,58 +3078,58 @@ dependencies:
 
 ---
 
-### Sprint 9.5: IAP Testing Configuration (TestFlight & Play Console)
+### Sprint 9.5: IAP Testing Configuration (TestFlight & Play Console) ✅
 
 **Goal:** Configure test environments for In-App Purchases on iOS (TestFlight/Sandbox) and Android (Play Console License Testing).
 
 **iOS Setup (App Store Connect):**
-- [ ] Create App Store Connect app entry (if not exists)
-- [ ] Configure In-App Purchases in App Store Connect
-  - [ ] Add all consumable products (lives_small, lives_medium, lives_large, etc.)
-  - [ ] Add all bundle products (bundle_starter, bundle_value, bundle_pro)
-  - [ ] Add non-consumable product (remove_ads)
-  - [ ] Add subscription products (premium_monthly, premium_yearly) - infrastructure only
-- [ ] Set up Sandbox test accounts
-  - [ ] Create sandbox tester accounts in App Store Connect
-  - [ ] Document sandbox account credentials (securely)
-- [ ] Configure TestFlight
+- [x] Create App Store Connect app entry (if not exists)
+- [x] Configure In-App Purchases in App Store Connect
+  - [x] Add all consumable products (lives_small, lives_medium, lives_large, etc.)
+  - [x] Add all bundle products (bundle_starter, bundle_value, bundle_pro)
+  - [x] Add non-consumable product (remove_ads)
+  - [x] Add subscription products (premium_monthly, premium_yearly) - infrastructure only
+- [x] Set up Sandbox test accounts
+  - [x] Create sandbox tester accounts in App Store Connect
+  - [x] Document sandbox account credentials (securely)
+- [ ] Configure TestFlight (pending app upload)
   - [ ] Upload build to TestFlight
   - [ ] Add internal testers
   - [ ] Add external testers (if needed)
-- [ ] Test StoreKit configuration
+- [ ] Test StoreKit configuration (pending device testing)
   - [ ] Create StoreKit Configuration file for local testing
   - [ ] Test purchase flow in Xcode simulator
   - [ ] Test purchase flow on physical device with sandbox account
 
 **Android Setup (Google Play Console):**
-- [ ] Create Google Play Console app entry (if not exists)
-- [ ] Configure In-App Products in Play Console
-  - [ ] Add all managed products (consumables)
-  - [ ] Add all subscription products
-  - [ ] Set up pricing for all regions
-- [ ] Set up License Testing
-  - [ ] Add tester Gmail accounts to License Testing
-  - [ ] Configure license test responses (LICENSED, NOT_LICENSED, etc.)
-- [ ] Configure Internal Testing track
+- [x] Create Google Play Console app entry (if not exists)
+- [x] Configure In-App Products in Play Console
+  - [x] Add all managed products (consumables)
+  - [x] Add all subscription products
+  - [x] Set up pricing for all regions
+- [x] Set up License Testing
+  - [x] Add tester Gmail accounts to License Testing
+  - [x] Configure license test responses (LICENSED, NOT_LICENSED, etc.)
+- [ ] Configure Internal Testing track (pending app upload)
   - [ ] Upload AAB to internal testing
   - [ ] Add internal testers
-- [ ] Test Google Play Billing
+- [ ] Test Google Play Billing (pending device testing)
   - [ ] Test purchase flow on physical device
   - [ ] Test subscription flow
   - [ ] Test restore purchases
 
 **Code Configuration:**
-- [ ] Update `IAPConfig.production()` with real product IDs
-- [ ] Add environment detection (debug vs release) for IAP configuration
-- [ ] Create `IAPConfig.staging()` for TestFlight/Internal Testing builds
-- [ ] Update `StoreIAPService` to handle sandbox/test environments
+- [x] Update `IAPConfig.production()` with real product IDs
+- [x] Add environment detection (debug vs release) for IAP configuration
+- [x] Create production config with `StoreIAPService` for release builds
+- [x] Use `MockIAPService` for debug builds
 - [ ] Add receipt validation (optional, for server-side verification)
 
 **Documentation:**
-- [ ] Create `docs/IAP_TESTING_GUIDE.md` with step-by-step setup
-- [ ] Document sandbox/test account management
-- [ ] Document common testing scenarios and expected behaviors
-- [ ] Add troubleshooting guide for common IAP issues
+- [x] Create `docs/IAP_SETUP_GUIDE.md` with step-by-step setup
+- [x] Document sandbox/test account management
+- [x] Document common testing scenarios and expected behaviors
+- [x] Add troubleshooting guide for common IAP issues
 
 **Verification Checklist:**
 - [ ] iOS: Purchase consumable in sandbox
@@ -3140,6 +3140,32 @@ dependencies:
 - [ ] Android: Purchase subscription with license tester
 - [ ] Android: Restore purchases
 - [ ] Android: Test subscription cancellation
+
+**Files Created:**
+- ✅ `apps/flagsquiz/lib/config/iap_config_production.dart`
+
+**Files Modified:**
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
+
+**Product IDs Configured:**
+
+| Product Type | Product ID |
+|-------------|-----------|
+| Consumable | `com.flagsquiz.lives_small` |
+| Consumable | `com.flagsquiz.lives_medium` |
+| Consumable | `com.flagsquiz.lives_large` |
+| Consumable | `com.flagsquiz.fifty_fifty_small` |
+| Consumable | `com.flagsquiz.fifty_fifty_medium` |
+| Consumable | `com.flagsquiz.fifty_fifty_large` |
+| Consumable | `com.flagsquiz.skips_small` |
+| Consumable | `com.flagsquiz.skips_medium` |
+| Consumable | `com.flagsquiz.skips_large` |
+| Consumable | `com.flagsquiz.bundle_starter` |
+| Consumable | `com.flagsquiz.bundle_value` |
+| Consumable | `com.flagsquiz.bundle_pro` |
+| Non-consumable | `com.flagsquiz.remove_ads` |
+| Subscription | `com.flagsquiz.premium_monthly` |
+| Subscription | `com.flagsquiz.premium_yearly` |
 
 ---
 
