@@ -225,6 +225,7 @@ QuizServices createMockQuizServices({
   AnalyticsService? screenAnalyticsService,
   QuizAnalyticsService? quizAnalyticsService,
   ResourceManager? resourceManager,
+  AdsService? adsService,
 }) {
   return QuizServices(
     settingsService: settingsService ?? MockSettingsService(),
@@ -233,6 +234,7 @@ QuizServices createMockQuizServices({
     screenAnalyticsService: screenAnalyticsService ?? MockAnalyticsService(),
     quizAnalyticsService: quizAnalyticsService ?? MockQuizAnalyticsService(),
     resourceManager: resourceManager ?? _createTestResourceManager(),
+    adsService: adsService ?? NoAdsService(),
   );
 }
 
