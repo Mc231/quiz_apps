@@ -37,6 +37,8 @@
 | 2 | **Sprint 9.4** | Services Integration & Polish | Phase 9 |
 | 3 | **Sprint 9.1.11** | Analytics - Resource & Hint Button Tracking | Phase 9 |
 
+**Sprint 9.6** ✅ is complete - UI Polish & Bug Fixes (Shop styling, timer visibility, analytics boolean fix, banner ad fix).
+
 **Sprint 9.3** ✅ is complete - In-App Purchases Service infrastructure is implemented with IAPService, StoreIAPService, AnalyticsIAPService, and QuizServices integration.
 
 **Sprint 9.2.1** ✅ is complete - Banner Ad Screen Integration is live.
@@ -3134,6 +3136,50 @@ dependencies:
 
 ---
 
+### Sprint 9.6: UI Polish & Bug Fixes ✅
+
+**Goal:** Fix various UI issues and bugs discovered during testing.
+
+**Shop UI Improvements:**
+- [x] Remove "Best Value" badge from BundlePackCard (looked cluttered)
+- [x] Make RemoveAdsTile use same card style as BundlePackCard for consistency
+- [x] Align price buttons across all shop items
+
+**Quiz Results Screen:**
+- [x] Remove unused "Review Wrong Answers (coming soon)" button
+- [x] Add top margin between statistics badges and action buttons
+- [x] Remove unused `onReviewWrongAnswers` parameter
+
+**Banner Ads Fix:**
+- [x] Fix "AdWidget already in widget tree" error
+- [x] Each BannerAdWidget now creates its own unique BannerAd instance
+- [x] Proper disposal of ad instances on widget dispose
+
+**Timer Display Fix:**
+- [x] Fix timer visibility in light theme (Time Attack mode)
+- [x] Detect AppBar background color to pick contrasting timer color
+- [x] Support both Material 2 (primary AppBar) and Material 3 (surface AppBar)
+- [x] White text on dark AppBar, primary color on light AppBar
+
+**Firebase Analytics Boolean Fix:**
+- [x] Convert all boolean parameters to integers (1/0) for Firebase compatibility
+- [x] Firebase Analytics only accepts String or num types, not bool
+- [x] Fixed events: restore_completed, data_export_completed, question_skipped, etc.
+- [x] Updated all analytics event classes (18+ boolean parameters)
+- [x] Updated all analytics event tests
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/settings/shop/bundle_pack_card.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/shop/remove_ads_tile.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/banner_ad_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/timer_display.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/*.dart` (10 files)
+- ✅ `packages/shared_services/test/analytics/events/*.dart` (10 files)
+
+---
+
 ### Phase 9 Summary
 
 | Sprint | Status | Description |
@@ -3155,8 +3201,11 @@ dependencies:
 | 9.1.11 | ⏳ | Resource & hint button analytics |
 | 9.1.12 | ✅ | Secrets configuration system |
 | 9.1.13 | ✅ | Firebase Analytics app configuration |
-| 9.3 | ⏳ | IAP service |
+| 9.2.1 | ✅ | Banner Ad Screen Integration |
+| 9.3 | ✅ | IAP service |
 | 9.4 | ⏳ | Final integration |
+| 9.5 | ⏳ | IAP Testing Configuration |
+| 9.6 | ✅ | UI Polish & Bug Fixes |
 | **BLoC Architecture (9.5.x)** | | |
 | 9.5.1 | ✅ | Statistics BLoC (31 tests) |
 | 9.5.2 | ✅ | Session History BLoC (18 tests) |
@@ -3171,11 +3220,13 @@ dependencies:
 **Completed:**
 - Analytics Events: 87 events across 11 sealed classes
 - Screen BLoCs: 8 BLoCs + base infrastructure (280+ tests)
-
-**Pending:**
 - Ads service (AdMob integration)
 - IAP service (In-App Purchases)
-- Final integration
+- UI Polish & Bug Fixes (Sprint 9.6)
+
+**Pending:**
+- IAP Testing Configuration (TestFlight & Play Console)
+- Final integration & polish
 
 ---
 
