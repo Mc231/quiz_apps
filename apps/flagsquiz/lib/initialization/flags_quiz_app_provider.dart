@@ -6,6 +6,7 @@ import 'package:shared_services/shared_services.dart';
 
 import '../achievements/flags_achievements_data_provider.dart';
 import '../app/flags_quiz_app.dart';
+import '../config/iap_config_production.dart';
 import '../data/country_counts.dart';
 import '../data/flags_categories.dart';
 import '../data/flags_data_provider.dart';
@@ -146,12 +147,20 @@ class FlagsQuizAppProvider {
     );
 
     // Initialize IAP service
-    // Using MockIAPService for development - simulates working store
-    // TODO: Replace with StoreIAPService for production releases
-    final iapService = MockIAPService(
-      config: IAPConfig.test(),
-      simulatedDelay: const Duration(milliseconds: 300),
-    );
+    // Use MockIAPService for development, StoreIAPService for production
+    final IAPService iapService;
+    if (kDebugMode) {
+      // Mock service for development - simulates working store
+      iapService = MockIAPService(
+        config: IAPConfig.test(),
+        simulatedDelay: const Duration(milliseconds: 300),
+      );
+    } else {
+      // Real store service for production releases
+      iapService = StoreIAPService(
+        config: createProductionIAPConfig(),
+      );
+    }
     await iapService.initialize();
 
     // Connect remove_ads purchase to AdsService
@@ -170,106 +179,14 @@ class FlagsQuizAppProvider {
     // Product IDs must match IAPConfig used by the IAP service
     // For development (MockIAPService): use IAPConfig.test() product IDs
     // For production (StoreIAPService): use App Store / Play Console product IDs
-    final purchasePacks = [
-      // Lives packs - match IAPConfig.test() product IDs
-      const ResourcePack(
-        id: 'lives_small',
-        type: LivesResource(),
-        amount: 5,
-        productId: 'lives_small',
-      ),
-      const ResourcePack(
-        id: 'lives_medium',
-        type: LivesResource(),
-        amount: 15,
-        productId: 'lives_medium',
-        isBestValue: true,
-      ),
-      const ResourcePack(
-        id: 'lives_large',
-        type: LivesResource(),
-        amount: 50,
-        productId: 'lives_large',
-      ),
-      // 50/50 Hint packs (eliminate 2 wrong answers)
-      const ResourcePack(
-        id: 'fifty_fifty_small',
-        type: FiftyFiftyResource(),
-        amount: 5,
-        productId: 'fifty_fifty_small',
-      ),
-      const ResourcePack(
-        id: 'fifty_fifty_medium',
-        type: FiftyFiftyResource(),
-        amount: 15,
-        productId: 'fifty_fifty_medium',
-        isBestValue: true,
-      ),
-      const ResourcePack(
-        id: 'fifty_fifty_large',
-        type: FiftyFiftyResource(),
-        amount: 50,
-        productId: 'fifty_fifty_large',
-      ),
-      // Skip packs (skip a question)
-      const ResourcePack(
-        id: 'skips_small',
-        type: SkipResource(),
-        amount: 5,
-        productId: 'skips_small',
-      ),
-      const ResourcePack(
-        id: 'skips_medium',
-        type: SkipResource(),
-        amount: 15,
-        productId: 'skips_medium',
-        isBestValue: true,
-      ),
-      const ResourcePack(
-        id: 'skips_large',
-        type: SkipResource(),
-        amount: 50,
-        productId: 'skips_large',
-      ),
-    ];
+    final purchasePacks = kDebugMode
+        ? _createTestResourcePacks()
+        : createProductionResourcePacks();
 
     // Define bundle packs with their resource contents
-    final bundlePacks = [
-      BundlePack(
-        id: 'bundle_starter',
-        productId: 'bundle_starter',
-        name: 'Starter Pack',
-        description: '5 lives + 5 hints + 5 skips',
-        contents: {
-          ResourceType.lives(): 5,
-          ResourceType.fiftyFifty(): 5,
-          ResourceType.skip(): 5,
-        },
-      ),
-      BundlePack(
-        id: 'bundle_value',
-        productId: 'bundle_value',
-        name: 'Value Pack',
-        description: '15 lives + 15 hints + 15 skips',
-        contents: {
-          ResourceType.lives(): 15,
-          ResourceType.fiftyFifty(): 15,
-          ResourceType.skip(): 15,
-        },
-        isBestValue: true,
-      ),
-      BundlePack(
-        id: 'bundle_pro',
-        productId: 'bundle_pro',
-        name: 'Pro Pack',
-        description: '50 lives + 50 hints + 50 skips',
-        contents: {
-          ResourceType.lives(): 50,
-          ResourceType.fiftyFifty(): 50,
-          ResourceType.skip(): 50,
-        },
-      ),
-    ];
+    final bundlePacks = kDebugMode
+        ? _createTestBundlePacks()
+        : createProductionBundlePacks();
 
     // Create resource config with purchase packs and bundles
     final resourceConfig = ResourceConfig(
@@ -319,5 +236,111 @@ class FlagsQuizAppProvider {
       categories: categories,
       navigatorObserver: navigatorObserver,
     );
+  }
+
+  /// Test resource packs matching IAPConfig.test() product IDs.
+  ///
+  /// Used in debug mode with MockIAPService.
+  static List<ResourcePack> _createTestResourcePacks() {
+    return const [
+      // Lives packs
+      ResourcePack(
+        id: 'lives_small',
+        type: LivesResource(),
+        amount: 5,
+        productId: 'lives_small',
+      ),
+      ResourcePack(
+        id: 'lives_medium',
+        type: LivesResource(),
+        amount: 15,
+        productId: 'lives_medium',
+      ),
+      ResourcePack(
+        id: 'lives_large',
+        type: LivesResource(),
+        amount: 50,
+        productId: 'lives_large',
+      ),
+      // 50/50 Hint packs
+      ResourcePack(
+        id: 'fifty_fifty_small',
+        type: FiftyFiftyResource(),
+        amount: 5,
+        productId: 'fifty_fifty_small',
+      ),
+      ResourcePack(
+        id: 'fifty_fifty_medium',
+        type: FiftyFiftyResource(),
+        amount: 15,
+        productId: 'fifty_fifty_medium',
+      ),
+      ResourcePack(
+        id: 'fifty_fifty_large',
+        type: FiftyFiftyResource(),
+        amount: 50,
+        productId: 'fifty_fifty_large',
+      ),
+      // Skip packs
+      ResourcePack(
+        id: 'skips_small',
+        type: SkipResource(),
+        amount: 5,
+        productId: 'skips_small',
+      ),
+      ResourcePack(
+        id: 'skips_medium',
+        type: SkipResource(),
+        amount: 15,
+        productId: 'skips_medium',
+      ),
+      ResourcePack(
+        id: 'skips_large',
+        type: SkipResource(),
+        amount: 50,
+        productId: 'skips_large',
+      ),
+    ];
+  }
+
+  /// Test bundle packs matching IAPConfig.test() product IDs.
+  ///
+  /// Used in debug mode with MockIAPService.
+  static List<BundlePack> _createTestBundlePacks() {
+    return [
+      BundlePack(
+        id: 'bundle_starter',
+        productId: 'bundle_starter',
+        name: 'Starter Pack',
+        description: '5 lives + 5 hints + 5 skips',
+        contents: {
+          ResourceType.lives(): 5,
+          ResourceType.fiftyFifty(): 5,
+          ResourceType.skip(): 5,
+        },
+      ),
+      BundlePack(
+        id: 'bundle_value',
+        productId: 'bundle_value',
+        name: 'Value Pack',
+        description: '15 lives + 15 hints + 15 skips',
+        contents: {
+          ResourceType.lives(): 15,
+          ResourceType.fiftyFifty(): 15,
+          ResourceType.skip(): 15,
+        },
+      ),
+      BundlePack(
+        id: 'bundle_pro',
+        productId: 'bundle_pro',
+        name: 'Pro Pack',
+        description: '50 lives + 50 hints + 50 skips',
+        contents: {
+          ResourceType.lives(): 50,
+          ResourceType.fiftyFifty(): 50,
+          ResourceType.skip(): 50,
+        },
+      ),
+    ];
   }
 }
