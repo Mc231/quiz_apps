@@ -401,6 +401,9 @@ class _GameResourceButtonState extends State<GameResourceButton>
 }
 
 /// The count badge shown in the top-right corner.
+///
+/// Adapts width for multi-digit numbers while maintaining
+/// circular appearance for single digits.
 class _CountBadge extends StatelessWidget {
   final int count;
   final double size;
@@ -422,12 +425,28 @@ class _CountBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final countText = count.toString();
+    final digitCount = countText.length;
+
+    // For single digit, use circle; for multi-digit, use pill shape
+    final isMultiDigit = digitCount > 1;
+
+    // Calculate width: single digit = height, multi-digit = height + extra per digit
+    final horizontalPadding = isMultiDigit ? size * 0.3 : 0.0;
+    final minWidth = size + (horizontalPadding * (digitCount - 1));
+
     return Container(
-      width: size,
-      height: size,
+      constraints: BoxConstraints(
+        minWidth: minWidth,
+        minHeight: size,
+        maxHeight: size,
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: isMultiDigit ? horizontalPadding : 0,
+      ),
       decoration: BoxDecoration(
         color: color,
-        shape: BoxShape.circle,
+        borderRadius: BorderRadius.circular(size / 2),
         border: Border.all(
           color: borderColor,
           width: borderWidth,
@@ -442,7 +461,7 @@ class _CountBadge extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          count.toString(),
+          countText,
           style: TextStyle(
             color: textColor,
             fontSize: fontSize,
