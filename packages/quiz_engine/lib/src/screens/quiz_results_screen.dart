@@ -30,7 +30,6 @@ class QuizResultsScreen extends StatefulWidget {
     required this.results,
     required this.onDone,
     this.onReviewSession,
-    this.onReviewWrongAnswers,
     this.onPlayAgain,
     this.imageBuilder,
   });
@@ -44,10 +43,6 @@ class QuizResultsScreen extends StatefulWidget {
   /// Optional callback when user wants to review the session.
   /// If null, the button will navigate to the session detail screen inline.
   final VoidCallback? onReviewSession;
-
-  /// Optional callback when user wants to review wrong answers only.
-  /// Currently disabled - will be implemented in a future sprint.
-  final VoidCallback? onReviewWrongAnswers;
 
   /// Optional callback when user wants to play again.
   final VoidCallback? onPlayAgain;
@@ -377,79 +372,43 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
     BuildContext context,
     QuizEngineLocalizations l10n,
   ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        // Review This Session button
-        OutlinedButton.icon(
-          onPressed: () => _navigateToSessionDetail(context, l10n),
-          icon: const Icon(Icons.visibility),
-          label: Text(l10n.reviewThisSession),
-          style: OutlinedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        // Review Wrong Answers button (disabled for now)
-        if (widget.results.wrongAnswers.isNotEmpty)
-          Opacity(
-            opacity: 0.5,
-            child: OutlinedButton.icon(
-              onPressed: null, // Disabled for now
-              icon: const Icon(Icons.replay),
-              label: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    '${l10n.reviewWrongAnswers} (${widget.results.wrongAnswers.length})',
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      l10n.comingSoon,
-                      style: const TextStyle(fontSize: 10),
-                    ),
-                  ),
-                ],
-              ),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Review This Session button
+          OutlinedButton.icon(
+            onPressed: () => _navigateToSessionDetail(context, l10n),
+            icon: const Icon(Icons.visibility),
+            label: Text(l10n.reviewThisSession),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
           ),
-        if (widget.results.wrongAnswers.isNotEmpty) const SizedBox(height: 12),
-        // Done button
-        ElevatedButton(
-          onPressed: widget.onDone,
-          style: ElevatedButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+          const SizedBox(height: 12),
+          // Done button
+          ElevatedButton(
+            onPressed: widget.onDone,
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              l10n.done,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
             ),
           ),
-          child: Text(
-            l10n.done,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

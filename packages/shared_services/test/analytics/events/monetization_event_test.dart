@@ -167,7 +167,7 @@ void main() {
           'currency': 'USD',
           'transaction_id': 'txn_789',
           'purchase_duration_ms': 45000,
-          'is_first_purchase': false,
+          'is_first_purchase': 0,
         });
       });
 
@@ -182,7 +182,7 @@ void main() {
           isFirstPurchase: true,
         );
 
-        expect(event.parameters['is_first_purchase'], isTrue);
+        expect(event.parameters['is_first_purchase'], equals(1));
       });
 
       test('factory constructor works', () {
@@ -344,7 +344,7 @@ void main() {
         );
 
         expect(event.parameters, {
-          'success': true,
+          'success': 1,
           'restored_count': 2,
           'restore_duration_ms': 3000,
         });
@@ -398,7 +398,7 @@ void main() {
           'ad_type': 'interstitial',
           'ad_placement': 'between_quizzes',
           'watch_duration_ms': 15000,
-          'was_completed': true,
+          'was_completed': 1,
         });
       });
 

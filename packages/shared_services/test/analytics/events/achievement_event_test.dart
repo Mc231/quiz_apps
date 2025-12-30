@@ -187,7 +187,7 @@ void main() {
           'achievement_id': 'world_traveler',
           'achievement_name': 'World Traveler',
           'achievement_category': 'exploration',
-          'is_unlocked': false,
+          'is_unlocked': 0,
         });
       });
 

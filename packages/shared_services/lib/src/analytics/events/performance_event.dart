@@ -80,7 +80,7 @@ final class AppLaunchEvent extends PerformanceEvent {
   @override
   Map<String, dynamic> get parameters => {
         'cold_start_duration_ms': coldStartDuration.inMilliseconds,
-        'is_first_launch': isFirstLaunch,
+        'is_first_launch': isFirstLaunch ? 1 : 0,
         if (launchType != null) 'launch_type': launchType,
         if (previousVersion != null) 'previous_version': previousVersion,
       };
@@ -166,7 +166,7 @@ final class ScreenRenderEvent extends PerformanceEvent {
   Map<String, dynamic> get parameters => {
         'screen_name': screenName,
         'render_duration_ms': renderDuration.inMilliseconds,
-        'is_initial_render': isInitialRender,
+        'is_initial_render': isInitialRender ? 1 : 0,
         if (widgetCount != null) 'widget_count': widgetCount,
         if (dataLoadDuration != null)
           'data_load_duration_ms': dataLoadDuration!.inMilliseconds,
@@ -202,7 +202,7 @@ final class DatabaseQueryEvent extends PerformanceEvent {
         'table_name': tableName,
         'query_duration_ms': queryDuration.inMilliseconds,
         'result_count': resultCount,
-        if (usedIndex != null) 'used_index': usedIndex,
+        if (usedIndex != null) 'used_index': usedIndex! ? 1 : 0,
         if (querySize != null) 'query_size': querySize,
       };
 }

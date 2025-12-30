@@ -114,18 +114,23 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
         setState(() {
           _isAdsEnabled = adsService.isEnabled;
           if (!_isAdsEnabled) {
-            _isLoaded = false;
-            _bannerAd = null;
+            _disposeBannerAd();
           }
         });
       }
     });
   }
 
+  void _disposeBannerAd() {
+    _bannerAd?.dispose();
+    _bannerAd = null;
+    _isLoaded = false;
+  }
+
   @override
   void dispose() {
     _adAvailabilitySubscription?.cancel();
-    _adsService?.disposeBannerAd();
+    _disposeBannerAd();
     super.dispose();
   }
 
@@ -141,17 +146,42 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
     setState(() => _isLoading = true);
 
-    final loaded = await adsService.loadBannerAd();
+    // Create a unique BannerAd instance for this widget
+    final bannerAdUnitId = adsService.config.bannerAdUnitId;
 
-    if (mounted) {
-      setState(() {
-        _isLoading = false;
-        _isLoaded = loaded;
-        if (loaded) {
-          _bannerAd = adsService.getBannerAdWidget() as BannerAd?;
-        }
-      });
-    }
+    final completer = Completer<bool>();
+
+    final bannerAd = BannerAd(
+      adUnitId: bannerAdUnitId,
+      size: AdSize.banner,
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          if (mounted) {
+            setState(() {
+              _isLoading = false;
+              _isLoaded = true;
+              _bannerAd = ad as BannerAd;
+            });
+          }
+          if (!completer.isCompleted) completer.complete(true);
+        },
+        onAdFailedToLoad: (ad, error) {
+          ad.dispose();
+          if (mounted) {
+            setState(() {
+              _isLoading = false;
+              _isLoaded = false;
+              _bannerAd = null;
+            });
+          }
+          if (!completer.isCompleted) completer.complete(false);
+        },
+      ),
+    );
+
+    await bannerAd.load();
+    await completer.future;
   }
 
   @override

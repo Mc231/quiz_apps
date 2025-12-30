@@ -217,7 +217,7 @@ final class PurchaseCompletedEvent extends MonetizationEvent {
         'currency': currency,
         'transaction_id': transactionId,
         'purchase_duration_ms': purchaseDuration.inMilliseconds,
-        'is_first_purchase': isFirstPurchase,
+        'is_first_purchase': isFirstPurchase ? 1 : 0,
       };
 }
 
@@ -323,7 +323,7 @@ final class RestoreCompletedEvent extends MonetizationEvent {
 
   @override
   Map<String, dynamic> get parameters => {
-        'success': success,
+        'success': success ? 1 : 0,
         'restored_count': restoredCount,
         'restore_duration_ms': restoreDuration.inMilliseconds,
         if (errorMessage != null) 'error_message': errorMessage,
@@ -358,7 +358,7 @@ final class AdWatchedEvent extends MonetizationEvent {
         'ad_type': adType,
         'ad_placement': adPlacement,
         'watch_duration_ms': watchDuration.inMilliseconds,
-        'was_completed': wasCompleted,
+        'was_completed': wasCompleted ? 1 : 0,
         if (rewardType != null) 'reward_type': rewardType,
         if (rewardAmount != null) 'reward_amount': rewardAmount,
       };

@@ -23,7 +23,7 @@ void main() {
 
         expect(event.parameters, {
           'cold_start_duration_ms': 2000,
-          'is_first_launch': true,
+          'is_first_launch': 1,
         });
       });
 
@@ -172,7 +172,7 @@ void main() {
         expect(event.parameters, {
           'screen_name': 'home_screen',
           'render_duration_ms': 200,
-          'is_initial_render': false,
+          'is_initial_render': 0,
         });
       });
 
@@ -240,7 +240,7 @@ void main() {
           querySize: 256,
         );
 
-        expect(event.parameters['used_index'], isTrue);
+        expect(event.parameters['used_index'], equals(1));
         expect(event.parameters['query_size'], equals(256));
       });
 

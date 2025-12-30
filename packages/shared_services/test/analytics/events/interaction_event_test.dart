@@ -329,7 +329,7 @@ void main() {
           errorMessage: 'Disk full',
         );
 
-        expect(event.parameters['success'], isFalse);
+        expect(event.parameters['success'], equals(0));
         expect(event.parameters['error_message'], equals('Disk full'));
       });
 

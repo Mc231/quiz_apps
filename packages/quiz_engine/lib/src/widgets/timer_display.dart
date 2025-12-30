@@ -64,7 +64,41 @@ class TimerDisplay extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final timerColor = _getTimerColor(timeToDisplay);
+    // Use theme-aware colors for visibility
+    final theme = Theme.of(context);
+    Color effectiveNormalColor;
+    if (normalColor == Colors.blue) {
+      // Determine AppBar background to pick contrasting color
+      final appBarTheme = AppBarTheme.of(context);
+
+      // Get actual AppBar background color
+      // In Material 2: usually primary color
+      // In Material 3: usually surface color (configurable)
+      final Color appBarBgColor;
+      if (appBarTheme.backgroundColor != null) {
+        appBarBgColor = appBarTheme.backgroundColor!;
+      } else if (theme.useMaterial3) {
+        // Material 3 default is surface
+        appBarBgColor = theme.colorScheme.surface;
+      } else {
+        // Material 2 default is primary
+        appBarBgColor = theme.colorScheme.primary;
+      }
+
+      // Check if AppBar is dark or light
+      final appBarLuminance = appBarBgColor.computeLuminance();
+      if (appBarLuminance > 0.5) {
+        // Light AppBar - use primary color for timer
+        effectiveNormalColor = theme.colorScheme.primary;
+      } else {
+        // Dark AppBar - use white for timer
+        effectiveNormalColor = Colors.white;
+      }
+    } else {
+      effectiveNormalColor = normalColor;
+    }
+
+    final timerColor = _getTimerColor(timeToDisplay, effectiveNormalColor);
     final formattedTime = _formatTime(timeToDisplay, context);
 
     final iconSize = getValueForScreenType<double>(
@@ -86,7 +120,7 @@ class TimerDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: timerColor.withValues(alpha: 0.1),
+        color: timerColor.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: timerColor, width: 1.5),
       ),
@@ -120,13 +154,13 @@ class TimerDisplay extends StatelessWidget {
   }
 
   /// Determines the color based on remaining time
-  Color _getTimerColor(int remainingTime) {
+  Color _getTimerColor(int remainingTime, Color effectiveNormalColor) {
     if (remainingTime <= criticalThreshold) {
       return criticalColor;
     } else if (remainingTime <= warningThreshold) {
       return warningColor;
     }
-    return normalColor;
+    return effectiveNormalColor;
   }
 
   /// Formats time in seconds to MM:SS format if >= 60, otherwise just seconds

@@ -170,33 +170,86 @@ class _RemoveAdsTileState extends State<RemoveAdsTile> {
     final l10n = QuizL10n.of(context);
     final theme = Theme.of(context);
     final product = _iapService.getProduct('remove_ads');
+    final isAvailable = _iapService.isStoreAvailable && product != null;
 
     if (_isPurchased) {
-      return ListTile(
-        leading: Icon(
-          Icons.check_circle,
-          color: theme.colorScheme.primary,
+      return Card(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.removeAdsPurchased,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      l10n.removeAdsPurchasedDescription,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+              Icon(
+                Icons.check_circle,
+                color: theme.colorScheme.primary,
+              ),
+            ],
+          ),
         ),
-        title: Text(l10n.removeAdsPurchased),
-        subtitle: Text(l10n.removeAdsPurchasedDescription),
       );
     }
 
-    return ListTile(
-      leading: const Icon(Icons.block),
-      title: Text(l10n.removeAds),
-      subtitle: Text(l10n.removeAdsDescription),
-      trailing: _isPurchasing
-          ? const SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(strokeWidth: 2),
-            )
-          : FilledButton(
-              onPressed:
-                  _iapService.isStoreAvailable ? _handlePurchase : null,
-              child: Text(product?.price ?? l10n.buy),
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.removeAds,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.removeAdsDescription,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
             ),
+            const SizedBox(width: 16),
+            _isPurchasing
+                ? const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : FilledButton(
+                    onPressed: isAvailable ? _handlePurchase : null,
+                    child: Text(product?.price ?? l10n.buy),
+                  ),
+          ],
+        ),
+      ),
     );
   }
 }

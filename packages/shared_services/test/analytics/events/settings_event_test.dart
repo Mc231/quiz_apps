@@ -67,7 +67,7 @@ void main() {
         );
 
         expect(event.parameters, {
-          'enabled': false,
+          'enabled': 0,
           'source': 'quick_settings',
         });
       });
@@ -99,7 +99,7 @@ void main() {
         );
 
         expect(event.parameters, {
-          'enabled': false,
+          'enabled': 0,
           'source': 'accessibility_menu',
         });
       });
@@ -167,7 +167,7 @@ void main() {
         );
 
         expect(event.parameters, {
-          'enabled': false,
+          'enabled': 0,
           'source': 'quiz_preferences',
         });
       });

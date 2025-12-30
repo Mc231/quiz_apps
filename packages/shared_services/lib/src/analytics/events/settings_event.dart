@@ -105,7 +105,7 @@ final class SoundEffectsToggledEvent extends SettingsEvent {
 
   @override
   Map<String, dynamic> get parameters => {
-        'enabled': enabled,
+        'enabled': enabled ? 1 : 0,
         'source': source,
       };
 }
@@ -125,7 +125,7 @@ final class HapticFeedbackToggledEvent extends SettingsEvent {
 
   @override
   Map<String, dynamic> get parameters => {
-        'enabled': enabled,
+        'enabled': enabled ? 1 : 0,
         'source': source,
       };
 }
@@ -168,7 +168,7 @@ final class AnswerFeedbackToggledEvent extends SettingsEvent {
 
   @override
   Map<String, dynamic> get parameters => {
-        'enabled': enabled,
+        'enabled': enabled ? 1 : 0,
         'source': source,
       };
 }

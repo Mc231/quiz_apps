@@ -141,7 +141,7 @@ void main() {
           'quiz_id': 'quiz-123',
           'resource_type': 'hints',
           'current_amount': 0,
-          'is_available': false,
+          'is_available': 0,
           'context': 'quiz_header',
         });
       });

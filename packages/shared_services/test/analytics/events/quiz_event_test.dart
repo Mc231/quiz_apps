@@ -108,7 +108,7 @@ void main() {
         expect(event.parameters['quiz_id'], equals('quiz-123'));
         expect(event.parameters['correct_answers'], equals(18));
         expect(event.parameters['duration_seconds'], equals(300));
-        expect(event.parameters['is_perfect_score'], isFalse);
+        expect(event.parameters['is_perfect_score'], equals(0));
       });
 
       test('marks perfect score correctly', () {
@@ -128,7 +128,7 @@ void main() {
           starRating: 3,
         );
 
-        expect(event.parameters['is_perfect_score'], isTrue);
+        expect(event.parameters['is_perfect_score'], equals(1));
         expect(event.parameters['star_rating'], equals(3));
       });
 

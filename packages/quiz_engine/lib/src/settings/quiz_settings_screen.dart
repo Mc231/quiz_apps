@@ -243,7 +243,6 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             productId: 'bundle_value',
             title: l10n.bundleValueTitle,
             description: l10n.bundleValueDescription,
-            isBestValue: true,
           ),
         );
         widgets.add(
@@ -759,7 +758,6 @@ class SettingsContent extends StatelessWidget {
             productId: 'bundle_value',
             title: l10n.bundleValueTitle,
             description: l10n.bundleValueDescription,
-            isBestValue: true,
           ),
         );
         widgets.add(

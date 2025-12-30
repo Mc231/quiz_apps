@@ -236,7 +236,7 @@ void main() {
         );
 
         expect(event.parameters['user_action'], equals('purchase_tapped'));
-        expect(event.parameters['was_recoverable'], isTrue);
+        expect(event.parameters['was_recoverable'], equals(1));
       });
 
       test('factory constructor works', () {

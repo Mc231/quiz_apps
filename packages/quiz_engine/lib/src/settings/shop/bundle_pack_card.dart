@@ -10,7 +10,6 @@ import '../../services/quiz_services_context.dart';
 /// - Bundle title and description
 /// - Price from the store
 /// - Buy button with loading state
-/// - Best value badge if applicable
 ///
 /// The bundle must be defined in [ResourceConfig.bundlePacks] for the
 /// resources to be added to the user's inventory after purchase.
@@ -36,9 +35,6 @@ class BundlePackCard extends StatefulWidget {
   /// The description of what's included.
   final String description;
 
-  /// Whether this is the best value option.
-  final bool isBestValue;
-
   /// Callback when the bundle is purchased successfully.
   final void Function(String productId)? onPurchased;
 
@@ -48,7 +44,6 @@ class BundlePackCard extends StatefulWidget {
     required this.productId,
     required this.title,
     required this.description,
-    this.isBestValue = false,
     this.onPurchased,
   });
 
@@ -285,72 +280,43 @@ class _BundlePackCardState extends State<BundlePackCard> {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.title,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        widget.description,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.title,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                _isPurchasing
-                    ? const SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : FilledButton(
-                        onPressed: isAvailable ? _handlePurchase : null,
-                        child: Text(product?.price ?? l10n.buy),
-                      ),
-              ],
-            ),
-          ),
-          if (widget.isBestValue)
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primary,
-                  borderRadius: const BorderRadius.only(
-                    topRight: Radius.circular(12),
-                    bottomLeft: Radius.circular(8),
+                  const SizedBox(height: 4),
+                  Text(
+                    widget.description,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
                   ),
-                ),
-                child: Text(
-                  l10n.bestValue,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                ],
               ),
             ),
-        ],
+            const SizedBox(width: 16),
+            _isPurchasing
+                ? const SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : FilledButton(
+                    onPressed: isAvailable ? _handlePurchase : null,
+                    child: Text(product?.price ?? l10n.buy),
+                  ),
+          ],
+        ),
       ),
     );
   }

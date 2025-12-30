@@ -170,7 +170,7 @@ final class AchievementDetailViewedEvent extends AchievementEvent {
         'achievement_id': achievementId,
         'achievement_name': achievementName,
         'achievement_category': achievementCategory,
-        'is_unlocked': isUnlocked,
+        'is_unlocked': isUnlocked ? 1 : 0,
         if (progress != null) 'progress': progress,
       };
 }

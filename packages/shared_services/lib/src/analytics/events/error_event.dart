@@ -215,7 +215,7 @@ final class FeatureFailureEvent extends ErrorEvent {
         'error_code': errorCode,
         'error_message': errorMessage,
         if (userAction != null) 'user_action': userAction,
-        if (wasRecoverable != null) 'was_recoverable': wasRecoverable,
+        if (wasRecoverable != null) 'was_recoverable': wasRecoverable! ? 1 : 0,
       };
 }
 

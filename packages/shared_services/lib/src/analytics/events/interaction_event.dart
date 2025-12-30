@@ -365,7 +365,7 @@ final class DataExportCompletedEvent extends InteractionEvent {
         'session_count': sessionCount,
         'file_size_bytes': fileSizeBytes,
         'export_duration_ms': exportDuration.inMilliseconds,
-        'success': success,
+        'success': success ? 1 : 0,
         if (errorMessage != null) 'error_message': errorMessage,
       };
 }
@@ -391,7 +391,7 @@ final class PullToRefreshEvent extends InteractionEvent {
   Map<String, dynamic> get parameters => {
         'screen_name': screenName,
         'refresh_duration_ms': refreshDuration.inMilliseconds,
-        'success': success,
+        'success': success ? 1 : 0,
       };
 }
 

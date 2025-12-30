@@ -342,7 +342,7 @@ final class ResultsScreenView extends ScreenViewEvent {
         'quiz_id': quizId,
         'quiz_name': quizName,
         'score_percentage': scorePercentage,
-        'is_perfect_score': isPerfectScore,
+        'is_perfect_score': isPerfectScore ? 1 : 0,
         'star_rating': starRating,
       };
 }

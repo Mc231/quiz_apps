@@ -203,7 +203,7 @@ final class QuizCompletedEvent extends QuizEvent {
         'score_percentage': scorePercentage,
         'duration_seconds': duration.inSeconds,
         'hints_used': hintsUsed,
-        'is_perfect_score': isPerfectScore,
+        'is_perfect_score': isPerfectScore ? 1 : 0,
         if (finalScore != null) 'final_score': finalScore,
         if (starRating != null) 'star_rating': starRating,
       };

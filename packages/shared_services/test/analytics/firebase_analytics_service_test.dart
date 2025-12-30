@@ -394,10 +394,10 @@ void main() {
         )).called(1);
       });
 
-      test('preserves bool values', () async {
+      test('preserves int values for boolean parameters', () async {
         const event = _TestEvent(
           eventName: 'test_event',
-          parameters: {'is_correct': true},
+          parameters: {'is_correct': 1},
         );
 
         await service.logEvent(event);
@@ -405,7 +405,7 @@ void main() {
         verify(mockAnalytics.logEvent(
           name: anyNamed('name'),
           parameters: argThat(
-            containsPair('is_correct', true),
+            containsPair('is_correct', 1),
             named: 'parameters',
           ),
         )).called(1);

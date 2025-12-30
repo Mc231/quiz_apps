@@ -165,7 +165,7 @@ final class QuestionAnsweredEvent extends QuestionEvent {
         'quiz_id': quizId,
         'question_id': questionId,
         'question_index': questionIndex,
-        'is_correct': isCorrect,
+        'is_correct': isCorrect ? 1 : 0,
         'response_time_ms': responseTime.inMilliseconds,
         'selected_answer': selectedAnswer,
         'correct_answer': correctAnswer,
@@ -272,7 +272,7 @@ final class QuestionSkippedEvent extends QuestionEvent {
         'question_id': questionId,
         'question_index': questionIndex,
         'time_before_skip_ms': timeBeforeSkip.inMilliseconds,
-        'used_hint': usedHint,
+        'used_hint': usedHint ? 1 : 0,
         if (hintsRemaining != null) 'hints_remaining': hintsRemaining,
       };
 }
@@ -335,7 +335,7 @@ final class QuestionFeedbackShownEvent extends QuestionEvent {
         'quiz_id': quizId,
         'question_id': questionId,
         'question_index': questionIndex,
-        'was_correct': wasCorrect,
+        'was_correct': wasCorrect ? 1 : 0,
         'feedback_duration_ms': feedbackDuration.inMilliseconds,
       };
 }
@@ -374,7 +374,7 @@ final class QuestionOptionSelectedEvent extends QuestionEvent {
         'selected_option': selectedOption,
         'option_index': optionIndex,
         'time_since_displayed_ms': timeSinceDisplayed.inMilliseconds,
-        'is_first_selection': isFirstSelection,
+        'is_first_selection': isFirstSelection ? 1 : 0,
         if (changeCount != null) 'change_count': changeCount,
       };
 }

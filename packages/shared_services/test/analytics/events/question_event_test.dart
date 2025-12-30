@@ -93,7 +93,7 @@ void main() {
         );
 
         expect(event.parameters['response_time_ms'], equals(5500));
-        expect(event.parameters['is_correct'], isFalse);
+        expect(event.parameters['is_correct'], equals(0));
       });
 
       test('factory constructor works', () {
@@ -220,7 +220,7 @@ void main() {
           hintsRemaining: 2,
         );
 
-        expect(event.parameters['used_hint'], isTrue);
+        expect(event.parameters['used_hint'], equals(1));
         expect(event.parameters['hints_remaining'], equals(2));
         expect(event.parameters['time_before_skip_ms'], equals(5000));
       });
@@ -301,7 +301,7 @@ void main() {
           feedbackDuration: Duration(seconds: 2),
         );
 
-        expect(event.parameters['was_correct'], isFalse);
+        expect(event.parameters['was_correct'], equals(0));
         expect(event.parameters['feedback_duration_ms'], equals(2000));
       });
 
@@ -348,7 +348,7 @@ void main() {
         expect(event.parameters['selected_option'], equals('Germany'));
         expect(event.parameters['option_index'], equals(1));
         expect(event.parameters['time_since_displayed_ms'], equals(5000));
-        expect(event.parameters['is_first_selection'], isFalse);
+        expect(event.parameters['is_first_selection'], equals(0));
         expect(event.parameters['change_count'], equals(2));
       });
 

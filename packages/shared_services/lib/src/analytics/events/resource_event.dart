@@ -155,7 +155,7 @@ final class ResourceButtonTappedEvent extends ResourceEvent {
         'quiz_id': quizId,
         'resource_type': resourceType,
         'current_amount': currentAmount,
-        'is_available': isAvailable,
+        'is_available': isAvailable ? 1 : 0,
         'context': context,
       };
 }
