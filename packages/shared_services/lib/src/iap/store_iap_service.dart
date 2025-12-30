@@ -171,7 +171,8 @@ class StoreIAPService implements IAPService {
     // Update state based on product type
     if (productType == IAPProductType.nonConsumable) {
       _ownedNonConsumables.add(productId);
-      if (productId == 'remove_ads') {
+      // Check if this is a remove_ads product (e.g., 'remove_ads' or 'com.app.remove_ads')
+      if (_config.isRemoveAdsProduct(productId)) {
         _isRemoveAdsPurchased = true;
         _removeAdsController.add(true);
       }
@@ -241,6 +242,20 @@ class StoreIAPService implements IAPService {
 
   void _handlePurchaseCancelled(PurchaseDetails purchase) {
     final productId = purchase.productID;
+
+    // Android sometimes sends cancellation with empty productId
+    // In that case, cancel all pending purchases
+    if (productId.isEmpty) {
+      final pendingIds = _pendingPurchases.keys.toList();
+      for (final pendingId in pendingIds) {
+        final completer = _pendingPurchases.remove(pendingId);
+        if (completer != null && !completer.isCompleted) {
+          _iapEventController.add(IAPEvent.purchaseCancelled(productId: pendingId));
+          completer.complete(PurchaseResult.cancelled(productId: pendingId));
+        }
+      }
+      return;
+    }
 
     _iapEventController.add(IAPEvent.purchaseCancelled(productId: productId));
 
@@ -376,16 +391,12 @@ class StoreIAPService implements IAPService {
       }
 
       // Wait for purchase stream to complete the purchase
-      // Timeout after 5 minutes
+      // Timeout after 30 seconds - on Android, cancellation should be quick
       return await completer.future.timeout(
-        const Duration(minutes: 5),
+        const Duration(seconds: 30),
         onTimeout: () {
           _pendingPurchases.remove(productId);
-          return PurchaseResult.failed(
-            productId: productId,
-            errorCode: 'TIMEOUT',
-            errorMessage: 'Purchase timed out',
-          );
+          return PurchaseResult.cancelled(productId: productId);
         },
       );
     } catch (e) {
