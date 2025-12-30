@@ -67,18 +67,23 @@ class _RemoveAdsTileState extends State<RemoveAdsTile> {
     super.dispose();
   }
 
+  String? get _removeAdsProductId => _iapService.config.removeAdsProductId;
+
   Future<void> _handlePurchase() async {
     if (_isPurchasing || _isPurchased) return;
+
+    final productId = _removeAdsProductId;
+    if (productId == null) return;
 
     setState(() {
       _isPurchasing = true;
       _purchaseStartTime = DateTime.now();
     });
 
-    final product = _iapService.getProduct('remove_ads');
+    final product = _iapService.getProduct(productId);
 
     try {
-      final result = await _iapService.purchase('remove_ads');
+      final result = await _iapService.purchase(productId);
 
       if (!mounted) return;
 
@@ -169,7 +174,8 @@ class _RemoveAdsTileState extends State<RemoveAdsTile> {
   Widget build(BuildContext context) {
     final l10n = QuizL10n.of(context);
     final theme = Theme.of(context);
-    final product = _iapService.getProduct('remove_ads');
+    final productId = _removeAdsProductId;
+    final product = productId != null ? _iapService.getProduct(productId) : null;
     final isAvailable = _iapService.isStoreAvailable && product != null;
 
     if (_isPurchased) {
