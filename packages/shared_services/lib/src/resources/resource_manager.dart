@@ -5,6 +5,7 @@ import '../analytics/events/resource_event.dart';
 import '../iap/iap_service.dart';
 import '../iap/no_op_iap_service.dart';
 import '../iap/purchase_result.dart';
+import 'bundle_pack.dart';
 import 'providers/ad_reward_provider.dart';
 import 'resource_config.dart';
 import 'resource_inventory.dart';
@@ -219,6 +220,45 @@ class ResourceManager {
           source: 'purchase',
         ),
       );
+    }
+
+    return result;
+  }
+
+  /// Attempt to purchase a bundle pack.
+  ///
+  /// Initiates purchase flow, adds all bundle resources if successful.
+  /// Returns the purchase result.
+  Future<PurchaseResult> purchaseBundle(BundlePack bundle) async {
+    _ensureInitialized();
+
+    if (!iapService.isStoreAvailable) {
+      return PurchaseResult.failed(
+        productId: bundle.productId,
+        errorCode: 'store_unavailable',
+        errorMessage: 'Store is not available',
+      );
+    }
+
+    final result = await iapService.purchase(bundle.productId);
+
+    // Handle successful purchase
+    if (result is PurchaseResultSuccess) {
+      // Add all resources from the bundle
+      for (final entry in bundle.contents.entries) {
+        await addPurchasedResources(entry.key, entry.value);
+
+        // Log analytics event for each resource type
+        analyticsService?.logEvent(
+          ResourceEvent.added(
+            quizId: '', // Global context, not within a specific quiz
+            resourceType: entry.key.id,
+            amountAdded: entry.value,
+            newTotal: getAvailableCount(entry.key),
+            source: 'bundle_purchase',
+          ),
+        );
+      }
     }
 
     return result;

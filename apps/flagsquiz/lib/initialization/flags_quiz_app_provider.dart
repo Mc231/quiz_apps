@@ -207,7 +207,45 @@ class FlagsQuizAppProvider {
       ),
     ];
 
-    // Create resource config with purchase packs
+    // Define bundle packs with their resource contents
+    final bundlePacks = [
+      BundlePack(
+        id: 'bundle_starter',
+        productId: 'bundle_starter',
+        name: 'Starter Pack',
+        description: '5 lives + 5 hints + 5 skips',
+        contents: {
+          ResourceType.lives(): 5,
+          ResourceType.fiftyFifty(): 5,
+          ResourceType.skip(): 5,
+        },
+      ),
+      BundlePack(
+        id: 'bundle_value',
+        productId: 'bundle_value',
+        name: 'Value Pack',
+        description: '15 lives + 15 hints + 15 skips',
+        contents: {
+          ResourceType.lives(): 15,
+          ResourceType.fiftyFifty(): 15,
+          ResourceType.skip(): 15,
+        },
+        isBestValue: true,
+      ),
+      BundlePack(
+        id: 'bundle_pro',
+        productId: 'bundle_pro',
+        name: 'Pro Pack',
+        description: '50 lives + 50 hints + 50 skips',
+        contents: {
+          ResourceType.lives(): 50,
+          ResourceType.fiftyFifty(): 50,
+          ResourceType.skip(): 50,
+        },
+      ),
+    ];
+
+    // Create resource config with purchase packs and bundles
     final resourceConfig = ResourceConfig(
       dailyFreeLimits: {
         ResourceType.lives(): 5,
@@ -220,6 +258,7 @@ class FlagsQuizAppProvider {
         ResourceType.skip(): 1,
       },
       purchasePacks: purchasePacks,
+      bundlePacks: bundlePacks,
       enableAds: true,
       enablePurchases: true,
     );

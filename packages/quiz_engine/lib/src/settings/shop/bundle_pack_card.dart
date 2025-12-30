@@ -12,6 +12,9 @@ import '../../services/quiz_services_context.dart';
 /// - Buy button with loading state
 /// - Best value badge if applicable
 ///
+/// The bundle must be defined in [ResourceConfig.bundlePacks] for the
+/// resources to be added to the user's inventory after purchase.
+///
 /// Example:
 /// ```dart
 /// BundlePackCard(
@@ -58,11 +61,125 @@ class _BundlePackCardState extends State<BundlePackCard> {
   DateTime? _purchaseStartTime;
 
   IAPService get _iapService => context.iapService;
+  ResourceManager get _resourceManager => context.resourceManager;
   AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
   Future<void> _handlePurchase() async {
     if (_isPurchasing) return;
 
+    // Get the bundle definition from config
+    final bundle = _resourceManager.config.getBundleByProductId(widget.productId);
+    if (bundle == null) {
+      // Fallback to direct IAP purchase if bundle not defined in config
+      // This maintains backward compatibility but won't add resources
+      await _handleDirectPurchase();
+      return;
+    }
+
+    setState(() {
+      _isPurchasing = true;
+      _purchaseStartTime = DateTime.now();
+    });
+
+    final product = _iapService.getProduct(widget.productId);
+
+    try {
+      // Use ResourceManager to purchase bundle - this adds resources on success
+      final result = await _resourceManager.purchaseBundle(bundle);
+
+      if (!mounted) return;
+
+      final purchaseDuration = _purchaseStartTime != null
+          ? DateTime.now().difference(_purchaseStartTime!)
+          : Duration.zero;
+
+      switch (result) {
+        case PurchaseResultSuccess(:final transactionId):
+          _analyticsService.logEvent(
+            MonetizationEvent.purchaseCompleted(
+              packId: widget.productId,
+              packName: widget.title,
+              price: product?.rawPrice ?? 0,
+              currency: product?.currencyCode ?? 'USD',
+              transactionId: transactionId,
+              purchaseDuration: purchaseDuration,
+            ),
+          );
+          widget.onPurchased?.call(widget.productId);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  QuizL10n.of(context).purchaseSuccess(
+                    bundle.totalResources,
+                    widget.title,
+                  ),
+                ),
+              ),
+            );
+          }
+
+        case PurchaseResultCancelled():
+          _analyticsService.logEvent(
+            MonetizationEvent.purchaseCancelled(
+              packId: widget.productId,
+              packName: widget.title,
+              price: product?.rawPrice ?? 0,
+              currency: product?.currencyCode ?? 'USD',
+              cancelReason: 'user_cancelled',
+              timeBeforeCancel: purchaseDuration,
+            ),
+          );
+
+        case PurchaseResultFailed(:final errorCode, :final errorMessage):
+          _analyticsService.logEvent(
+            MonetizationEvent.purchaseFailed(
+              packId: widget.productId,
+              packName: widget.title,
+              price: product?.rawPrice ?? 0,
+              currency: product?.currencyCode ?? 'USD',
+              errorCode: errorCode,
+              errorMessage: errorMessage,
+            ),
+          );
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(QuizL10n.of(context).purchaseFailed)),
+            );
+          }
+
+        case PurchaseResultPending():
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(QuizL10n.of(context).purchasePending)),
+            );
+          }
+
+        case PurchaseResultNotAvailable():
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text(QuizL10n.of(context).purchaseNotAvailable)),
+            );
+          }
+
+        case PurchaseResultAlreadyOwned():
+          // Bundles are consumable, this shouldn't happen
+          break;
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isPurchasing = false;
+          _purchaseStartTime = null;
+        });
+      }
+    }
+  }
+
+  /// Fallback for direct IAP purchase when bundle not in config.
+  /// This won't add resources to inventory - bundle must be defined in config.
+  Future<void> _handleDirectPurchase() async {
     setState(() {
       _isPurchasing = true;
       _purchaseStartTime = DateTime.now();
@@ -96,10 +213,7 @@ class _BundlePackCardState extends State<BundlePackCard> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  QuizL10n.of(context).purchaseSuccess(
-                    1, // Bundle is a single item
-                    widget.title,
-                  ),
+                  QuizL10n.of(context).purchaseSuccess(1, widget.title),
                 ),
               ),
             );
@@ -130,18 +244,14 @@ class _BundlePackCardState extends State<BundlePackCard> {
           );
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content:
-                      Text(QuizL10n.of(context).purchaseFailed)),
+              SnackBar(content: Text(QuizL10n.of(context).purchaseFailed)),
             );
           }
 
         case PurchaseResultPending():
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                  content:
-                      Text(QuizL10n.of(context).purchasePending)),
+              SnackBar(content: Text(QuizL10n.of(context).purchasePending)),
             );
           }
 
@@ -149,13 +259,11 @@ class _BundlePackCardState extends State<BundlePackCard> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                  content: Text(
-                      QuizL10n.of(context).purchaseNotAvailable)),
+                  content: Text(QuizL10n.of(context).purchaseNotAvailable)),
             );
           }
 
         case PurchaseResultAlreadyOwned():
-          // Bundles are consumable, this shouldn't happen
           break;
       }
     } finally {

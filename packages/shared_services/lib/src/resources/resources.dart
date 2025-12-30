@@ -46,6 +46,7 @@
 /// ```
 library;
 
+export 'bundle_pack.dart';
 export 'providers/ad_reward_provider.dart';
 export 'resource_config.dart';
 export 'resource_inventory.dart';

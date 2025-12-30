@@ -1,3 +1,4 @@
+import 'bundle_pack.dart';
 import 'resource_type.dart';
 
 /// Configuration for the resource system.
@@ -40,6 +41,9 @@ class ResourceConfig {
   /// Available purchase packs (defined by app).
   final List<ResourcePack> purchasePacks;
 
+  /// Available bundle packs (defined by app).
+  final List<BundlePack> bundlePacks;
+
   /// Whether to show ads option (requires [AdRewardProvider]).
   final bool enableAds;
 
@@ -51,6 +55,7 @@ class ResourceConfig {
     required this.dailyFreeLimits,
     required this.adRewardAmounts,
     this.purchasePacks = const [],
+    this.bundlePacks = const [],
     this.enableAds = true,
     this.enablePurchases = true,
   });
@@ -122,11 +127,23 @@ class ResourceConfig {
     return purchasePacks.where((pack) => pack.type == type).toList();
   }
 
+  /// Get a bundle pack by its product ID.
+  ///
+  /// Returns `null` if no bundle with the given product ID exists.
+  BundlePack? getBundleByProductId(String productId) {
+    try {
+      return bundlePacks.firstWhere((bundle) => bundle.productId == productId);
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// Creates a copy with the given fields replaced.
   ResourceConfig copyWith({
     Map<ResourceType, int>? dailyFreeLimits,
     Map<ResourceType, int>? adRewardAmounts,
     List<ResourcePack>? purchasePacks,
+    List<BundlePack>? bundlePacks,
     bool? enableAds,
     bool? enablePurchases,
   }) {
@@ -134,6 +151,7 @@ class ResourceConfig {
       dailyFreeLimits: dailyFreeLimits ?? this.dailyFreeLimits,
       adRewardAmounts: adRewardAmounts ?? this.adRewardAmounts,
       purchasePacks: purchasePacks ?? this.purchasePacks,
+      bundlePacks: bundlePacks ?? this.bundlePacks,
       enableAds: enableAds ?? this.enableAds,
       enablePurchases: enablePurchases ?? this.enablePurchases,
     );
