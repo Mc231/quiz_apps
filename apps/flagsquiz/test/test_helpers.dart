@@ -17,6 +17,7 @@ Widget wrapWithServices(
   SettingsService? settingsService,
   StorageService? storageService,
   AchievementService? achievementService,
+  AdsService? adsService,
 }) {
   final effectiveScreenAnalytics =
       screenAnalyticsService ?? NoOpAnalyticsService();
@@ -29,6 +30,7 @@ Widget wrapWithServices(
     config: ResourceConfig.standard(),
     repository: InMemoryResourceRepository(),
   );
+  final effectiveAdsService = adsService ?? NoAdsService();
 
   return MaterialApp(
     localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -42,6 +44,7 @@ Widget wrapWithServices(
         storageService: effectiveStorage,
         achievementService: effectiveAchievements,
         resourceManager: effectiveResourceManager,
+        adsService: effectiveAdsService,
       ),
       child: child,
     ),
