@@ -47,7 +47,33 @@ class FlagsQuizAppProvider {
     // Initialize Firebase before any Firebase services are used
     await Firebase.initializeApp();
 
-    await SharedServicesInitializer.initialize();
+    // Initialize shared services with timing and error reporting
+    final initResult = await SharedServicesInitializer.initialize(
+      config: SharedServicesConfig(
+        onError: (serviceName, error, stack) {
+          if (kDebugMode) {
+            debugPrint('[SharedServices] Failed to init $serviceName: $error');
+            debugPrint(stack.toString());
+          }
+        },
+        onTiming: (stepName, duration) {
+          if (kDebugMode) {
+            debugPrint(
+              '[SharedServices] $stepName: ${duration.inMilliseconds}ms',
+            );
+          }
+        },
+      ),
+    );
+
+    if (kDebugMode) {
+      debugPrint('[SharedServices] $initResult');
+      if (!initResult.isPerformant) {
+        debugPrint(
+          '[SharedServices] Warning: Initialization exceeded 500ms target',
+        );
+      }
+    }
 
     // Load secrets from config file (falls back to empty config if not found)
     final secrets = await SecretsLoader.load(

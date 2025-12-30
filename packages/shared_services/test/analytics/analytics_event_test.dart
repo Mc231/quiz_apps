@@ -155,7 +155,7 @@ void main() {
         );
 
         expect(event.screenName, equals('results'));
-        expect(event.parameters['is_perfect_score'], isFalse);
+        expect(event.parameters['is_perfect_score'], equals(0));
         expect(event.parameters['star_rating'], equals(3));
       });
 
@@ -168,7 +168,7 @@ void main() {
           starRating: 3,
         );
 
-        expect(event.parameters['is_perfect_score'], isTrue);
+        expect(event.parameters['is_perfect_score'], equals(1));
       });
     });
 

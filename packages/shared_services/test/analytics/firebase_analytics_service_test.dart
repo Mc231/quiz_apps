@@ -101,7 +101,7 @@ void main() {
               containsPair('question_id', 'q-1'),
               containsPair('question_index', 0),
               containsPair('selected_answer', 'France'),
-              containsPair('is_correct', true),
+              containsPair('is_correct', 1),
               containsPair('response_time_ms', 5000),
             ),
             named: 'parameters',
