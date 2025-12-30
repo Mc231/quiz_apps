@@ -247,6 +247,7 @@ void main() {
             config: ResourceConfig.standard(),
             repository: InMemoryResourceRepository(),
           ),
+          adsService: NoAdsService(),
         );
 
         final copied = original.copyWith(settingsService: newSettings);
