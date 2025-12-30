@@ -33,9 +33,10 @@
 
 | Priority | Sprint | Description | Phase |
 |----------|--------|-------------|-------|
-| 1 | **Sprint 9.3** | In-App Purchases Service | Phase 9 |
-| 2 | **Sprint 9.4** | Services Integration & Polish | Phase 9 |
-| 3 | **Sprint 9.1.11** | Analytics - Resource & Hint Button Tracking | Phase 9 |
+| 1 | **Sprint 9.2.1** | Banner Ad Screen Integration | Phase 9 |
+| 2 | **Sprint 9.3** | In-App Purchases Service | Phase 9 |
+| 3 | **Sprint 9.4** | Services Integration & Polish | Phase 9 |
+| 4 | **Sprint 9.1.11** | Analytics - Resource & Hint Button Tracking | Phase 9 |
 
 **Sprint 9.1.13** ✅ is complete - Firebase Analytics is now live in production, tracking all quiz events.
 
@@ -2819,35 +2820,173 @@ dependencies:
 
 ---
 
-### Sprint 9.3: In-App Purchases Service
+### Sprint 9.2.1: Banner Ad Screen Integration ✅
 
-**Goal:** Implement IAP service for premium features.
+**Goal:** Integrate `BannerAdWidget` into app screens to display banner ads.
+
+**Priority:** High
 
 **Tasks:**
-- [ ] Create `IAPService` abstract class
+- [x] Add `AdsService` to `QuizServices` provider (required field)
+- [x] Create `QuizServicesContext` extension for `adsService` access
+- [x] Update `QuizServices.noOp()` factory to include `NoAdsService`
+- [x] Refactor `BannerAdWidget` to use context-based access (optional param, falls back to context)
+- [x] Integrate banner ads into `QuizHomeScreen` (above NavigationBar - covers all tabs)
+- [x] Integrate banner ads into `QuizResultsScreen` (bottom of Scaffold body)
+- [x] Update `FlagsQuizAppProvider` to pass `adsService` to `QuizServices`
+- [x] Update test helpers and existing tests to include `adsService`
+
+**Screens WITH Banner Ads:**
+| Screen | Placement | Notes |
+|--------|-----------|-------|
+| `QuizHomeScreen` | Above NavigationBar | Visible on all tabs (Play, History, Statistics, Achievements) |
+| `QuizResultsScreen` | Bottom of Scaffold body | Shown after quiz completion |
+
+**Screens WITHOUT Banner Ads:**
+| Screen | Reason |
+|--------|--------|
+| `QuizScreen` | Active gameplay - distracting |
+| `SettingsScreen` | User adjusting preferences |
+| `CategorySelectionScreen` | Pre-quiz selection flow |
+| `SessionHistoryScreen` | Tab content in QuizHomeScreen (gets banner from parent) |
+| `StatisticsDashboardScreen` | Tab content in QuizHomeScreen (gets banner from parent) |
+| `AchievementsScreen` | Tab content in QuizHomeScreen (gets banner from parent) |
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/services/quiz_services.dart` - Add AdsService
+- `packages/quiz_engine/lib/src/services/quiz_services_context.dart` - Add extension
+- `packages/quiz_engine/lib/src/widgets/banner_ad_widget.dart` - Support context access
+- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` - Add banner above NavigationBar
+- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Add banner at bottom
+- `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Pass adsService
+
+**Notes:**
+- `BannerAdWidget` already exists at `packages/quiz_engine/lib/src/widgets/banner_ad_widget.dart`
+- Banner placement above NavigationBar ensures visibility on all home tabs
+- Ads automatically hide when `adsService.isEnabled` is false (premium users)
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services.dart` - Added `adsService` field
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services_context.dart` - Added `context.adsService` extension
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services_scope.dart` - Added `adsService` override support
+- ✅ `packages/quiz_engine/lib/src/widgets/banner_ad_widget.dart` - Refactored for context-based access
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` - Integrated banner above NavigationBar
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Integrated banner at bottom
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Passed `adsService` to `QuizServices`
+- ✅ `packages/quiz_engine/test/test_helpers.dart` - Added `adsService` parameter
+- ✅ `packages/quiz_engine/test/services/quiz_services_test_helper.dart` - Added `adsService` parameter
+- ✅ `packages/quiz_engine/test/services/quiz_services_provider_test.dart` - Updated tests
+- ✅ `packages/quiz_engine/test/services/quiz_services_integration_test.dart` - Updated tests
+- ✅ `packages/quiz_engine/test/achievements/achievement_notification_controller_analytics_test.dart` - Updated tests
+- ✅ `apps/flagsquiz/test/test_helpers.dart` - Added `adsService` parameter
+- ✅ `apps/flagsquiz/integration_test/success_flow_integration_test.dart` - Added `adsService`
+
+---
+
+### Sprint 9.3: In-App Purchases Service
+
+**Goal:** Implement IAP service for premium features and resource purchases.
+
+**Product Structure:**
+
+*Consumables - Lives (can purchase multiple times):*
+| Product ID | Name | Price | Quantity |
+|------------|------|-------|----------|
+| `lives_small` | 5 Lives | $0.99 | 5 |
+| `lives_medium` | 15 Lives | $1.99 | 15 |
+| `lives_large` | 50 Lives | $4.99 | 50 |
+
+*Consumables - Hints (can purchase multiple times):*
+| Product ID | Name | Price | Quantity |
+|------------|------|-------|----------|
+| `hints_small` | 10 Hints | $0.99 | 10 |
+| `hints_medium` | 30 Hints | $1.99 | 30 |
+| `hints_large` | 100 Hints | $4.99 | 100 |
+
+*Consumables - Bundles (can purchase multiple times):*
+| Product ID | Name | Price | Contents |
+|------------|------|-------|----------|
+| `bundle_starter` | Starter Pack | $1.49 | 5 lives + 10 hints |
+| `bundle_value` | Value Pack | $3.49 | 15 lives + 30 hints |
+| `bundle_pro` | Pro Pack | $7.99 | 50 lives + 100 hints |
+
+*Non-Consumable (one-time purchase):*
+| Product ID | Name | Price |
+|------------|------|-------|
+| `remove_ads` | Remove Ads | $2.99 |
+
+*Subscription (infrastructure only, no UI):*
+| Product ID | Name | Price |
+|------------|------|-------|
+| `premium_monthly` | Premium Monthly | $1.99/mo |
+| `premium_yearly` | Premium Yearly | $9.99/yr |
+
+**Tasks:**
+
+*Core Infrastructure:*
+- [ ] Create `IAPService` abstract class with purchase/restore/query methods
+- [ ] Create `IAPProduct` model (id, type, price, title, description)
+- [ ] Create `IAPProductType` enum (consumable, nonConsumable, subscription)
+- [ ] Create `PurchaseResult` sealed class (success, cancelled, failed, pending)
+- [ ] Create `IAPConfig` model with product definitions
+
+*Implementations:*
 - [ ] Create `StoreIAPService` implementation (App Store / Play Store)
 - [ ] Create `MockIAPService` for testing
-- [ ] Define product IDs (remove_ads, lives_pack, hints_pack)
-- [ ] Implement purchase flow
-- [ ] Implement restore purchases
-- [ ] Create purchase confirmation dialogs
-- [ ] Integrate with `ResourceManager` for purchased resources
-- [ ] Track IAP events via analytics
-- [ ] Write unit tests
-- [ ] Test on iOS and Android
+- [ ] Create `NoOpIAPService` for when IAP is disabled
+
+*Purchase Flow:*
+- [ ] Implement `queryProducts()` - fetch available products from store
+- [ ] Implement `purchase(productId)` - initiate purchase
+- [ ] Implement `restorePurchases()` - restore previous purchases
+- [ ] Implement `isPurchased(productId)` - check non-consumable status
+- [ ] Handle purchase stream for async purchase updates
+
+*Subscription Infrastructure (no UI):*
+- [ ] Add subscription support to `IAPService` interface
+- [ ] Implement subscription status checking
+- [ ] Handle subscription expiration
+
+*Integration:*
+- [ ] Integrate with `ResourceManager` for consumable resources
+- [ ] Integrate with `AdsService` for remove_ads purchase
+- [ ] Track IAP events via `MonetizationEvent` analytics
+- [ ] Create `IAPModule` for DI registration
+
+*UI Components:*
+- [ ] Create `PurchaseButton` widget
+- [ ] Create `ProductCard` widget for store display
+- [ ] Create `RestorePurchasesButton` widget
+- [ ] Create purchase confirmation dialog
+- [ ] Create purchase success/failure feedback
+
+*Testing:*
+- [ ] Write unit tests for IAPService
+- [ ] Write unit tests for MockIAPService
+- [ ] Test on iOS Sandbox
+- [ ] Test on Android Test environment
 
 **Files to Create:**
 - `packages/shared_services/lib/src/iap/iap_service.dart`
+- `packages/shared_services/lib/src/iap/iap_product.dart`
+- `packages/shared_services/lib/src/iap/iap_config.dart`
+- `packages/shared_services/lib/src/iap/purchase_result.dart`
 - `packages/shared_services/lib/src/iap/store_iap_service.dart`
 - `packages/shared_services/lib/src/iap/mock_iap_service.dart`
+- `packages/shared_services/lib/src/iap/no_op_iap_service.dart`
 - `packages/shared_services/lib/src/iap/iap_exports.dart`
-- `packages/shared_services/test/iap/store_iap_service_test.dart`
+- `packages/shared_services/lib/src/di/modules/iap_module.dart`
+- `packages/quiz_engine/lib/src/widgets/purchase_button.dart`
+- `packages/quiz_engine/lib/src/widgets/product_card.dart`
+- `packages/quiz_engine/lib/src/widgets/restore_purchases_button.dart`
+- `packages/shared_services/test/iap/iap_service_test.dart`
+- `packages/shared_services/test/iap/mock_iap_service_test.dart`
 
 **Dependencies to Add:**
 ```yaml
 # packages/shared_services/pubspec.yaml
 dependencies:
-  in_app_purchase: ^3.1.0
+  in_app_purchase: ^3.2.0
 ```
 
 ---
