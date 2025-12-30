@@ -2976,6 +2976,16 @@ dependencies:
 - [x] Update test files with `iapService` parameter
 - [x] Update mock classes for new localization methods
 
+*Bug Fixes:*
+- [x] Create `BundlePack` model defining bundle contents (resource types and amounts)
+- [x] Add `bundlePacks` list to `ResourceConfig`
+- [x] Add `ResourceManager.purchaseBundle()` method to handle bundle purchases
+- [x] Update `BundlePackCard` to use `ResourceManager.purchaseBundle()` (was calling IAPService directly)
+- [x] Fix quiz screen showing +1 instead of actual pack amount after purchase
+- [x] Update `PurchaseResourceSheet.show()` to return `int?` (amount purchased)
+- [x] Update `RestoreResourceDialog.show()` to return `int?` (amount restored)
+- [x] Update `QuizScreen._showRestoreDialog()` to pass correct amount to `addRestoredHint()`
+
 **Files Created:**
 - ✅ `packages/shared_services/lib/src/iap/iap_service.dart`
 - ✅ `packages/shared_services/lib/src/iap/iap_product.dart`
@@ -2987,6 +2997,11 @@ dependencies:
 - ✅ `packages/shared_services/lib/src/iap/no_op_iap_service.dart`
 - ✅ `packages/shared_services/lib/src/iap/analytics_iap_service.dart`
 - ✅ `packages/shared_services/lib/src/iap/iap_exports.dart`
+- ✅ `packages/shared_services/lib/src/resources/bundle_pack.dart` - BundlePack model for bundle contents
+- ✅ `packages/quiz_engine/lib/src/settings/shop/remove_ads_tile.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/shop/bundle_pack_card.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/shop/restore_purchases_tile.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/shop/shop_exports.dart`
 
 **Files Deleted:**
 - ❌ `packages/shared_services/lib/src/resources/providers/iap_provider.dart` - Removed deprecated IAPProvider (replaced by IAPService)
@@ -3012,6 +3027,13 @@ dependencies:
 - ✅ `apps/flagsquiz/test/test_helpers.dart` - Added iapService parameter
 - ✅ `apps/flagsquiz/test/achievements/flags_achievements_test.dart` - Added localization methods
 - ✅ `apps/flagsquiz/integration_test/success_flow_integration_test.dart` - Added iapService
+- ✅ `packages/shared_services/lib/src/resources/resource_config.dart` - Added bundlePacks list and getBundleByProductId()
+- ✅ `packages/shared_services/lib/src/resources/resources.dart` - Export bundle_pack.dart
+- ✅ `packages/quiz_engine/lib/src/widgets/purchase_resource_sheet.dart` - Return int? amount instead of bool
+- ✅ `packages/quiz_engine/lib/src/widgets/restore_resource_dialog.dart` - Return int? amount instead of bool
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Pass amount to addRestoredHint()
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Handle nullable restoredAmount
+- ✅ `packages/quiz_engine/lib/src/widgets/banner_ad_widget.dart` - Subscribe to onAdAvailabilityChanged stream
 
 **Dependencies Added:**
 ```yaml
