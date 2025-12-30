@@ -18,6 +18,7 @@ void main() {
         config: ResourceConfig.standard(),
         repository: InMemoryResourceRepository(),
       );
+      final adsService = NoAdsService();
 
       final services = QuizServices(
         settingsService: settingsService,
@@ -26,6 +27,7 @@ void main() {
         screenAnalyticsService: screenAnalyticsService,
         quizAnalyticsService: quizAnalyticsService,
         resourceManager: resourceManager,
+        adsService: adsService,
       );
 
       expect(services.settingsService, equals(settingsService));
@@ -34,9 +36,10 @@ void main() {
       expect(services.screenAnalyticsService, equals(screenAnalyticsService));
       expect(services.quizAnalyticsService, equals(quizAnalyticsService));
       expect(services.resourceManager, equals(resourceManager));
+      expect(services.adsService, equals(adsService));
     });
 
-    test('noOp factory creates instance with NoOp analytics services', () {
+    test('noOp factory creates instance with NoOp analytics and ads services', () {
       final settingsService = MockSettingsService();
       final storageService = MockStorageService();
       final achievementService = MockAchievementService();
@@ -58,6 +61,7 @@ void main() {
       expect(services.screenAnalyticsService, isA<NoOpAnalyticsService>());
       expect(services.quizAnalyticsService, isA<NoOpQuizAnalyticsService>());
       expect(services.resourceManager, equals(resourceManager));
+      expect(services.adsService, isA<NoAdsService>());
     });
 
     test('copyWith creates modified copy', () {
@@ -96,6 +100,7 @@ void main() {
         config: ResourceConfig.standard(),
         repository: InMemoryResourceRepository(),
       );
+      final adsService = NoAdsService();
 
       final services1 = QuizServices(
         settingsService: settingsService,
@@ -104,6 +109,7 @@ void main() {
         screenAnalyticsService: screenAnalyticsService,
         quizAnalyticsService: quizAnalyticsService,
         resourceManager: resourceManager,
+        adsService: adsService,
       );
 
       final services2 = QuizServices(
@@ -113,6 +119,7 @@ void main() {
         screenAnalyticsService: screenAnalyticsService,
         quizAnalyticsService: quizAnalyticsService,
         resourceManager: resourceManager,
+        adsService: adsService,
       );
 
       expect(services1, equals(services2));
