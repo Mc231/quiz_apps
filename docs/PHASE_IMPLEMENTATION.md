@@ -33,8 +33,9 @@
 
 | Priority | Sprint | Description | Phase |
 |----------|--------|-------------|-------|
-| 1 | **Sprint 9.4** | Services Integration & Polish | Phase 9 |
-| 2 | **Sprint 9.1.11** | Analytics - Resource & Hint Button Tracking | Phase 9 |
+| 1 | **Sprint 9.5** | IAP Testing Configuration (TestFlight & Play Console) | Phase 9 |
+| 2 | **Sprint 9.4** | Services Integration & Polish | Phase 9 |
+| 3 | **Sprint 9.1.11** | Analytics - Resource & Hint Button Tracking | Phase 9 |
 
 **Sprint 9.3** ✅ is complete - In-App Purchases Service infrastructure is implemented with IAPService, StoreIAPService, AnalyticsIAPService, and QuizServices integration.
 
@@ -3065,6 +3066,71 @@ dependencies:
 **Files to Modify:**
 - `apps/flagsquiz/lib/main.dart`
 - `packages/shared_services/lib/shared_services.dart`
+
+---
+
+### Sprint 9.5: IAP Testing Configuration (TestFlight & Play Console)
+
+**Goal:** Configure test environments for In-App Purchases on iOS (TestFlight/Sandbox) and Android (Play Console License Testing).
+
+**iOS Setup (App Store Connect):**
+- [ ] Create App Store Connect app entry (if not exists)
+- [ ] Configure In-App Purchases in App Store Connect
+  - [ ] Add all consumable products (lives_small, lives_medium, lives_large, etc.)
+  - [ ] Add all bundle products (bundle_starter, bundle_value, bundle_pro)
+  - [ ] Add non-consumable product (remove_ads)
+  - [ ] Add subscription products (premium_monthly, premium_yearly) - infrastructure only
+- [ ] Set up Sandbox test accounts
+  - [ ] Create sandbox tester accounts in App Store Connect
+  - [ ] Document sandbox account credentials (securely)
+- [ ] Configure TestFlight
+  - [ ] Upload build to TestFlight
+  - [ ] Add internal testers
+  - [ ] Add external testers (if needed)
+- [ ] Test StoreKit configuration
+  - [ ] Create StoreKit Configuration file for local testing
+  - [ ] Test purchase flow in Xcode simulator
+  - [ ] Test purchase flow on physical device with sandbox account
+
+**Android Setup (Google Play Console):**
+- [ ] Create Google Play Console app entry (if not exists)
+- [ ] Configure In-App Products in Play Console
+  - [ ] Add all managed products (consumables)
+  - [ ] Add all subscription products
+  - [ ] Set up pricing for all regions
+- [ ] Set up License Testing
+  - [ ] Add tester Gmail accounts to License Testing
+  - [ ] Configure license test responses (LICENSED, NOT_LICENSED, etc.)
+- [ ] Configure Internal Testing track
+  - [ ] Upload AAB to internal testing
+  - [ ] Add internal testers
+- [ ] Test Google Play Billing
+  - [ ] Test purchase flow on physical device
+  - [ ] Test subscription flow
+  - [ ] Test restore purchases
+
+**Code Configuration:**
+- [ ] Update `IAPConfig.production()` with real product IDs
+- [ ] Add environment detection (debug vs release) for IAP configuration
+- [ ] Create `IAPConfig.staging()` for TestFlight/Internal Testing builds
+- [ ] Update `StoreIAPService` to handle sandbox/test environments
+- [ ] Add receipt validation (optional, for server-side verification)
+
+**Documentation:**
+- [ ] Create `docs/IAP_TESTING_GUIDE.md` with step-by-step setup
+- [ ] Document sandbox/test account management
+- [ ] Document common testing scenarios and expected behaviors
+- [ ] Add troubleshooting guide for common IAP issues
+
+**Verification Checklist:**
+- [ ] iOS: Purchase consumable in sandbox
+- [ ] iOS: Purchase non-consumable in sandbox
+- [ ] iOS: Restore purchases in sandbox
+- [ ] iOS: Test subscription renewal (accelerated in sandbox)
+- [ ] Android: Purchase consumable with license tester
+- [ ] Android: Purchase subscription with license tester
+- [ ] Android: Restore purchases
+- [ ] Android: Test subscription cancellation
 
 ---
 
