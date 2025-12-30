@@ -33,9 +33,12 @@
 
 | Priority | Sprint | Description | Phase |
 |----------|--------|-------------|-------|
-| 1 | **Sprint 9.5** | IAP Testing Configuration (TestFlight & Play Console) | Phase 9 |
-| 2 | **Sprint 9.4** | Services Integration & Polish | Phase 9 |
-| 3 | **Sprint 9.1.11** | Analytics - Resource & Hint Button Tracking | Phase 9 |
+| 1 | **Sprint 9.4** | Services Integration & Polish | Phase 9 |
+| 2 | **Sprint 9.1.11** | Analytics - Resource & Hint Button Tracking | Phase 9 |
+
+**Sprint 9.7** ✅ is complete - IAP Bug Fixes & UI Improvements (dynamic product IDs, cancel handling, resource badge multi-digit support).
+
+**Sprint 9.5** ✅ is complete - IAP Testing Configuration (TestFlight & Play Console setup).
 
 **Sprint 9.6** ✅ is complete - UI Polish & Bug Fixes (Shop styling, timer visibility, analytics boolean fix, banner ad fix).
 
@@ -3213,6 +3216,39 @@ dependencies:
 
 ---
 
+### Sprint 9.7: IAP Bug Fixes & UI Improvements ✅
+
+**Goal:** Fix IAP issues discovered during real device testing and improve resource badge display.
+
+**IAP Dynamic Product ID Support:**
+- [x] Add `isRemoveAdsProduct()` method to IAPConfig for flexible product ID matching
+- [x] Add `removeAdsProductId` getter to find remove_ads product regardless of prefix
+- [x] Update StoreIAPService to use dynamic product detection
+- [x] Update RemoveAdsTile to use `config.removeAdsProductId` instead of hardcoded ID
+- [x] Update quiz_settings_screen to build bundle cards from `resourceManager.config.bundlePacks`
+- [x] Fix `useRealIAPService` flag to apply to resource/bundle pack selection
+
+**Android Purchase Cancellation Fix:**
+- [x] Handle Android's empty productId in purchase cancellation callback
+- [x] Cancel all pending purchases when empty productId received
+- [x] Reduce purchase timeout from 5 minutes to 30 seconds
+
+**Resource Badge Multi-Digit Support:**
+- [x] Update `_CountBadge` to adapt width for 2+ digit numbers
+- [x] Single digit (0-9): Circular badge
+- [x] Multi-digit (10+): Pill-shaped badge with horizontal padding
+- [x] All 24 GameResourceButton tests passing
+
+**Files Modified:**
+- ✅ `packages/shared_services/lib/src/iap/iap_config.dart`
+- ✅ `packages/shared_services/lib/src/iap/store_iap_service.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/shop/remove_ads_tile.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/game_resource_button.dart`
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
+
+---
+
 ### Phase 9 Summary
 
 | Sprint | Status | Description |
@@ -3237,8 +3273,9 @@ dependencies:
 | 9.2.1 | ✅ | Banner Ad Screen Integration |
 | 9.3 | ✅ | IAP service |
 | 9.4 | ⏳ | Final integration |
-| 9.5 | ⏳ | IAP Testing Configuration |
+| 9.5 | ✅ | IAP Testing Configuration |
 | 9.6 | ✅ | UI Polish & Bug Fixes |
+| 9.7 | ✅ | IAP Bug Fixes & UI Improvements |
 | **BLoC Architecture (9.5.x)** | | |
 | 9.5.1 | ✅ | Statistics BLoC (31 tests) |
 | 9.5.2 | ✅ | Session History BLoC (18 tests) |
@@ -3256,9 +3293,9 @@ dependencies:
 - Ads service (AdMob integration)
 - IAP service (In-App Purchases)
 - UI Polish & Bug Fixes (Sprint 9.6)
+- IAP Bug Fixes & UI Improvements (Sprint 9.7)
 
 **Pending:**
-- IAP Testing Configuration (TestFlight & Play Console)
 - Final integration & polish
 
 ---
