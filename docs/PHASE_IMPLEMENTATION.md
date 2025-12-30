@@ -2961,6 +2961,17 @@ dependencies:
 - [x] Update `PurchaseResourceSheet` to use new sealed `PurchaseResult`
 - [x] Add localization strings for new purchase result types
 
+*Shop Section (Settings):*
+- [x] Add `showShopSection`, `showRemoveAds`, `showBundles`, `showRestorePurchases` to `QuizSettingsConfig`
+- [x] Create `RemoveAdsTile` widget - purchase remove_ads non-consumable
+- [x] Create `BundlePackCard` widget - display bundle packs with pricing and "Best Value" badge
+- [x] Create `RestorePurchasesTile` widget - restore previous purchases
+- [x] Add shop section to `QuizSettingsScreen` between Data Export and About sections
+- [x] Add shop localization strings (20+ strings)
+- [x] Connect `IAPService.onRemoveAdsPurchased` to `AdsService.disableAds()`
+- [x] Update `BannerAdWidget` to listen to `onAdAvailabilityChanged` and hide when ads disabled
+- [x] Update `BannerAdContainer` to StatefulWidget that listens for ad state changes
+
 *Testing:*
 - [x] Update test files with `iapService` parameter
 - [x] Update mock classes for new localization methods

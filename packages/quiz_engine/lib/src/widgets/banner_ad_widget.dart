@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_services/shared_services.dart';
@@ -75,8 +77,10 @@ class BannerAdWidget extends StatefulWidget {
 class _BannerAdWidgetState extends State<BannerAdWidget> {
   bool _isLoading = false;
   bool _isLoaded = false;
+  bool _isAdsEnabled = true;
   BannerAd? _bannerAd;
   AdsService? _resolvedAdsService;
+  StreamSubscription<bool>? _adAvailabilitySubscription;
 
   /// Gets the ads service from widget or context.
   AdsService? get _adsService {
@@ -93,12 +97,34 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     super.initState();
     // Defer loading to after first frame when context is available
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _subscribeToAdAvailability();
       _loadAd();
+    });
+  }
+
+  void _subscribeToAdAvailability() {
+    final adsService = _adsService;
+    if (adsService == null) return;
+
+    _isAdsEnabled = adsService.isEnabled;
+    _adAvailabilitySubscription?.cancel();
+    _adAvailabilitySubscription =
+        adsService.onAdAvailabilityChanged.listen((available) {
+      if (mounted) {
+        setState(() {
+          _isAdsEnabled = adsService.isEnabled;
+          if (!_isAdsEnabled) {
+            _isLoaded = false;
+            _bannerAd = null;
+          }
+        });
+      }
     });
   }
 
   @override
   void dispose() {
+    _adAvailabilitySubscription?.cancel();
     _adsService?.disposeBannerAd();
     super.dispose();
   }
@@ -133,7 +159,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
     final adsService = _adsService;
 
     // Don't show anything if no ads service or ads are disabled
-    if (adsService == null || !adsService.isEnabled) {
+    if (adsService == null || !_isAdsEnabled) {
       return const SizedBox.shrink();
     }
 
@@ -188,7 +214,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 ///   ),
 /// )
 /// ```
-class BannerAdContainer extends StatelessWidget {
+class BannerAdContainer extends StatefulWidget {
   /// Creates a [BannerAdContainer].
   ///
   /// If [adsService] is not provided, it will be obtained from context.
@@ -215,18 +241,65 @@ class BannerAdContainer extends StatelessWidget {
   final Color? backgroundColor;
 
   @override
+  State<BannerAdContainer> createState() => _BannerAdContainerState();
+}
+
+class _BannerAdContainerState extends State<BannerAdContainer> {
+  bool _isAdsEnabled = true;
+  AdsService? _resolvedAdsService;
+  StreamSubscription<bool>? _adAvailabilitySubscription;
+
+  AdsService? get _adsService {
+    if (widget.adsService != null) {
+      return widget.adsService;
+    }
+    _resolvedAdsService ??= context.maybeServices?.adsService;
+    return _resolvedAdsService;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _subscribeToAdAvailability();
+    });
+  }
+
+  void _subscribeToAdAvailability() {
+    final adsService = _adsService;
+    if (adsService == null) return;
+
+    _isAdsEnabled = adsService.isEnabled;
+    _adAvailabilitySubscription?.cancel();
+    _adAvailabilitySubscription =
+        adsService.onAdAvailabilityChanged.listen((available) {
+      if (mounted) {
+        setState(() {
+          _isAdsEnabled = adsService.isEnabled;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _adAvailabilitySubscription?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final resolvedAdsService = adsService ?? context.maybeServices?.adsService;
+    final adsService = _adsService;
 
     // Don't reserve space if no ads service or ads are disabled
-    if (resolvedAdsService == null || !resolvedAdsService.isEnabled) {
+    if (adsService == null || !_isAdsEnabled) {
       return const SizedBox.shrink();
     }
 
     return Container(
-      height: height,
-      color: backgroundColor ?? Theme.of(context).colorScheme.surface,
-      child: child,
+      height: widget.height,
+      color: widget.backgroundColor ?? Theme.of(context).colorScheme.surface,
+      child: widget.child,
     );
   }
 }

@@ -128,6 +128,18 @@ class FlagsQuizAppProvider {
     );
     await iapService.initialize();
 
+    // Connect remove_ads purchase to AdsService
+    // Check if already purchased on startup
+    if (iapService.isRemoveAdsPurchased) {
+      analyticsAdsService.disableAds();
+    }
+    // Listen for future purchases
+    iapService.onRemoveAdsPurchased.listen((purchased) {
+      if (purchased) {
+        analyticsAdsService.disableAds();
+      }
+    });
+
     // Define purchaseable resource packs
     // Product IDs must match IAPConfig used by the IAP service
     // For development (MockIAPService): use IAPConfig.test() product IDs

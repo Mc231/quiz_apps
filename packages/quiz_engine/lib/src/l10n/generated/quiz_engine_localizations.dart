@@ -2409,6 +2409,132 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Data & Privacy'**
   String get dataAndPrivacy;
+
+  /// Shop section header in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get shop;
+
+  /// Remove ads purchase title
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Ads'**
+  String get removeAds;
+
+  /// Remove ads purchase description
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoy ad-free gameplay forever'**
+  String get removeAdsDescription;
+
+  /// Status when remove ads is already purchased
+  ///
+  /// In en, this message translates to:
+  /// **'Ads Removed'**
+  String get removeAdsPurchased;
+
+  /// Description when remove ads is already purchased
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your purchase!'**
+  String get removeAdsPurchasedDescription;
+
+  /// Bundles subsection title
+  ///
+  /// In en, this message translates to:
+  /// **'Bundles'**
+  String get bundles;
+
+  /// Starter bundle title
+  ///
+  /// In en, this message translates to:
+  /// **'Starter Pack'**
+  String get bundleStarterTitle;
+
+  /// Starter bundle description
+  ///
+  /// In en, this message translates to:
+  /// **'5 lives + 5 fifty-fifty + 5 skips'**
+  String get bundleStarterDescription;
+
+  /// Value bundle title
+  ///
+  /// In en, this message translates to:
+  /// **'Value Pack'**
+  String get bundleValueTitle;
+
+  /// Value bundle description
+  ///
+  /// In en, this message translates to:
+  /// **'15 lives + 15 fifty-fifty + 15 skips'**
+  String get bundleValueDescription;
+
+  /// Pro bundle title
+  ///
+  /// In en, this message translates to:
+  /// **'Pro Pack'**
+  String get bundleProTitle;
+
+  /// Pro bundle description
+  ///
+  /// In en, this message translates to:
+  /// **'50 lives + 50 fifty-fifty + 50 skips'**
+  String get bundleProDescription;
+
+  /// Loading state while purchasing
+  ///
+  /// In en, this message translates to:
+  /// **'Purchasing...'**
+  String get purchasing;
+
+  /// Loading state while restoring purchases
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring...'**
+  String get restoring;
+
+  /// Restore purchases description
+  ///
+  /// In en, this message translates to:
+  /// **'Restore previous purchases on this device'**
+  String get restorePurchasesDescription;
+
+  /// Message when store is not available
+  ///
+  /// In en, this message translates to:
+  /// **'Store unavailable'**
+  String get storeUnavailable;
+
+  /// Description when store is unavailable
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to connect to the store. Please check your connection.'**
+  String get storeUnavailableDescription;
+
+  /// Message when no purchases found to restore
+  ///
+  /// In en, this message translates to:
+  /// **'No purchases to restore'**
+  String get noPurchasesToRestore;
+
+  /// Message showing number of purchases restored
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 purchase restored} other{{count} purchases restored}}'**
+  String purchasesRestoredCount(int count);
+
+  /// Buy button label
+  ///
+  /// In en, this message translates to:
+  /// **'Buy'**
+  String get buy;
+
+  /// Status label for purchased items
+  ///
+  /// In en, this message translates to:
+  /// **'Purchased'**
+  String get purchased;
 }
 
 class _QuizEngineLocalizationsDelegate

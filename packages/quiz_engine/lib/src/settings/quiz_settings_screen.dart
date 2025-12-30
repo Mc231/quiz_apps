@@ -210,6 +210,59 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
       widgets.add(const Divider());
     }
 
+    // Shop section
+    if (widget.config.showShopSection && _hasShopItems()) {
+      widgets.add(_buildSectionHeader(l10n.shop));
+
+      if (widget.config.showRemoveAds) {
+        widgets.add(const RemoveAdsTile());
+      }
+
+      if (widget.config.showBundles) {
+        widgets.add(const SizedBox(height: 8));
+        widgets.add(
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+            child: Text(
+              l10n.bundles,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          ),
+        );
+        widgets.add(
+          BundlePackCard(
+            productId: 'bundle_starter',
+            title: l10n.bundleStarterTitle,
+            description: l10n.bundleStarterDescription,
+          ),
+        );
+        widgets.add(
+          BundlePackCard(
+            productId: 'bundle_value',
+            title: l10n.bundleValueTitle,
+            description: l10n.bundleValueDescription,
+            isBestValue: true,
+          ),
+        );
+        widgets.add(
+          BundlePackCard(
+            productId: 'bundle_pro',
+            title: l10n.bundleProTitle,
+            description: l10n.bundleProDescription,
+          ),
+        );
+        widgets.add(const SizedBox(height: 8));
+      }
+
+      if (widget.config.showRestorePurchases) {
+        widgets.add(const RestorePurchasesTile());
+      }
+
+      widgets.add(const Divider());
+    }
+
     // Custom sections before About
     if (widget.config.customSectionsBeforeAbout != null) {
       widgets.addAll(widget.config.customSectionsBeforeAbout!(context));
@@ -297,6 +350,12 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
 
   bool _hasAdvancedItems() {
     return widget.config.showResetToDefaults;
+  }
+
+  bool _hasShopItems() {
+    return widget.config.showRemoveAds ||
+        widget.config.showBundles ||
+        widget.config.showRestorePurchases;
   }
 
   Widget _buildSectionHeader(String title) {
@@ -667,6 +726,59 @@ class SettingsContent extends StatelessWidget {
       widgets.add(const Divider());
     }
 
+    // Shop section
+    if (config.showShopSection && _hasShopItems()) {
+      widgets.add(_buildSectionHeader(context, l10n.shop));
+
+      if (config.showRemoveAds) {
+        widgets.add(const RemoveAdsTile());
+      }
+
+      if (config.showBundles) {
+        widgets.add(const SizedBox(height: 8));
+        widgets.add(
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+            child: Text(
+              l10n.bundles,
+              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+            ),
+          ),
+        );
+        widgets.add(
+          BundlePackCard(
+            productId: 'bundle_starter',
+            title: l10n.bundleStarterTitle,
+            description: l10n.bundleStarterDescription,
+          ),
+        );
+        widgets.add(
+          BundlePackCard(
+            productId: 'bundle_value',
+            title: l10n.bundleValueTitle,
+            description: l10n.bundleValueDescription,
+            isBestValue: true,
+          ),
+        );
+        widgets.add(
+          BundlePackCard(
+            productId: 'bundle_pro',
+            title: l10n.bundleProTitle,
+            description: l10n.bundleProDescription,
+          ),
+        );
+        widgets.add(const SizedBox(height: 8));
+      }
+
+      if (config.showRestorePurchases) {
+        widgets.add(const RestorePurchasesTile());
+      }
+
+      widgets.add(const Divider());
+    }
+
     // Custom sections before About
     if (config.customSectionsBeforeAbout != null) {
       widgets.addAll(config.customSectionsBeforeAbout!(context));
@@ -754,6 +866,12 @@ class SettingsContent extends StatelessWidget {
 
   bool _hasAdvancedItems() {
     return config.showResetToDefaults;
+  }
+
+  bool _hasShopItems() {
+    return config.showRemoveAds ||
+        config.showBundles ||
+        config.showRestorePurchases;
   }
 
   Widget _buildSectionHeader(BuildContext context, String title) {

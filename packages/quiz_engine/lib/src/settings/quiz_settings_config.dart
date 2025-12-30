@@ -49,6 +49,34 @@ class QuizSettingsConfig {
   /// using the service locator.
   final bool showDataExport;
 
+  /// Whether to show the Shop section.
+  ///
+  /// When enabled, shows:
+  /// - Remove Ads purchase option (if enabled)
+  /// - Bundle packs (if enabled)
+  /// - Restore Purchases button (if enabled)
+  ///
+  /// Requires [IAPService] to be available via [QuizServicesProvider].
+  final bool showShopSection;
+
+  /// Whether to show the Remove Ads purchase option.
+  ///
+  /// Only shown if [showShopSection] is also true.
+  /// Shows a tile to purchase "remove_ads" non-consumable product.
+  final bool showRemoveAds;
+
+  /// Whether to show bundle packs in the shop.
+  ///
+  /// Only shown if [showShopSection] is also true.
+  /// Shows starter, value, and pro bundle cards.
+  final bool showBundles;
+
+  /// Whether to show the Restore Purchases button.
+  ///
+  /// Only shown if [showShopSection] is also true.
+  /// Allows users to restore previous purchases.
+  final bool showRestorePurchases;
+
   /// Whether to show the app bar.
   final bool showAppBar;
 
@@ -76,6 +104,10 @@ class QuizSettingsConfig {
     this.showAdvancedSection = true,
     this.showResetToDefaults = true,
     this.showDataExport = true,
+    this.showShopSection = true,
+    this.showRemoveAds = true,
+    this.showBundles = true,
+    this.showRestorePurchases = true,
     this.showAppBar = true,
     this.title,
     this.customSections,
@@ -97,6 +129,10 @@ class QuizSettingsConfig {
         showAdvancedSection = false,
         showResetToDefaults = false,
         showDataExport = false,
+        showShopSection = false,
+        showRemoveAds = false,
+        showBundles = false,
+        showRestorePurchases = false,
         showAppBar = true,
         title = null,
         customSections = null,
@@ -117,6 +153,10 @@ class QuizSettingsConfig {
     bool? showAdvancedSection,
     bool? showResetToDefaults,
     bool? showDataExport,
+    bool? showShopSection,
+    bool? showRemoveAds,
+    bool? showBundles,
+    bool? showRestorePurchases,
     bool? showAppBar,
     String? title,
     List<Widget> Function(BuildContext context)? customSections,
@@ -138,6 +178,10 @@ class QuizSettingsConfig {
       showAdvancedSection: showAdvancedSection ?? this.showAdvancedSection,
       showResetToDefaults: showResetToDefaults ?? this.showResetToDefaults,
       showDataExport: showDataExport ?? this.showDataExport,
+      showShopSection: showShopSection ?? this.showShopSection,
+      showRemoveAds: showRemoveAds ?? this.showRemoveAds,
+      showBundles: showBundles ?? this.showBundles,
+      showRestorePurchases: showRestorePurchases ?? this.showRestorePurchases,
       showAppBar: showAppBar ?? this.showAppBar,
       title: title ?? this.title,
       customSections: customSections ?? this.customSections,

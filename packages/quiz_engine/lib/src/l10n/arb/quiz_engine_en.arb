@@ -2038,5 +2038,113 @@
   "dataAndPrivacy": "Data & Privacy",
   "@dataAndPrivacy": {
     "description": "Data & Privacy section header in settings"
+  },
+
+  "shop": "Shop",
+  "@shop": {
+    "description": "Shop section header in settings"
+  },
+
+  "removeAds": "Remove Ads",
+  "@removeAds": {
+    "description": "Remove ads purchase title"
+  },
+
+  "removeAdsDescription": "Enjoy ad-free gameplay forever",
+  "@removeAdsDescription": {
+    "description": "Remove ads purchase description"
+  },
+
+  "removeAdsPurchased": "Ads Removed",
+  "@removeAdsPurchased": {
+    "description": "Status when remove ads is already purchased"
+  },
+
+  "removeAdsPurchasedDescription": "Thank you for your purchase!",
+  "@removeAdsPurchasedDescription": {
+    "description": "Description when remove ads is already purchased"
+  },
+
+  "bundles": "Bundles",
+  "@bundles": {
+    "description": "Bundles subsection title"
+  },
+
+  "bundleStarterTitle": "Starter Pack",
+  "@bundleStarterTitle": {
+    "description": "Starter bundle title"
+  },
+
+  "bundleStarterDescription": "5 lives + 5 fifty-fifty + 5 skips",
+  "@bundleStarterDescription": {
+    "description": "Starter bundle description"
+  },
+
+  "bundleValueTitle": "Value Pack",
+  "@bundleValueTitle": {
+    "description": "Value bundle title"
+  },
+
+  "bundleValueDescription": "15 lives + 15 fifty-fifty + 15 skips",
+  "@bundleValueDescription": {
+    "description": "Value bundle description"
+  },
+
+  "bundleProTitle": "Pro Pack",
+  "@bundleProTitle": {
+    "description": "Pro bundle title"
+  },
+
+  "bundleProDescription": "50 lives + 50 fifty-fifty + 50 skips",
+  "@bundleProDescription": {
+    "description": "Pro bundle description"
+  },
+
+  "purchasing": "Purchasing...",
+  "@purchasing": {
+    "description": "Loading state while purchasing"
+  },
+
+  "restoring": "Restoring...",
+  "@restoring": {
+    "description": "Loading state while restoring purchases"
+  },
+
+  "restorePurchasesDescription": "Restore previous purchases on this device",
+  "@restorePurchasesDescription": {
+    "description": "Restore purchases description"
+  },
+
+  "storeUnavailable": "Store unavailable",
+  "@storeUnavailable": {
+    "description": "Message when store is not available"
+  },
+
+  "storeUnavailableDescription": "Unable to connect to the store. Please check your connection.",
+  "@storeUnavailableDescription": {
+    "description": "Description when store is unavailable"
+  },
+
+  "noPurchasesToRestore": "No purchases to restore",
+  "@noPurchasesToRestore": {
+    "description": "Message when no purchases found to restore"
+  },
+
+  "purchasesRestoredCount": "{count, plural, =1{1 purchase restored} other{{count} purchases restored}}",
+  "@purchasesRestoredCount": {
+    "description": "Message showing number of purchases restored",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "buy": "Buy",
+  "@buy": {
+    "description": "Buy button label"
+  },
+
+  "purchased": "Purchased",
+  "@purchased": {
+    "description": "Status label for purchased items"
   }
 }

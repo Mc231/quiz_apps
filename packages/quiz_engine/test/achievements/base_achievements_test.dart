@@ -812,6 +812,50 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get purchaseNotAvailable => 'This product is not available.';
   @override
   String get purchaseAlreadyOwned => 'You already own this item.';
+
+  // Shop section
+  @override
+  String get shop => 'Shop';
+  @override
+  String get removeAds => 'Remove Ads';
+  @override
+  String get removeAdsDescription => 'Enjoy ad-free gameplay forever';
+  @override
+  String get removeAdsPurchased => 'Ads Removed';
+  @override
+  String get removeAdsPurchasedDescription => 'Thank you for your purchase!';
+  @override
+  String get bundles => 'Bundles';
+  @override
+  String get bundleStarterTitle => 'Starter Pack';
+  @override
+  String get bundleStarterDescription => '5 lives + 5 fifty-fifty + 5 skips';
+  @override
+  String get bundleValueTitle => 'Value Pack';
+  @override
+  String get bundleValueDescription => '15 lives + 15 fifty-fifty + 15 skips';
+  @override
+  String get bundleProTitle => 'Pro Pack';
+  @override
+  String get bundleProDescription => '50 lives + 50 fifty-fifty + 50 skips';
+  @override
+  String get purchasing => 'Purchasing...';
+  @override
+  String get restoring => 'Restoring...';
+  @override
+  String get restorePurchasesDescription => 'Restore previous purchases';
+  @override
+  String get storeUnavailable => 'Store unavailable';
+  @override
+  String get storeUnavailableDescription => 'Unable to connect to the store.';
+  @override
+  String get noPurchasesToRestore => 'No purchases to restore';
+  @override
+  String purchasesRestoredCount(int count) => '$count purchases restored';
+  @override
+  String get buy => 'Buy';
+  @override
+  String get purchased => 'Purchased';
 }
 
 void main() {
