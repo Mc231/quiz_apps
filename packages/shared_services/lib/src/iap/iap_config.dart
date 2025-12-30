@@ -204,6 +204,24 @@ class IAPConfig {
   bool isSubscription(String productId) =>
       subscriptionProducts.any((p) => p.id == productId);
 
+  /// Check if a product ID is for removing ads.
+  ///
+  /// Returns true if the product ID contains 'remove_ads' (case-insensitive).
+  bool isRemoveAdsProduct(String productId) =>
+      productId.toLowerCase().contains('remove_ads');
+
+  /// Gets the product ID for the remove_ads product.
+  ///
+  /// Returns null if no remove_ads product is configured.
+  String? get removeAdsProductId {
+    for (final product in nonConsumableProducts) {
+      if (isRemoveAdsProduct(product.id)) {
+        return product.id;
+      }
+    }
+    return null;
+  }
+
   /// Creates a copy with the given fields replaced.
   IAPConfig copyWith({
     List<IAPProduct>? consumableProducts,
