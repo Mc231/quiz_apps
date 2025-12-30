@@ -136,6 +136,7 @@ class FlagsQuizAppProvider {
       screenAnalyticsService: screenAnalyticsService,
       quizAnalyticsService: quizAnalyticsService,
       resourceManager: resourceManager,
+      adsService: analyticsAdsService,
     );
 
     return FlagsQuizDependencies(
