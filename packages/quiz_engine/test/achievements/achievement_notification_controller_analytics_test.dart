@@ -38,6 +38,7 @@ Widget wrapWithServicesAndOverlay(
               config: ResourceConfig.standard(),
               repository: InMemoryResourceRepository(),
             ),
+            adsService: NoAdsService(),
           ),
           child: const Scaffold(body: Text('Test')),
         );
