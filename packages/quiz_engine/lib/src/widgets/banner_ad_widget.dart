@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../services/quiz_services_context.dart';
+
 /// Widget that displays a banner ad.
 ///
 /// This widget handles:
@@ -10,7 +12,18 @@ import 'package:shared_services/shared_services.dart';
 /// - Hiding when ads are not available
 /// - Respecting the ad service state (enabled/disabled)
 ///
-/// Example usage:
+/// The [adsService] parameter is optional. If not provided, the widget
+/// will attempt to get the service from [QuizServicesProvider] via context.
+///
+/// Example usage with context:
+/// ```dart
+/// // When QuizServicesProvider is in the widget tree
+/// BannerAdWidget(
+///   placement: AdPlacement.bannerBottom,
+/// )
+/// ```
+///
+/// Example usage with explicit service:
 /// ```dart
 /// BannerAdWidget(
 ///   adsService: adsService,
@@ -24,23 +37,27 @@ import 'package:shared_services/shared_services.dart';
 ///   body: Column(
 ///     children: [
 ///       Expanded(child: content),
-///       BannerAdWidget(adsService: adsService),
+///       const BannerAdWidget(),
 ///     ],
 ///   ),
 /// )
 /// ```
 class BannerAdWidget extends StatefulWidget {
   /// Creates a [BannerAdWidget].
+  ///
+  /// If [adsService] is not provided, it will be obtained from context.
   const BannerAdWidget({
     super.key,
-    required this.adsService,
+    this.adsService,
     this.placement = AdPlacement.bannerBottom,
     this.showPlaceholder = false,
     this.placeholderHeight = 50.0,
   });
 
   /// The ads service to use for loading and displaying ads.
-  final AdsService adsService;
+  ///
+  /// If null, the service will be obtained from [QuizServicesProvider] via context.
+  final AdsService? adsService;
 
   /// The placement for analytics tracking.
   final AdPlacement placement;
@@ -59,34 +76,53 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
   bool _isLoading = false;
   bool _isLoaded = false;
   BannerAd? _bannerAd;
+  AdsService? _resolvedAdsService;
+
+  /// Gets the ads service from widget or context.
+  AdsService? get _adsService {
+    if (widget.adsService != null) {
+      return widget.adsService;
+    }
+    // Cache resolved service to avoid repeated lookups
+    _resolvedAdsService ??= context.maybeServices?.adsService;
+    return _resolvedAdsService;
+  }
 
   @override
   void initState() {
     super.initState();
-    _loadAd();
+    // Defer loading to after first frame when context is available
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadAd();
+    });
   }
 
   @override
   void dispose() {
-    widget.adsService.disposeBannerAd();
+    _adsService?.disposeBannerAd();
     super.dispose();
   }
 
   Future<void> _loadAd() async {
-    if (!widget.adsService.isEnabled || !widget.adsService.isInitialized) {
+    final adsService = _adsService;
+    if (adsService == null) {
+      return;
+    }
+
+    if (!adsService.isEnabled || !adsService.isInitialized) {
       return;
     }
 
     setState(() => _isLoading = true);
 
-    final loaded = await widget.adsService.loadBannerAd();
+    final loaded = await adsService.loadBannerAd();
 
     if (mounted) {
       setState(() {
         _isLoading = false;
         _isLoaded = loaded;
         if (loaded) {
-          _bannerAd = widget.adsService.getBannerAdWidget() as BannerAd?;
+          _bannerAd = adsService.getBannerAdWidget() as BannerAd?;
         }
       });
     }
@@ -94,8 +130,10 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // Don't show anything if ads are disabled
-    if (!widget.adsService.isEnabled) {
+    final adsService = _adsService;
+
+    // Don't show anything if no ads service or ads are disabled
+    if (adsService == null || !adsService.isEnabled) {
       return const SizedBox.shrink();
     }
 
@@ -134,15 +172,17 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 /// Use this when you want to ensure consistent layout whether or not
 /// ads are displayed.
 ///
-/// Example usage:
+/// The [adsService] parameter is optional. If not provided, the widget
+/// will attempt to get the service from [QuizServicesProvider] via context.
+///
+/// Example usage with context:
 /// ```dart
 /// Scaffold(
 ///   body: Column(
 ///     children: [
 ///       Expanded(child: content),
-///       BannerAdContainer(
-///         adsService: adsService,
-///         child: BannerAdWidget(adsService: adsService),
+///       const BannerAdContainer(
+///         child: BannerAdWidget(),
 ///       ),
 ///     ],
 ///   ),
@@ -150,16 +190,20 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 /// ```
 class BannerAdContainer extends StatelessWidget {
   /// Creates a [BannerAdContainer].
+  ///
+  /// If [adsService] is not provided, it will be obtained from context.
   const BannerAdContainer({
     super.key,
-    required this.adsService,
+    this.adsService,
     required this.child,
     this.height = 50.0,
     this.backgroundColor,
   });
 
   /// The ads service to check if ads are enabled.
-  final AdsService adsService;
+  ///
+  /// If null, the service will be obtained from [QuizServicesProvider] via context.
+  final AdsService? adsService;
 
   /// The child widget (typically a [BannerAdWidget]).
   final Widget child;
@@ -172,8 +216,10 @@ class BannerAdContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Don't reserve space if ads are disabled
-    if (!adsService.isEnabled) {
+    final resolvedAdsService = adsService ?? context.maybeServices?.adsService;
+
+    // Don't reserve space if no ads service or ads are disabled
+    if (resolvedAdsService == null || !resolvedAdsService.isEnabled) {
       return const SizedBox.shrink();
     }
 
