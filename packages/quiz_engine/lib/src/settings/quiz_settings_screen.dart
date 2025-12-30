@@ -231,27 +231,17 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
             ),
           ),
         );
-        widgets.add(
-          BundlePackCard(
-            productId: 'bundle_starter',
-            title: l10n.bundleStarterTitle,
-            description: l10n.bundleStarterDescription,
-          ),
-        );
-        widgets.add(
-          BundlePackCard(
-            productId: 'bundle_value',
-            title: l10n.bundleValueTitle,
-            description: l10n.bundleValueDescription,
-          ),
-        );
-        widgets.add(
-          BundlePackCard(
-            productId: 'bundle_pro',
-            title: l10n.bundleProTitle,
-            description: l10n.bundleProDescription,
-          ),
-        );
+        // Build bundle cards dynamically from config
+        final bundlePacks = context.resourceManager.config.bundlePacks;
+        for (final bundle in bundlePacks) {
+          widgets.add(
+            BundlePackCard(
+              productId: bundle.productId,
+              title: bundle.name,
+              description: bundle.description ?? '',
+            ),
+          );
+        }
         widgets.add(const SizedBox(height: 8));
       }
 
@@ -746,27 +736,17 @@ class SettingsContent extends StatelessWidget {
             ),
           ),
         );
-        widgets.add(
-          BundlePackCard(
-            productId: 'bundle_starter',
-            title: l10n.bundleStarterTitle,
-            description: l10n.bundleStarterDescription,
-          ),
-        );
-        widgets.add(
-          BundlePackCard(
-            productId: 'bundle_value',
-            title: l10n.bundleValueTitle,
-            description: l10n.bundleValueDescription,
-          ),
-        );
-        widgets.add(
-          BundlePackCard(
-            productId: 'bundle_pro',
-            title: l10n.bundleProTitle,
-            description: l10n.bundleProDescription,
-          ),
-        );
+        // Build bundle cards dynamically from config
+        final bundlePacks = context.resourceManager.config.bundlePacks;
+        for (final bundle in bundlePacks) {
+          widgets.add(
+            BundlePackCard(
+              productId: bundle.productId,
+              title: bundle.name,
+              description: bundle.description ?? '',
+            ),
+          );
+        }
         widgets.add(const SizedBox(height: 8));
       }
 
