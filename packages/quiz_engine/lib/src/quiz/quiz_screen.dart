@@ -357,19 +357,19 @@ class QuizScreenState extends State<QuizScreen> {
     ResourceType resourceType,
     ResourceManager manager,
   ) async {
-    final restored = await RestoreResourceDialog.show(
+    final restoredAmount = await RestoreResourceDialog.show(
       context: context,
       resourceType: resourceType,
       manager: manager,
     );
 
-    if (restored && mounted) {
+    if (restoredAmount != null && restoredAmount > 0 && mounted) {
       // Sync QuizBloc hint state with ResourceManager
-      // This updates the UI immediately after ad watch
+      // This updates the UI immediately after ad watch or purchase
       if (resourceType is FiftyFiftyResource) {
-        _bloc.addRestoredHint(HintType.fiftyFifty);
+        _bloc.addRestoredHint(HintType.fiftyFifty, restoredAmount);
       } else if (resourceType is SkipResource) {
-        _bloc.addRestoredHint(HintType.skip);
+        _bloc.addRestoredHint(HintType.skip, restoredAmount);
       }
       // Lives are handled via QuizBloc._progressTracker, not hints
       // The UI will update automatically when the next state is emitted

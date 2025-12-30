@@ -23,8 +23,8 @@ class PurchaseResourceSheet extends StatefulWidget {
   /// The resource manager for handling purchases.
   final ResourceManager manager;
 
-  /// Called when a purchase is successful.
-  final VoidCallback? onPurchased;
+  /// Called when a purchase is successful with the amount purchased.
+  final void Function(int amount)? onPurchased;
 
   /// Creates a [PurchaseResourceSheet].
   const PurchaseResourceSheet({
@@ -36,13 +36,13 @@ class PurchaseResourceSheet extends StatefulWidget {
 
   /// Shows the purchase resource sheet.
   ///
-  /// Returns `true` if a purchase was successful, `false` otherwise.
-  static Future<bool> show({
+  /// Returns the amount purchased if successful, `null` otherwise.
+  static Future<int?> show({
     required BuildContext context,
     required ResourceType resourceType,
     required ResourceManager manager,
   }) async {
-    bool purchased = false;
+    int? purchasedAmount;
 
     await showModalBottomSheet<void>(
       context: context,
@@ -53,13 +53,13 @@ class PurchaseResourceSheet extends StatefulWidget {
       builder: (_) => PurchaseResourceSheet(
         resourceType: resourceType,
         manager: manager,
-        onPurchased: () {
-          purchased = true;
+        onPurchased: (amount) {
+          purchasedAmount = amount;
         },
       ),
     );
 
-    return purchased;
+    return purchasedAmount;
   }
 
   @override
@@ -276,7 +276,7 @@ class _PurchaseResourceSheetState extends State<PurchaseResourceSheet> {
 
       switch (result) {
         case PurchaseResultSuccess():
-          widget.onPurchased?.call();
+          widget.onPurchased?.call(pack.amount);
           Navigator.of(context).pop();
 
           ScaffoldMessenger.of(context).showSnackBar(

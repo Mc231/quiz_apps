@@ -30,8 +30,8 @@ class RestoreResourceDialog extends StatefulWidget {
   /// The resource manager for handling restoration.
   final ResourceManager manager;
 
-  /// Called when resource is successfully restored.
-  final VoidCallback? onRestored;
+  /// Called when resource is successfully restored with the amount added.
+  final void Function(int amount)? onRestored;
 
   /// Whether the device is currently online.
   ///
@@ -49,14 +49,14 @@ class RestoreResourceDialog extends StatefulWidget {
 
   /// Shows the restore resource dialog.
   ///
-  /// Returns `true` if resource was restored, `false` otherwise.
-  static Future<bool> show({
+  /// Returns the amount restored if successful, `null` otherwise.
+  static Future<int?> show({
     required BuildContext context,
     required ResourceType resourceType,
     required ResourceManager manager,
     bool isOnline = true,
   }) async {
-    bool restored = false;
+    int? restoredAmount;
 
     await showDialog<void>(
       context: context,
@@ -64,13 +64,13 @@ class RestoreResourceDialog extends StatefulWidget {
         resourceType: resourceType,
         manager: manager,
         isOnline: isOnline,
-        onRestored: () {
-          restored = true;
+        onRestored: (amount) {
+          restoredAmount = amount;
         },
       ),
     );
 
-    return restored;
+    return restoredAmount;
   }
 
   @override
@@ -235,7 +235,8 @@ class _RestoreResourceDialogState extends State<RestoreResourceDialog> {
       if (!mounted) return;
 
       if (success) {
-        widget.onRestored?.call();
+        final adReward = widget.manager.config.getAdReward(widget.resourceType);
+        widget.onRestored?.call(adReward);
         Navigator.of(context).pop();
 
         // Show success message
@@ -266,7 +267,7 @@ class _RestoreResourceDialogState extends State<RestoreResourceDialog> {
   }
 
   Future<void> _showPurchaseSheet() async {
-    final purchased = await PurchaseResourceSheet.show(
+    final purchasedAmount = await PurchaseResourceSheet.show(
       context: context,
       resourceType: widget.resourceType,
       manager: widget.manager,
@@ -274,8 +275,8 @@ class _RestoreResourceDialogState extends State<RestoreResourceDialog> {
 
     if (!mounted) return;
 
-    if (purchased) {
-      widget.onRestored?.call();
+    if (purchasedAmount != null) {
+      widget.onRestored?.call(purchasedAmount);
       Navigator.of(context).pop();
     }
   }

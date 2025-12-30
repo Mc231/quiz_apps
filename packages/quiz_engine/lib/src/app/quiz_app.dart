@@ -709,14 +709,14 @@ class _QuizAppState extends State<QuizApp> {
 
       // If no lives available, show restore dialog
       if (!livesAvailable && context.mounted) {
-        final restored = await RestoreResourceDialog.show(
+        final restoredAmount = await RestoreResourceDialog.show(
           context: context,
           resourceType: ResourceType.lives(),
           manager: resourceManager,
         );
 
         // If user didn't restore lives, don't start the quiz
-        if (!restored) {
+        if (restoredAmount == null) {
           return;
         }
       }
