@@ -138,7 +138,7 @@ class FlagsQuizAppProvider {
         id: 'lives_small',
         type: LivesResource(),
         amount: 5,
-        productId: 'lives_small', // Matches IAPConfig.test()
+        productId: 'lives_small',
       ),
       const ResourcePack(
         id: 'lives_medium',
@@ -153,25 +153,45 @@ class FlagsQuizAppProvider {
         amount: 50,
         productId: 'lives_large',
       ),
-      // Hint packs (50/50)
+      // 50/50 Hint packs (eliminate 2 wrong answers)
       const ResourcePack(
-        id: 'hints_small',
+        id: 'fifty_fifty_small',
         type: FiftyFiftyResource(),
-        amount: 10,
-        productId: 'hints_small',
+        amount: 5,
+        productId: 'fifty_fifty_small',
       ),
       const ResourcePack(
-        id: 'hints_medium',
+        id: 'fifty_fifty_medium',
         type: FiftyFiftyResource(),
-        amount: 30,
-        productId: 'hints_medium',
+        amount: 15,
+        productId: 'fifty_fifty_medium',
         isBestValue: true,
       ),
       const ResourcePack(
-        id: 'hints_large',
+        id: 'fifty_fifty_large',
         type: FiftyFiftyResource(),
-        amount: 100,
-        productId: 'hints_large',
+        amount: 50,
+        productId: 'fifty_fifty_large',
+      ),
+      // Skip packs (skip a question)
+      const ResourcePack(
+        id: 'skips_small',
+        type: SkipResource(),
+        amount: 5,
+        productId: 'skips_small',
+      ),
+      const ResourcePack(
+        id: 'skips_medium',
+        type: SkipResource(),
+        amount: 15,
+        productId: 'skips_medium',
+        isBestValue: true,
+      ),
+      const ResourcePack(
+        id: 'skips_large',
+        type: SkipResource(),
+        amount: 50,
+        productId: 'skips_large',
       ),
     ];
 

@@ -117,16 +117,25 @@ class MockIAPService implements IAPService {
 
     // Create mock products with simulated prices
     final mockPrices = {
+      // Lives
       'lives_small': 0.99,
       'lives_medium': 1.99,
       'lives_large': 4.99,
-      'hints_small': 0.99,
-      'hints_medium': 1.99,
-      'hints_large': 4.99,
+      // 50/50 Hints
+      'fifty_fifty_small': 0.99,
+      'fifty_fifty_medium': 1.99,
+      'fifty_fifty_large': 4.99,
+      // Skips
+      'skips_small': 0.99,
+      'skips_medium': 1.99,
+      'skips_large': 4.99,
+      // Bundles
       'bundle_starter': 1.49,
       'bundle_value': 3.49,
       'bundle_pro': 7.99,
+      // Non-consumable
       'remove_ads': 2.99,
+      // Subscriptions
       'premium_monthly': 1.99,
       'premium_yearly': 9.99,
     };

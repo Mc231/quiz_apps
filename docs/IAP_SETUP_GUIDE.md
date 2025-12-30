@@ -27,21 +27,29 @@ Based on Sprint 9.3, the following products should be configured:
 | `com.flagsquiz.lives_medium` | 15 Lives | $1.99 | 15 |
 | `com.flagsquiz.lives_large` | 50 Lives | $4.99 | 50 |
 
-### Consumables (Hints)
+### Consumables (50/50 Hints)
 
 | Product ID | Display Name | Price (USD) | Quantity |
 |------------|--------------|-------------|----------|
-| `com.flagsquiz.hints_small` | 10 Hints | $0.99 | 10 |
-| `com.flagsquiz.hints_medium` | 30 Hints | $1.99 | 30 |
-| `com.flagsquiz.hints_large` | 100 Hints | $4.99 | 100 |
+| `com.flagsquiz.fifty_fifty_small` | 5 50/50 Hints | $0.99 | 5 |
+| `com.flagsquiz.fifty_fifty_medium` | 15 50/50 Hints | $1.99 | 15 |
+| `com.flagsquiz.fifty_fifty_large` | 50 50/50 Hints | $4.99 | 50 |
+
+### Consumables (Skips)
+
+| Product ID | Display Name | Price (USD) | Quantity |
+|------------|--------------|-------------|----------|
+| `com.flagsquiz.skips_small` | 5 Skips | $0.99 | 5 |
+| `com.flagsquiz.skips_medium` | 15 Skips | $1.99 | 15 |
+| `com.flagsquiz.skips_large` | 50 Skips | $4.99 | 50 |
 
 ### Consumables (Bundles)
 
 | Product ID | Display Name | Price (USD) | Contents |
 |------------|--------------|-------------|----------|
-| `com.flagsquiz.bundle_starter` | Starter Pack | $1.49 | 5 lives + 10 hints |
-| `com.flagsquiz.bundle_value` | Value Pack | $3.49 | 15 lives + 30 hints |
-| `com.flagsquiz.bundle_pro` | Pro Pack | $7.99 | 50 lives + 100 hints |
+| `com.flagsquiz.bundle_starter` | Starter Pack | $1.49 | 5 lives + 5 fifty-fifty + 5 skips |
+| `com.flagsquiz.bundle_value` | Value Pack | $3.49 | 15 lives + 15 fifty-fifty + 15 skips |
+| `com.flagsquiz.bundle_pro` | Pro Pack | $7.99 | 50 lives + 50 fifty-fifty + 50 skips |
 
 ### Non-Consumable
 
@@ -235,43 +243,62 @@ IAPConfig createProductionIAPConfig() {
         title: '50 Lives',
         description: 'Get 50 extra lives',
       ),
-      // Hints
+      // 50/50 Hints
       const IAPProduct.definition(
-        id: 'com.flagsquiz.hints_small',
+        id: 'com.flagsquiz.fifty_fifty_small',
         type: IAPProductType.consumable,
-        title: '10 Hints',
-        description: 'Get 10 hints',
+        title: '5 50/50 Hints',
+        description: 'Get 5 fifty-fifty hints',
       ),
       const IAPProduct.definition(
-        id: 'com.flagsquiz.hints_medium',
+        id: 'com.flagsquiz.fifty_fifty_medium',
         type: IAPProductType.consumable,
-        title: '30 Hints',
-        description: 'Get 30 hints',
+        title: '15 50/50 Hints',
+        description: 'Get 15 fifty-fifty hints',
       ),
       const IAPProduct.definition(
-        id: 'com.flagsquiz.hints_large',
+        id: 'com.flagsquiz.fifty_fifty_large',
         type: IAPProductType.consumable,
-        title: '100 Hints',
-        description: 'Get 100 hints',
+        title: '50 50/50 Hints',
+        description: 'Get 50 fifty-fifty hints',
+      ),
+      // Skips
+      const IAPProduct.definition(
+        id: 'com.flagsquiz.skips_small',
+        type: IAPProductType.consumable,
+        title: '5 Skips',
+        description: 'Get 5 skips',
+      ),
+      const IAPProduct.definition(
+        id: 'com.flagsquiz.skips_medium',
+        type: IAPProductType.consumable,
+        title: '15 Skips',
+        description: 'Get 15 skips',
+      ),
+      const IAPProduct.definition(
+        id: 'com.flagsquiz.skips_large',
+        type: IAPProductType.consumable,
+        title: '50 Skips',
+        description: 'Get 50 skips',
       ),
       // Bundles
       const IAPProduct.definition(
         id: 'com.flagsquiz.bundle_starter',
         type: IAPProductType.consumable,
         title: 'Starter Pack',
-        description: '5 lives + 10 hints',
+        description: '5 lives + 5 fifty-fifty + 5 skips',
       ),
       const IAPProduct.definition(
         id: 'com.flagsquiz.bundle_value',
         type: IAPProductType.consumable,
         title: 'Value Pack',
-        description: '15 lives + 30 hints',
+        description: '15 lives + 15 fifty-fifty + 15 skips',
       ),
       const IAPProduct.definition(
         id: 'com.flagsquiz.bundle_pro',
         type: IAPProductType.consumable,
         title: 'Pro Pack',
-        description: '50 lives + 100 hints',
+        description: '50 lives + 50 fifty-fifty + 50 skips',
       ),
     ],
     nonConsumableProducts: [
@@ -332,27 +359,47 @@ List<ResourcePack> createProductionResourcePacks() {
       amount: 50,
       productId: 'com.flagsquiz.lives_large',
     ),
-    // Hint packs
+    // 50/50 Hint packs (eliminate 2 wrong answers)
     ResourcePack(
-      id: 'hints_small',
+      id: 'fifty_fifty_small',
       type: FiftyFiftyResource(),
-      amount: 10,
-      productId: 'com.flagsquiz.hints_small',
+      amount: 5,
+      productId: 'com.flagsquiz.fifty_fifty_small',
     ),
     ResourcePack(
-      id: 'hints_medium',
+      id: 'fifty_fifty_medium',
       type: FiftyFiftyResource(),
-      amount: 30,
-      productId: 'com.flagsquiz.hints_medium',
+      amount: 15,
+      productId: 'com.flagsquiz.fifty_fifty_medium',
       isBestValue: true,
     ),
     ResourcePack(
-      id: 'hints_large',
+      id: 'fifty_fifty_large',
       type: FiftyFiftyResource(),
-      amount: 100,
-      productId: 'com.flagsquiz.hints_large',
+      amount: 50,
+      productId: 'com.flagsquiz.fifty_fifty_large',
     ),
-    // Bundle packs (grant both lives and hints)
+    // Skip packs (skip a question)
+    ResourcePack(
+      id: 'skips_small',
+      type: SkipResource(),
+      amount: 5,
+      productId: 'com.flagsquiz.skips_small',
+    ),
+    ResourcePack(
+      id: 'skips_medium',
+      type: SkipResource(),
+      amount: 15,
+      productId: 'com.flagsquiz.skips_medium',
+      isBestValue: true,
+    ),
+    ResourcePack(
+      id: 'skips_large',
+      type: SkipResource(),
+      amount: 50,
+      productId: 'com.flagsquiz.skips_large',
+    ),
+    // Bundle packs (grant lives, fifty-fifty, and skips)
     // Note: Bundles need special handling in ResourceManager
     ResourcePack(
       id: 'bundle_starter',
@@ -453,6 +500,7 @@ static Future<FlagsQuizDependencies> _initialize() async {
 /// Test resource packs matching IAPConfig.test() product IDs
 static List<ResourcePack> _createTestResourcePacks() {
   return const [
+    // Lives
     ResourcePack(
       id: 'lives_small',
       type: LivesResource(),
@@ -472,24 +520,45 @@ static List<ResourcePack> _createTestResourcePacks() {
       amount: 50,
       productId: 'lives_large',
     ),
+    // 50/50 Hints
     ResourcePack(
-      id: 'hints_small',
+      id: 'fifty_fifty_small',
       type: FiftyFiftyResource(),
-      amount: 10,
-      productId: 'hints_small',
+      amount: 5,
+      productId: 'fifty_fifty_small',
     ),
     ResourcePack(
-      id: 'hints_medium',
+      id: 'fifty_fifty_medium',
       type: FiftyFiftyResource(),
-      amount: 30,
-      productId: 'hints_medium',
+      amount: 15,
+      productId: 'fifty_fifty_medium',
       isBestValue: true,
     ),
     ResourcePack(
-      id: 'hints_large',
+      id: 'fifty_fifty_large',
       type: FiftyFiftyResource(),
-      amount: 100,
-      productId: 'hints_large',
+      amount: 50,
+      productId: 'fifty_fifty_large',
+    ),
+    // Skips
+    ResourcePack(
+      id: 'skips_small',
+      type: SkipResource(),
+      amount: 5,
+      productId: 'skips_small',
+    ),
+    ResourcePack(
+      id: 'skips_medium',
+      type: SkipResource(),
+      amount: 15,
+      productId: 'skips_medium',
+      isBestValue: true,
+    ),
+    ResourcePack(
+      id: 'skips_large',
+      type: SkipResource(),
+      amount: 50,
+      productId: 'skips_large',
     ),
   ];
 }
