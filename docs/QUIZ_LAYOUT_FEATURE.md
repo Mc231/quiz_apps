@@ -337,72 +337,258 @@ class AudioQuestionTextAnswersLayout extends QuizLayoutConfig {
 
 /// Mixed/Dynamic layout: Randomly alternates between specified layouts.
 ///
-/// This layout enables variety within a single quiz session by randomly
-/// selecting from a list of allowed layouts for each question.
+/// This layout enables variety within a single quiz session by dynamically
+/// selecting from a list of allowed layouts for each question based on strategy.
 class MixedLayout extends QuizLayoutConfig {
-  /// The list of layouts to randomly choose from.
+  /// The list of layouts to choose from.
   /// Must contain at least 2 layouts for meaningful mixing.
   final List<QuizLayoutConfig> allowedLayouts;
 
   /// Strategy for selecting layouts during the quiz.
+  /// Defaults to random selection.
   final MixedLayoutStrategy strategy;
 
   const MixedLayout({
     required this.allowedLayouts,
-    this.strategy = MixedLayoutStrategy.random,
+    this.strategy = const RandomStrategy(),
   });
 
-  /// Selects a layout for a given question index.
-  QuizLayoutConfig selectLayout(int questionIndex, [int? seed]) {
-    return switch (strategy) {
-      MixedLayoutStrategy.random => _randomLayout(seed),
-      MixedLayoutStrategy.alternating => _alternatingLayout(questionIndex),
-      MixedLayoutStrategy.weighted => _weightedLayout(seed),
-    };
-  }
-
-  QuizLayoutConfig _randomLayout(int? seed) {
-    final random = seed != null ? Random(seed) : Random();
-    return allowedLayouts[random.nextInt(allowedLayouts.length)];
-  }
-
-  QuizLayoutConfig _alternatingLayout(int questionIndex) {
-    return allowedLayouts[questionIndex % allowedLayouts.length];
-  }
-
-  QuizLayoutConfig _weightedLayout(int? seed) {
-    // For now, same as random. Could be extended with weights.
-    return _randomLayout(seed);
+  /// Selects a layout for a given question index using the configured strategy.
+  QuizLayoutConfig selectLayout(int questionIndex) {
+    final index = strategy.selectIndex(questionIndex, allowedLayouts.length);
+    return allowedLayouts[index];
   }
 
   @override
   Map<String, dynamic> toMap() => {
     'type': 'mixed',
     'allowedLayouts': allowedLayouts.map((l) => l.toMap()).toList(),
-    'strategy': strategy.name,
+    'strategy': strategy.toMap(),
   };
 }
 
 /// Strategy for selecting layouts in MixedLayout.
-enum MixedLayoutStrategy {
+///
+/// Each strategy can carry its own configuration parameters.
+sealed class MixedLayoutStrategy {
+  const MixedLayoutStrategy();
+
   /// Randomly select a layout for each question.
-  random,
+  /// Optionally provide a seed for reproducible results.
+  factory MixedLayoutStrategy.random({int? seed}) = RandomStrategy;
 
-  /// Alternate through layouts in order (1, 2, 1, 2, ...).
-  alternating,
+  /// Alternate through layouts in order (0, 1, 2, 0, 1, 2, ...).
+  /// Optionally specify which layout index to start with.
+  factory MixedLayoutStrategy.alternating({int startIndex}) = AlternatingStrategy;
 
-  /// Weighted random selection (future: allow specifying weights).
-  weighted,
+  /// Weighted random selection - layouts with higher weights are picked more often.
+  /// Weights correspond to allowedLayouts by index.
+  factory MixedLayoutStrategy.weighted({
+    required List<double> weights,
+    int? seed,
+  }) = WeightedStrategy;
+
+  /// Selects a layout index based on the strategy.
+  int selectIndex(int questionIndex, int layoutCount);
+
+  /// Convert to JSON-compatible map.
+  Map<String, dynamic> toMap();
 }
 
-/// Image answer size options for responsive layouts.
-enum ImageAnswerSize {
-  /// Small images (good for 4+ options)
-  small,
-  /// Medium images (default, good for 4 options)
-  medium,
-  /// Large images (good for 2-3 options)
-  large,
+/// Random strategy: each question randomly picks a layout.
+class RandomStrategy extends MixedLayoutStrategy {
+  /// Optional seed for reproducible random selection.
+  final int? seed;
+
+  const RandomStrategy({this.seed});
+
+  @override
+  int selectIndex(int questionIndex, int layoutCount) {
+    final random = seed != null ? Random(seed! + questionIndex) : Random();
+    return random.nextInt(layoutCount);
+  }
+
+  @override
+  Map<String, dynamic> toMap() => {
+    'type': 'random',
+    if (seed != null) 'seed': seed,
+  };
+}
+
+/// Alternating strategy: cycles through layouts in order.
+class AlternatingStrategy extends MixedLayoutStrategy {
+  /// Which layout index to start with (default: 0).
+  final int startIndex;
+
+  const AlternatingStrategy({this.startIndex = 0});
+
+  @override
+  int selectIndex(int questionIndex, int layoutCount) {
+    return (startIndex + questionIndex) % layoutCount;
+  }
+
+  @override
+  Map<String, dynamic> toMap() => {
+    'type': 'alternating',
+    'startIndex': startIndex,
+  };
+}
+
+/// Weighted strategy: layouts with higher weights are selected more often.
+class WeightedStrategy extends MixedLayoutStrategy {
+  /// Weights for each layout (must match allowedLayouts.length).
+  /// Higher weight = more likely to be selected.
+  final List<double> weights;
+
+  /// Optional seed for reproducible random selection.
+  final int? seed;
+
+  const WeightedStrategy({required this.weights, this.seed});
+
+  @override
+  int selectIndex(int questionIndex, int layoutCount) {
+    assert(weights.length == layoutCount, 'Weights must match layout count');
+    final random = seed != null ? Random(seed! + questionIndex) : Random();
+    final totalWeight = weights.reduce((a, b) => a + b);
+    var randomValue = random.nextDouble() * totalWeight;
+
+    for (int i = 0; i < weights.length; i++) {
+      randomValue -= weights[i];
+      if (randomValue <= 0) return i;
+    }
+    return weights.length - 1;
+  }
+
+  @override
+  Map<String, dynamic> toMap() => {
+    'type': 'weighted',
+    'weights': weights,
+    if (seed != null) 'seed': seed,
+  };
+}
+
+/// Image answer size configuration for responsive layouts.
+///
+/// Each size variant specifies actual dimensions and spacing.
+sealed class ImageAnswerSize {
+  const ImageAnswerSize();
+
+  /// Small images - good for 4+ options, compact display.
+  factory ImageAnswerSize.small({double maxSize, double spacing}) = SmallImageSize;
+
+  /// Medium images - default size, good for 4 options.
+  factory ImageAnswerSize.medium({double maxSize, double spacing}) = MediumImageSize;
+
+  /// Large images - good for 2-3 options, prominent display.
+  factory ImageAnswerSize.large({double maxSize, double spacing}) = LargeImageSize;
+
+  /// Custom size with explicit dimensions.
+  factory ImageAnswerSize.custom({
+    required double maxSize,
+    required double spacing,
+    double? aspectRatio,
+  }) = CustomImageSize;
+
+  /// Maximum size (width/height) for the image.
+  double get maxSize;
+
+  /// Spacing between image options.
+  double get spacing;
+
+  /// Aspect ratio (null means square/1:1).
+  double? get aspectRatio;
+
+  /// Convert to JSON-compatible map.
+  Map<String, dynamic> toMap();
+}
+
+/// Small image size configuration.
+class SmallImageSize extends ImageAnswerSize {
+  @override
+  final double maxSize;
+
+  @override
+  final double spacing;
+
+  @override
+  double? get aspectRatio => null;
+
+  const SmallImageSize({this.maxSize = 80.0, this.spacing = 8.0});
+
+  @override
+  Map<String, dynamic> toMap() => {
+    'type': 'small',
+    'maxSize': maxSize,
+    'spacing': spacing,
+  };
+}
+
+/// Medium image size configuration (default).
+class MediumImageSize extends ImageAnswerSize {
+  @override
+  final double maxSize;
+
+  @override
+  final double spacing;
+
+  @override
+  double? get aspectRatio => null;
+
+  const MediumImageSize({this.maxSize = 120.0, this.spacing = 12.0});
+
+  @override
+  Map<String, dynamic> toMap() => {
+    'type': 'medium',
+    'maxSize': maxSize,
+    'spacing': spacing,
+  };
+}
+
+/// Large image size configuration.
+class LargeImageSize extends ImageAnswerSize {
+  @override
+  final double maxSize;
+
+  @override
+  final double spacing;
+
+  @override
+  double? get aspectRatio => null;
+
+  const LargeImageSize({this.maxSize = 160.0, this.spacing = 16.0});
+
+  @override
+  Map<String, dynamic> toMap() => {
+    'type': 'large',
+    'maxSize': maxSize,
+    'spacing': spacing,
+  };
+}
+
+/// Custom image size with explicit dimensions.
+class CustomImageSize extends ImageAnswerSize {
+  @override
+  final double maxSize;
+
+  @override
+  final double spacing;
+
+  @override
+  final double? aspectRatio;
+
+  const CustomImageSize({
+    required this.maxSize,
+    required this.spacing,
+    this.aspectRatio,
+  });
+
+  @override
+  Map<String, dynamic> toMap() => {
+    'type': 'custom',
+    'maxSize': maxSize,
+    'spacing': spacing,
+    if (aspectRatio != null) 'aspectRatio': aspectRatio,
+  };
 }
 ```
 

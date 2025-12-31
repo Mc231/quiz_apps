@@ -3871,7 +3871,7 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ### Sprint 13.1: Core Data Model
 
-**Goal:** Create the `QuizLayoutConfig` sealed class and integrate with `QuestionConfig`.
+**Goal:** Create the `QuizLayoutConfig` sealed class hierarchy and integrate with `QuestionConfig`.
 
 **Tasks:**
 - [ ] Create `QuizLayoutConfig` sealed class with layout variants:
@@ -3880,18 +3880,30 @@ Quiz Complete (score ≥ 70%) + Conditions Met
   - `TextQuestionTextAnswersLayout`
   - `AudioQuestionTextAnswersLayout`
   - `MixedLayout` (dynamic layout that varies per question)
-- [ ] Create `ImageAnswerSize` enum (small, medium, large)
-- [ ] Create `MixedLayoutStrategy` enum (random, alternating, weighted)
+- [ ] Create `ImageAnswerSize` sealed class with variants:
+  - `SmallImageSize` (maxSize: 80, spacing: 8)
+  - `MediumImageSize` (maxSize: 120, spacing: 12) - default
+  - `LargeImageSize` (maxSize: 160, spacing: 16)
+  - `CustomImageSize` (custom maxSize, spacing, aspectRatio)
+- [ ] Create `MixedLayoutStrategy` sealed class with variants:
+  - `RandomStrategy` (optional seed for reproducibility)
+  - `AlternatingStrategy` (optional startIndex)
+  - `WeightedStrategy` (weights list, optional seed)
+- [ ] Implement `MixedLayoutStrategy.selectIndex(questionIndex, layoutCount)` for each variant
 - [ ] Implement `MixedLayout.selectLayout(questionIndex)` method
 - [ ] Add `layoutConfig` field to `QuestionConfig`
 - [ ] Update `QuestionConfig.toMap()` and `fromMap()` for serialization
 - [ ] Update `QuestionConfig.copyWith()` to include layoutConfig
 - [ ] Export from `config_exports.dart`
-- [ ] Write unit tests for all layout types (static + mixed) and serialization
+- [ ] Write unit tests for all sealed classes and serialization
 
 **Files to Create:**
 - `packages/quiz_engine_core/lib/src/model/config/quiz_layout_config.dart`
+- `packages/quiz_engine_core/lib/src/model/config/image_answer_size.dart`
+- `packages/quiz_engine_core/lib/src/model/config/mixed_layout_strategy.dart`
 - `packages/quiz_engine_core/test/model/config/quiz_layout_config_test.dart`
+- `packages/quiz_engine_core/test/model/config/image_answer_size_test.dart`
+- `packages/quiz_engine_core/test/model/config/mixed_layout_strategy_test.dart`
 
 **Files to Modify:**
 - `packages/quiz_engine_core/lib/src/model/config/question_config.dart`
