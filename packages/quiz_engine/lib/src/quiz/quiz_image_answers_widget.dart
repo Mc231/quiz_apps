@@ -169,12 +169,12 @@ class QuizImageAnswersWidget extends StatelessWidget {
 
     // For 3-4 options
     if (optionCount <= 4) {
-      // In landscape, use single row (4 columns) to maximize horizontal space
       if (isLandscape) {
+        // In landscape: tablets use single row, phones use 2x2 with adjusted aspect ratio
         return getValueForScreenType(
           context: context,
-          mobile: optionCount, // 3 or 4 columns
-          tablet: optionCount,
+          mobile: 2, // 2x2 grid on phones (aspect ratio adjusted below)
+          tablet: optionCount, // Single row on tablets
           desktop: optionCount,
           watch: 2,
         );
@@ -192,7 +192,7 @@ class QuizImageAnswersWidget extends StatelessWidget {
     // For more options, use 3 columns on larger screens
     return getValueForScreenType(
       context: context,
-      mobile: isLandscape ? 4 : 2,
+      mobile: isLandscape ? 3 : 2,
       tablet: isLandscape ? 4 : 3,
       desktop: isLandscape ? 4 : 3,
       watch: 2,
@@ -201,13 +201,27 @@ class QuizImageAnswersWidget extends StatelessWidget {
 
   /// Gets the aspect ratio for grid children.
   double _getChildAspectRatio(BuildContext context) {
-    // Default to square aspect ratio, or use custom if specified
+    // Use custom aspect ratio if specified
     final aspectRatio = imageSize.aspectRatio;
     if (aspectRatio != null) {
       return aspectRatio;
     }
 
-    // Default to slightly taller than square for better image display
+    final isLandscape = sizingInformation.orientation == Orientation.landscape;
+
+    // In landscape on mobile, use wider aspect ratio to fit 2x2 grid
+    // This makes images shorter so both rows fit on screen
+    if (isLandscape) {
+      return getValueForScreenType(
+        context: context,
+        mobile: 1.4, // Wider than tall on phones
+        tablet: 1.0, // Square on tablets (single row has more space)
+        desktop: 1.0,
+        watch: 0.9,
+      );
+    }
+
+    // Portrait: square aspect ratio
     return getValueForScreenType(
       context: context,
       mobile: 1.0,
