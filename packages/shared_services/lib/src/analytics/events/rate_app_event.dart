@@ -118,7 +118,7 @@ final class RateAppConditionsCheckedEvent extends RateAppEvent {
 
   @override
   Map<String, dynamic> get parameters => {
-        'should_show': shouldShow,
+        'should_show': shouldShow ? 1 : 0,
         if (blockingReason != null) 'blocking_reason': blockingReason,
         'completed_quizzes': completedQuizzes,
         'quiz_score': quizScore,
