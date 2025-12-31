@@ -33,8 +33,9 @@
 
 | Priority | Sprint | Description | Phase |
 |----------|--------|-------------|-------|
-| 1 | **Sprint 9.4** | Services Integration & Polish | Phase 9 |
-| 2 | **Sprint 9.1.11** | Analytics - Resource & Hint Button Tracking | Phase 9 |
+| 1 | **Sprint 11.1** | Second App Creation | Phase 11 |
+
+**Sprint 9.1.11** ✅ is complete - Resource & Hint Button Analytics (ResourceEvent.buttonTapped, HintEvent.unavailableTapped tracking).
 
 **Sprint 9.7** ✅ is complete - IAP Bug Fixes & UI Improvements (dynamic product IDs, cancel handling, resource badge multi-digit support).
 
@@ -2668,26 +2669,34 @@ await compositeService.logEvent(QuizEvent.started(...));
 
 ---
 
-### Sprint 9.1.11: Analytics Integration - Resource & Hint Buttons
+### Sprint 9.1.11: Analytics Integration - Resource & Hint Buttons ✅
 
 **Goal:** Complete analytics integration for resource buttons with quiz context.
 
 **Background:** `ResourceEvent.buttonTapped` and `HintEvent.unavailableTapped` require quiz context (quizId, questionIndex) that is not available in `GameResourceButton`. These events need to be tracked at the parent widget level where the button callbacks are defined.
 
 **Tasks:**
-- [ ] Track `ResourceEvent.buttonTapped` when resource buttons are tapped (lives, 50/50, skip)
-- [ ] Track `HintEvent.unavailableTapped` when hint button is tapped with no hints available
-- [ ] Pass quiz context from `QuizScreen` to button callbacks
-- [ ] Write integration tests
+- [x] Track `ResourceEvent.buttonTapped` when resource buttons are tapped (lives, 50/50, skip)
+- [x] Track `HintEvent.unavailableTapped` when hint button is tapped with no hints available
+- [x] Pass quiz context from `QuizScreen` to button callbacks
+- [x] Write integration tests
 
 **Implementation Notes:**
 - The `GameResourceButton` widget doesn't have access to `quizId` or `questionIndex`
 - Analytics should be logged in the callback handlers in `QuizScreen` or `QuizBloc`
 - Consider using `QuizFeedbackProvider` pattern for passing analytics service
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Add analytics logging in button callbacks
-- `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Alternative: track in BLoC event handlers
+**Implementation:**
+- Added `_getQuestionContext()` helper method to extract questionId and questionIndex from QuizState
+- Added `_logResourceButtonTapped()` method to log ResourceEvent.buttonTapped
+- Added `_logHintUnavailableTapped()` method to log HintEvent.unavailableTapped
+- Modified `_buildResourceData()` to wrap onTap and onDepletedTap callbacks with analytics logging
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Added analytics logging in button callbacks
+
+**Files Created:**
+- ✅ `packages/quiz_engine/test/quiz/quiz_screen_resource_analytics_test.dart` - Unit tests for analytics events
 
 ---
 
