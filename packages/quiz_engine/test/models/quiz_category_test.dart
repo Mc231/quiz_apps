@@ -3,6 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/src/models/quiz_category.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 
+// ignore_for_file: prefer_const_constructors
+
 void main() {
   group('QuizCategory', () {
     test('creates category with required fields', () {
@@ -18,11 +20,13 @@ void main() {
       expect(category.icon, isNull);
       expect(category.config, isNull);
       expect(category.metadata, isNull);
+      expect(category.layoutConfig, isNull);
     });
 
     test('creates category with all fields', () {
       final config = QuizConfig(quizId: 'test');
       final metadata = {'key': 'value'};
+      final layoutConfig = QuizLayoutConfig.imageQuestionTextAnswers();
 
       final category = QuizCategory(
         id: 'europe',
@@ -32,12 +36,14 @@ void main() {
         showAnswerFeedback: true,
         config: config,
         metadata: metadata,
+        layoutConfig: layoutConfig,
       );
 
       expect(category.id, 'europe');
       expect(category.icon, Icons.flag);
       expect(category.config, config);
       expect(category.metadata, metadata);
+      expect(category.layoutConfig, layoutConfig);
     });
 
     test('copyWith creates new instance with replaced fields', () {
@@ -125,6 +131,117 @@ void main() {
       );
 
       expect(category.toString(), 'QuizCategory(id: europe)');
+    });
+
+    group('layoutConfig', () {
+      test('creates category with imageQuestionTextAnswers layout', () {
+        final layoutConfig = QuizLayoutConfig.imageQuestionTextAnswers();
+        final category = QuizCategory(
+          id: 'standard',
+          title: (context) => 'Standard Quiz',
+          showAnswerFeedback: true,
+          layoutConfig: layoutConfig,
+        );
+
+        expect(category.layoutConfig, isA<ImageQuestionTextAnswersLayout>());
+      });
+
+      test('creates category with textQuestionImageAnswers layout', () {
+        final layoutConfig = QuizLayoutConfig.textQuestionImageAnswers(
+          questionTemplate: 'Select the flag of {name}',
+        );
+        final category = QuizCategory(
+          id: 'reverse',
+          title: (context) => 'Find the Flag',
+          showAnswerFeedback: true,
+          layoutConfig: layoutConfig,
+        );
+
+        expect(category.layoutConfig, isA<TextQuestionImageAnswersLayout>());
+        final layout = category.layoutConfig as TextQuestionImageAnswersLayout;
+        expect(layout.questionTemplate, 'Select the flag of {name}');
+      });
+
+      test('creates category with textQuestionTextAnswers layout', () {
+        final layoutConfig = QuizLayoutConfig.textQuestionTextAnswers();
+        final category = QuizCategory(
+          id: 'trivia',
+          title: (context) => 'Trivia',
+          showAnswerFeedback: true,
+          layoutConfig: layoutConfig,
+        );
+
+        expect(category.layoutConfig, isA<TextQuestionTextAnswersLayout>());
+      });
+
+      test('creates category with audioQuestionTextAnswers layout', () {
+        final layoutConfig = QuizLayoutConfig.audioQuestionTextAnswers(
+          autoPlay: false,
+          showReplayButton: true,
+        );
+        final category = QuizCategory(
+          id: 'audio',
+          title: (context) => 'Audio Quiz',
+          showAnswerFeedback: true,
+          layoutConfig: layoutConfig,
+        );
+
+        expect(category.layoutConfig, isA<AudioQuestionTextAnswersLayout>());
+        final layout = category.layoutConfig as AudioQuestionTextAnswersLayout;
+        expect(layout.autoPlay, false);
+        expect(layout.showReplayButton, true);
+      });
+
+      test('creates category with mixed layout', () {
+        final layoutConfig = QuizLayoutConfig.mixed(
+          layouts: [
+            QuizLayoutConfig.imageQuestionTextAnswers(),
+            QuizLayoutConfig.textQuestionImageAnswers(),
+          ],
+        );
+        final category = QuizCategory(
+          id: 'mixed',
+          title: (context) => 'Mixed Quiz',
+          showAnswerFeedback: true,
+          layoutConfig: layoutConfig,
+        );
+
+        expect(category.layoutConfig, isA<MixedLayout>());
+        final layout = category.layoutConfig as MixedLayout;
+        expect(layout.layouts.length, 2);
+      });
+
+      test('copyWith updates layoutConfig', () {
+        final original = QuizCategory(
+          id: 'test',
+          title: (context) => 'Test',
+          showAnswerFeedback: true,
+          layoutConfig: QuizLayoutConfig.imageQuestionTextAnswers(),
+        );
+
+        final newLayout = QuizLayoutConfig.textQuestionImageAnswers();
+        final copied = original.copyWith(layoutConfig: newLayout);
+
+        expect(copied.layoutConfig, isA<TextQuestionImageAnswersLayout>());
+        expect(original.layoutConfig, isA<ImageQuestionTextAnswersLayout>());
+      });
+
+      test('copyWith preserves layoutConfig when not specified', () {
+        final layoutConfig = QuizLayoutConfig.textQuestionImageAnswers(
+          questionTemplate: 'Original template',
+        );
+        final original = QuizCategory(
+          id: 'test',
+          title: (context) => 'Test',
+          showAnswerFeedback: true,
+          layoutConfig: layoutConfig,
+        );
+
+        final copied = original.copyWith(id: 'new_id');
+
+        expect(copied.layoutConfig, layoutConfig);
+        expect(copied.id, 'new_id');
+      });
     });
 
     testWidgets('LocalizedString resolves with context', (tester) async {
