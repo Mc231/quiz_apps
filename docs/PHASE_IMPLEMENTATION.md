@@ -3660,18 +3660,6 @@ The context-based DI pattern is correctly implemented:
 
 ---
 
-## Phase 11: Second App Validation
-
-**Tasks:**
-- [ ] Create second quiz app (e.g., capitals_quiz)
-- [ ] Validate reusability of all components
-- [ ] Identify any app-specific leakage
-- [ ] Refactor as needed
-- [ ] Update documentation with learnings
-- [ ] Create app creation checklist
-
----
-
 ## Phase 12: Rate App Dialog ✅
 
 **Status:** COMPLETED (4/4 sprints)
@@ -3869,184 +3857,141 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ---
 
-## Phase 13: Onboarding
+## Phase 13: Quiz Layout Feature (Image Answer Options)
 
-**Goal:** Implement a welcoming onboarding experience for first-time users that introduces app features and guides them through their first quiz.
+**Status:** IN PROGRESS
 
-**Benefits:**
-- Better first-time user experience
-- Higher retention rates
-- Feature discovery (hints, modes, achievements)
-- Reduced confusion for new users
+**Goal:** Enable flexible quiz layouts supporting both:
+- **Current**: Image question + 4 text answers (e.g., show flag, pick country name)
+- **New**: Text question + 4 image answers (e.g., "Which flag is Germany?", pick from 4 flags)
 
----
-
-### Sprint 13.1: Onboarding Service & State
-
-**Goal:** Create the core onboarding infrastructure with state persistence.
-
-**Tasks:**
-- [ ] Create `OnboardingService` class with:
-  - `isOnboardingComplete()` - Check if user has completed onboarding
-  - `markOnboardingComplete()` - Mark onboarding as finished
-  - `resetOnboarding()` - Reset for testing/re-show
-  - `getCurrentStep()` - Get current onboarding step
-  - `setCurrentStep()` - Save progress
-- [ ] Create `OnboardingState` enum:
-  - `notStarted`, `inProgress`, `completed`, `skipped`
-- [ ] Create `OnboardingConfig` model with:
-  - `isEnabled` - Enable/disable onboarding (from quiz config)
-  - `showOnFirstLaunch` - Auto-show on first launch
-  - `allowSkip` - Allow users to skip onboarding
-  - `totalSteps` - Number of onboarding screens
-- [ ] Store onboarding state in SharedPreferences:
-  - `onboardingCompleted` - Boolean flag
-  - `onboardingCurrentStep` - Current step index
-  - `onboardingSkipped` - User chose to skip
-- [ ] Write unit tests
-
-**Files to Create:**
-- `packages/shared_services/lib/src/onboarding/onboarding_service.dart`
-- `packages/shared_services/lib/src/onboarding/onboarding_config.dart`
-- `packages/shared_services/lib/src/onboarding/onboarding_state.dart`
-- `packages/shared_services/lib/src/onboarding/onboarding_exports.dart`
-- `packages/shared_services/test/onboarding/onboarding_service_test.dart`
+**Requirements Document:** [`docs/QUIZ_LAYOUT_FEATURE.md`](./QUIZ_LAYOUT_FEATURE.md)
 
 ---
 
-### Sprint 13.2: Onboarding Screens UI
+### Sprint 13.1: Core Data Model
 
-**Goal:** Create beautiful, engaging onboarding screens.
-
-**Tasks:**
-- [ ] Create `OnboardingScreen` main container with PageView
-- [ ] Create `OnboardingPage` widget for individual pages:
-  - Image/illustration area (top 60%)
-  - Title and description (bottom 40%)
-  - Page indicator dots
-- [ ] Create onboarding content pages:
-  - **Page 1: Welcome** - App introduction, logo, tagline
-  - **Page 2: Quiz Modes** - Standard, Timed, Lives, Survival modes
-  - **Page 3: Hints & Resources** - 50/50, Skip, Lives system
-  - **Page 4: Achievements** - Unlock achievements, track progress
-  - **Page 5: Get Started** - CTA to start first quiz
-- [ ] Add page transition animations
-- [ ] Add "Skip" button (if allowSkip is true)
-- [ ] Add "Next" / "Get Started" buttons
-- [ ] Support localization for all text
-- [ ] Write widget tests
-
-**Files to Create:**
-- `packages/quiz_engine/lib/src/onboarding/onboarding_screen.dart`
-- `packages/quiz_engine/lib/src/onboarding/onboarding_page.dart`
-- `packages/quiz_engine/lib/src/onboarding/onboarding_page_indicator.dart`
-- `packages/quiz_engine/lib/src/onboarding/onboarding_exports.dart`
-- `packages/quiz_engine/test/onboarding/onboarding_screen_test.dart`
-
-**Assets to Create:**
-- `packages/quiz_engine/assets/onboarding/` - Illustrations for each page
-
-**Localization Strings:**
-```json
-{
-  "onboardingWelcomeTitle": "Welcome to {appName}!",
-  "onboardingWelcomeDescription": "Test your knowledge and have fun learning",
-  "onboardingModesTitle": "Multiple Quiz Modes",
-  "onboardingModesDescription": "Play Standard, Timed, Lives, or Survival mode",
-  "onboardingHintsTitle": "Hints & Resources",
-  "onboardingHintsDescription": "Use 50/50, Skip, or watch ads to restore lives",
-  "onboardingAchievementsTitle": "Earn Achievements",
-  "onboardingAchievementsDescription": "Complete challenges and unlock rewards",
-  "onboardingGetStartedTitle": "Ready to Play?",
-  "onboardingGetStartedDescription": "Start your first quiz now!",
-  "onboardingSkip": "Skip",
-  "onboardingNext": "Next",
-  "onboardingGetStarted": "Get Started"
-}
-```
-
----
-
-### Sprint 13.3: First Quiz Tutorial
-
-**Goal:** Create an optional guided tutorial for the user's first quiz.
+**Goal:** Create the `QuizLayoutConfig` sealed class and integrate with `QuestionConfig`.
 
 **Tasks:**
-- [ ] Create `TutorialOverlay` widget for highlighting UI elements
-- [ ] Create `TutorialStep` model with:
-  - `targetKey` - GlobalKey of widget to highlight
-  - `title` - Tutorial step title
-  - `description` - Tutorial step description
-  - `position` - Tooltip position (top, bottom, left, right)
-- [ ] Create `TutorialController` to manage tutorial flow
-- [ ] Define tutorial steps for first quiz:
-  - **Step 1:** "This is the question" - Highlight question area
-  - **Step 2:** "Tap an answer" - Highlight answer options
-  - **Step 3:** "Use hints if stuck" - Highlight hint buttons
-  - **Step 4:** "Track your progress" - Highlight progress bar
-- [ ] Add "Don't show again" checkbox
-- [ ] Write widget tests
+- [ ] Create `QuizLayoutConfig` sealed class with layout variants:
+  - `ImageQuestionTextAnswersLayout` (current default)
+  - `TextQuestionImageAnswersLayout` (new reverse layout)
+  - `TextQuestionTextAnswersLayout`
+  - `AudioQuestionTextAnswersLayout`
+- [ ] Create `ImageAnswerSize` enum (small, medium, large)
+- [ ] Add `layoutConfig` field to `QuestionConfig`
+- [ ] Update `QuestionConfig.toMap()` and `fromMap()` for serialization
+- [ ] Update `QuestionConfig.copyWith()` to include layoutConfig
+- [ ] Export from `config_exports.dart`
+- [ ] Write unit tests for all layout types and serialization
 
 **Files to Create:**
-- `packages/quiz_engine/lib/src/onboarding/tutorial_overlay.dart`
-- `packages/quiz_engine/lib/src/onboarding/tutorial_step.dart`
-- `packages/quiz_engine/lib/src/onboarding/tutorial_controller.dart`
-- `packages/quiz_engine/test/onboarding/tutorial_overlay_test.dart`
-
----
-
-### Sprint 13.4: Onboarding Analytics Events
-
-**Goal:** Track onboarding funnel for optimization.
-
-**Tasks:**
-- [ ] Create `OnboardingEvent` sealed class:
-  - `started` - User started onboarding
-  - `pageViewed` - User viewed a specific page
-  - `skipped` - User skipped onboarding (with step number)
-  - `completed` - User completed all steps
-  - `tutorialStarted` - User started first quiz tutorial
-  - `tutorialStepViewed` - User viewed tutorial step
-  - `tutorialSkipped` - User skipped tutorial
-  - `tutorialCompleted` - User completed tutorial
-- [ ] Add to analytics exports
-- [ ] Integrate with OnboardingScreen
-- [ ] Integrate with TutorialController
-- [ ] Write unit tests
-
-**Files to Create:**
-- `packages/shared_services/lib/src/analytics/events/onboarding_event.dart`
-- `packages/shared_services/test/analytics/events/onboarding_event_test.dart`
+- `packages/quiz_engine_core/lib/src/model/config/quiz_layout_config.dart`
+- `packages/quiz_engine_core/test/model/config/quiz_layout_config_test.dart`
 
 **Files to Modify:**
-- `packages/shared_services/lib/src/analytics/analytics_exports.dart`
+- `packages/quiz_engine_core/lib/src/model/config/question_config.dart`
+- `packages/quiz_engine_core/lib/src/model/config/config_exports.dart`
 
 ---
 
-### Sprint 13.5: Onboarding Integration
+### Sprint 13.2: UI Components
 
-**Goal:** Integrate onboarding with the app startup flow.
+**Goal:** Create widgets for displaying image-based answer options.
 
 **Tasks:**
-- [ ] Create `OnboardingModule` for DI registration
-- [ ] Add `onboardingConfig` to `QuizConfig`
-- [ ] Modify app startup to check onboarding state:
-  - If not complete → Show OnboardingScreen
-  - If complete → Show HomeScreen
-- [ ] Add "Replay Onboarding" option in Settings
-- [ ] Add onboarding service to `QuizServices`
-- [ ] Update FlagsQuiz app to configure onboarding
+- [ ] Create `ImageOptionButton` widget with:
+  - Asset and network image support
+  - Disabled state (for 50/50 hint)
+  - Accessibility support (semantic labels)
+  - Theme integration
+- [ ] Create `QuizImageAnswersWidget` with:
+  - Grid layout (2x2 for 4 options)
+  - Responsive sizing
+  - Disabled options support
+  - Theme integration
+- [ ] Write widget tests for both components
+
+**Files to Create:**
+- `packages/quiz_engine/lib/src/components/image_option_button.dart`
+- `packages/quiz_engine/lib/src/quiz/quiz_image_answers_widget.dart`
+- `packages/quiz_engine/test/widgets/image_option_button_test.dart`
+- `packages/quiz_engine/test/widgets/quiz_image_answers_widget_test.dart`
+
+---
+
+### Sprint 13.3: Layout Integration
+
+**Goal:** Update `QuizLayout` and `QuizScreen` to support configurable layouts.
+
+**Tasks:**
+- [ ] Add `layoutConfig` parameter to `QuizLayout`
+- [ ] Implement `_buildQuestionWidget()` with layout-aware rendering
+- [ ] Implement `_buildAnswersWidget()` to select correct answer widget
+- [ ] Implement text question template substitution (`{name}` replacement)
+- [ ] Update `QuizScreen` to pass layoutConfig from bloc
+- [ ] Update `AnswerFeedbackWidget` to support image answer feedback
+- [ ] Export new widgets from `quiz_engine.dart`
+- [ ] Write/update tests for QuizLayout and QuizScreen
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/quiz/quiz_layout.dart`
+- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
+- `packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart`
+- `packages/quiz_engine/lib/quiz_engine.dart`
+
+**Files to Create/Modify:**
+- `packages/quiz_engine/test/quiz/quiz_layout_test.dart`
+
+---
+
+### Sprint 13.4: Category Configuration
+
+**Goal:** Allow categories to specify their preferred layout.
+
+**Tasks:**
+- [ ] Add optional `layoutConfig` field to `QuizCategory`
+- [ ] Update `QuizCategory.copyWith()`
+- [ ] Document layout configuration pattern in `QuizDataProvider`
+- [ ] Write tests for category layout config
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/models/quiz_category.dart`
+- `packages/quiz_engine/lib/src/models/quiz_data_provider.dart`
+- `packages/quiz_engine/test/models/quiz_category_test.dart`
+
+---
+
+### Sprint 13.5: Flags Quiz Integration
+
+**Goal:** Add reverse layout support to the Flags Quiz app.
+
+**Tasks:**
+- [ ] Add localization strings for question templates ("Which flag is {name}?")
+- [ ] Update `FlagsDataProvider.createQuizConfig()` to handle layout config
+- [ ] Optionally add reverse layout categories (or make configurable)
 - [ ] Write integration tests
 
-**Files to Create:**
-- `packages/shared_services/lib/src/di/modules/onboarding_module.dart`
-
 **Files to Modify:**
-- `packages/quiz_engine/lib/src/app/quiz_app.dart`
-- `packages/quiz_engine/lib/src/config/quiz_config.dart`
-- `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
-- `packages/quiz_engine/lib/src/services/quiz_services.dart`
-- `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
+- `apps/flagsquiz/lib/data/flags_data_provider.dart`
+- `apps/flagsquiz/lib/data/flags_categories.dart`
+- `apps/flagsquiz/lib/l10n/intl_en.arb`
+- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
+
+---
+
+### Sprint 13.6: Polish and Documentation
+
+**Goal:** Final testing, accessibility, and documentation.
+
+**Tasks:**
+- [ ] Run full test suite and fix any issues
+- [ ] Accessibility testing (VoiceOver/TalkBack)
+- [ ] Performance testing with multiple images
+- [ ] Manual testing on different device sizes
+- [ ] Update `CORE_ARCHITECTURE_GUIDE.md` with layout documentation
+- [ ] Update `PHASE_IMPLEMENTATION.md` with completion status
 
 ---
 
@@ -4054,13 +3999,14 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 | Sprint | Description | Effort |
 |--------|-------------|--------|
-| 13.1 | Onboarding Service & State | Small |
-| 13.2 | Onboarding Screens UI | Medium |
-| 13.3 | First Quiz Tutorial | Medium |
-| 13.4 | Onboarding Analytics Events | Small |
-| 13.5 | Onboarding Integration | Medium |
+| 13.1 | Core Data Model | Small |
+| 13.2 | UI Components | Medium |
+| 13.3 | Layout Integration | Medium |
+| 13.4 | Category Configuration | Small |
+| 13.5 | Flags Quiz Integration | Medium |
+| 13.6 | Polish and Documentation | Small |
 
-**Total: 5 sprints**
+**Total: 6 sprints**
 
 ---
 
@@ -4237,3 +4183,166 @@ dart format .
 # Commit changes (use commiter agent)
 # Use prefix: feat, fix, refactor, test, docs, chore
 ```
+
+---
+
+## Backlog
+
+The following phases are planned for future implementation but are currently on hold.
+
+---
+
+### Phase B0: Manual Testing, Bug Fixing & Polish
+
+**Status:** BACKLOG
+
+**Goal:** Comprehensive manual testing across all platforms and fixing discovered issues.
+
+**Tasks:**
+- [ ] Manual testing on iOS devices (iPhone, iPad)
+- [ ] Manual testing on Android devices (phone, tablet)
+- [ ] Manual testing on Web
+- [ ] Manual testing on macOS
+- [ ] Fix discovered bugs
+- [ ] Polish UI interactions and transitions
+- [ ] Performance optimization if needed
+
+**Notes:** This is an ongoing task to be done by manual testing, not automated.
+
+---
+
+### Phase B0.1: UI Design Update
+
+**Status:** BACKLOG
+
+**Goal:** Update visual design including colors, icons, and overall aesthetics.
+
+**Tasks:**
+- [ ] Review and update color palette
+- [ ] Update app icons
+- [ ] Review and update in-app icons
+- [ ] Polish visual design consistency
+- [ ] Update splash screen if needed
+- [ ] Review dark mode appearance
+
+---
+
+### Phase B1: Second App Validation
+
+**Status:** BACKLOG
+
+**Goal:** Validate the reusability of all components by creating a second quiz app.
+
+**Tasks:**
+- [ ] Create second quiz app (e.g., capitals_quiz)
+- [ ] Validate reusability of all components
+- [ ] Identify any app-specific leakage
+- [ ] Refactor as needed
+- [ ] Update documentation with learnings
+- [ ] Create app creation checklist
+
+---
+
+### Phase B2: Onboarding
+
+**Status:** BACKLOG
+
+**Goal:** Implement a welcoming onboarding experience for first-time users that introduces app features and guides them through their first quiz.
+
+**Benefits:**
+- Better first-time user experience
+- Higher retention rates
+- Feature discovery (hints, modes, achievements)
+- Reduced confusion for new users
+
+**Sprints:**
+
+| Sprint | Description | Effort |
+|--------|-------------|--------|
+| B2.1 | Onboarding Service & State | Small |
+| B2.2 | Onboarding Screens UI | Medium |
+| B2.3 | First Quiz Tutorial | Medium |
+| B2.4 | Onboarding Analytics Events | Small |
+| B2.5 | Onboarding Integration | Medium |
+
+**Total: 5 sprints**
+
+<details>
+<summary>Sprint Details (click to expand)</summary>
+
+#### Sprint B2.1: Onboarding Service & State
+
+**Goal:** Create the core onboarding infrastructure with state persistence.
+
+**Tasks:**
+- [ ] Create `OnboardingService` class with:
+  - `isOnboardingComplete()` - Check if user has completed onboarding
+  - `markOnboardingComplete()` - Mark onboarding as finished
+  - `resetOnboarding()` - Reset for testing/re-show
+  - `getCurrentStep()` - Get current onboarding step
+  - `setCurrentStep()` - Save progress
+- [ ] Create `OnboardingState` enum:
+  - `notStarted`, `inProgress`, `completed`, `skipped`
+- [ ] Create `OnboardingConfig` model with:
+  - `isEnabled` - Enable/disable onboarding (from quiz config)
+  - `showOnFirstLaunch` - Auto-show on first launch
+  - `allowSkip` - Allow users to skip onboarding
+  - `totalSteps` - Number of onboarding screens
+- [ ] Store onboarding state in SharedPreferences
+- [ ] Write unit tests
+
+---
+
+#### Sprint B2.2: Onboarding Screens UI
+
+**Goal:** Create beautiful, engaging onboarding screens.
+
+**Tasks:**
+- [ ] Create `OnboardingScreen` main container with PageView
+- [ ] Create `OnboardingPage` widget for individual pages
+- [ ] Create onboarding content pages (Welcome, Quiz Modes, Hints, Achievements, Get Started)
+- [ ] Add page transition animations
+- [ ] Add "Skip" and "Next" / "Get Started" buttons
+- [ ] Support localization for all text
+- [ ] Write widget tests
+
+---
+
+#### Sprint B2.3: First Quiz Tutorial
+
+**Goal:** Create an optional guided tutorial for the user's first quiz.
+
+**Tasks:**
+- [ ] Create `TutorialOverlay` widget for highlighting UI elements
+- [ ] Create `TutorialStep` model and `TutorialController`
+- [ ] Define tutorial steps for first quiz
+- [ ] Add "Don't show again" checkbox
+- [ ] Write widget tests
+
+---
+
+#### Sprint B2.4: Onboarding Analytics Events
+
+**Goal:** Track onboarding funnel for optimization.
+
+**Tasks:**
+- [ ] Create `OnboardingEvent` sealed class (started, pageViewed, skipped, completed, tutorial events)
+- [ ] Add to analytics exports
+- [ ] Integrate with OnboardingScreen and TutorialController
+- [ ] Write unit tests
+
+---
+
+#### Sprint B2.5: Onboarding Integration
+
+**Goal:** Integrate onboarding with the app startup flow.
+
+**Tasks:**
+- [ ] Create `OnboardingModule` for DI registration
+- [ ] Add `onboardingConfig` to `QuizConfig`
+- [ ] Modify app startup to check onboarding state
+- [ ] Add "Replay Onboarding" option in Settings
+- [ ] Add onboarding service to `QuizServices`
+- [ ] Write integration tests
+
+</details>
