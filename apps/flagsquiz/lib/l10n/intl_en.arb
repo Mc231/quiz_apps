@@ -1585,5 +1585,33 @@
   "achievementFlagCollectorDesc": "Answer every flag correctly at least once",
   "@achievementFlagCollectorDesc": {
     "description": "Achievement description for collecting all flags"
+  },
+  "whichFlagIs": "Which flag is {name}?",
+  "@whichFlagIs": {
+    "description": "Question template for reverse layout (text question asking to identify a flag)",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The country name"
+      }
+    }
+  },
+  "selectTheFlagOf": "Select the flag of {name}",
+  "@selectTheFlagOf": {
+    "description": "Alternative question template for reverse layout",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The country name"
+      }
+    }
+  },
+  "identifyFlags": "Identify Flags",
+  "@identifyFlags": {
+    "description": "Subtitle for reverse layout categories"
+  },
+  "findTheFlag": "Find the Flag",
+  "@findTheFlag": {
+    "description": "Alternative title for reverse layout mode"
   }
 }
