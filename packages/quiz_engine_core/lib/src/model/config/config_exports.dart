@@ -15,3 +15,6 @@ export 'scoring_strategy.dart';
 export 'storage_config.dart';
 export 'ui_behavior_config.dart';
 export 'question_config.dart';
+export 'quiz_layout_config.dart';
+export 'image_answer_size.dart';
+export 'mixed_layout_strategy.dart';
