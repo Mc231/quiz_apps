@@ -2220,5 +2220,42 @@
   "imageLoadError": "Failed to load image",
   "@imageLoadError": {
     "description": "Error message when image fails to load"
+  },
+
+  "whichOneIs": "Which one is {name}?",
+  "@whichOneIs": {
+    "description": "Generic question template for reverse layout (text question, image answers)",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The name of the correct answer"
+      }
+    }
+  },
+
+  "selectThe": "Select the {name}",
+  "@selectThe": {
+    "description": "Alternative question template for reverse layout",
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "description": "The name of the correct answer"
+      }
+    }
+  },
+
+  "layoutStandard": "Standard",
+  "@layoutStandard": {
+    "description": "Label for standard layout (image question, text answers)"
+  },
+
+  "layoutReverse": "Reverse",
+  "@layoutReverse": {
+    "description": "Label for reverse layout (text question, image answers)"
+  },
+
+  "layoutMixed": "Mixed",
+  "@layoutMixed": {
+    "description": "Label for mixed layout (alternating between layouts)"
   }
 }
