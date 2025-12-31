@@ -1,0 +1,327 @@
+{
+  "identifier" : "FlagsQuiz",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "lives_small",
+      "localizations" : [
+        {
+          "description" : "Get 5 extra lives",
+          "displayName" : "5 Lives",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.lives_small",
+      "referenceName" : "Lives Small",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "lives_medium",
+      "localizations" : [
+        {
+          "description" : "Get 15 extra lives",
+          "displayName" : "15 Lives",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.lives_medium",
+      "referenceName" : "Lives Medium",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "lives_large",
+      "localizations" : [
+        {
+          "description" : "Get 50 extra lives",
+          "displayName" : "50 Lives",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.lives_large",
+      "referenceName" : "Lives Large",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "fifty_fifty_small",
+      "localizations" : [
+        {
+          "description" : "Get 5 fifty-fifty hints",
+          "displayName" : "5 50/50 Hints",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.fifty_fifty_small",
+      "referenceName" : "Fifty Fifty Small",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "fifty_fifty_medium",
+      "localizations" : [
+        {
+          "description" : "Get 15 fifty-fifty hints",
+          "displayName" : "15 50/50 Hints",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.fifty_fifty_medium",
+      "referenceName" : "Fifty Fifty Medium",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "fifty_fifty_large",
+      "localizations" : [
+        {
+          "description" : "Get 50 fifty-fifty hints",
+          "displayName" : "50 50/50 Hints",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.fifty_fifty_large",
+      "referenceName" : "Fifty Fifty Large",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "skips_small",
+      "localizations" : [
+        {
+          "description" : "Get 5 skips",
+          "displayName" : "5 Skips",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.skips_small",
+      "referenceName" : "Skips Small",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "skips_medium",
+      "localizations" : [
+        {
+          "description" : "Get 15 skips",
+          "displayName" : "15 Skips",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.skips_medium",
+      "referenceName" : "Skips Medium",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "skips_large",
+      "localizations" : [
+        {
+          "description" : "Get 50 skips",
+          "displayName" : "50 Skips",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.skips_large",
+      "referenceName" : "Skips Large",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "bundle_starter",
+      "localizations" : [
+        {
+          "description" : "5 lives + 5 fifty-fifty + 5 skips",
+          "displayName" : "Starter Pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.bundle_starter",
+      "referenceName" : "Bundle Starter",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "bundle_value",
+      "localizations" : [
+        {
+          "description" : "15 lives + 15 fifty-fifty + 15 skips",
+          "displayName" : "Value Pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.bundle_value",
+      "referenceName" : "Bundle Value",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "9.99",
+      "familyShareable" : false,
+      "internalID" : "bundle_pro",
+      "localizations" : [
+        {
+          "description" : "50 lives + 50 fifty-fifty + 50 skips",
+          "displayName" : "Pro Pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.bundle_pro",
+      "referenceName" : "Bundle Pro",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : true,
+      "internalID" : "remove_ads",
+      "localizations" : [
+        {
+          "description" : "Remove all advertisements permanently",
+          "displayName" : "Remove Ads",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.flagsquiz.remove_ads",
+      "referenceName" : "Remove Ads",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6504397702",
+    "_developerTeamID" : "RYBQ96H8Y4",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 788918400,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "premium_group",
+      "localizations" : [
+        {
+          "description" : "Premium subscription for unlimited access",
+          "displayName" : "Premium",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "Premium",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "4.99",
+          "familyShareable" : true,
+          "groupNumber" : 1,
+          "internalID" : "premium_monthly",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlimited lives, no ads - monthly",
+              "displayName" : "Premium Monthly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.flagsquiz.premium_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Premium Monthly",
+          "subscriptionGroupID" : "premium_group",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "24.99",
+          "familyShareable" : true,
+          "groupNumber" : 2,
+          "internalID" : "premium_yearly",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Unlimited lives, no ads - yearly (save 58%)",
+              "displayName" : "Premium Yearly",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.flagsquiz.premium_yearly",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Premium Yearly",
+          "subscriptionGroupID" : "premium_group",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

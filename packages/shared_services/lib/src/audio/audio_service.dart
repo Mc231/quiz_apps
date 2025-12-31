@@ -1,5 +1,8 @@
+import 'dart:io' show File, Platform;
+
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
 import '../logger/logger_service.dart';
 import 'quiz_sound_effect.dart';
 
@@ -18,6 +21,9 @@ class AudioService {
   final AudioPlayer _player = AudioPlayer();
   bool _isMuted = false;
   double _volume = 1.0;
+
+  // Cache for iOS temp audio files
+  final Map<String, String> _iosTempFiles = {};
 
   /// Whether sound effects are currently muted
   bool get isMuted => _isMuted;
@@ -49,19 +55,42 @@ class AudioService {
       await _player.stop();
       await _player.setVolume(effectVolume);
 
-      // Load asset bytes manually for package assets
-      final ByteData data = await rootBundle.load(effect.assetPath);
+      // Load asset bytes
+      final data = await rootBundle.load(effect.assetPath);
       final bytes = data.buffer.asUint8List();
 
-      await _player.play(BytesSource(bytes));
+      if (Platform.isIOS) {
+        // On iOS, write to temp file with .mp3 extension for AVPlayer compatibility
+        final tempPath = await _getOrCreateTempFile(effect.name, bytes);
+        await _player.play(DeviceFileSource(tempPath));
+      } else {
+        // Use BytesSource on Android (original working implementation)
+        await _player.play(BytesSource(bytes));
+      }
     } catch (e, stackTrace) {
       // Log error but don't crash - sound assets may be missing
       AppLogger.instance.warning(
-        'Failed to play sound effect ${effect.name}',
+        'Failed to play sound effect ${effect.name}: $e\nAsset path: ${effect.assetPath}',
         error: e,
         stackTrace: stackTrace,
       );
     }
+  }
+
+  /// Creates or returns cached temp file path for iOS audio playback.
+  Future<String> _getOrCreateTempFile(String name, List<int> bytes) async {
+    if (_iosTempFiles.containsKey(name)) {
+      final existingPath = _iosTempFiles[name]!;
+      if (File(existingPath).existsSync()) {
+        return existingPath;
+      }
+    }
+
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/audio_$name.mp3');
+    await file.writeAsBytes(bytes);
+    _iosTempFiles[name] = file.path;
+    return file.path;
   }
 
   /// Sets the master volume for all sound effects

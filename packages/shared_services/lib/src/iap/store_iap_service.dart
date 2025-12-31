@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'dart:io';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 import 'iap_config.dart';
@@ -34,7 +35,7 @@ import 'purchase_result.dart';
 ///   // Grant the resource
 /// }
 /// ```
-class StoreIAPService implements IAPService {
+class StoreIAPService with WidgetsBindingObserver implements IAPService {
   /// Creates a [StoreIAPService].
   StoreIAPService({
     required IAPConfig config,
@@ -47,6 +48,10 @@ class StoreIAPService implements IAPService {
 
   bool _isInitialized = false;
   bool _isStoreAvailable = false;
+
+  // iOS lifecycle handling for purchase dismissal detection
+  bool _isPurchaseInProgress = false;
+  Timer? _iosResumeTimer;
   bool _isRemoveAdsPurchased = false;
   bool _isSubscriptionActive = false;
   String? _activeSubscriptionId;
@@ -75,6 +80,11 @@ class StoreIAPService implements IAPService {
   @override
   Future<bool> initialize() async {
     if (_isInitialized) return _isStoreAvailable;
+
+    // Register lifecycle observer for iOS purchase dismissal detection
+    if (Platform.isIOS) {
+      WidgetsBinding.instance.addObserver(this);
+    }
 
     try {
       _isStoreAvailable = await _inAppPurchase.isAvailable();
@@ -127,7 +137,52 @@ class StoreIAPService implements IAPService {
     }
   }
 
+  // ============ iOS Lifecycle Handling ============
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (!Platform.isIOS) return;
+
+    if (state == AppLifecycleState.inactive && _iosResumeTimer != null) {
+      // App went inactive while timer is running - user went back to payment sheet
+      // Cancel the timer to prevent false cancellation
+      _iosResumeTimer?.cancel();
+      _iosResumeTimer = null;
+    } else if (state == AppLifecycleState.resumed && _isPurchaseInProgress) {
+      // When app resumes on iOS while a purchase is in progress,
+      // the payment sheet may have been dismissed.
+      // Wait a short time to see if we get a purchase update.
+      _handleiOSResume();
+    }
+  }
+
+  void _handleiOSResume() {
+    // Cancel any existing timer
+    _iosResumeTimer?.cancel();
+
+    // Wait 2 seconds - if no purchase update comes, assume user dismissed
+    _iosResumeTimer = Timer(const Duration(seconds: 2), () {
+      if (_isPurchaseInProgress) {
+        // Cancel all pending purchases
+        final pendingIds = _pendingPurchases.keys.toList();
+        for (final pendingId in pendingIds) {
+          final completer = _pendingPurchases.remove(pendingId);
+          if (completer != null && !completer.isCompleted) {
+            _iapEventController
+                .add(IAPEvent.purchaseCancelled(productId: pendingId));
+            completer.complete(PurchaseResult.cancelled(productId: pendingId));
+          }
+        }
+        _isPurchaseInProgress = false;
+      }
+    });
+  }
+
   void _handlePurchaseUpdates(List<PurchaseDetails> purchaseDetailsList) {
+    // Cancel iOS resume timer - we got a real purchase update
+    _iosResumeTimer?.cancel();
+    _iosResumeTimer = null;
+
     for (final purchase in purchaseDetailsList) {
       _processPurchase(purchase);
     }
@@ -203,6 +258,9 @@ class StoreIAPService implements IAPService {
         productType: productType ?? IAPProductType.consumable,
       ));
     }
+
+    // Reset purchase in progress flag
+    _isPurchaseInProgress = false;
   }
 
   void _handlePurchaseFailure(PurchaseDetails purchase) {
@@ -227,6 +285,9 @@ class StoreIAPService implements IAPService {
         errorMessage: errorMessage,
       ));
     }
+
+    // Reset purchase in progress flag
+    _isPurchaseInProgress = false;
   }
 
   void _handlePurchasePending(PurchaseDetails purchase) {
@@ -250,7 +311,8 @@ class StoreIAPService implements IAPService {
       for (final pendingId in pendingIds) {
         final completer = _pendingPurchases.remove(pendingId);
         if (completer != null && !completer.isCompleted) {
-          _iapEventController.add(IAPEvent.purchaseCancelled(productId: pendingId));
+          _iapEventController
+              .add(IAPEvent.purchaseCancelled(productId: pendingId));
           completer.complete(PurchaseResult.cancelled(productId: pendingId));
         }
       }
@@ -264,6 +326,9 @@ class StoreIAPService implements IAPService {
     if (completer != null && !completer.isCompleted) {
       completer.complete(PurchaseResult.cancelled(productId: productId));
     }
+
+    // Reset purchase in progress flag
+    _isPurchaseInProgress = false;
   }
 
   void _handlePurchaseError(dynamic error) {
@@ -363,6 +428,9 @@ class StoreIAPService implements IAPService {
 
     _iapEventController.add(IAPEvent.purchaseStarted(productId: productId));
 
+    // Set purchase in progress for iOS lifecycle handling
+    _isPurchaseInProgress = true;
+
     // Create completer for async result
     final completer = Completer<PurchaseResult>();
     _pendingPurchases[productId] = completer;
@@ -383,6 +451,7 @@ class StoreIAPService implements IAPService {
 
       if (!success) {
         _pendingPurchases.remove(productId);
+        _isPurchaseInProgress = false;
         return PurchaseResult.failed(
           productId: productId,
           errorCode: 'PURCHASE_NOT_STARTED',
@@ -396,11 +465,13 @@ class StoreIAPService implements IAPService {
         const Duration(seconds: 30),
         onTimeout: () {
           _pendingPurchases.remove(productId);
+          _isPurchaseInProgress = false;
           return PurchaseResult.cancelled(productId: productId);
         },
       );
     } catch (e) {
       _pendingPurchases.remove(productId);
+      _isPurchaseInProgress = false;
       return PurchaseResult.failed(
         productId: productId,
         errorCode: 'PURCHASE_ERROR',
@@ -481,6 +552,15 @@ class StoreIAPService implements IAPService {
 
   @override
   void dispose() {
+    // Remove lifecycle observer on iOS
+    if (Platform.isIOS) {
+      WidgetsBinding.instance.removeObserver(this);
+    }
+
+    // Cancel iOS resume timer
+    _iosResumeTimer?.cancel();
+    _iosResumeTimer = null;
+
     _purchaseSubscription?.cancel();
     _iapEventController.close();
     _subscriptionStatusController.close();
