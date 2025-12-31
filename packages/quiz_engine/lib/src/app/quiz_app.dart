@@ -10,6 +10,7 @@ import '../achievements/widgets/achievement_card.dart';
 import '../home/play_screen_tab.dart';
 import '../home/quiz_home_screen.dart';
 import '../home/quiz_home_config.dart';
+import '../home/tabbed_play_screen_config.dart';
 import '../home/quiz_home_data.dart';
 import '../l10n/quiz_localizations.dart';
 import '../l10n/quiz_localizations_delegate.dart';
@@ -28,6 +29,7 @@ import '../services/quiz_services_context.dart';
 import '../services/quiz_services_provider.dart';
 import '../settings/quiz_settings_screen.dart';
 import '../settings/quiz_settings_config.dart';
+import '../widgets/layout_mode_selector.dart';
 import '../widgets/practice_empty_state.dart';
 import '../widgets/restore_resource_dialog.dart';
 import '../widgets/session_card.dart';
@@ -321,6 +323,56 @@ class QuizApp extends StatefulWidget {
   /// Required when [playTabTypes] contains [PlayTabType.challenges].
   final List<ChallengeMode>? challenges;
 
+  /// Builder for layout mode options in the Challenges screen category picker.
+  ///
+  /// When provided, users can select a layout mode (e.g., Standard, Reverse)
+  /// before starting a challenge. The selected layout is applied to the quiz.
+  ///
+  /// The builder receives a [BuildContext] to access localization:
+  /// ```dart
+  /// challengeLayoutModeOptionsBuilder: (context) {
+  ///   final l10n = AppLocalizations.of(context)!;
+  ///   return [
+  ///     LayoutModeOption(id: 'standard', label: l10n.standard, ...),
+  ///     LayoutModeOption(id: 'reverse', label: l10n.reverse, ...),
+  ///   ];
+  /// }
+  /// ```
+  ///
+  /// If not provided, challenges use the default layout from the category.
+  final List<LayoutModeOption> Function(BuildContext)? challengeLayoutModeOptionsBuilder;
+
+  /// Title for the layout mode selector in the Challenges category picker.
+  ///
+  /// Can be a function that receives context for localization.
+  final String Function(BuildContext)? challengeLayoutModeSelectorTitleBuilder;
+
+  /// Builder for layout mode options in the Play screen.
+  ///
+  /// When provided, users can select a layout mode (e.g., Standard, Reverse)
+  /// at the top of the Play screen. The selected layout is persisted in settings
+  /// and applied to all quizzes started from the Play tab.
+  ///
+  /// The builder receives a [BuildContext] to access localization:
+  /// ```dart
+  /// playLayoutModeOptionsBuilder: (context) {
+  ///   final l10n = AppLocalizations.of(context)!;
+  ///   return [
+  ///     LayoutModeOption(id: 'standard', label: l10n.standard, ...),
+  ///     LayoutModeOption(id: 'reverse', label: l10n.reverse, ...),
+  ///   ];
+  /// }
+  /// ```
+  ///
+  /// If not provided, the Play screen shows no layout selector and uses
+  /// the default layout from the data provider.
+  final List<LayoutModeOption> Function(BuildContext)? playLayoutModeOptionsBuilder;
+
+  /// Title for the layout mode selector in the Play screen.
+  ///
+  /// Can be a function that receives context for localization.
+  final String Function(BuildContext)? playLayoutModeSelectorTitleBuilder;
+
   /// Data provider for the Practice tab.
   ///
   /// When provided, [QuizApp] will:
@@ -383,6 +435,10 @@ class QuizApp extends StatefulWidget {
     this.onQuizCompleted,
     this.playTabTypes = const {...PlayTabType.values},
     this.challenges,
+    this.challengeLayoutModeOptionsBuilder,
+    this.challengeLayoutModeSelectorTitleBuilder,
+    this.playLayoutModeOptionsBuilder,
+    this.playLayoutModeSelectorTitleBuilder,
     this.practiceDataProvider,
     this.onAchievementsUnlocked,
     this.showAchievementNotifications = true,
@@ -610,15 +666,69 @@ class _QuizAppState extends State<QuizApp> {
     // Build play screen tabs from the enum set
     final playTabs = _buildPlayScreenTabs(context);
 
+    // Build tabbed play screen config with layout options
+    final tabbedConfig = _buildTabbedPlayScreenConfig(context);
+
     // Return config with the generated tabs
     return QuizHomeScreenConfig(
       tabConfig: widget.homeConfig.tabConfig,
       playScreenConfig: widget.homeConfig.playScreenConfig,
       playScreenTabs: playTabs.isNotEmpty ? playTabs : null,
       initialPlayTabId: widget.homeConfig.initialPlayTabId,
-      tabbedPlayScreenConfig: widget.homeConfig.tabbedPlayScreenConfig,
+      tabbedPlayScreenConfig: tabbedConfig,
       showSettingsInAppBar: widget.homeConfig.showSettingsInAppBar,
       appBarActions: widget.homeConfig.appBarActions,
+    );
+  }
+
+  /// Builds the tabbed play screen config with layout options.
+  ///
+  /// Always sets `showAppBar: false` since [QuizHomeScreen] provides the app bar.
+  TabbedPlayScreenConfig _buildTabbedPlayScreenConfig(BuildContext context) {
+    final baseConfig = widget.homeConfig.tabbedPlayScreenConfig ??
+        const TabbedPlayScreenConfig();
+    final layoutOptions = widget.playLayoutModeOptionsBuilder?.call(context);
+
+    // If no layout options, return config with showAppBar disabled
+    if (layoutOptions == null || layoutOptions.isEmpty) {
+      return TabbedPlayScreenConfig(
+        title: baseConfig.title,
+        showAppBar: false, // QuizHomeScreen provides the app bar
+        showSettingsAction: baseConfig.showSettingsAction,
+        appBarActions: baseConfig.appBarActions,
+        tabBarIndicatorColor: baseConfig.tabBarIndicatorColor,
+        tabBarLabelColor: baseConfig.tabBarLabelColor,
+        tabBarUnselectedLabelColor: baseConfig.tabBarUnselectedLabelColor,
+        tabBarIndicatorWeight: baseConfig.tabBarIndicatorWeight,
+        tabBarIsScrollable: baseConfig.tabBarIsScrollable,
+        playScreenConfig: baseConfig.playScreenConfig,
+      );
+    }
+
+    // Get selected mode from settings
+    final selectedModeId = _settingsService.currentSettings.preferredLayoutModeId;
+
+    return TabbedPlayScreenConfig(
+      title: baseConfig.title,
+      showAppBar: false, // QuizHomeScreen provides the app bar
+      showSettingsAction: baseConfig.showSettingsAction,
+      appBarActions: baseConfig.appBarActions,
+      tabBarIndicatorColor: baseConfig.tabBarIndicatorColor,
+      tabBarLabelColor: baseConfig.tabBarLabelColor,
+      tabBarUnselectedLabelColor: baseConfig.tabBarUnselectedLabelColor,
+      tabBarIndicatorWeight: baseConfig.tabBarIndicatorWeight,
+      tabBarIsScrollable: baseConfig.tabBarIsScrollable,
+      playScreenConfig: baseConfig.playScreenConfig,
+      layoutModeOptions: layoutOptions,
+      layoutModeSelectorTitle: widget.playLayoutModeSelectorTitleBuilder?.call(context),
+      selectedLayoutModeId: selectedModeId,
+      onLayoutModeChanged: (option) {
+        _settingsService.setPreferredLayoutMode(option.id);
+        // Force rebuild to update the UI with the new selection
+        if (mounted) {
+          setState(() {});
+        }
+      },
     );
   }
 
@@ -651,6 +761,8 @@ class _QuizAppState extends State<QuizApp> {
                       challenges: widget.challenges!,
                       categories: widget.categories ?? [],
                       dataProvider: widget.dataProvider!,
+                      layoutModeOptions: widget.challengeLayoutModeOptionsBuilder?.call(context),
+                      layoutModeSelectorTitle: widget.challengeLayoutModeSelectorTitleBuilder?.call(context),
                       onQuizCompleted: _handleQuizCompleted,
                     ),
               ),
@@ -776,8 +888,8 @@ class _QuizAppState extends State<QuizApp> {
     // Create storage config
     final storageConfig = dataProvider.createStorageConfig(context, category);
 
-    // Get layout config from provider
-    final layoutConfig = dataProvider.createLayoutConfig(context, category);
+    // Get layout config - prefer saved preference, fallback to data provider
+    final layoutConfig = _getLayoutConfigForQuiz(context, category);
 
     // Apply storage config and layout config to quiz config
     final configWithStorage = quizConfig.copyWith(
@@ -823,6 +935,37 @@ class _QuizAppState extends State<QuizApp> {
         ),
       );
     }
+  }
+
+  /// Gets the layout config for a quiz, preferring saved preference over data provider default.
+  ///
+  /// Checks if the user has a saved layout mode preference in settings.
+  /// If found, looks up the corresponding [LayoutModeOption] from [playLayoutModeOptionsBuilder]
+  /// and uses its layout config. Falls back to the data provider's default layout.
+  QuizLayoutConfig _getLayoutConfigForQuiz(
+    BuildContext context,
+    QuizCategory category,
+  ) {
+    // Check for saved layout preference
+    final preferredModeId = _settingsService.currentSettings.preferredLayoutModeId;
+
+    if (preferredModeId != null && widget.playLayoutModeOptionsBuilder != null) {
+      // Get layout options
+      final options = widget.playLayoutModeOptionsBuilder!(context);
+
+      // Find the option matching the saved preference
+      final selectedOption = options
+          .where((o) => o.id == preferredModeId)
+          .firstOrNull;
+
+      if (selectedOption != null) {
+        return selectedOption.layoutConfig;
+      }
+    }
+
+    // Fallback to data provider's layout
+    return widget.dataProvider?.createLayoutConfig(context, category) ??
+        const ImageQuestionTextAnswersLayout();
   }
 
   /// Handles quiz completion by notifying achievements provider and calling callback.
