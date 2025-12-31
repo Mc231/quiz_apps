@@ -96,7 +96,7 @@ class FlagsQuizAppProvider {
     final sessionRepository = sl.get<QuizSessionRepository>();
 
     // Create categories and data provider
-    final categories = createFlagsCategories(countryCounts);
+    final categories = createFlagsCategoriesWithLayout(countryCounts, mode: FlagsLayoutMode.standard);
     const dataProvider = FlagsDataProvider();
 
     // Create achievements data provider and initialize at startup

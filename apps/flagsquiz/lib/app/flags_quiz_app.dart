@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 
 import '../data/flags_challenges.dart';
+import '../data/flags_layout_options.dart';
 import '../initialization/flags_quiz_dependencies.dart';
 import '../l10n/app_localizations.dart';
 import '../practice/flags_practice_data_provider.dart';
@@ -36,6 +37,12 @@ class FlagsQuizApp extends StatelessWidget {
       dataProvider: dependencies.dataProvider,
       achievementsDataProvider: dependencies.achievementsProvider,
       challenges: FlagsChallenges.all,
+      challengeLayoutModeOptionsBuilder: createFlagsLayoutOptions,
+      challengeLayoutModeSelectorTitleBuilder: (context) =>
+          AppLocalizations.of(context)!.quizMode,
+      playLayoutModeOptionsBuilder: createFlagsLayoutOptions,
+      playLayoutModeSelectorTitleBuilder: (context) =>
+          AppLocalizations.of(context)!.quizMode,
       practiceDataProvider: FlagsPracticeDataProvider.fromServiceLocator(),
       config: QuizAppConfig(
         title: 'Flags Quiz',
