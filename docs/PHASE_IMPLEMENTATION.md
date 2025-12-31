@@ -3939,34 +3939,37 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ---
 
-### Sprint 13.3: Layout Integration
+### Sprint 13.3: Layout Integration ✅
 
 **Goal:** Update `QuizLayout`, `QuizBloc`, and `QuizScreen` to support configurable layouts including MixedLayout.
 
 **Tasks:**
-- [ ] Add `layoutConfig` parameter to `QuizLayout` (receives resolved non-mixed layout)
-- [ ] Implement `_buildQuestionWidget()` with layout-aware rendering
-- [ ] Implement `_buildAnswersWidget()` to select correct answer widget
-- [ ] Implement text question template substitution (`{name}` replacement)
-- [ ] Add `resolveLayoutForQuestion(questionIndex)` to `QuizBloc`
-- [ ] Add `resolvedLayout` field to `QuestionState`
-- [ ] Handle MixedLayout by resolving concrete layout per question
-- [ ] Update `QuizScreen` to pass resolved layoutConfig from state
-- [ ] Update `AnswerFeedbackWidget` to support image answer feedback
-- [ ] Export new widgets from `quiz_engine.dart`
-- [ ] Write/update tests for QuizLayout, QuizBloc, and QuizScreen
+- [x] Add `layoutConfig` parameter to `QuizLayout` (receives resolved non-mixed layout)
+- [x] Implement `_buildQuestionWidget()` with layout-aware rendering
+- [x] Implement `_buildAnswersWidget()` to select correct answer widget
+- [x] Implement text question template substitution (`{name}` replacement)
+- [x] Add `resolveLayoutForQuestion(questionIndex)` to `QuizBloc`
+- [x] Add `resolvedLayout` field to `QuestionState` and `AnswerFeedbackState`
+- [x] Handle MixedLayout by resolving concrete layout per question
+- [x] Update `QuizScreen` to pass resolved layoutConfig from state
+- [x] Update `AnswerFeedbackWidget` to support image answer feedback
+- [x] Export new widgets from `quiz_engine.dart`
+- [x] Write/update tests for QuizLayout, QuizBloc, and QuizScreen
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/quiz/quiz_layout.dart`
-- `packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
-- `packages/quiz_engine/lib/src/bloc/quiz/quiz_bloc.dart`
-- `packages/quiz_engine/lib/src/bloc/quiz/quiz_state.dart`
-- `packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart`
-- `packages/quiz_engine/lib/quiz_engine.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_layout.dart` - Added layoutConfig parameter, layout-aware rendering
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_text_widget.dart` - Added displayText parameter for template substitution
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_screen.dart` - Pass resolved layoutConfig to QuizLayout and AnswerFeedbackWidget
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart` - Added resolveLayoutForQuestion() method
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_state/quiz_state.dart` - Added resolvedLayout to QuestionState and AnswerFeedbackState
+- ✅ `packages/quiz_engine_core/lib/src/model/config/quiz_config.dart` - Added layoutConfig field
+- ✅ `packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart` - Added layoutConfig parameter, image answer preview
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Export QuizLayout, QuizImageWidget, QuizImageAnswersWidget
+- ✅ `packages/quiz_engine/test/achievements/base_achievements_test.dart` - Added missing localization methods
 
-**Files to Create/Modify:**
-- `packages/quiz_engine/test/quiz/quiz_layout_test.dart`
-- `packages/quiz_engine/test/bloc/quiz_bloc_layout_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/test/quiz/quiz_layout_test.dart` - Widget tests for QuizLayout
+- ✅ `packages/quiz_engine_core/test/business_logic/quiz_bloc_layout_test.dart` - Unit tests for layout config
 
 ---
 
