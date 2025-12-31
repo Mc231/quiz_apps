@@ -2595,6 +2595,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Find the Flag'**
   String get findTheFlag;
+
+  /// Standard layout mode - show flag, guess country name
+  ///
+  /// In en, this message translates to:
+  /// **'Flag to Name'**
+  String get layoutModeStandard;
+
+  /// Short label for standard layout mode
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get layoutModeStandardShort;
+
+  /// Reverse layout mode - show name, guess flag
+  ///
+  /// In en, this message translates to:
+  /// **'Name to Flag'**
+  String get layoutModeReverse;
+
+  /// Short label for reverse layout mode
+  ///
+  /// In en, this message translates to:
+  /// **'Reverse'**
+  String get layoutModeReverseShort;
+
+  /// Mixed layout mode - randomly alternate between layouts
+  ///
+  /// In en, this message translates to:
+  /// **'Mixed'**
+  String get layoutModeMixed;
+
+  /// Short label for mixed layout mode
+  ///
+  /// In en, this message translates to:
+  /// **'Mix'**
+  String get layoutModeMixedShort;
+
+  /// Title for the layout mode selector section
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Mode'**
+  String get quizMode;
 }
 
 class _AppLocalizationsDelegate

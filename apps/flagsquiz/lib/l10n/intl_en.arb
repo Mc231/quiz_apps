@@ -1613,5 +1613,33 @@
   "findTheFlag": "Find the Flag",
   "@findTheFlag": {
     "description": "Alternative title for reverse layout mode"
+  },
+  "layoutModeStandard": "Flag to Name",
+  "@layoutModeStandard": {
+    "description": "Standard layout mode - show flag, guess country name"
+  },
+  "layoutModeStandardShort": "Standard",
+  "@layoutModeStandardShort": {
+    "description": "Short label for standard layout mode"
+  },
+  "layoutModeReverse": "Name to Flag",
+  "@layoutModeReverse": {
+    "description": "Reverse layout mode - show name, guess flag"
+  },
+  "layoutModeReverseShort": "Reverse",
+  "@layoutModeReverseShort": {
+    "description": "Short label for reverse layout mode"
+  },
+  "layoutModeMixed": "Mixed",
+  "@layoutModeMixed": {
+    "description": "Mixed layout mode - randomly alternate between layouts"
+  },
+  "layoutModeMixedShort": "Mix",
+  "@layoutModeMixedShort": {
+    "description": "Short label for mixed layout mode"
+  },
+  "quizMode": "Quiz Mode",
+  "@quizMode": {
+    "description": "Title for the layout mode selector section"
   }
 }

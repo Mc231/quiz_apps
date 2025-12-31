@@ -1221,4 +1221,25 @@ class AppLocalizationsPa extends AppLocalizations {
 
   @override
   String get findTheFlag => 'Find the Flag';
+
+  @override
+  String get layoutModeStandard => 'Flag to Name';
+
+  @override
+  String get layoutModeStandardShort => 'Standard';
+
+  @override
+  String get layoutModeReverse => 'Name to Flag';
+
+  @override
+  String get layoutModeReverseShort => 'Reverse';
+
+  @override
+  String get layoutModeMixed => 'Mixed';
+
+  @override
+  String get layoutModeMixedShort => 'Mix';
+
+  @override
+  String get quizMode => 'Quiz Mode';
 }
