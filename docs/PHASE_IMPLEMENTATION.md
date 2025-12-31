@@ -3991,21 +3991,25 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ---
 
-### Sprint 13.5: Flags Quiz Integration
+### Sprint 13.5: Flags Quiz Integration ✅
 
 **Goal:** Add reverse layout support to the Flags Quiz app.
 
 **Tasks:**
-- [ ] Add localization strings for question templates ("Which flag is {name}?")
-- [ ] Update `FlagsDataProvider.createQuizConfig()` to handle layout config
-- [ ] Optionally add reverse layout categories (or make configurable)
-- [ ] Write integration tests
+- [x] Add localization strings for question templates ("Which flag is {name}?")
+- [x] Update `FlagsDataProvider.createLayoutConfig()` to handle layout config
+- [x] Add reverse layout categories (via `FlagsLayoutMode` enum and helper functions)
+- [x] Write integration tests
 
-**Files to Modify:**
-- `apps/flagsquiz/lib/data/flags_data_provider.dart`
-- `apps/flagsquiz/lib/data/flags_categories.dart`
-- `apps/flagsquiz/lib/l10n/intl_en.arb`
-- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
+**Files Modified:**
+- ✅ `apps/flagsquiz/lib/data/flags_data_provider.dart` - Added `createLayoutConfig()` override with localized templates
+- ✅ `apps/flagsquiz/lib/data/flags_categories.dart` - Added `FlagsLayoutMode` enum, `createFlagsCategoriesWithLayout()`, `createFlagCategory()`
+- ✅ `apps/flagsquiz/lib/l10n/intl_en.arb` - Added `whichFlagIs`, `selectTheFlagOf`, `identifyFlags`, `findTheFlag`
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added `whichOneIs`, `selectThe`, `layoutStandard`, `layoutReverse`, `layoutMixed`
+
+**Files Created:**
+- ✅ `apps/flagsquiz/test/data/flags_categories_test.dart` - 17 tests for category creation
+- ✅ `apps/flagsquiz/test/data/flags_data_provider_test.dart` - 11 tests for layout config handling
 
 ---
 
