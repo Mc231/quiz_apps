@@ -138,3 +138,6 @@ export 'src/achievements/widgets/achievement_card.dart';
 export 'src/achievements/widgets/achievement_notification.dart';
 export 'src/achievements/widgets/achievement_tier_badge.dart';
 export 'src/achievements/widgets/achievements_list.dart';
+
+// Rate App (In-app review UI)
+export 'src/rate_app/rate_app_widgets_exports.dart';
