@@ -2199,5 +2199,26 @@
   "accessibilityFeedbackDialogTitle": "Feedback dialog",
   "@accessibilityFeedbackDialogTitle": {
     "description": "Accessibility label for feedback dialog"
+  },
+
+  "accessibilityImageAnswer": "Image answer: {label}",
+  "@accessibilityImageAnswer": {
+    "description": "Accessibility label for image answer option",
+    "placeholders": {
+      "label": {"type": "String"}
+    }
+  },
+
+  "accessibilityImageAnswerDisabled": "Image answer {label}, eliminated",
+  "@accessibilityImageAnswerDisabled": {
+    "description": "Accessibility label for disabled image answer option",
+    "placeholders": {
+      "label": {"type": "String"}
+    }
+  },
+
+  "imageLoadError": "Failed to load image",
+  "@imageLoadError": {
+    "description": "Error message when image fails to load"
   }
 }

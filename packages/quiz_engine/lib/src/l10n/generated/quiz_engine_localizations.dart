@@ -2595,6 +2595,24 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Feedback dialog'**
   String get accessibilityFeedbackDialogTitle;
+
+  /// Accessibility label for image answer option
+  ///
+  /// In en, this message translates to:
+  /// **'Image answer: {label}'**
+  String accessibilityImageAnswer(String label);
+
+  /// Accessibility label for disabled image answer option
+  ///
+  /// In en, this message translates to:
+  /// **'Image answer {label}, eliminated'**
+  String accessibilityImageAnswerDisabled(String label);
+
+  /// Error message when image fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load image'**
+  String get imageLoadError;
 }
 
 class _QuizEngineLocalizationsDelegate

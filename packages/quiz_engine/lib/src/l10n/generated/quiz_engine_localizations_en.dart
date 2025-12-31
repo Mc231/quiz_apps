@@ -1449,4 +1449,17 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get accessibilityFeedbackDialogTitle => 'Feedback dialog';
+
+  @override
+  String accessibilityImageAnswer(String label) {
+    return 'Image answer: $label';
+  }
+
+  @override
+  String accessibilityImageAnswerDisabled(String label) {
+    return 'Image answer $label, eliminated';
+  }
+
+  @override
+  String get imageLoadError => 'Failed to load image';
 }
