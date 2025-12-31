@@ -2613,6 +2613,36 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load image'**
   String get imageLoadError;
+
+  /// Generic question template for reverse layout (text question, image answers)
+  ///
+  /// In en, this message translates to:
+  /// **'Which one is {name}?'**
+  String whichOneIs(String name);
+
+  /// Alternative question template for reverse layout
+  ///
+  /// In en, this message translates to:
+  /// **'Select the {name}'**
+  String selectThe(String name);
+
+  /// Label for standard layout (image question, text answers)
+  ///
+  /// In en, this message translates to:
+  /// **'Standard'**
+  String get layoutStandard;
+
+  /// Label for reverse layout (text question, image answers)
+  ///
+  /// In en, this message translates to:
+  /// **'Reverse'**
+  String get layoutReverse;
+
+  /// Label for mixed layout (alternating between layouts)
+  ///
+  /// In en, this message translates to:
+  /// **'Mixed'**
+  String get layoutMixed;
 }
 
 class _QuizEngineLocalizationsDelegate

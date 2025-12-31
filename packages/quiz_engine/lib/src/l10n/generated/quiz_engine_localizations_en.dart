@@ -1462,4 +1462,23 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get imageLoadError => 'Failed to load image';
+
+  @override
+  String whichOneIs(String name) {
+    return 'Which one is $name?';
+  }
+
+  @override
+  String selectThe(String name) {
+    return 'Select the $name';
+  }
+
+  @override
+  String get layoutStandard => 'Standard';
+
+  @override
+  String get layoutReverse => 'Reverse';
+
+  @override
+  String get layoutMixed => 'Mixed';
 }
