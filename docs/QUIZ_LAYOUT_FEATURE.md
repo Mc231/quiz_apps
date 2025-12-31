@@ -1084,13 +1084,73 @@ QuizLayoutConfig.mixed(
 
 **Estimated Effort**: 1 day
 
-### Phase 6: Polish and Documentation (Sprint 6)
+### Phase 6: Data Persistence & App-Wide Integration (Sprint 6)
+
+**Goal:** Ensure layout information is persisted and displayed throughout the app.
+
+**Database Changes:**
+
+1. **Modify** `quiz_sessions` table schema:
+   - Add `layout_mode` column (TEXT) - stores layout type identifier
+   - Values: `imageQuestionTextAnswers`, `textQuestionImageAnswers`, `mixed`, etc.
+
+2. **Modify** `quiz_answers` table schema:
+   - Add `layout_used` column (TEXT) - stores the resolved layout for each question
+   - Important for MixedLayout where each question may have different layout
+
+**Files to Modify:**
+
+1. **Database Layer:**
+   - `/packages/shared_services/lib/src/storage/database/database_helper.dart` - Add migration
+   - `/packages/shared_services/lib/src/storage/models/quiz_session.dart` - Add `layoutMode` field
+   - `/packages/shared_services/lib/src/storage/models/quiz_answer.dart` - Add `layoutUsed` field
+   - `/packages/shared_services/lib/src/storage/data_sources/quiz_session_data_source.dart` - Update queries
+
+2. **Session Recording:**
+   - `/packages/quiz_engine/lib/src/bloc/quiz/quiz_bloc.dart` - Record layout per answer
+   - Ensure `QuizSession` is created with `layoutMode` field
+
+3. **Session History Screen:**
+   - `/packages/quiz_engine/lib/src/screens/session_history_screen.dart` - Show layout mode badge/indicator
+   - Add filter option by layout mode (optional)
+
+4. **Session Detail Screen:**
+   - `/packages/quiz_engine/lib/src/screens/session_detail_screen.dart` - Show layout per question
+   - Display appropriate visualization (image or text) based on stored layout
+
+5. **Statistics Screen:**
+   - `/packages/quiz_engine/lib/src/screens/statistics_screen.dart` - Show breakdown by layout mode
+   - `/packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart` - Layout mode stats
+
+6. **Results Screen:**
+   - `/packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Show layout mode used
+
+7. **Analytics Events:**
+   - Update `QuizEvent.started` - Add `layoutMode` parameter
+   - Update `QuizEvent.completed` - Add `layoutMode` parameter
+   - Update `QuestionEvent.answered` - Add `layoutUsed` parameter
+
+**UI Considerations:**
+
+- Use icons/badges to indicate layout mode:
+  - 🖼️→📝 Image question, text answers (default)
+  - 📝→🖼️ Text question, image answers
+  - 🔀 Mixed mode
+- Show layout breakdown in session review
+- For mixed mode sessions, show per-question layout in detail view
+
+**Estimated Effort**: 2 days
+
+---
+
+### Phase 7: Polish and Documentation (Sprint 7)
 
 1. Update `PHASE_IMPLEMENTATION.md` with completed tasks
 2. Add documentation to `CORE_ARCHITECTURE_GUIDE.md`
 3. Performance testing with multiple images
 4. Accessibility testing with VoiceOver/TalkBack
 5. Manual testing on different device sizes
+6. Test layout display in all screens (history, detail, statistics, results)
 
 **Estimated Effort**: 1 day
 

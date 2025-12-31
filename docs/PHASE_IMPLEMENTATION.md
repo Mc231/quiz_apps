@@ -3990,7 +3990,42 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ---
 
-### Sprint 13.6: Polish and Documentation
+### Sprint 13.6: Data Persistence & App-Wide Integration
+
+**Goal:** Ensure layout information is persisted in database and displayed throughout the app.
+
+**Tasks:**
+- [ ] Add database migration for layout columns:
+  - `layout_mode` column in `quiz_sessions` table
+  - `layout_used` column in `quiz_answers` table
+- [ ] Update `QuizSession` model with `layoutMode` field
+- [ ] Update `QuizAnswer` model with `layoutUsed` field
+- [ ] Update `QuizSessionDataSource` to persist/retrieve layout data
+- [ ] Update `QuizBloc` to record layout per answer
+- [ ] Update Session History Screen to show layout mode badge/indicator
+- [ ] Update Session Detail Screen to show layout per question
+- [ ] Update Statistics Screen with layout mode breakdown
+- [ ] Update Results Screen to show layout mode used
+- [ ] Update Analytics events (`QuizEvent`, `QuestionEvent`) with layout parameters
+- [ ] Add localization strings for layout mode labels
+- [ ] Write tests for persistence and display
+
+**Files to Modify:**
+- `packages/shared_services/lib/src/storage/database/database_helper.dart`
+- `packages/shared_services/lib/src/storage/models/quiz_session.dart`
+- `packages/shared_services/lib/src/storage/models/quiz_answer.dart`
+- `packages/shared_services/lib/src/storage/data_sources/quiz_session_data_source.dart`
+- `packages/quiz_engine/lib/src/bloc/quiz/quiz_bloc.dart`
+- `packages/quiz_engine/lib/src/screens/session_history_screen.dart`
+- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
+- `packages/quiz_engine/lib/src/screens/statistics_screen.dart`
+- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
+- `packages/shared_services/lib/src/analytics/events/quiz_event.dart`
+- `packages/shared_services/lib/src/analytics/events/question_event.dart`
+
+---
+
+### Sprint 13.7: Polish and Documentation
 
 **Goal:** Final testing, accessibility, and documentation.
 
@@ -3999,6 +4034,7 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 - [ ] Accessibility testing (VoiceOver/TalkBack)
 - [ ] Performance testing with multiple images
 - [ ] Manual testing on different device sizes
+- [ ] Test layout display in all screens (history, detail, statistics, results)
 - [ ] Update `CORE_ARCHITECTURE_GUIDE.md` with layout documentation
 - [ ] Update `PHASE_IMPLEMENTATION.md` with completion status
 
@@ -4013,9 +4049,10 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 | 13.3 | Layout Integration | Medium |
 | 13.4 | Category Configuration | Small |
 | 13.5 | Flags Quiz Integration | Medium |
-| 13.6 | Polish and Documentation | Small |
+| 13.6 | Data Persistence & App-Wide Integration | Medium |
+| 13.7 | Polish and Documentation | Small |
 
-**Total: 6 sprints**
+**Total: 7 sprints**
 
 ---
 
