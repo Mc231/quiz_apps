@@ -144,6 +144,11 @@ class LayoutModeSelector extends StatelessWidget {
           textStyle: WidgetStatePropertyAll(
             large ? theme.textTheme.titleSmall : theme.textTheme.labelMedium,
           ),
+          side: WidgetStatePropertyAll(
+            BorderSide(
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+            ),
+          ),
         ),
         showSelectedIcon: false,
         expandedInsets: EdgeInsets.zero,
