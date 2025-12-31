@@ -86,4 +86,10 @@ extension QuizServicesContext on BuildContext {
   ///
   /// Throws a [FlutterError] if no [QuizServicesProvider] is found.
   IAPService get iapService => services.iapService;
+
+  /// Returns the [RateAppService] from the closest [QuizServicesProvider] ancestor,
+  /// or null if not configured.
+  ///
+  /// Throws a [FlutterError] if no [QuizServicesProvider] is found.
+  RateAppService? get rateAppService => services.rateAppService;
 }

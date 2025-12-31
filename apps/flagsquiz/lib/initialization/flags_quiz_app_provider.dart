@@ -148,9 +148,11 @@ class FlagsQuizAppProvider {
 
     // Initialize IAP service
     // Toggle for testing: true = real store (license/sandbox testing), false = mock
+    // ignore: dead_code - intentional feature flag for switching between mock and real
     const useRealIAPService = true;
 
     final IAPService iapService;
+    // ignore: dead_code
     if (kDebugMode && !useRealIAPService) {
       // Mock service for UI development - simulates working store
       iapService = MockIAPService(
@@ -182,11 +184,13 @@ class FlagsQuizAppProvider {
     // When useRealIAPService is true, use production IDs to match StoreIAPService
     final purchasePacks = useRealIAPService
         ? createProductionResourcePacks()
+        // ignore: dead_code
         : _createTestResourcePacks();
 
     // Define bundle packs with their resource contents
     final bundlePacks = useRealIAPService
         ? createProductionBundlePacks()
+        // ignore: dead_code
         : _createTestBundlePacks();
 
     // Create resource config with purchase packs and bundles
@@ -217,6 +221,21 @@ class FlagsQuizAppProvider {
     );
     await resourceManager.initialize();
 
+    // Initialize rate app service
+    final rateAppService = RateAppService(
+      config: const RateAppConfig(
+        minCompletedQuizzes: 5,
+        minDaysSinceInstall: 3,
+        minScorePercentage: 70,
+        cooldownDays: 30,
+        maxLifetimePrompts: 3,
+        maxDeclines: 2,
+        useLoveDialog: true,
+        feedbackEmail: 'support@flagsquiz.app',
+      ),
+    );
+    await rateAppService.initialize();
+
     // Bundle all services together
     final services = QuizServices(
       settingsService: settingsService,
@@ -227,6 +246,7 @@ class FlagsQuizAppProvider {
       resourceManager: resourceManager,
       adsService: analyticsAdsService,
       iapService: iapService,
+      rateAppService: rateAppService,
     );
 
     return FlagsQuizDependencies(

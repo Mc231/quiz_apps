@@ -1668,6 +1668,28 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get buy => 'Buy';
   @override
   String get purchased => 'Purchased';
+
+  // Rate App localizations
+  @override
+  String rateAppLoveDialogTitle(String appName) => 'Enjoying $appName?';
+  @override
+  String get rateAppLoveDialogYes => 'Yes!';
+  @override
+  String get rateAppLoveDialogNo => 'Not Really';
+  @override
+  String get rateAppFeedbackTitle => 'Feedback';
+  @override
+  String get rateAppFeedbackMessage => 'What could be better?';
+  @override
+  String get rateAppFeedbackEmailButton => 'Send Email';
+  @override
+  String get rateAppFeedbackDismiss => 'Maybe Later';
+  @override
+  String get rateAppThankYou => 'Thank you!';
+  @override
+  String get accessibilityRateDialogTitle => 'Rate dialog';
+  @override
+  String get accessibilityFeedbackDialogTitle => 'Feedback dialog';
 }
 
 void main() {

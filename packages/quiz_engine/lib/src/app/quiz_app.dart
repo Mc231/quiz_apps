@@ -31,8 +31,36 @@ import '../settings/quiz_settings_config.dart';
 import '../widgets/practice_empty_state.dart';
 import '../widgets/restore_resource_dialog.dart';
 import '../widgets/session_card.dart';
+import '../rate_app/rate_app_config_provider.dart';
 import 'play_tab_type.dart';
 import 'quiz_tab.dart';
+
+/// Configuration for rate app prompts in the quiz results screen.
+///
+/// When configured, the quiz results screen will automatically check
+/// conditions and show rate app prompts when appropriate.
+class RateAppUiConfig {
+  /// The app name to display in the love dialog.
+  final String appName;
+
+  /// Optional app icon widget to display in the love dialog.
+  final Widget? appIcon;
+
+  /// Optional email address for feedback submissions.
+  final String? feedbackEmail;
+
+  /// Delay in seconds before showing rate app dialog after results appear.
+  /// Default is 2 seconds to let users see their results first.
+  final int delaySeconds;
+
+  /// Creates a [RateAppUiConfig].
+  const RateAppUiConfig({
+    required this.appName,
+    this.appIcon,
+    this.feedbackEmail,
+    this.delaySeconds = 2,
+  });
+}
 
 /// Configuration for the QuizApp.
 ///
@@ -77,6 +105,12 @@ class QuizAppConfig {
   /// App bar theme configuration.
   final AppBarTheme? appBarTheme;
 
+  /// Configuration for rate app prompts.
+  ///
+  /// When provided, quiz results screen will automatically show
+  /// rate app prompts when conditions are met.
+  final RateAppUiConfig? rateAppConfig;
+
   /// Creates a [QuizAppConfig].
   const QuizAppConfig({
     this.title,
@@ -91,6 +125,7 @@ class QuizAppConfig {
     this.primaryColor,
     this.scaffoldBackgroundColor,
     this.appBarTheme,
+    this.rateAppConfig,
   });
 
   /// Creates a copy with modified fields.
@@ -107,6 +142,7 @@ class QuizAppConfig {
     Color? primaryColor,
     Color? scaffoldBackgroundColor,
     AppBarTheme? appBarTheme,
+    RateAppUiConfig? rateAppConfig,
   }) {
     return QuizAppConfig(
       title: title ?? this.title,
@@ -125,6 +161,7 @@ class QuizAppConfig {
       scaffoldBackgroundColor:
           scaffoldBackgroundColor ?? this.scaffoldBackgroundColor,
       appBarTheme: appBarTheme ?? this.appBarTheme,
+      rateAppConfig: rateAppConfig ?? this.rateAppConfig,
     );
   }
 }
@@ -415,7 +452,7 @@ class _QuizAppState extends State<QuizApp> {
 
   @override
   Widget build(BuildContext context) {
-    return QuizServicesProvider(
+    Widget app = QuizServicesProvider(
       services: _services,
       child: MaterialApp(
         navigatorKey: _navigatorKey,
@@ -434,6 +471,17 @@ class _QuizAppState extends State<QuizApp> {
         home: _wrapWithNotifications(_buildHome(context)),
       ),
     );
+
+    // Wrap with RateAppConfigProvider if rate app is configured
+    final rateAppConfig = widget.config.rateAppConfig;
+    if (rateAppConfig != null) {
+      app = RateAppConfigProvider(
+        config: rateAppConfig,
+        child: app,
+      );
+    }
+
+    return app;
   }
 
   Widget _wrapWithNotifications(Widget child) {

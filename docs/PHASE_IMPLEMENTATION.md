@@ -24,7 +24,7 @@
 | Phase 9 | Shared Services (Ads, Analytics, IAP) | 🔄 In Progress (Analytics ✅, Ads ✅, IAP ✅) |
 | Phase 10 | QuizServices DI Refactoring | ✅ Completed (10/10 sprints)                    |
 | Phase 11 | Second App Validation | Not Started                                    |
-| Phase 12 | Rate App Dialog | Not Started                                    |
+| Phase 12 | Rate App Dialog | ✅ Completed (4/4 sprints)                     |
 | Phase 13 | Onboarding | Not Started                                    |
 
 ---
@@ -3672,7 +3672,9 @@ The context-based DI pattern is correctly implemented:
 
 ---
 
-## Phase 12: Rate App Dialog
+## Phase 12: Rate App Dialog ✅
+
+**Status:** COMPLETED (4/4 sprints)
 
 **Goal:** Implement a smart rate app dialog using the "Love Dialog" pattern that prompts happy users to rate the app on the App Store/Play Store after positive quiz experiences.
 
@@ -3834,44 +3836,36 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ---
 
-### Sprint 12.4: Rate App Integration
+### Sprint 12.4: Rate App Integration ✅
+
+**Status:** COMPLETED (2025-12-31)
 
 **Tasks:**
-- [ ] Add `RateAppService` to `QuizServices` container
-- [ ] Add `rateAppConfig` to app-level configuration
-- [ ] Integrate rate app check in `QuizResultsScreen`:
-  - Check conditions after quiz completion
+- [x] Add `RateAppService` to `QuizServices` container
+- [x] Add `rateAppConfig` to app-level configuration (via `RateAppUiConfig`)
+- [x] Create `RateAppController` to orchestrate rate app flow with analytics
+- [x] Create `RateAppConfigProvider` (InheritedWidget) for config propagation
+- [x] Integrate rate app check in `QuizResultsScreen`:
+  - Check conditions after quiz completion (with configurable delay)
   - Show love dialog if conditions met
-  - Handle user responses appropriately
-- [ ] Add rate app trigger to `QuizBloc` completed state
-- [ ] Export from shared_services and quiz_engine
-- [ ] Write integration tests
+  - Handle user responses (positive → native rating, negative → feedback)
+- [x] Export from quiz_engine
+- [x] Write integration tests for `RateAppController` and `RateAppConfigProvider`
 
-**Files to Create:**
-- `packages/quiz_engine/test/rate_app/rate_app_integration_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/rate_app/rate_app_controller.dart` - Orchestrates complete rate app flow with all 11 analytics events
+- ✅ `packages/quiz_engine/lib/src/rate_app/rate_app_config_provider.dart` - InheritedWidget for UI config
+- ✅ `packages/quiz_engine/test/rate_app/rate_app_controller_test.dart` - 10 tests for controller flow
+- ✅ `packages/quiz_engine/test/rate_app/rate_app_config_provider_test.dart` - 6 tests for config provider
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/services/quiz_services.dart`
-- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
-- `packages/shared_services/lib/shared_services.dart`
-- `apps/flagsquiz/lib/app/flags_quiz_dependencies.dart`
-
----
-
-### Sprint 12.5: Remote Config Support (Optional)
-
-**Tasks:**
-- [ ] Add rate app config to Remote Config schema
-- [ ] Allow runtime adjustment of:
-  - `minCompletedQuizzes`
-  - `minScorePercentage`
-  - `cooldownDays`
-  - `isEnabled` (kill switch)
-- [ ] Write tests
-
-**Files to Modify:**
-- `packages/shared_services/lib/src/config/remote_config_service.dart`
-- `apps/flagsquiz/lib/app/flags_quiz_dependencies.dart`
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services.dart` - Added optional `rateAppService` field
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services_context.dart` - Added `rateAppService` accessor
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added `RateAppUiConfig` class and `rateAppConfig` field
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Integrated rate app checking with delay
+- ✅ `packages/quiz_engine/lib/src/rate_app/rate_app_widgets_exports.dart` - Added exports for new files
+- ✅ `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Added `RateAppUiConfig` to `QuizAppConfig`
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Initialize `RateAppService` with production config
 
 ---
 

@@ -3,6 +3,8 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
+import '../rate_app/rate_app_config_provider.dart';
+import '../rate_app/rate_app_controller.dart';
 import '../services/quiz_services_context.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../widgets/question_review_widget.dart';
@@ -23,6 +25,15 @@ import 'session_detail_texts.dart';
 ///
 /// Services are obtained from [QuizServicesProvider] via context:
 /// - `context.screenAnalyticsService` for analytics tracking
+/// - `context.rateAppService` for in-app rating prompts (optional)
+/// - `context.storageService` for getting completed quizzes count
+///
+/// ## Rate App Integration
+///
+/// When [RateAppUiConfig] is provided via [RateAppConfigProvider] and
+/// [RateAppService] is configured in the services container, this screen
+/// will automatically check rate app conditions and show the rating prompt
+/// if appropriate after a short delay.
 class QuizResultsScreen extends StatefulWidget {
   /// Creates a [QuizResultsScreen].
   const QuizResultsScreen({
@@ -59,6 +70,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
   AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
   bool _screenViewLogged = false;
+  bool _rateAppChecked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +78,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
     if (!_screenViewLogged) {
       _screenViewLogged = true;
       _logScreenView();
+      _scheduleRateAppCheck();
     }
 
     return _buildScreen(context);
@@ -80,6 +93,72 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
         isPerfectScore: widget.results.isPerfectScore,
         starRating: widget.results.starRating,
       ),
+    );
+  }
+
+  /// Schedules a rate app check after a delay.
+  ///
+  /// This gives the user time to see their results before potentially
+  /// being prompted to rate the app.
+  void _scheduleRateAppCheck() {
+    // Get rate app UI config from provider
+    final rateAppConfig = RateAppConfigProvider.of(context);
+    if (rateAppConfig == null) return;
+
+    // Get rate app service
+    final rateAppService = context.rateAppService;
+    if (rateAppService == null) return;
+
+    // Schedule the check after a delay
+    Future.delayed(
+      Duration(seconds: rateAppConfig.delaySeconds),
+      _checkRateApp,
+    );
+  }
+
+  /// Checks if rate app should be shown and shows it if appropriate.
+  Future<void> _checkRateApp() async {
+    // Skip if already checked or unmounted
+    if (_rateAppChecked || !mounted) return;
+    _rateAppChecked = true;
+
+    // Get rate app UI config from provider
+    final rateAppConfig = RateAppConfigProvider.of(context);
+    if (rateAppConfig == null) return;
+
+    // Get rate app service
+    final rateAppService = context.rateAppService;
+    if (rateAppService == null) return;
+
+    // Get completed quizzes count from storage
+    final storageService = context.storageService;
+    int completedQuizzes;
+    try {
+      final statsResult = await storageService.getGlobalStatistics();
+      if (statsResult.isFailure) return;
+      completedQuizzes = statsResult.value.totalCompletedSessions;
+    } catch (_) {
+      // If we can't get the count, skip the rate app check
+      return;
+    }
+
+    // Check if still mounted after async operation
+    if (!mounted) return;
+
+    // Create controller
+    final controller = RateAppController(
+      rateAppService: rateAppService,
+      analyticsService: _analyticsService,
+      appName: rateAppConfig.appName,
+      appIcon: rateAppConfig.appIcon,
+      feedbackEmail: rateAppConfig.feedbackEmail,
+    );
+
+    // Check and show rate app if appropriate
+    await controller.maybeShowRateApp(
+      context: context,
+      quizScore: widget.results.scorePercentage.round(),
+      completedQuizzes: completedQuizzes,
     );
   }
 

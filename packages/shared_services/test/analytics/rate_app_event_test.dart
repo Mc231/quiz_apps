@@ -233,7 +233,7 @@ void main() {
         final event = RateAppEvent.loveDialogPositive(
           promptCount: 2,
           timeToRespond: const Duration(milliseconds: 2500),
-        ) as RateAppEvent;
+        );
 
         final result = switch (event) {
           RateAppConditionsCheckedEvent() => 'conditions',

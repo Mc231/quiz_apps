@@ -18,6 +18,7 @@ import 'package:shared_services/shared_services.dart';
 ///   screenAnalyticsService: analyticsService,
 ///   quizAnalyticsService: quizAnalyticsService,
 ///   resourceManager: resourceManager,
+///   rateAppService: rateAppService,
 /// );
 ///
 /// // Wrap your widget tree
@@ -47,6 +48,7 @@ class QuizServices {
     required this.resourceManager,
     required this.adsService,
     required this.iapService,
+    this.rateAppService,
   });
 
   /// Creates a [QuizServices] with no-op implementations for analytics, ads, and IAP.
@@ -57,6 +59,7 @@ class QuizServices {
     required StorageService storageService,
     required AchievementService achievementService,
     required ResourceManager resourceManager,
+    RateAppService? rateAppService,
   }) {
     return QuizServices(
       settingsService: settingsService,
@@ -67,6 +70,7 @@ class QuizServices {
       resourceManager: resourceManager,
       adsService: NoAdsService(),
       iapService: NoOpIAPService(),
+      rateAppService: rateAppService,
     );
   }
 
@@ -117,6 +121,16 @@ class QuizServices {
   /// Use [NoOpIAPService] for testing or when IAP is disabled.
   final IAPService iapService;
 
+  /// Service for managing in-app rating prompts.
+  ///
+  /// Provides:
+  /// - Condition checking based on user engagement
+  /// - Native rating dialog display
+  /// - User response tracking and persistence
+  ///
+  /// Optional - when null, rate app prompts are disabled.
+  final RateAppService? rateAppService;
+
   /// Creates a copy of this [QuizServices] with the given fields replaced.
   QuizServices copyWith({
     SettingsService? settingsService,
@@ -127,6 +141,7 @@ class QuizServices {
     ResourceManager? resourceManager,
     AdsService? adsService,
     IAPService? iapService,
+    RateAppService? rateAppService,
   }) {
     return QuizServices(
       settingsService: settingsService ?? this.settingsService,
@@ -138,6 +153,7 @@ class QuizServices {
       resourceManager: resourceManager ?? this.resourceManager,
       adsService: adsService ?? this.adsService,
       iapService: iapService ?? this.iapService,
+      rateAppService: rateAppService ?? this.rateAppService,
     );
   }
 
@@ -153,7 +169,8 @@ class QuizServices {
           quizAnalyticsService == other.quizAnalyticsService &&
           resourceManager == other.resourceManager &&
           adsService == other.adsService &&
-          iapService == other.iapService;
+          iapService == other.iapService &&
+          rateAppService == other.rateAppService;
 
   @override
   int get hashCode => Object.hash(
@@ -165,5 +182,6 @@ class QuizServices {
         resourceManager,
         adsService,
         iapService,
+        rateAppService,
       );
 }
