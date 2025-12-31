@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../l10n/quiz_localizations.dart';
+import '../quiz/quiz_image_widget.dart';
 import '../quiz/quiz_layout.dart';
 import '../theme/quiz_animations.dart';
 import '../theme/quiz_theme_data.dart';
@@ -13,6 +14,7 @@ import 'game_resource_panel.dart';
 /// correct or incorrect, along with optional animations and effects.
 ///
 /// This widget is displayed during the [AnswerFeedbackState] phase of the quiz.
+/// Supports different layout configurations including image answer feedback.
 class AnswerFeedbackWidget extends StatefulWidget {
   /// The current answer feedback state containing question and answer info
   final AnswerFeedbackState feedbackState;
@@ -29,6 +31,12 @@ class AnswerFeedbackWidget extends StatefulWidget {
   /// Responsive sizing information
   final SizingInformation information;
 
+  /// The resolved layout configuration for this question.
+  ///
+  /// Used to display the correct answer in the appropriate format
+  /// (text or image) based on the layout type.
+  final QuizLayoutConfig? layoutConfig;
+
   const AnswerFeedbackWidget({
     super.key,
     required this.feedbackState,
@@ -36,6 +44,7 @@ class AnswerFeedbackWidget extends StatefulWidget {
     this.resourceData,
     required this.themeData,
     required this.information,
+    this.layoutConfig,
   });
 
   @override
@@ -97,11 +106,13 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
                 widget.feedbackState.progress,
                 widget.feedbackState.total,
                 remainingLives: widget.feedbackState.remainingLives,
+                resolvedLayout: widget.layoutConfig,
               ),
               information: widget.information,
               processAnswer: widget.processAnswer,
               resourceData: widget.resourceData,
               themeData: widget.themeData,
+              layoutConfig: widget.layoutConfig,
             ),
           ),
         ),
@@ -136,6 +147,9 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
     final l10n = QuizL10n.of(context);
     final message = isCorrect ? l10n.correctFeedback : l10n.incorrectFeedback;
 
+    // Check if we should show the correct answer (for incorrect answers in image layout)
+    final showCorrectAnswer = !isCorrect && _isImageAnswerLayout();
+
     return Card(
       elevation: 8,
       color: color.withValues(alpha: 0.95),
@@ -155,9 +169,55 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
                 color: Colors.white,
               ),
             ),
+            // Show correct answer image for incorrect image answer layouts
+            if (showCorrectAnswer) ...[
+              const SizedBox(height: 16),
+              _buildCorrectAnswerPreview(),
+            ],
           ],
         ),
       ),
+    );
+  }
+
+  /// Checks if the current layout uses image answers.
+  bool _isImageAnswerLayout() {
+    final layout = widget.layoutConfig;
+    return layout is TextQuestionImageAnswersLayout;
+  }
+
+  /// Builds a preview of the correct answer for image answer layouts.
+  Widget _buildCorrectAnswerPreview() {
+    final correctAnswer = widget.feedbackState.question.answer;
+    final imageSize = _getCorrectAnswerImageSize();
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        width: imageSize,
+        height: imageSize,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.white, width: 2),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: QuizImageWidget(
+          key: Key('correct_answer_${correctAnswer.otherOptions["id"]}'),
+          entry: correctAnswer,
+          width: imageSize,
+          height: imageSize,
+        ),
+      ),
+    );
+  }
+
+  /// Returns the size for the correct answer image preview.
+  double _getCorrectAnswerImageSize() {
+    return getValueForScreenType<double>(
+      context: context,
+      mobile: 80,
+      tablet: 100,
+      desktop: 120,
+      watch: 48,
     );
   }
 
