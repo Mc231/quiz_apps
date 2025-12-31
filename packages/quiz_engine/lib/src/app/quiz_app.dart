@@ -776,8 +776,14 @@ class _QuizAppState extends State<QuizApp> {
     // Create storage config
     final storageConfig = dataProvider.createStorageConfig(context, category);
 
-    // Apply storage config to quiz config
-    final configWithStorage = quizConfig.copyWith(storageConfig: storageConfig);
+    // Get layout config from provider
+    final layoutConfig = dataProvider.createLayoutConfig(context, category);
+
+    // Apply storage config and layout config to quiz config
+    final configWithStorage = quizConfig.copyWith(
+      storageConfig: storageConfig,
+      layoutConfig: layoutConfig,
+    );
 
     // Create storage adapter
     final storageAdapter = QuizStorageAdapter(storageService);

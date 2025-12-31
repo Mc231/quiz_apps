@@ -162,9 +162,13 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     // Create storage config
     final storageConfig = widget.dataProvider.createStorageConfig(context, category);
 
-    // Apply storage config
+    // Get layout config from provider
+    final layoutConfig = widget.dataProvider.createLayoutConfig(context, category);
+
+    // Apply storage config and layout config
     final configWithStorage = quizConfig.copyWith(
       storageConfig: storageConfig,
+      layoutConfig: layoutConfig,
     );
 
     // Create storage adapter
