@@ -3,6 +3,9 @@ import 'package:quiz_engine_core/quiz_engine_core.dart';
 
 import 'quiz_category.dart';
 
+export 'package:quiz_engine_core/quiz_engine_core.dart'
+    show QuizLayoutConfig, ImageAnswerSize;
+
 /// Interface for loading quiz data for a category.
 ///
 /// Apps implement this interface to provide questions and configuration
@@ -60,6 +63,70 @@ abstract class QuizDataProvider {
   QuizConfig? createQuizConfig(BuildContext context, QuizCategory category) {
     return category.config;
   }
+
+  /// Creates layout configuration for the given category.
+  ///
+  /// Returns how questions and answers should be displayed in the quiz UI.
+  /// By default, returns the category's layoutConfig.
+  ///
+  /// Override this method to customize layout based on context or
+  /// to apply transformations to the category's layout.
+  ///
+  /// ## Layout Configuration Pattern
+  ///
+  /// There are two ways to configure layouts:
+  ///
+  /// ### 1. Static Layout (via category definition)
+  ///
+  /// Set the layout directly on the category when defining it:
+  ///
+  /// ```dart
+  /// final category = QuizCategory(
+  ///   id: 'flags_reverse',
+  ///   title: (context) => 'Find the Flag',
+  ///   showAnswerFeedback: true,
+  ///   layoutConfig: QuizLayoutConfig.textQuestionImageAnswers(
+  ///     questionTemplate: 'Select the flag of {name}',
+  ///   ),
+  /// );
+  /// ```
+  ///
+  /// ### 2. Dynamic Layout (via data provider)
+  ///
+  /// Override this method when layout depends on runtime context:
+  ///
+  /// ```dart
+  /// @override
+  /// QuizLayoutConfig? createLayoutConfig(
+  ///   BuildContext context,
+  ///   QuizCategory category,
+  /// ) {
+  ///   final l10n = AppLocalizations.of(context)!;
+  ///
+  ///   // Use category's layout if specified
+  ///   if (category.layoutConfig != null) {
+  ///     // Apply localized template if text-image layout
+  ///     if (category.layoutConfig is TextQuestionImageAnswersLayout) {
+  ///       return QuizLayoutConfig.textQuestionImageAnswers(
+  ///         questionTemplate: l10n.selectFlagOf,
+  ///       );
+  ///     }
+  ///     return category.layoutConfig;
+  ///   }
+  ///
+  ///   // Default to image-text layout
+  ///   return QuizLayoutConfig.imageQuestionTextAnswers();
+  /// }
+  /// ```
+  ///
+  /// [context] - BuildContext for localization access
+  /// [category] - The selected quiz category
+  QuizLayoutConfig? createLayoutConfig(
+    BuildContext context,
+    QuizCategory category,
+  ) {
+    return category.layoutConfig;
+  }
 }
 
 /// Callback-based implementation of [QuizDataProvider].
@@ -90,6 +157,10 @@ class CallbackQuizDataProvider extends QuizDataProvider {
   final QuizConfig? Function(BuildContext context, QuizCategory category)?
       createQuizConfigCallback;
 
+  /// Optional callback for creating layout config.
+  final QuizLayoutConfig? Function(BuildContext context, QuizCategory category)?
+      createLayoutConfigCallback;
+
   /// Creates a [CallbackQuizDataProvider].
   ///
   /// [loadQuestionsCallback] is required.
@@ -98,6 +169,7 @@ class CallbackQuizDataProvider extends QuizDataProvider {
     required this.loadQuestionsCallback,
     this.createStorageConfigCallback,
     this.createQuizConfigCallback,
+    this.createLayoutConfigCallback,
   });
 
   @override
@@ -119,5 +191,14 @@ class CallbackQuizDataProvider extends QuizDataProvider {
   @override
   QuizConfig? createQuizConfig(BuildContext context, QuizCategory category) {
     return createQuizConfigCallback?.call(context, category) ?? category.config;
+  }
+
+  @override
+  QuizLayoutConfig? createLayoutConfig(
+    BuildContext context,
+    QuizCategory category,
+  ) {
+    return createLayoutConfigCallback?.call(context, category) ??
+        category.layoutConfig;
   }
 }
