@@ -12,6 +12,7 @@
 /// - MonetizationEvent - IAP, ads (Sprint 9.1.3)
 /// - ErrorEvent - Error tracking (Sprint 9.1.3)
 /// - PerformanceEvent - Performance metrics (Sprint 9.1.3)
+/// - RateAppEvent - In-app review tracking (Sprint 12.3)
 ///
 /// Note: Each category is sealed within its own file for exhaustive
 /// pattern matching while allowing the base class to be extended
