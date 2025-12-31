@@ -10,6 +10,10 @@ import 'package:responsive_builder/responsive_builder.dart';
 ///
 /// The text is styled with appropriate font sizes based on the device type
 /// (mobile, tablet, desktop, watch) to ensure readability across all platforms.
+///
+/// The widget can display text from two sources:
+/// - If [displayText] is provided, it is displayed directly (used for template substitution)
+/// - Otherwise, the text from the [TextQuestion] type is used
 class QuizTextWidget extends StatelessWidget {
   /// The question entry containing the text to display.
   final QuestionEntry entry;
@@ -20,23 +24,34 @@ class QuizTextWidget extends StatelessWidget {
   /// The height constraint for the text container.
   final double height;
 
+  /// Optional text to display instead of the entry's text.
+  ///
+  /// When provided, this text is displayed regardless of the entry type.
+  /// This is useful for text question layouts where the question text
+  /// comes from a template (e.g., "Select the flag of {name}").
+  final String? displayText;
+
   /// Creates a `QuizTextWidget` with the specified question entry and dimensions.
   ///
   /// [key] is the unique key for this widget.
   /// [entry] is the `QuestionEntry` object containing the text question.
   /// [width] is the width constraint for the text container.
   /// [height] is the height constraint for the text container.
+  /// [displayText] optionally overrides the entry's text (for template substitution).
   const QuizTextWidget({
     required Key key,
     required this.entry,
     required this.width,
     required this.height,
+    this.displayText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final textQuestion = entry.type as TextQuestion;
     final code = (entry.otherOptions["id"] as String).toLowerCase();
+
+    // Use displayText if provided, otherwise extract from TextQuestion
+    final text = displayText ?? _extractTextFromEntry();
 
     return Container(
       width: width,
@@ -53,7 +68,7 @@ class QuizTextWidget extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           child: Text(
-            textQuestion.text,
+            text,
             key: Key("text_$code"),
             textAlign: TextAlign.center,
             style: TextStyle(
@@ -65,6 +80,19 @@ class QuizTextWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  /// Extracts text from the entry based on its type.
+  ///
+  /// For [TextQuestion], returns the question text.
+  /// For other types, returns the name from otherOptions or an empty string.
+  String _extractTextFromEntry() {
+    final type = entry.type;
+    if (type is TextQuestion) {
+      return type.text;
+    }
+    // Fallback for non-text questions (e.g., when used in text layouts)
+    return entry.otherOptions['name'] as String? ?? '';
   }
 
   /// Returns the font size for the text based on the screen size.
