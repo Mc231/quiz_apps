@@ -2571,6 +2571,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Answer every flag correctly at least once'**
   String get achievementFlagCollectorDesc;
+
+  /// Question template for reverse layout (text question asking to identify a flag)
+  ///
+  /// In en, this message translates to:
+  /// **'Which flag is {name}?'**
+  String whichFlagIs(String name);
+
+  /// Alternative question template for reverse layout
+  ///
+  /// In en, this message translates to:
+  /// **'Select the flag of {name}'**
+  String selectTheFlagOf(String name);
+
+  /// Subtitle for reverse layout categories
+  ///
+  /// In en, this message translates to:
+  /// **'Identify Flags'**
+  String get identifyFlags;
+
+  /// Alternative title for reverse layout mode
+  ///
+  /// In en, this message translates to:
+  /// **'Find the Flag'**
+  String get findTheFlag;
 }
 
 class _AppLocalizationsDelegate

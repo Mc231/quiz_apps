@@ -1205,4 +1205,20 @@ class AppLocalizationsPa extends AppLocalizations {
   @override
   String get achievementFlagCollectorDesc =>
       'Answer every flag correctly at least once';
+
+  @override
+  String whichFlagIs(String name) {
+    return 'Which flag is $name?';
+  }
+
+  @override
+  String selectTheFlagOf(String name) {
+    return 'Select the flag of $name';
+  }
+
+  @override
+  String get identifyFlags => 'Identify Flags';
+
+  @override
+  String get findTheFlag => 'Find the Flag';
 }
