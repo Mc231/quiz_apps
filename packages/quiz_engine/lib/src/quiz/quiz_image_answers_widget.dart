@@ -151,23 +151,35 @@ class QuizImageAnswersWidget extends StatelessWidget {
     return id?.toLowerCase() ?? option.hashCode.toString();
   }
 
-  /// Determines the number of columns based on screen size and option count.
+  /// Determines the number of columns based on screen size, orientation, and option count.
   int _getCrossAxisCount(BuildContext context) {
     final optionCount = options.length;
+    final isLandscape = sizingInformation.orientation == Orientation.landscape;
 
-    // For 2 or fewer options, use single column on small screens
+    // For 2 or fewer options
     if (optionCount <= 2) {
       return getValueForScreenType(
         context: context,
-        mobile: sizingInformation.orientation == Orientation.portrait ? 2 : 2,
+        mobile: 2,
         tablet: 2,
         desktop: 2,
         watch: 1,
       );
     }
 
-    // For 3-4 options, use 2x2 grid
+    // For 3-4 options
     if (optionCount <= 4) {
+      // In landscape, use single row (4 columns) to maximize horizontal space
+      if (isLandscape) {
+        return getValueForScreenType(
+          context: context,
+          mobile: optionCount, // 3 or 4 columns
+          tablet: optionCount,
+          desktop: optionCount,
+          watch: 2,
+        );
+      }
+      // In portrait, use 2x2 grid
       return getValueForScreenType(
         context: context,
         mobile: 2,
@@ -180,9 +192,9 @@ class QuizImageAnswersWidget extends StatelessWidget {
     // For more options, use 3 columns on larger screens
     return getValueForScreenType(
       context: context,
-      mobile: 2,
-      tablet: 3,
-      desktop: 3,
+      mobile: isLandscape ? 4 : 2,
+      tablet: isLandscape ? 4 : 3,
+      desktop: isLandscape ? 4 : 3,
       watch: 2,
     );
   }
