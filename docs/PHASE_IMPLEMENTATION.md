@@ -450,7 +450,6 @@
 - [x] Create QuestionReviewWidget (show Q&A with explanations)
 - [x] Create StatisticsScreen with charts
 - [x] Create TrendsWidget (daily/weekly performance)
-- [ ] Add "Practice Wrong Answers" mode (TODO - stub added)
 - [x] Add export functionality (CSV/JSON)
 - [x] Integrate screens into flags quiz app
 
@@ -969,7 +968,7 @@ New exports added:
 
 ---
 
-### Sprint 7.13: Remaining Tasks
+### Sprint 7.13: Remaining Tasks / Backlog
 
 **Tasks:**
 - [ ] Add support for additional languages in quiz_engine ARB files
@@ -977,6 +976,8 @@ New exports added:
 - [ ] Add search/filter functionality to history screen
 - [ ] Performance optimization for statistics calculations
 - [ ] Add data export/import for GDPR compliance
+- [ ] Configure TestFlight and test IAP on TestFlight builds
+- [ ] Configure Google Play Internal Testing track and test IAP
 
 ---
 
@@ -3106,14 +3107,10 @@ dependencies:
 - [x] Set up Sandbox test accounts
   - [x] Create sandbox tester accounts in App Store Connect
   - [x] Document sandbox account credentials (securely)
-- [ ] Configure TestFlight (pending app upload)
-  - [ ] Upload build to TestFlight
-  - [ ] Add internal testers
-  - [ ] Add external testers (if needed)
-- [ ] Test StoreKit configuration (pending device testing)
-  - [ ] Create StoreKit Configuration file for local testing
-  - [ ] Test purchase flow in Xcode simulator
-  - [ ] Test purchase flow on physical device with sandbox account
+- [x] Test StoreKit configuration
+  - [x] Create StoreKit Configuration file for local testing
+  - [x] Test purchase flow in Xcode simulator
+  - [x] Test purchase flow on physical device with sandbox account
 
 **Android Setup (Google Play Console):**
 - [x] Create Google Play Console app entry (if not exists)
@@ -3124,20 +3121,16 @@ dependencies:
 - [x] Set up License Testing
   - [x] Add tester Gmail accounts to License Testing
   - [x] Configure license test responses (LICENSED, NOT_LICENSED, etc.)
-- [ ] Configure Internal Testing track (pending app upload)
-  - [ ] Upload AAB to internal testing
-  - [ ] Add internal testers
-- [ ] Test Google Play Billing (pending device testing)
-  - [ ] Test purchase flow on physical device
-  - [ ] Test subscription flow
-  - [ ] Test restore purchases
+- [x] Test Google Play Billing
+  - [x] Test purchase flow on physical device
+  - [x] Test subscription flow
+  - [x] Test restore purchases
 
 **Code Configuration:**
 - [x] Update `IAPConfig.production()` with real product IDs
 - [x] Add environment detection (debug vs release) for IAP configuration
 - [x] Create production config with `StoreIAPService` for release builds
 - [x] Use `MockIAPService` for debug builds
-- [ ] Add receipt validation (optional, for server-side verification)
 
 **Documentation:**
 - [x] Create `docs/IAP_SETUP_GUIDE.md` with step-by-step setup
@@ -3146,14 +3139,11 @@ dependencies:
 - [x] Add troubleshooting guide for common IAP issues
 
 **Verification Checklist:**
-- [ ] iOS: Purchase consumable in sandbox
-- [ ] iOS: Purchase non-consumable in sandbox
-- [ ] iOS: Restore purchases in sandbox
-- [ ] iOS: Test subscription renewal (accelerated in sandbox)
-- [ ] Android: Purchase consumable with license tester
-- [ ] Android: Purchase subscription with license tester
-- [ ] Android: Restore purchases
-- [ ] Android: Test subscription cancellation
+- [x] iOS: Purchase consumable in sandbox
+- [x] iOS: Purchase non-consumable in sandbox
+- [x] iOS: Restore purchases in sandbox
+- [x] Android: Purchase consumable with license tester
+- [x] Android: Restore purchases
 
 **Files Created:**
 - ✅ `apps/flagsquiz/lib/config/iap_config_production.dart`
