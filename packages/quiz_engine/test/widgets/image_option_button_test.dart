@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine/src/components/image_option_button.dart';
-import 'package:quiz_engine_core/quiz_engine_core.dart';
 
 import '../test_helpers.dart';
 

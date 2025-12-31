@@ -1,7 +1,6 @@
 import 'package:flags_quiz/data/country_counts.dart';
 import 'package:flags_quiz/data/flags_categories.dart';
 import 'package:flags_quiz/models/continent.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 
