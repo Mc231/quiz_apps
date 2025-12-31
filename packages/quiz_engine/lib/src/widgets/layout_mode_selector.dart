@@ -90,6 +90,9 @@ class LayoutModeSelector extends StatelessWidget {
   /// Whether to use compact mode (icon only on small screens).
   final bool compact;
 
+  /// Whether to use large mode with bigger buttons.
+  final bool large;
+
   /// Padding around the selector.
   final EdgeInsetsGeometry padding;
 
@@ -100,6 +103,7 @@ class LayoutModeSelector extends StatelessWidget {
     required this.selectedOption,
     required this.onOptionSelected,
     this.compact = false,
+    this.large = false,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
   });
 
@@ -113,7 +117,7 @@ class LayoutModeSelector extends StatelessWidget {
         segments: options.map((option) {
           return ButtonSegment<LayoutModeOption>(
             value: option,
-            icon: Icon(option.icon),
+            icon: Icon(option.icon, size: large ? 24 : null),
             label: compact
                 ? null
                 : Text(
@@ -130,13 +134,19 @@ class LayoutModeSelector extends StatelessWidget {
           }
         },
         style: ButtonStyle(
-          visualDensity: VisualDensity.compact,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          visualDensity: large ? VisualDensity.standard : VisualDensity.compact,
+          tapTargetSize: large
+              ? MaterialTapTargetSize.padded
+              : MaterialTapTargetSize.shrinkWrap,
+          minimumSize: large
+              ? const WidgetStatePropertyAll(Size(0, 48))
+              : null,
           textStyle: WidgetStatePropertyAll(
-            theme.textTheme.labelMedium,
+            large ? theme.textTheme.titleSmall : theme.textTheme.labelMedium,
           ),
         ),
         showSelectedIcon: false,
+        expandedInsets: EdgeInsets.zero,
       ),
     );
   }
