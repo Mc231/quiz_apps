@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_services/shared_services.dart'
-    show AnalyticsService, FiftyFiftyResource, InteractionEvent, ResourceManager, ResourceType, ScreenViewEvent, SkipResource;
+    show AnalyticsService, FiftyFiftyResource, HintEvent, InteractionEvent, ResourceEvent, ResourceManager, ResourceType, ScreenViewEvent, SkipResource;
 
 import '../../quiz_engine.dart';
 import '../widgets/restore_resource_dialog.dart';
@@ -163,6 +163,67 @@ class QuizScreenState extends State<QuizScreen> {
     };
   }
 
+  /// Extracts question context from the current quiz state for analytics.
+  ///
+  /// Returns a record with (questionId, questionIndex) or null values if unavailable.
+  ({String questionId, int questionIndex})? _getQuestionContext(QuizState? state) {
+    Question? question;
+    int? progress;
+
+    if (state is QuestionState) {
+      question = state.question;
+      progress = state.progress;
+    } else if (state is AnswerFeedbackState) {
+      question = state.question;
+      progress = state.progress;
+    }
+
+    if (question == null || progress == null) return null;
+
+    // Try to get ID from otherOptions, fallback to index-based ID
+    final questionId = question.answer.otherOptions['id']?.toString() ??
+        'question_$progress';
+
+    return (questionId: questionId, questionIndex: progress);
+  }
+
+  /// Logs a resource button tap event.
+  void _logResourceButtonTapped({
+    required String resourceType,
+    required int currentAmount,
+    required bool isAvailable,
+  }) {
+    if (!mounted) return;
+    _analyticsService.logEvent(
+      ResourceEvent.buttonTapped(
+        quizId: _bloc.config.quizId,
+        resourceType: resourceType,
+        currentAmount: currentAmount,
+        isAvailable: isAvailable,
+        context: 'quiz_screen',
+      ),
+    );
+  }
+
+  /// Logs a hint unavailable tap event when user taps depleted hint button.
+  void _logHintUnavailableTapped({
+    required String hintType,
+    QuizState? state,
+  }) {
+    if (!mounted) return;
+    final context = _getQuestionContext(state);
+    if (context == null) return;
+
+    _analyticsService.logEvent(
+      HintEvent.unavailableTapped(
+        quizId: _bloc.config.quizId,
+        questionId: context.questionId,
+        questionIndex: context.questionIndex,
+        hintType: hintType,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = QuizL10n.of(context);
@@ -299,7 +360,15 @@ class QuizScreenState extends State<QuizScreen> {
         count: remainingLives,
         onTap: null, // Lives are not manually usable
         onDepletedTap: resourceManager != null
-            ? () => _showRestoreDialog(ResourceType.lives(), resourceManager)
+            ? () {
+                // Log analytics for depleted lives button tap
+                _logResourceButtonTapped(
+                  resourceType: 'lives',
+                  currentAmount: remainingLives ?? 0,
+                  isAvailable: false,
+                );
+                _showRestoreDialog(ResourceType.lives(), resourceManager);
+              }
             : null,
         enabled: remainingLives > 0,
       );
@@ -311,13 +380,32 @@ class QuizScreenState extends State<QuizScreen> {
     final initialFiftyFifty = _bloc.config.hintConfig.initialHints[HintType.fiftyFifty] ?? 0;
     if (hintState != null && initialFiftyFifty > 0) {
       final fiftyFiftyCount = hintState.getRemainingCount(HintType.fiftyFifty);
+      final canUseFiftyFifty = hintState.canUseHint(HintType.fiftyFifty);
       fiftyFiftyConfig = GameResourceConfig(
         count: fiftyFiftyCount,
-        onTap: () => _bloc.use50_50Hint(),
+        onTap: () {
+          // Log analytics for 50/50 button tap (available)
+          _logResourceButtonTapped(
+            resourceType: 'fifty_fifty',
+            currentAmount: fiftyFiftyCount,
+            isAvailable: true,
+          );
+          _bloc.use50_50Hint();
+        },
         onDepletedTap: resourceManager != null
-            ? () => _showRestoreDialog(ResourceType.fiftyFifty(), resourceManager)
+            ? () {
+                // Log analytics for depleted 50/50 button tap
+                _logResourceButtonTapped(
+                  resourceType: 'fifty_fifty',
+                  currentAmount: 0,
+                  isAvailable: false,
+                );
+                // Also log hint unavailable event
+                _logHintUnavailableTapped(hintType: 'fifty_fifty', state: state);
+                _showRestoreDialog(ResourceType.fiftyFifty(), resourceManager);
+              }
             : null,
-        enabled: hintState.canUseHint(HintType.fiftyFifty),
+        enabled: canUseFiftyFifty,
       );
     }
 
@@ -327,13 +415,32 @@ class QuizScreenState extends State<QuizScreen> {
     final initialSkip = _bloc.config.hintConfig.initialHints[HintType.skip] ?? 0;
     if (hintState != null && initialSkip > 0) {
       final skipCount = hintState.getRemainingCount(HintType.skip);
+      final canUseSkip = hintState.canUseHint(HintType.skip);
       skipConfig = GameResourceConfig(
         count: skipCount,
-        onTap: () => _bloc.skipQuestion(),
+        onTap: () {
+          // Log analytics for skip button tap (available)
+          _logResourceButtonTapped(
+            resourceType: 'skip',
+            currentAmount: skipCount,
+            isAvailable: true,
+          );
+          _bloc.skipQuestion();
+        },
         onDepletedTap: resourceManager != null
-            ? () => _showRestoreDialog(ResourceType.skip(), resourceManager)
+            ? () {
+                // Log analytics for depleted skip button tap
+                _logResourceButtonTapped(
+                  resourceType: 'skip',
+                  currentAmount: 0,
+                  isAvailable: false,
+                );
+                // Also log hint unavailable event
+                _logHintUnavailableTapped(hintType: 'skip', state: state);
+                _showRestoreDialog(ResourceType.skip(), resourceManager);
+              }
             : null,
-        enabled: hintState.canUseHint(HintType.skip),
+        enabled: canUseSkip,
       );
     }
 
