@@ -4,7 +4,7 @@
 
 **Reference:** See [CORE_ARCHITECTURE_GUIDE.md](./CORE_ARCHITECTURE_GUIDE.md) for architectural details and design patterns.
 
-**Last Updated:** 2025-12-30
+**Last Updated:** 2025-12-31
 
 ---
 
@@ -34,6 +34,8 @@
 | Priority | Sprint | Description | Phase |
 |----------|--------|-------------|-------|
 | 1 | **Sprint 11.1** | Second App Creation | Phase 11 |
+
+**Sprint 9.8** ✅ is complete - iOS Purchase & Audio Fixes (purchase cancellation detection, audio playback via temp files, StoreKit configuration).
 
 **Sprint 9.1.11** ✅ is complete - Resource & Hint Button Analytics (ResourceEvent.buttonTapped, HintEvent.unavailableTapped tracking).
 
@@ -3258,6 +3260,38 @@ dependencies:
 
 ---
 
+### Sprint 9.8: iOS Purchase & Audio Fixes ✅
+
+**Goal:** Fix iOS-specific issues with purchase cancellation detection and audio playback.
+
+**iOS Purchase Cancellation Detection:**
+- [x] Add `WidgetsBindingObserver` to `StoreIAPService` for app lifecycle monitoring
+- [x] Detect when payment sheet is dismissed by monitoring `AppLifecycleState.resumed`
+- [x] Implement 2-second timer to detect dismissed payment sheets (no purchase update = cancelled)
+- [x] Cancel timer when app goes inactive (user returned to payment sheet)
+- [x] Cancel timer when real purchase update arrives from store
+
+**iOS Audio Playback Fix:**
+- [x] Fix `BytesSource` AVPlayer compatibility issue on iOS
+- [x] Implement temp file caching with proper `.mp3` extension for iOS
+- [x] Use `DeviceFileSource` for iOS audio playback
+- [x] Keep `BytesSource` for Android (original working implementation)
+- [x] Add `path_provider` dependency for temp file handling
+
+**StoreKit Configuration:**
+- [x] Create `Configuration.storekit` for local IAP testing
+- [x] Include all 15 products (12 consumables, 1 non-consumable, 2 subscriptions)
+- [x] Configure Xcode scheme to use StoreKit configuration
+
+**Files Created/Modified:**
+- ✅ `apps/flagsquiz/ios/Configuration.storekit` (new)
+- ✅ `packages/shared_services/lib/src/iap/store_iap_service.dart`
+- ✅ `packages/shared_services/lib/src/audio/audio_service.dart`
+- ✅ `packages/shared_services/pubspec.yaml`
+- ✅ `apps/flagsquiz/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme`
+
+---
+
 ### Phase 9 Summary
 
 | Sprint | Status | Description |
@@ -3276,7 +3310,7 @@ dependencies:
 | 9.1.10 | ✅ | Testing & documentation |
 | **Ads & IAP (9.2-9.4)** | | |
 | 9.2 | ✅ | Ads service (AdMob) |
-| 9.1.11 | ⏳ | Resource & hint button analytics |
+| 9.1.11 | ✅ | Resource & hint button analytics |
 | 9.1.12 | ✅ | Secrets configuration system |
 | 9.1.13 | ✅ | Firebase Analytics app configuration |
 | 9.2.1 | ✅ | Banner Ad Screen Integration |
@@ -3285,6 +3319,7 @@ dependencies:
 | 9.5 | ✅ | IAP Testing Configuration |
 | 9.6 | ✅ | UI Polish & Bug Fixes |
 | 9.7 | ✅ | IAP Bug Fixes & UI Improvements |
+| 9.8 | ✅ | iOS Purchase & Audio Fixes |
 | **BLoC Architecture (9.5.x)** | | |
 | 9.5.1 | ✅ | Statistics BLoC (31 tests) |
 | 9.5.2 | ✅ | Session History BLoC (18 tests) |
@@ -3303,6 +3338,7 @@ dependencies:
 - IAP service (In-App Purchases)
 - UI Polish & Bug Fixes (Sprint 9.6)
 - IAP Bug Fixes & UI Improvements (Sprint 9.7)
+- iOS Purchase & Audio Fixes (Sprint 9.8)
 
 **Pending:**
 - Final integration & polish
