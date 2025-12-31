@@ -1,6 +1,7 @@
 import 'base_config.dart';
 import 'quiz_mode_config.dart';
 import 'hint_config.dart';
+import 'quiz_layout_config.dart';
 import 'scoring_strategy.dart';
 import 'storage_config.dart';
 import 'ui_behavior_config.dart';
@@ -31,6 +32,17 @@ class QuizConfig extends BaseConfig {
   /// Configuration for storage and persistence
   final StorageConfig storageConfig;
 
+  /// Configuration for quiz layout.
+  ///
+  /// Determines how questions and answers are displayed.
+  /// Supports various layouts including [ImageQuestionTextAnswersLayout] (default),
+  /// [TextQuestionImageAnswersLayout], [TextQuestionTextAnswersLayout],
+  /// [AudioQuestionTextAnswersLayout], and [MixedLayout] for varying layouts.
+  ///
+  /// When [MixedLayout] is used, the layout is resolved per-question based on
+  /// the configured strategy.
+  final QuizLayoutConfig layoutConfig;
+
   @override
   final int version;
 
@@ -42,6 +54,7 @@ class QuizConfig extends BaseConfig {
     this.hintConfig = const HintConfig(),
     this.questionConfig = const QuestionConfig(),
     this.storageConfig = const StorageConfig(),
+    this.layoutConfig = const ImageQuestionTextAnswersLayout(),
     this.version = 1,
   });
 
@@ -56,6 +69,7 @@ class QuizConfig extends BaseConfig {
       'hintConfig': hintConfig.toMap(),
       'questionConfig': questionConfig.toMap(),
       'storageConfig': storageConfig.toMap(),
+      'layoutConfig': layoutConfig.toMap(),
     };
   }
 
@@ -81,6 +95,9 @@ class QuizConfig extends BaseConfig {
       storageConfig: StorageConfig.fromMap(
         map['storageConfig'] as Map<String, dynamic>? ?? {},
       ),
+      layoutConfig: map['layoutConfig'] != null
+          ? QuizLayoutConfig.fromMap(map['layoutConfig'] as Map<String, dynamic>)
+          : const ImageQuestionTextAnswersLayout(),
     );
   }
 
@@ -92,6 +109,7 @@ class QuizConfig extends BaseConfig {
     HintConfig? hintConfig,
     QuestionConfig? questionConfig,
     StorageConfig? storageConfig,
+    QuizLayoutConfig? layoutConfig,
   }) {
     return QuizConfig(
       quizId: quizId ?? this.quizId,
@@ -101,6 +119,7 @@ class QuizConfig extends BaseConfig {
       hintConfig: hintConfig ?? this.hintConfig,
       questionConfig: questionConfig ?? this.questionConfig,
       storageConfig: storageConfig ?? this.storageConfig,
+      layoutConfig: layoutConfig ?? this.layoutConfig,
       version: version,
     );
   }
