@@ -8,11 +8,13 @@ class TestQuizDataProvider extends QuizDataProvider {
   final List<QuestionEntry> questions;
   final StorageConfig? storageConfig;
   final QuizConfig? quizConfig;
+  final QuizLayoutConfig? layoutConfig;
 
   const TestQuizDataProvider({
     this.questions = const [],
     this.storageConfig,
     this.quizConfig,
+    this.layoutConfig,
   });
 
   @override
@@ -35,6 +37,14 @@ class TestQuizDataProvider extends QuizDataProvider {
   QuizConfig? createQuizConfig(BuildContext context, QuizCategory category) {
     return quizConfig ?? super.createQuizConfig(context, category);
   }
+
+  @override
+  QuizLayoutConfig? createLayoutConfig(
+    BuildContext context,
+    QuizCategory category,
+  ) {
+    return layoutConfig ?? super.createLayoutConfig(context, category);
+  }
 }
 
 void main() {
@@ -43,6 +53,15 @@ void main() {
     title: (context) => 'Test',
     showAnswerFeedback: true,
     config: const QuizConfig(quizId: 'category_config'),
+  );
+
+  final categoryWithLayout = QuizCategory(
+    id: 'layout_test',
+    title: (context) => 'Layout Test',
+    showAnswerFeedback: true,
+    layoutConfig: QuizLayoutConfig.textQuestionImageAnswers(
+      questionTemplate: 'Select {name}',
+    ),
   );
 
   group('QuizDataProvider', () {
@@ -136,6 +155,69 @@ void main() {
       );
 
       expect(result?.quizId, 'custom');
+    });
+
+    testWidgets('createLayoutConfig defaults to category layoutConfig',
+        (tester) async {
+      final provider = const TestQuizDataProvider();
+
+      QuizLayoutConfig? result;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              result = provider.createLayoutConfig(context, categoryWithLayout);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      expect(result, isA<TextQuestionImageAnswersLayout>());
+      final layout = result as TextQuestionImageAnswersLayout;
+      expect(layout.questionTemplate, 'Select {name}');
+    });
+
+    testWidgets('createLayoutConfig returns null when category has no layout',
+        (tester) async {
+      final provider = const TestQuizDataProvider();
+
+      QuizLayoutConfig? result;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              result = provider.createLayoutConfig(context, testCategory);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      expect(result, isNull);
+    });
+
+    testWidgets('createLayoutConfig returns custom layout when provided',
+        (tester) async {
+      final customLayout = QuizLayoutConfig.audioQuestionTextAnswers();
+      final provider = TestQuizDataProvider(layoutConfig: customLayout);
+
+      QuizLayoutConfig? result;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              result = provider.createLayoutConfig(context, categoryWithLayout);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      expect(result, isA<AudioQuestionTextAnswersLayout>());
     });
   });
 
@@ -261,6 +343,77 @@ void main() {
       );
 
       expect(result?.quizId, 'category_config');
+    });
+
+    testWidgets('createLayoutConfigCallback is called when provided',
+        (tester) async {
+      final layoutConfig = QuizLayoutConfig.imageQuestionTextAnswers();
+
+      final provider = CallbackQuizDataProvider(
+        loadQuestionsCallback: (context, category) async => [],
+        createLayoutConfigCallback: (context, category) => layoutConfig,
+      );
+
+      QuizLayoutConfig? result;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              result = provider.createLayoutConfig(context, testCategory);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      expect(result, isA<ImageQuestionTextAnswersLayout>());
+    });
+
+    testWidgets('createLayoutConfig falls back to category layoutConfig',
+        (tester) async {
+      final provider = CallbackQuizDataProvider(
+        loadQuestionsCallback: (context, category) async => [],
+      );
+
+      QuizLayoutConfig? result;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              result = provider.createLayoutConfig(context, categoryWithLayout);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      expect(result, isA<TextQuestionImageAnswersLayout>());
+      final layout = result as TextQuestionImageAnswersLayout;
+      expect(layout.questionTemplate, 'Select {name}');
+    });
+
+    testWidgets('createLayoutConfig returns null when no callback and no category layout',
+        (tester) async {
+      final provider = CallbackQuizDataProvider(
+        loadQuestionsCallback: (context, category) async => [],
+      );
+
+      QuizLayoutConfig? result;
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Builder(
+            builder: (context) {
+              result = provider.createLayoutConfig(context, testCategory);
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+
+      expect(result, isNull);
     });
   });
 }
