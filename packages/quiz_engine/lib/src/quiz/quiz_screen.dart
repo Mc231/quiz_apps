@@ -6,7 +6,6 @@ import 'package:shared_services/shared_services.dart'
 
 import '../../quiz_engine.dart';
 import '../widgets/restore_resource_dialog.dart';
-import 'quiz_layout.dart';
 
 /// A screen that displays the quiz interface, handling questions and user interaction.
 ///
@@ -538,6 +537,7 @@ class QuizScreenState extends State<QuizScreen> {
             resourceData: resourceData,
             themeData: widget.themeData,
             information: information,
+            layoutConfig: state.resolvedLayout,
           );
         },
       );
@@ -552,6 +552,7 @@ class QuizScreenState extends State<QuizScreen> {
           processAnswer: _bloc.processAnswer,
           resourceData: resourceData,
           themeData: widget.themeData,
+          layoutConfig: questionState.resolvedLayout,
         );
       },
     );
