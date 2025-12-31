@@ -157,10 +157,11 @@ QuestionEntry get toQuestionEntry {
 |-----------|----------|---------|
 | **ImageOptionButton** | New Widget | Renders image-based answer option |
 | **QuizImageAnswersWidget** | New Widget | Grid of image answer buttons |
-| **AnswerLayoutType** | New Enum/Config | Specifies text vs image answers |
-| **QuizLayoutConfig** | New Config | Combines question type + answer type |
-| **QuestionEntry.toTextQuestion()** | New Method | Convert image entry to text question |
+| **QuizLayoutConfig** | New Sealed Class | Defines layout variants (static + mixed) |
+| **MixedLayout** | New Config | Dynamic layout that alternates between variants |
+| **MixedLayoutStrategy** | New Enum | Strategy for layout selection (random, alternating) |
 | **Layout-aware QuizLayout** | Modified | Choose answer widget based on config |
+| **Layout-aware QuizBloc** | Modified | Resolve layout per question for mixed mode |
 | **Category layout config** | Modified | Allow categories to specify layout |
 
 ---
@@ -181,16 +182,64 @@ QuizCategory
     |
     +-- layoutConfig: QuizLayoutConfig
            |
-           +-- questionDisplayType: QuestionDisplayType
-           +-- answerDisplayType: AnswerDisplayType
+           +-- Static Layouts (fixed for entire quiz):
+           |     - ImageQuestionTextAnswersLayout
+           |     - TextQuestionImageAnswersLayout
+           |     - TextQuestionTextAnswersLayout
+           |     - AudioQuestionTextAnswersLayout
+           |
+           +-- Dynamic Layout (varies per question):
+                 - MixedLayout
+                       +-- allowedLayouts: List<QuizLayoutConfig>
+                       +-- strategy: MixedLayoutStrategy (random | alternating | weighted)
+
+QuizBloc (for MixedLayout)
+    |
+    +-- Resolves layout per question using MixedLayout.selectLayout(questionIndex)
+    +-- Passes resolved layout to QuizLayout widget
 
 QuizLayout
     |
-    +-- Uses QuestionDisplayType to select question widget
-    +-- Uses AnswerDisplayType to select answer widget
+    +-- Receives resolved (non-mixed) layout
+    +-- Uses layout to select question widget
+    +-- Uses layout to select answer widget
 
 QuizAnswersWidget (existing) -> Text answers
 QuizImageAnswersWidget (new) -> Image answers
+```
+
+### Mixed Layout Flow
+
+```
+Quiz Start
+    │
+    ▼
+┌─────────────────────────────────────┐
+│  QuestionConfig.layoutConfig        │
+│  = MixedLayout(                     │
+│      allowedLayouts: [              │
+│        ImageQuestionTextAnswers,    │
+│        TextQuestionImageAnswers,    │
+│      ],                             │
+│      strategy: random,              │
+│    )                                │
+└─────────────────────────────────────┘
+    │
+    ▼ For each question
+┌─────────────────────────────────────┐
+│  QuizBloc.selectLayoutForQuestion() │
+│  → MixedLayout.selectLayout(index)  │
+│  → Returns concrete layout          │
+└─────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────┐
+│  Question 1: ImageQuestionTextAnswers│
+│  Question 2: TextQuestionImageAnswers│
+│  Question 3: ImageQuestionTextAnswers│
+│  Question 4: TextQuestionImageAnswers│
+│  ... (randomly selected)            │
+└─────────────────────────────────────┘
 ```
 
 ---
@@ -223,6 +272,14 @@ sealed class QuizLayoutConfig {
   /// Audio layout: Audio question with text answer options.
   /// Example: Play national anthem, user picks country name.
   factory QuizLayoutConfig.audioQuestionTextAnswers() = AudioQuestionTextAnswersLayout;
+
+  /// Mixed/Dynamic layout: Randomly alternates between specified layouts.
+  /// Each question randomly picks from the allowed layouts list.
+  /// Example: Some questions show flag→pick name, others show name→pick flag.
+  factory QuizLayoutConfig.mixed({
+    required List<QuizLayoutConfig> allowedLayouts,
+    MixedLayoutStrategy strategy,
+  }) = MixedLayout;
 
   /// Convert to JSON-compatible map.
   Map<String, dynamic> toMap();
@@ -276,6 +333,66 @@ class AudioQuestionTextAnswersLayout extends QuizLayoutConfig {
 
   @override
   Map<String, dynamic> toMap() => {'type': 'audioQuestionTextAnswers'};
+}
+
+/// Mixed/Dynamic layout: Randomly alternates between specified layouts.
+///
+/// This layout enables variety within a single quiz session by randomly
+/// selecting from a list of allowed layouts for each question.
+class MixedLayout extends QuizLayoutConfig {
+  /// The list of layouts to randomly choose from.
+  /// Must contain at least 2 layouts for meaningful mixing.
+  final List<QuizLayoutConfig> allowedLayouts;
+
+  /// Strategy for selecting layouts during the quiz.
+  final MixedLayoutStrategy strategy;
+
+  const MixedLayout({
+    required this.allowedLayouts,
+    this.strategy = MixedLayoutStrategy.random,
+  });
+
+  /// Selects a layout for a given question index.
+  QuizLayoutConfig selectLayout(int questionIndex, [int? seed]) {
+    return switch (strategy) {
+      MixedLayoutStrategy.random => _randomLayout(seed),
+      MixedLayoutStrategy.alternating => _alternatingLayout(questionIndex),
+      MixedLayoutStrategy.weighted => _weightedLayout(seed),
+    };
+  }
+
+  QuizLayoutConfig _randomLayout(int? seed) {
+    final random = seed != null ? Random(seed) : Random();
+    return allowedLayouts[random.nextInt(allowedLayouts.length)];
+  }
+
+  QuizLayoutConfig _alternatingLayout(int questionIndex) {
+    return allowedLayouts[questionIndex % allowedLayouts.length];
+  }
+
+  QuizLayoutConfig _weightedLayout(int? seed) {
+    // For now, same as random. Could be extended with weights.
+    return _randomLayout(seed);
+  }
+
+  @override
+  Map<String, dynamic> toMap() => {
+    'type': 'mixed',
+    'allowedLayouts': allowedLayouts.map((l) => l.toMap()).toList(),
+    'strategy': strategy.name,
+  };
+}
+
+/// Strategy for selecting layouts in MixedLayout.
+enum MixedLayoutStrategy {
+  /// Randomly select a layout for each question.
+  random,
+
+  /// Alternate through layouts in order (1, 2, 1, 2, ...).
+  alternating,
+
+  /// Weighted random selection (future: allow specifying weights).
+  weighted,
 }
 
 /// Image answer size options for responsive layouts.
@@ -773,11 +890,73 @@ List<QuizCategory> createFlagsCategories(CountryCounts counts) {
       subtitle: (context) => l10n.identifyFlags,
       showAnswerFeedback: true,
       layoutConfig: TextQuestionImageAnswersLayout(
-        questionTemplate: (context) => l10n.whichFlagIs,
+        questionTemplate: l10n.whichFlagIs, // "Which flag is {name}?"
+      ),
+    ),
+
+    // Mixed/Dynamic layout: Randomly alternates between layouts
+    QuizCategory(
+      id: 'europe_mixed',
+      title: (context) => l10n.europeMixed,
+      subtitle: (context) => l10n.mixedModeDescription,
+      showAnswerFeedback: true,
+      layoutConfig: MixedLayout(
+        allowedLayouts: [
+          const ImageQuestionTextAnswersLayout(),
+          TextQuestionImageAnswersLayout(questionTemplate: l10n.whichFlagIs),
+        ],
+        strategy: MixedLayoutStrategy.random,
+      ),
+    ),
+
+    // Alternating layout: Predictable pattern (Q1, Q2, Q1, Q2, ...)
+    QuizCategory(
+      id: 'europe_alternating',
+      title: (context) => l10n.europeAlternating,
+      showAnswerFeedback: true,
+      layoutConfig: MixedLayout(
+        allowedLayouts: [
+          const ImageQuestionTextAnswersLayout(),
+          TextQuestionImageAnswersLayout(questionTemplate: l10n.whichFlagIs),
+        ],
+        strategy: MixedLayoutStrategy.alternating,
       ),
     ),
   ];
 }
+```
+
+#### 3. Mixed Layout Usage Patterns
+
+```dart
+// Pattern 1: Random mix - each question randomly picks a layout
+QuizLayoutConfig.mixed(
+  allowedLayouts: [
+    const ImageQuestionTextAnswersLayout(),
+    TextQuestionImageAnswersLayout(questionTemplate: 'Which flag is {name}?'),
+  ],
+  strategy: MixedLayoutStrategy.random,
+)
+
+// Pattern 2: Alternating - predictable pattern for structured learning
+// Q1: flag→name, Q2: name→flag, Q3: flag→name, Q4: name→flag...
+QuizLayoutConfig.mixed(
+  allowedLayouts: [
+    const ImageQuestionTextAnswersLayout(),
+    TextQuestionImageAnswersLayout(questionTemplate: 'Which flag is {name}?'),
+  ],
+  strategy: MixedLayoutStrategy.alternating,
+)
+
+// Pattern 3: Three-way mix (for apps with multiple content types)
+QuizLayoutConfig.mixed(
+  allowedLayouts: [
+    const ImageQuestionTextAnswersLayout(),     // Show flag, pick name
+    TextQuestionImageAnswersLayout(...),         // Show name, pick flag
+    const TextQuestionTextAnswersLayout(),       // Show capital, pick country
+  ],
+  strategy: MixedLayoutStrategy.random,
+)
 ```
 
 ---
@@ -789,9 +968,15 @@ List<QuizCategory> createFlagsCategories(CountryCounts counts) {
 **Files to Create/Modify:**
 
 1. **Create** `/packages/quiz_engine_core/lib/src/model/config/quiz_layout_config.dart`
-   - Sealed class `QuizLayoutConfig` with all layout variants
-   - `ImageAnswerSize` enum
-   - JSON serialization support
+   - Sealed class `QuizLayoutConfig` with all layout variants:
+     - `ImageQuestionTextAnswersLayout` (current default)
+     - `TextQuestionImageAnswersLayout` (reverse layout)
+     - `TextQuestionTextAnswersLayout` (text-only)
+     - `AudioQuestionTextAnswersLayout` (audio questions)
+     - `MixedLayout` (dynamic/random layout per question)
+   - `ImageAnswerSize` enum (small, medium, large)
+   - `MixedLayoutStrategy` enum (random, alternating, weighted)
+   - JSON serialization support for all types
 
 2. **Modify** `/packages/quiz_engine_core/lib/src/model/config/question_config.dart`
    - Add `layoutConfig` field
@@ -802,10 +987,11 @@ List<QuizCategory> createFlagsCategories(CountryCounts counts) {
    - Export new `quiz_layout_config.dart`
 
 4. **Create** `/packages/quiz_engine_core/test/model/config/quiz_layout_config_test.dart`
-   - Unit tests for all layout types
+   - Unit tests for all layout types (static and mixed)
    - JSON serialization tests
+   - MixedLayout.selectLayout() tests for each strategy
 
-**Estimated Effort**: 1 day
+**Estimated Effort**: 1.5 days
 
 ### Phase 2: UI Components (Sprint 2)
 
@@ -834,24 +1020,35 @@ List<QuizCategory> createFlagsCategories(CountryCounts counts) {
 **Files to Modify:**
 
 1. **Modify** `/packages/quiz_engine/lib/src/quiz/quiz_layout.dart`
-   - Add `layoutConfig` parameter
+   - Add `layoutConfig` parameter (receives resolved non-mixed layout)
    - Implement layout-aware question widget builder
    - Implement layout-aware answers widget builder
 
-2. **Modify** `/packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
-   - Pass `layoutConfig` from bloc config to QuizLayout
+2. **Modify** `/packages/quiz_engine/lib/src/bloc/quiz/quiz_bloc.dart`
+   - Add `resolveLayoutForQuestion(int questionIndex)` method
+   - Handle MixedLayout by selecting concrete layout per question
+   - Store resolved layout in QuestionState for UI rendering
+   - Use consistent seed for reproducible layout selection (optional)
 
-3. **Modify** `/packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart`
+3. **Modify** `/packages/quiz_engine/lib/src/bloc/quiz/quiz_state.dart`
+   - Add `resolvedLayout` field to `QuestionState`
+   - Ensure layout is available for each question display
+
+4. **Modify** `/packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
+   - Pass resolved `layoutConfig` from state to QuizLayout
+
+5. **Modify** `/packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart`
    - Support image answer feedback display
 
-4. **Update** `/packages/quiz_engine/lib/quiz_engine.dart`
+6. **Update** `/packages/quiz_engine/lib/quiz_engine.dart`
    - Export new widgets and configs
 
-5. **Create/Modify** tests:
+7. **Create/Modify** tests:
    - `/packages/quiz_engine/test/quiz/quiz_layout_test.dart`
    - `/packages/quiz_engine/test/quiz/quiz_screen_test.dart`
+   - `/packages/quiz_engine/test/bloc/quiz_bloc_layout_test.dart` (new)
 
-**Estimated Effort**: 2 days
+**Estimated Effort**: 2.5 days
 
 ### Phase 4: Category Configuration (Sprint 4)
 

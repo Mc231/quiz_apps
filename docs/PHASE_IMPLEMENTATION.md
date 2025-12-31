@@ -3879,12 +3879,15 @@ Quiz Complete (score ≥ 70%) + Conditions Met
   - `TextQuestionImageAnswersLayout` (new reverse layout)
   - `TextQuestionTextAnswersLayout`
   - `AudioQuestionTextAnswersLayout`
+  - `MixedLayout` (dynamic layout that varies per question)
 - [ ] Create `ImageAnswerSize` enum (small, medium, large)
+- [ ] Create `MixedLayoutStrategy` enum (random, alternating, weighted)
+- [ ] Implement `MixedLayout.selectLayout(questionIndex)` method
 - [ ] Add `layoutConfig` field to `QuestionConfig`
 - [ ] Update `QuestionConfig.toMap()` and `fromMap()` for serialization
 - [ ] Update `QuestionConfig.copyWith()` to include layoutConfig
 - [ ] Export from `config_exports.dart`
-- [ ] Write unit tests for all layout types and serialization
+- [ ] Write unit tests for all layout types (static + mixed) and serialization
 
 **Files to Create:**
 - `packages/quiz_engine_core/lib/src/model/config/quiz_layout_config.dart`
@@ -3923,26 +3926,32 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ### Sprint 13.3: Layout Integration
 
-**Goal:** Update `QuizLayout` and `QuizScreen` to support configurable layouts.
+**Goal:** Update `QuizLayout`, `QuizBloc`, and `QuizScreen` to support configurable layouts including MixedLayout.
 
 **Tasks:**
-- [ ] Add `layoutConfig` parameter to `QuizLayout`
+- [ ] Add `layoutConfig` parameter to `QuizLayout` (receives resolved non-mixed layout)
 - [ ] Implement `_buildQuestionWidget()` with layout-aware rendering
 - [ ] Implement `_buildAnswersWidget()` to select correct answer widget
 - [ ] Implement text question template substitution (`{name}` replacement)
-- [ ] Update `QuizScreen` to pass layoutConfig from bloc
+- [ ] Add `resolveLayoutForQuestion(questionIndex)` to `QuizBloc`
+- [ ] Add `resolvedLayout` field to `QuestionState`
+- [ ] Handle MixedLayout by resolving concrete layout per question
+- [ ] Update `QuizScreen` to pass resolved layoutConfig from state
 - [ ] Update `AnswerFeedbackWidget` to support image answer feedback
 - [ ] Export new widgets from `quiz_engine.dart`
-- [ ] Write/update tests for QuizLayout and QuizScreen
+- [ ] Write/update tests for QuizLayout, QuizBloc, and QuizScreen
 
 **Files to Modify:**
 - `packages/quiz_engine/lib/src/quiz/quiz_layout.dart`
 - `packages/quiz_engine/lib/src/quiz/quiz_screen.dart`
+- `packages/quiz_engine/lib/src/bloc/quiz/quiz_bloc.dart`
+- `packages/quiz_engine/lib/src/bloc/quiz/quiz_state.dart`
 - `packages/quiz_engine/lib/src/widgets/answer_feedback_widget.dart`
 - `packages/quiz_engine/lib/quiz_engine.dart`
 
 **Files to Create/Modify:**
 - `packages/quiz_engine/test/quiz/quiz_layout_test.dart`
+- `packages/quiz_engine/test/bloc/quiz_bloc_layout_test.dart`
 
 ---
 
