@@ -48,3 +48,6 @@ export 'src/ads/ads_exports.dart';
 
 // In-App Purchases (IAP)
 export 'src/iap/iap_exports.dart';
+
+// Rate App (In-app review prompts)
+export 'src/rate_app/rate_app_exports.dart';
