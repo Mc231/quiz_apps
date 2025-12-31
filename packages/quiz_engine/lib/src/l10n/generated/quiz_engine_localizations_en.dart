@@ -1417,4 +1417,36 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get purchased => 'Purchased';
+
+  @override
+  String rateAppLoveDialogTitle(String appName) {
+    return 'Are you enjoying $appName?';
+  }
+
+  @override
+  String get rateAppLoveDialogYes => 'Yes!';
+
+  @override
+  String get rateAppLoveDialogNo => 'Not Really';
+
+  @override
+  String get rateAppFeedbackTitle => 'We\'d love to hear from you';
+
+  @override
+  String get rateAppFeedbackMessage => 'What could we do better?';
+
+  @override
+  String get rateAppFeedbackEmailButton => 'Send Feedback';
+
+  @override
+  String get rateAppFeedbackDismiss => 'Maybe Later';
+
+  @override
+  String get rateAppThankYou => 'Thank you for your feedback!';
+
+  @override
+  String get accessibilityRateDialogTitle => 'App rating dialog';
+
+  @override
+  String get accessibilityFeedbackDialogTitle => 'Feedback dialog';
 }

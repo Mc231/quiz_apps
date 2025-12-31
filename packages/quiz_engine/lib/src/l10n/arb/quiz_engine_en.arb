@@ -2146,5 +2146,58 @@
   "purchased": "Purchased",
   "@purchased": {
     "description": "Status label for purchased items"
+  },
+
+  "rateAppLoveDialogTitle": "Are you enjoying {appName}?",
+  "@rateAppLoveDialogTitle": {
+    "description": "Love dialog title asking if user enjoys the app",
+    "placeholders": {
+      "appName": {"type": "String"}
+    }
+  },
+
+  "rateAppLoveDialogYes": "Yes!",
+  "@rateAppLoveDialogYes": {
+    "description": "Positive response button in love dialog"
+  },
+
+  "rateAppLoveDialogNo": "Not Really",
+  "@rateAppLoveDialogNo": {
+    "description": "Negative response button in love dialog"
+  },
+
+  "rateAppFeedbackTitle": "We'd love to hear from you",
+  "@rateAppFeedbackTitle": {
+    "description": "Feedback dialog title"
+  },
+
+  "rateAppFeedbackMessage": "What could we do better?",
+  "@rateAppFeedbackMessage": {
+    "description": "Feedback dialog message"
+  },
+
+  "rateAppFeedbackEmailButton": "Send Feedback",
+  "@rateAppFeedbackEmailButton": {
+    "description": "Button to send feedback via email"
+  },
+
+  "rateAppFeedbackDismiss": "Maybe Later",
+  "@rateAppFeedbackDismiss": {
+    "description": "Button to dismiss feedback dialog"
+  },
+
+  "rateAppThankYou": "Thank you for your feedback!",
+  "@rateAppThankYou": {
+    "description": "Thank you message after feedback"
+  },
+
+  "accessibilityRateDialogTitle": "App rating dialog",
+  "@accessibilityRateDialogTitle": {
+    "description": "Accessibility label for rate dialog"
+  },
+
+  "accessibilityFeedbackDialogTitle": "Feedback dialog",
+  "@accessibilityFeedbackDialogTitle": {
+    "description": "Accessibility label for feedback dialog"
   }
 }

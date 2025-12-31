@@ -2535,6 +2535,66 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Purchased'**
   String get purchased;
+
+  /// Love dialog title asking if user enjoys the app
+  ///
+  /// In en, this message translates to:
+  /// **'Are you enjoying {appName}?'**
+  String rateAppLoveDialogTitle(String appName);
+
+  /// Positive response button in love dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Yes!'**
+  String get rateAppLoveDialogYes;
+
+  /// Negative response button in love dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Not Really'**
+  String get rateAppLoveDialogNo;
+
+  /// Feedback dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'We\'d love to hear from you'**
+  String get rateAppFeedbackTitle;
+
+  /// Feedback dialog message
+  ///
+  /// In en, this message translates to:
+  /// **'What could we do better?'**
+  String get rateAppFeedbackMessage;
+
+  /// Button to send feedback via email
+  ///
+  /// In en, this message translates to:
+  /// **'Send Feedback'**
+  String get rateAppFeedbackEmailButton;
+
+  /// Button to dismiss feedback dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Maybe Later'**
+  String get rateAppFeedbackDismiss;
+
+  /// Thank you message after feedback
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you for your feedback!'**
+  String get rateAppThankYou;
+
+  /// Accessibility label for rate dialog
+  ///
+  /// In en, this message translates to:
+  /// **'App rating dialog'**
+  String get accessibilityRateDialogTitle;
+
+  /// Accessibility label for feedback dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback dialog'**
+  String get accessibilityFeedbackDialogTitle;
 }
 
 class _QuizEngineLocalizationsDelegate
