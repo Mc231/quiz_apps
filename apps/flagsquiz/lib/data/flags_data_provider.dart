@@ -131,8 +131,14 @@ class FlagsDataProvider extends engine.QuizDataProvider {
   }
 
   /// Converts category ID to Continent enum.
+  ///
+  /// Handles suffixed IDs like `eu_reverse` or `eu_mixed` by stripping
+  /// the suffix before matching.
   Continent _getContinentFromId(String id) {
-    switch (id.toLowerCase()) {
+    // Strip layout mode suffix if present (e.g., "eu_reverse" -> "eu")
+    final baseId = id.toLowerCase().split('_').first;
+
+    switch (baseId) {
       case 'all':
         return Continent.all;
       case 'af':
