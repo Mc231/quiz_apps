@@ -18,8 +18,9 @@ This document provides a comprehensive reference for all analytics events in the
 10. [Monetization Events](#monetization-events)
 11. [Error Events](#error-events)
 12. [Performance Events](#performance-events)
-13. [User Properties](#user-properties)
-14. [Implementation Guide](#implementation-guide)
+13. [Rate App Events](#rate-app-events)
+14. [User Properties](#user-properties)
+15. [Implementation Guide](#implementation-guide)
 
 ---
 
@@ -1554,6 +1555,166 @@ PerformanceEvent.databaseQuery(
 | `query_duration_ms` | int | Query duration |
 | `result_count` | int | Result count |
 | `used_index` | bool? | Used index |
+
+---
+
+## Rate App Events
+
+Track rate app dialog interactions and feedback funnel.
+
+### Event: `rate_app_conditions_checked`
+```dart
+RateAppEvent.conditionsChecked(
+  quizScore: 85.0,
+  completedQuizzes: 10,
+  daysSinceInstall: 14,
+  promptCount: 1,
+  declineCount: 0,
+  shouldShow: true,
+  reason: 'all_conditions_met',
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_score` | double | Score percentage of completed quiz |
+| `completed_quizzes` | int | Total quizzes completed |
+| `days_since_install` | int | Days since first launch |
+| `prompt_count` | int | Total prompts shown |
+| `decline_count` | int | Times user declined |
+| `should_show` | int | 1 if conditions met, 0 otherwise |
+| `reason` | String | Reason for decision |
+
+### Event: `rate_app_love_dialog_shown`
+```dart
+RateAppEvent.loveDialogShown(
+  quizId: 'quiz-123',
+  quizScore: 85.0,
+  promptCount: 2,
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `quiz_score` | double | Score percentage |
+| `prompt_count` | int | Total prompts including this one |
+
+### Event: `rate_app_love_dialog_positive`
+```dart
+RateAppEvent.loveDialogPositive(
+  quizId: 'quiz-123',
+  quizScore: 85.0,
+  responseTimeMs: 2500,
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `quiz_score` | double | Score percentage |
+| `response_time_ms` | int | Time to respond in milliseconds |
+
+### Event: `rate_app_love_dialog_negative`
+```dart
+RateAppEvent.loveDialogNegative(
+  quizId: 'quiz-123',
+  quizScore: 85.0,
+  responseTimeMs: 1800,
+  declineCount: 1,
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `quiz_score` | double | Score percentage |
+| `response_time_ms` | int | Time to respond in milliseconds |
+| `decline_count` | int | Total declines including this one |
+
+### Event: `rate_app_love_dialog_dismissed`
+```dart
+RateAppEvent.loveDialogDismissed(
+  quizId: 'quiz-123',
+  quizScore: 85.0,
+  responseTimeMs: 5000,
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `quiz_score` | double | Score percentage |
+| `response_time_ms` | int | Time before dismissal |
+
+### Event: `rate_app_native_dialog_shown`
+```dart
+RateAppEvent.nativeDialogShown(
+  quizId: 'quiz-123',
+  platform: 'ios',
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `platform` | String | Platform (ios, android) |
+
+### Event: `rate_app_native_dialog_completed`
+```dart
+RateAppEvent.nativeDialogCompleted(
+  quizId: 'quiz-123',
+  platform: 'ios',
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `platform` | String | Platform (ios, android) |
+
+**Note:** Native rating dialogs don't provide feedback on whether the user actually rated. This event is fired when the native dialog is dismissed, regardless of user action.
+
+### Event: `rate_app_native_dialog_cancelled`
+```dart
+RateAppEvent.nativeDialogCancelled(
+  quizId: 'quiz-123',
+  platform: 'ios',
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `platform` | String | Platform (ios, android) |
+
+### Event: `rate_app_feedback_dialog_shown`
+```dart
+RateAppEvent.feedbackDialogShown(
+  quizId: 'quiz-123',
+  source: 'love_dialog_negative',
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `source` | String | How user reached feedback (love_dialog_negative) |
+
+### Event: `rate_app_feedback_submitted`
+```dart
+RateAppEvent.feedbackSubmitted(
+  quizId: 'quiz-123',
+  feedbackMethod: 'email',
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `feedback_method` | String | How feedback was submitted (email, form) |
+
+### Event: `rate_app_feedback_dismissed`
+```dart
+RateAppEvent.feedbackDismissed(
+  quizId: 'quiz-123',
+  responseTimeMs: 3000,
+)
+```
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `quiz_id` | String | Quiz that triggered prompt |
+| `response_time_ms` | int | Time before dismissal |
 
 ---
 
