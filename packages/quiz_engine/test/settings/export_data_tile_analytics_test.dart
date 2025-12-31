@@ -189,7 +189,8 @@ void main() {
 
       expect(completedEvents.length, 1);
       final event = completedEvents.first;
-      expect(event.parameters['success'], false);
+      // Analytics events convert booleans to integers (0/1) for Firebase compatibility
+      expect(event.parameters['success'], 0);
       expect(event.parameters['session_count'], 0);
       expect(event.parameters['file_size_bytes'], 0);
       expect(event.parameters['error_message'], 'Database connection failed');

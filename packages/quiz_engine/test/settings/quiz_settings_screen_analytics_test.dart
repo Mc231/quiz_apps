@@ -56,7 +56,8 @@ void main() {
       expect(analyticsService.loggedEvents.length, 1);
       final event = analyticsService.loggedEvents.first as SettingsEvent;
       expect(event.eventName, 'sound_effects_toggled');
-      expect(event.parameters['enabled'], false);
+      // Analytics events convert booleans to integers (0/1) for Firebase compatibility
+      expect(event.parameters['enabled'], 0);
       expect(event.parameters['source'], 'settings_screen');
     });
 
@@ -90,7 +91,8 @@ void main() {
       expect(analyticsService.loggedEvents.length, 1);
       final event = analyticsService.loggedEvents.first as SettingsEvent;
       expect(event.eventName, 'haptic_feedback_toggled');
-      expect(event.parameters['enabled'], false);
+      // Analytics events convert booleans to integers (0/1) for Firebase compatibility
+      expect(event.parameters['enabled'], 0);
       expect(event.parameters['source'], 'settings_screen');
     });
 
