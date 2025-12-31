@@ -31,7 +31,7 @@ The analytics system uses sealed classes for type-safe event tracking. All event
 - `eventName`: Snake_case event name for Firebase Analytics
 - `parameters`: Map of event parameters
 
-**Total Events:** 87 events across 11 sealed classes
+**Total Events:** 98 events across 12 sealed classes
 
 | Event Class | Event Count | Description |
 |-------------|-------------|-------------|
@@ -46,6 +46,7 @@ The analytics system uses sealed classes for type-safe event tracking. All event
 | MonetizationEvent | 10 | Purchases/ads |
 | ErrorEvent | 6 | Error tracking |
 | PerformanceEvent | 5 | App performance |
+| RateAppEvent | 11 | In-app review tracking |
 
 ---
 
@@ -1560,161 +1561,160 @@ PerformanceEvent.databaseQuery(
 
 ## Rate App Events
 
-Track rate app dialog interactions and feedback funnel.
+Track in-app review dialog interactions and feedback funnel. Total: 11 events.
 
 ### Event: `rate_app_conditions_checked`
+Fired when conditions are evaluated to determine if rate prompt should show.
 ```dart
 RateAppEvent.conditionsChecked(
-  quizScore: 85.0,
+  shouldShow: true,
+  blockingReason: null,
   completedQuizzes: 10,
+  quizScore: 85,
   daysSinceInstall: 14,
   promptCount: 1,
   declineCount: 0,
-  shouldShow: true,
-  reason: 'all_conditions_met',
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_score` | double | Score percentage of completed quiz |
+| `should_show` | bool | Whether conditions are met |
+| `blocking_reason` | String? | Reason if conditions not met |
 | `completed_quizzes` | int | Total quizzes completed |
+| `quiz_score` | int | Score percentage of last quiz |
 | `days_since_install` | int | Days since first launch |
-| `prompt_count` | int | Total prompts shown |
-| `decline_count` | int | Times user declined |
-| `should_show` | int | 1 if conditions met, 0 otherwise |
-| `reason` | String | Reason for decision |
+| `prompt_count` | int | Total prompts shown previously |
+| `decline_count` | int | Times user declined previously |
 
 ### Event: `rate_app_love_dialog_shown`
+Fired when the "Are you enjoying?" dialog is displayed.
 ```dart
 RateAppEvent.loveDialogShown(
-  quizId: 'quiz-123',
-  quizScore: 85.0,
+  completedQuizzes: 10,
+  quizScore: 85,
   promptCount: 2,
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `quiz_score` | double | Score percentage |
+| `completed_quizzes` | int | Total quizzes completed |
+| `quiz_score` | int | Score percentage |
 | `prompt_count` | int | Total prompts including this one |
 
 ### Event: `rate_app_love_dialog_positive`
+Fired when user taps "Yes!" in the love dialog.
 ```dart
 RateAppEvent.loveDialogPositive(
-  quizId: 'quiz-123',
-  quizScore: 85.0,
-  responseTimeMs: 2500,
+  promptCount: 2,
+  timeToRespond: Duration(milliseconds: 2500),
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `quiz_score` | double | Score percentage |
-| `response_time_ms` | int | Time to respond in milliseconds |
+| `prompt_count` | int | Total prompts shown |
+| `time_to_respond_ms` | int | Time to respond in milliseconds |
 
 ### Event: `rate_app_love_dialog_negative`
+Fired when user taps "Not Really" in the love dialog.
 ```dart
 RateAppEvent.loveDialogNegative(
-  quizId: 'quiz-123',
-  quizScore: 85.0,
-  responseTimeMs: 1800,
+  promptCount: 2,
   declineCount: 1,
+  timeToRespond: Duration(milliseconds: 1800),
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `quiz_score` | double | Score percentage |
-| `response_time_ms` | int | Time to respond in milliseconds |
+| `prompt_count` | int | Total prompts shown |
 | `decline_count` | int | Total declines including this one |
+| `time_to_respond_ms` | int | Time to respond in milliseconds |
 
 ### Event: `rate_app_love_dialog_dismissed`
+Fired when user dismisses the love dialog without action.
 ```dart
 RateAppEvent.loveDialogDismissed(
-  quizId: 'quiz-123',
-  quizScore: 85.0,
-  responseTimeMs: 5000,
+  promptCount: 2,
+  timeToRespond: Duration(milliseconds: 5000),
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `quiz_score` | double | Score percentage |
-| `response_time_ms` | int | Time before dismissal |
+| `prompt_count` | int | Total prompts shown |
+| `time_to_respond_ms` | int | Time before dismissal |
 
 ### Event: `rate_app_native_dialog_shown`
+Fired when the native platform rating dialog is displayed.
 ```dart
 RateAppEvent.nativeDialogShown(
-  quizId: 'quiz-123',
-  platform: 'ios',
+  promptCount: 2,
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `platform` | String | Platform (ios, android) |
+| `prompt_count` | int | Total prompts shown |
 
 ### Event: `rate_app_native_dialog_completed`
+Fired when the native dialog is closed (user may or may not have rated).
 ```dart
 RateAppEvent.nativeDialogCompleted(
-  quizId: 'quiz-123',
-  platform: 'ios',
+  promptCount: 2,
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `platform` | String | Platform (ios, android) |
+| `prompt_count` | int | Total prompts shown |
 
-**Note:** Native rating dialogs don't provide feedback on whether the user actually rated. This event is fired when the native dialog is dismissed, regardless of user action.
+**Note:** Native rating dialogs don't provide feedback on whether the user actually submitted a rating. This event fires when the dialog closes, regardless of user action.
 
-### Event: `rate_app_native_dialog_cancelled`
+### Event: `rate_app_native_dialog_unavailable`
+Fired when the native dialog is not available on this platform.
 ```dart
-RateAppEvent.nativeDialogCancelled(
-  quizId: 'quiz-123',
-  platform: 'ios',
+RateAppEvent.nativeDialogUnavailable(
+  platform: 'web',
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `platform` | String | Platform (ios, android) |
+| `platform` | String | Platform where unavailable |
 
 ### Event: `rate_app_feedback_dialog_shown`
+Fired when the feedback dialog is displayed to unhappy users.
 ```dart
 RateAppEvent.feedbackDialogShown(
-  quizId: 'quiz-123',
-  source: 'love_dialog_negative',
+  declineCount: 1,
+  feedbackEmail: 'support@app.com',
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `source` | String | How user reached feedback (love_dialog_negative) |
+| `decline_count` | int | Times user has declined |
+| `has_feedback_email` | bool | Whether email option is available |
 
 ### Event: `rate_app_feedback_submitted`
+Fired when user chooses to send feedback.
 ```dart
 RateAppEvent.feedbackSubmitted(
-  quizId: 'quiz-123',
-  feedbackMethod: 'email',
+  declineCount: 1,
+  timeToRespond: Duration(milliseconds: 3000),
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `feedback_method` | String | How feedback was submitted (email, form) |
+| `decline_count` | int | Times user has declined |
+| `time_to_respond_ms` | int | Time before action |
 
 ### Event: `rate_app_feedback_dismissed`
+Fired when user dismisses the feedback dialog.
 ```dart
 RateAppEvent.feedbackDismissed(
-  quizId: 'quiz-123',
-  responseTimeMs: 3000,
+  declineCount: 1,
+  timeToRespond: Duration(milliseconds: 3000),
 )
 ```
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `quiz_id` | String | Quiz that triggered prompt |
-| `response_time_ms` | int | Time before dismissal |
+| `decline_count` | int | Times user has declined |
+| `time_to_respond_ms` | int | Time before dismissal |
 
 ---
 
