@@ -10,6 +10,7 @@ import '../quiz_widget.dart';
 import '../quiz_widget_entry.dart';
 import '../services/quiz_services_context.dart';
 import '../widgets/challenge_list.dart';
+import '../widgets/layout_mode_selector.dart';
 
 /// A screen that displays challenge modes and handles the challenge flow.
 ///
@@ -39,6 +40,8 @@ class ChallengesScreen extends StatefulWidget {
     required this.dataProvider,
     this.listConfig = const ChallengeListConfig(),
     this.categoryPickerTitle,
+    this.layoutModeOptions,
+    this.layoutModeSelectorTitle,
     this.onChallengeStarted,
     this.onQuizCompleted,
     this.completedChallengeCount = 0,
@@ -58,6 +61,34 @@ class ChallengesScreen extends StatefulWidget {
 
   /// Title for the category picker dialog.
   final String? categoryPickerTitle;
+
+  /// Available layout mode options for the quiz.
+  ///
+  /// If provided, a layout mode selector will be shown in the category picker.
+  /// Users can choose between different question/answer layouts (e.g., Standard,
+  /// Reverse, Mixed).
+  ///
+  /// Example:
+  /// ```dart
+  /// layoutModeOptions: [
+  ///   LayoutModeOption(
+  ///     id: 'standard',
+  ///     icon: Icons.image,
+  ///     label: 'Standard',
+  ///     layoutConfig: QuizLayoutConfig.imageQuestionTextAnswers(),
+  ///   ),
+  ///   LayoutModeOption(
+  ///     id: 'reverse',
+  ///     icon: Icons.text_fields,
+  ///     label: 'Reverse',
+  ///     layoutConfig: QuizLayoutConfig.textQuestionImageAnswers(),
+  ///   ),
+  /// ]
+  /// ```
+  final List<LayoutModeOption>? layoutModeOptions;
+
+  /// Title for the layout mode selector section.
+  final String? layoutModeSelectorTitle;
 
   /// Callback when a challenge is started (for analytics, etc.).
   final void Function(ChallengeMode challenge, QuizCategory category)?
@@ -113,7 +144,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
   }
 
   void _showCategoryPicker(BuildContext context, ChallengeMode challenge) {
-    showModalBottomSheet<QuizCategory>(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
@@ -123,9 +154,11 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
         challenge: challenge,
         categories: widget.categories,
         title: widget.categoryPickerTitle,
-        onCategorySelected: (category) {
+        layoutModeOptions: widget.layoutModeOptions,
+        layoutModeSelectorTitle: widget.layoutModeSelectorTitle,
+        onCategorySelected: (category, layoutOption) {
           Navigator.pop(context);
-          _startChallenge(context, challenge, category);
+          _startChallenge(context, challenge, category, layoutOption);
         },
       ),
     );
@@ -135,6 +168,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     BuildContext context,
     ChallengeMode challenge,
     QuizCategory category,
+    LayoutModeOption? selectedLayoutOption,
   ) async {
     // Notify callback
     widget.onChallengeStarted?.call(challenge, category);
@@ -162,8 +196,9 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     // Create storage config
     final storageConfig = widget.dataProvider.createStorageConfig(context, category);
 
-    // Get layout config from provider
-    final layoutConfig = widget.dataProvider.createLayoutConfig(context, category);
+    // Get layout config - use selected option if provided, otherwise from data provider
+    final layoutConfig = selectedLayoutOption?.layoutConfig ??
+        widget.dataProvider.createLayoutConfig(context, category);
 
     // Apply storage config and layout config
     final configWithStorage = quizConfig.copyWith(
@@ -294,6 +329,8 @@ class ChallengesContent extends StatelessWidget {
     this.isRefreshing = false,
     this.onRefresh,
     this.categoryPickerTitle,
+    this.layoutModeOptions,
+    this.layoutModeSelectorTitle,
     this.trailingBuilder,
   });
 
@@ -304,8 +341,14 @@ class ChallengesContent extends StatelessWidget {
   final List<QuizCategory> categories;
 
   /// Callback when a challenge and category are selected.
-  final void Function(ChallengeMode challenge, QuizCategory category)
-      onChallengeSelected;
+  ///
+  /// The [layoutOption] parameter contains the selected layout mode option
+  /// if [layoutModeOptions] was provided, otherwise null.
+  final void Function(
+    ChallengeMode challenge,
+    QuizCategory category,
+    LayoutModeOption? layoutOption,
+  ) onChallengeSelected;
 
   /// Configuration for the challenge list.
   final ChallengeListConfig listConfig;
@@ -318,6 +361,12 @@ class ChallengesContent extends StatelessWidget {
 
   /// Title for the category picker dialog.
   final String? categoryPickerTitle;
+
+  /// Available layout mode options for the quiz.
+  final List<LayoutModeOption>? layoutModeOptions;
+
+  /// Title for the layout mode selector section.
+  final String? layoutModeSelectorTitle;
 
   /// Builder for trailing widget on each card.
   final Widget Function(ChallengeMode challenge)? trailingBuilder;
@@ -343,7 +392,7 @@ class ChallengesContent extends StatelessWidget {
   }
 
   void _showCategoryPicker(BuildContext context, ChallengeMode challenge) {
-    showModalBottomSheet<QuizCategory>(
+    showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
@@ -353,35 +402,60 @@ class ChallengesContent extends StatelessWidget {
         challenge: challenge,
         categories: categories,
         title: categoryPickerTitle,
-        onCategorySelected: (category) {
+        layoutModeOptions: layoutModeOptions,
+        layoutModeSelectorTitle: layoutModeSelectorTitle,
+        onCategorySelected: (category, layoutOption) {
           Navigator.pop(context);
-          onChallengeSelected(challenge, category);
+          onChallengeSelected(challenge, category, layoutOption);
         },
       ),
     );
   }
 }
 
-/// Bottom sheet for picking a category.
-class _CategoryPickerSheet extends StatelessWidget {
+/// Bottom sheet for picking a category and optionally a layout mode.
+class _CategoryPickerSheet extends StatefulWidget {
   const _CategoryPickerSheet({
     required this.challenge,
     required this.categories,
     required this.onCategorySelected,
     this.title,
+    this.layoutModeOptions,
+    this.layoutModeSelectorTitle,
   });
 
   final ChallengeMode challenge;
   final List<QuizCategory> categories;
-  final void Function(QuizCategory) onCategorySelected;
+  final void Function(QuizCategory, LayoutModeOption?) onCategorySelected;
   final String? title;
+  final List<LayoutModeOption>? layoutModeOptions;
+  final String? layoutModeSelectorTitle;
+
+  @override
+  State<_CategoryPickerSheet> createState() => _CategoryPickerSheetState();
+}
+
+class _CategoryPickerSheetState extends State<_CategoryPickerSheet> {
+  LayoutModeOption? _selectedLayoutOption;
+
+  @override
+  void initState() {
+    super.initState();
+    // Default to first option if available
+    if (widget.layoutModeOptions != null &&
+        widget.layoutModeOptions!.isNotEmpty) {
+      _selectedLayoutOption = widget.layoutModeOptions!.first;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final hasLayoutOptions = widget.layoutModeOptions != null &&
+        widget.layoutModeOptions!.isNotEmpty;
 
     return DraggableScrollableSheet(
-      initialChildSize: 0.6,
+      initialChildSize: hasLayoutOptions ? 0.7 : 0.6,
       minChildSize: 0.3,
       maxChildSize: 0.9,
       expand: false,
@@ -409,12 +483,13 @@ class _CategoryPickerSheet extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: challenge.difficulty.color.withValues(alpha: 0.15),
+                          color: widget.challenge.difficulty.color
+                              .withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Icon(
-                          challenge.icon,
-                          color: challenge.difficulty.color,
+                          widget.challenge.icon,
+                          color: widget.challenge.difficulty.color,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -423,13 +498,13 @@ class _CategoryPickerSheet extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              challenge.name,
+                              widget.challenge.name,
                               style: theme.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              title ?? 'Select a category',
+                              widget.title ?? 'Select a category',
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),
@@ -443,6 +518,21 @@ class _CategoryPickerSheet extends StatelessWidget {
               ),
             ),
 
+            // Layout Mode Selector (if options provided)
+            if (hasLayoutOptions) ...[
+              const Divider(),
+              LayoutModeSelectorCard(
+                title: widget.layoutModeSelectorTitle,
+                options: widget.layoutModeOptions!,
+                selectedOption: _selectedLayoutOption!,
+                onOptionSelected: (option) {
+                  setState(() {
+                    _selectedLayoutOption = option;
+                  });
+                },
+              ),
+            ],
+
             const Divider(),
 
             // Category list
@@ -450,9 +540,9 @@ class _CategoryPickerSheet extends StatelessWidget {
               child: ListView.builder(
                 controller: scrollController,
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                itemCount: categories.length,
+                itemCount: widget.categories.length,
                 itemBuilder: (context, index) {
-                  final category = categories[index];
+                  final category = widget.categories[index];
                   return ListTile(
                     leading: Icon(category.icon),
                     title: Text(category.title(context)),
@@ -460,7 +550,10 @@ class _CategoryPickerSheet extends StatelessWidget {
                         ? Text(category.subtitle!(context))
                         : null,
                     trailing: const Icon(Icons.chevron_right),
-                    onTap: () => onCategorySelected(category),
+                    onTap: () => widget.onCategorySelected(
+                      category,
+                      _selectedLayoutOption,
+                    ),
                   );
                 },
               ),

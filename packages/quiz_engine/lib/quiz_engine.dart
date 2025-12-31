@@ -79,6 +79,9 @@ export 'src/widgets/leaderboard_widget.dart';
 export 'src/widgets/challenge_card.dart';
 export 'src/widgets/challenge_list.dart';
 
+// Layout Mode Selector
+export 'src/widgets/layout_mode_selector.dart';
+
 // Practice Widgets
 export 'src/widgets/practice_empty_state.dart';
 
