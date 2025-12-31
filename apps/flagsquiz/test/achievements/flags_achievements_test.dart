@@ -813,6 +813,30 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   // ignore: non_constant_identifier_names
   String get as => 'AS';
+
+  // Layout mode strings
+  @override
+  String whichFlagIs(String name) => 'Which flag is $name?';
+  @override
+  String selectTheFlagOf(String name) => 'Select the flag of $name';
+  @override
+  String get identifyFlags => 'Identify Flags';
+  @override
+  String get findTheFlag => 'Find the Flag';
+  @override
+  String get layoutModeStandard => 'Flag to Name';
+  @override
+  String get layoutModeStandardShort => 'Standard';
+  @override
+  String get layoutModeReverse => 'Name to Flag';
+  @override
+  String get layoutModeReverseShort => 'Reverse';
+  @override
+  String get layoutModeMixed => 'Mixed';
+  @override
+  String get layoutModeMixedShort => 'Mix';
+  @override
+  String get quizMode => 'Quiz Mode';
 }
 
 /// Mock QuizEngineLocalizations for testing.
@@ -1699,6 +1723,36 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
       'Image answer $label, eliminated';
   @override
   String get imageLoadError => 'Failed to load image';
+
+  // Layout mode localizations
+  @override
+  String whichOneIs(String name) => 'Which one is $name?';
+  @override
+  String selectThe(String name) => 'Select the $name';
+  @override
+  String get layoutStandard => 'Standard';
+  @override
+  String get layoutReverse => 'Reverse';
+  @override
+  String get layoutMixed => 'Mixed';
+  @override
+  String get layoutImageQuestionTextAnswers => 'Image Question - Text Answers';
+  @override
+  String get layoutTextQuestionImageAnswers => 'Text Question - Image Answers';
+  @override
+  String get layoutTextQuestionTextAnswers => 'Text Question - Text Answers';
+  @override
+  String get layoutAudioQuestionTextAnswers => 'Audio Question - Text Answers';
+  @override
+  String get layoutText => 'Text';
+  @override
+  String get layoutAudio => 'Audio';
+  @override
+  String get layoutMode => 'Layout Mode';
+  @override
+  String get layoutModeUsed => 'Layout';
+  @override
+  String get layoutBreakdown => 'Layout Breakdown';
 }
 
 void main() {
