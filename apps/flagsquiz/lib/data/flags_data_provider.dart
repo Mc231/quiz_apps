@@ -8,6 +8,14 @@ import '../l10n/app_localizations.dart';
 import '../models/continent.dart';
 import '../models/country.dart';
 
+export 'package:quiz_engine_core/quiz_engine_core.dart'
+    show
+        QuizLayoutConfig,
+        ImageQuestionTextAnswersLayout,
+        TextQuestionImageAnswersLayout,
+        TextQuestionTextAnswersLayout,
+        MixedLayout;
+
 /// Data provider for flags quiz.
 ///
 /// Loads country questions and creates quiz configuration
@@ -79,6 +87,47 @@ class FlagsDataProvider extends engine.QuizDataProvider {
         timeThresholdSeconds: 30,
       ),
     );
+  }
+
+  @override
+  QuizLayoutConfig? createLayoutConfig(
+    BuildContext context,
+    engine.QuizCategory category,
+  ) {
+    final l10n = AppLocalizations.of(context)!;
+    final layoutConfig = category.layoutConfig;
+
+    // If no layout config specified, use default (image question, text answers)
+    if (layoutConfig == null) {
+      return const ImageQuestionTextAnswersLayout();
+    }
+
+    // If it's a text-question-image-answers layout, apply localized template
+    if (layoutConfig is TextQuestionImageAnswersLayout) {
+      return TextQuestionImageAnswersLayout(
+        imageSize: layoutConfig.imageSize,
+        questionTemplate: l10n.whichFlagIs('{name}'),
+      );
+    }
+
+    // If it's a mixed layout, apply localized templates to any text-image layouts
+    if (layoutConfig is MixedLayout) {
+      return MixedLayout(
+        layouts: layoutConfig.layouts.map((layout) {
+          if (layout is TextQuestionImageAnswersLayout) {
+            return TextQuestionImageAnswersLayout(
+              imageSize: layout.imageSize,
+              questionTemplate: l10n.whichFlagIs('{name}'),
+            );
+          }
+          return layout;
+        }).toList(),
+        strategy: layoutConfig.strategy,
+      );
+    }
+
+    // Return as-is for other layouts
+    return layoutConfig;
   }
 
   /// Converts category ID to Continent enum.
