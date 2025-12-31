@@ -39,12 +39,20 @@ class QuizSettings {
   /// Selected theme mode (light/dark/system)
   final AppThemeMode themeMode;
 
+  /// Preferred layout mode ID for Play tab quizzes.
+  ///
+  /// This is the ID of the layout mode option (e.g., 'standard', 'reverse', 'mixed')
+  /// that the user prefers for quizzes started from the Play tab.
+  /// If null, uses the default layout from the data provider.
+  final String? preferredLayoutModeId;
+
   /// Creates a new QuizSettings instance
   const QuizSettings({
     required this.soundEnabled,
     required this.musicEnabled,
     required this.hapticEnabled,
     required this.themeMode,
+    this.preferredLayoutModeId,
   });
 
   /// Returns default settings with all features enabled
@@ -63,12 +71,17 @@ class QuizSettings {
     bool? musicEnabled,
     bool? hapticEnabled,
     AppThemeMode? themeMode,
+    String? preferredLayoutModeId,
+    bool clearPreferredLayoutModeId = false,
   }) {
     return QuizSettings(
       soundEnabled: soundEnabled ?? this.soundEnabled,
       musicEnabled: musicEnabled ?? this.musicEnabled,
       hapticEnabled: hapticEnabled ?? this.hapticEnabled,
       themeMode: themeMode ?? this.themeMode,
+      preferredLayoutModeId: clearPreferredLayoutModeId
+          ? null
+          : (preferredLayoutModeId ?? this.preferredLayoutModeId),
     );
   }
 
@@ -79,6 +92,8 @@ class QuizSettings {
       'musicEnabled': musicEnabled,
       'hapticEnabled': hapticEnabled,
       'themeMode': themeMode.name,
+      if (preferredLayoutModeId != null)
+        'preferredLayoutModeId': preferredLayoutModeId,
     };
   }
 
@@ -89,6 +104,7 @@ class QuizSettings {
       musicEnabled: json['musicEnabled'] as bool? ?? true,
       hapticEnabled: json['hapticEnabled'] as bool? ?? true,
       themeMode: _parseThemeMode(json['themeMode'] as String?),
+      preferredLayoutModeId: json['preferredLayoutModeId'] as String?,
     );
   }
 
@@ -125,7 +141,8 @@ class QuizSettings {
         other.soundEnabled == soundEnabled &&
         other.musicEnabled == musicEnabled &&
         other.hapticEnabled == hapticEnabled &&
-        other.themeMode == themeMode;
+        other.themeMode == themeMode &&
+        other.preferredLayoutModeId == preferredLayoutModeId;
   }
 
   @override
@@ -135,6 +152,7 @@ class QuizSettings {
       musicEnabled,
       hapticEnabled,
       themeMode,
+      preferredLayoutModeId,
     );
   }
 
@@ -144,7 +162,8 @@ class QuizSettings {
         'soundEnabled: $soundEnabled, '
         'musicEnabled: $musicEnabled, '
         'hapticEnabled: $hapticEnabled, '
-        'themeMode: $themeMode'
+        'themeMode: $themeMode, '
+        'preferredLayoutModeId: $preferredLayoutModeId'
         ')';
   }
 }

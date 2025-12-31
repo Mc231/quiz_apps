@@ -150,6 +150,17 @@ class SettingsService {
     await updateSettings(newSettings);
   }
 
+  /// Sets the preferred layout mode for Play tab quizzes
+  ///
+  /// [modeId] - The layout mode ID to save (e.g., 'standard', 'reverse', 'mixed')
+  /// Pass null to clear the preference and use the default layout.
+  Future<void> setPreferredLayoutMode(String? modeId) async {
+    final newSettings = modeId == null
+        ? _currentSettings.copyWith(clearPreferredLayoutModeId: true)
+        : _currentSettings.copyWith(preferredLayoutModeId: modeId);
+    await updateSettings(newSettings);
+  }
+
   /// Resets all settings to defaults
   ///
   /// Returns the default settings
