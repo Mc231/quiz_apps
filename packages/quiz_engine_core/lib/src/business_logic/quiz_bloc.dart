@@ -10,6 +10,7 @@ import '../model/question.dart';
 import '../model/quiz_results.dart';
 import '../random_item_picker.dart';
 import '../model/config/quiz_config.dart';
+import '../model/config/quiz_layout_config.dart';
 import '../model/config/quiz_mode_config.dart';
 import '../model/config/hint_config.dart';
 import '../storage/quiz_storage_service.dart';
@@ -759,9 +760,32 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     return SessionCompletionStatus.completed;
   }
 
+  // ============ Private Methods - Layout Resolution ============
+
+  /// Resolves the layout configuration for a specific question index.
+  ///
+  /// If the [QuizConfig.layoutConfig] is a [MixedLayout], this method selects
+  /// the appropriate concrete layout based on the question index and strategy.
+  /// For non-mixed layouts, returns the layout as-is.
+  ///
+  /// [questionIndex] is the 0-based index of the current question.
+  ///
+  /// Returns a concrete [QuizLayoutConfig] (never a [MixedLayout]).
+  QuizLayoutConfig resolveLayoutForQuestion(int questionIndex) {
+    final layout = _config.layoutConfig;
+    if (layout is MixedLayout) {
+      return layout.selectLayout(questionIndex);
+    }
+    return layout;
+  }
+
   // ============ Private Methods - State Emission ============
 
   void _emitQuestionState() {
+    final resolvedLayout = resolveLayoutForQuestion(
+      _progressTracker.currentProgress,
+    );
+
     final state = QuizState.question(
       currentQuestion,
       _progressTracker.currentProgress,
@@ -771,11 +795,17 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       totalTimeRemaining: _timerManager.totalTimeRemaining,
       hintState: _hintManager.hintState,
       disabledOptions: _hintManager.disabledOptions,
+      resolvedLayout: resolvedLayout,
     );
     dispatchState(state);
   }
 
   void _emitFeedbackState(QuestionEntry selectedItem, bool isCorrect) {
+    // Use the same layout that was used for the question
+    final resolvedLayout = resolveLayoutForQuestion(
+      _progressTracker.currentProgress - 1, // Progress was already incremented
+    );
+
     final state = QuizState.answerFeedback(
       currentQuestion,
       selectedItem,
@@ -786,6 +816,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       questionTimeRemaining: _timerManager.questionTimeRemaining,
       totalTimeRemaining: _timerManager.totalTimeRemaining,
       hintState: _hintManager.hintState,
+      resolvedLayout: resolvedLayout,
     );
     dispatchState(state);
   }
