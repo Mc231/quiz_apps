@@ -53,6 +53,9 @@ export 'src/components/option_button.dart';
 export 'src/quiz/quiz_text_widget.dart';
 export 'src/quiz/quiz_audio_widget.dart';
 export 'src/quiz/quiz_video_widget.dart';
+export 'src/quiz/quiz_image_widget.dart';
+export 'src/quiz/quiz_image_answers_widget.dart';
+export 'src/quiz/quiz_layout.dart';
 
 // Feedback Widgets
 export 'src/widgets/answer_feedback_widget.dart';
