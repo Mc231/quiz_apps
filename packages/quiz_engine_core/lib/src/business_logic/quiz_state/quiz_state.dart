@@ -2,6 +2,7 @@ import '../../model/question.dart';
 import '../../model/question_entry.dart';
 import '../../model/quiz_results.dart';
 import '../../model/config/hint_config.dart';
+import '../../model/config/quiz_layout_config.dart';
 
 /// An abstract class representing the state of a quiz.
 ///
@@ -18,6 +19,7 @@ sealed class QuizState {
     int? totalTimeRemaining,
     HintState? hintState,
     Set<QuestionEntry>? disabledOptions,
+    QuizLayoutConfig? resolvedLayout,
   }) = QuestionState;
   factory QuizState.answerFeedback(
     Question question,
@@ -29,6 +31,7 @@ sealed class QuizState {
     int? questionTimeRemaining,
     int? totalTimeRemaining,
     HintState? hintState,
+    QuizLayoutConfig? resolvedLayout,
   }) = AnswerFeedbackState;
   factory QuizState.completed(QuizResults results) = QuizCompletedState;
   const QuizState();
@@ -64,6 +67,13 @@ class QuestionState extends QuizState {
   /// Options that are disabled (e.g., from using 50/50 hint).
   final Set<QuestionEntry> disabledOptions;
 
+  /// The resolved layout configuration for this question.
+  ///
+  /// This is a concrete layout (not [MixedLayout]) that has been resolved
+  /// for this specific question index. Used to determine how the question
+  /// and answers are displayed.
+  final QuizLayoutConfig? resolvedLayout;
+
   /// Computes the percentage of progress made through the quiz.
   double get percentageProgress =>
       total == 0 ? 0 : (progress / total).toDouble();
@@ -78,6 +88,7 @@ class QuestionState extends QuizState {
     this.totalTimeRemaining,
     this.hintState,
     Set<QuestionEntry>? disabledOptions,
+    this.resolvedLayout,
   }) : disabledOptions = disabledOptions ?? {};
 }
 
@@ -113,6 +124,11 @@ class AnswerFeedbackState extends QuizState {
   /// The current state of available hints (preserved from question state).
   final HintState? hintState;
 
+  /// The resolved layout configuration for this question.
+  ///
+  /// Preserved from the [QuestionState] for consistent display during feedback.
+  final QuizLayoutConfig? resolvedLayout;
+
   /// Computes the percentage of progress made through the quiz.
   double get percentageProgress =>
       total == 0 ? 0 : (progress / total).toDouble();
@@ -128,6 +144,7 @@ class AnswerFeedbackState extends QuizState {
     this.questionTimeRemaining,
     this.totalTimeRemaining,
     this.hintState,
+    this.resolvedLayout,
   });
 }
 
