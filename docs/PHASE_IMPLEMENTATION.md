@@ -4075,6 +4075,35 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ---
 
+### Sprint 13.8: Play Tab Layout Mode Selector ✅
+
+**Goal:** Add layout mode selector (Standard/Reverse/Mixed) to the Play tab with persistence.
+
+**Tasks:**
+- [x] Add `preferredLayoutModeId` field to `QuizSettings` model
+- [x] Add `setPreferredLayoutMode()` method to `SettingsService`
+- [x] Add `playLayoutModeOptionsBuilder` and `playLayoutModeSelectorTitleBuilder` to `QuizApp`
+- [x] Update `TabbedPlayScreenConfig` with layout mode options
+- [x] Update `TabbedPlayScreen` to show layout mode selector above category list
+- [x] Use saved layout mode preference when starting quiz from Play tab
+- [x] Add `large` parameter to `LayoutModeSelector` for bigger buttons
+- [x] Fix double app bar issue (QuizHomeScreen + TabbedPlayScreen)
+- [x] Integrate with FlagsQuizApp
+
+**Files Created:**
+- ✅ `apps/flagsquiz/lib/data/flags_layout_options.dart` - Layout mode options for Flags Quiz
+
+**Files Modified:**
+- ✅ `packages/shared_services/lib/src/settings/quiz_settings.dart` - Added preferredLayoutModeId
+- ✅ `packages/shared_services/lib/src/settings/settings_service.dart` - Added setPreferredLayoutMode
+- ✅ `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added play layout builders, fixed app bar
+- ✅ `packages/quiz_engine/lib/src/home/tabbed_play_screen.dart` - Added layout selector
+- ✅ `packages/quiz_engine/lib/src/home/tabbed_play_screen_config.dart` - Added layout config
+- ✅ `packages/quiz_engine/lib/src/widgets/layout_mode_selector.dart` - Added large parameter
+- ✅ `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Integrated layout options
+
+---
+
 ### Phase 13 Summary
 
 | Sprint | Description | Effort |
@@ -4086,8 +4115,9 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 | 13.5 | Flags Quiz Integration | Medium |
 | 13.6 | Data Persistence & App-Wide Integration | Medium |
 | 13.7 | Polish and Documentation | Small |
+| 13.8 | Play Tab Layout Mode Selector | Small |
 
-**Total: 7 sprints**
+**Total: 8 sprints**
 
 ---
 
