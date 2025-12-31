@@ -2257,5 +2257,50 @@
   "layoutMixed": "Mixed",
   "@layoutMixed": {
     "description": "Label for mixed layout (alternating between layouts)"
+  },
+
+  "layoutImageQuestionTextAnswers": "Image → Text",
+  "@layoutImageQuestionTextAnswers": {
+    "description": "Label for image question with text answers layout"
+  },
+
+  "layoutTextQuestionImageAnswers": "Text → Image",
+  "@layoutTextQuestionImageAnswers": {
+    "description": "Label for text question with image answers layout"
+  },
+
+  "layoutTextQuestionTextAnswers": "Text → Text",
+  "@layoutTextQuestionTextAnswers": {
+    "description": "Label for text question with text answers layout"
+  },
+
+  "layoutAudioQuestionTextAnswers": "Audio → Text",
+  "@layoutAudioQuestionTextAnswers": {
+    "description": "Label for audio question with text answers layout"
+  },
+
+  "layoutText": "Text",
+  "@layoutText": {
+    "description": "Short label for text-only layout"
+  },
+
+  "layoutAudio": "Audio",
+  "@layoutAudio": {
+    "description": "Short label for audio layout"
+  },
+
+  "layoutMode": "Layout",
+  "@layoutMode": {
+    "description": "Layout mode label in session details"
+  },
+
+  "layoutModeUsed": "Layout used",
+  "@layoutModeUsed": {
+    "description": "Label for the layout mode used per question"
+  },
+
+  "layoutBreakdown": "Layout Breakdown",
+  "@layoutBreakdown": {
+    "description": "Layout breakdown section title in statistics"
   }
 }

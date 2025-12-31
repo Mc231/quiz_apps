@@ -887,6 +887,38 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
       'Image answer $label, eliminated';
   @override
   String get imageLoadError => 'Failed to load image';
+
+  // Layout mode localizations
+  @override
+  String get layoutStandard => 'Standard';
+  @override
+  String get layoutReverse => 'Reverse';
+  @override
+  String get layoutMixed => 'Mixed';
+  @override
+  String get layoutImageQuestionTextAnswers => 'Image → Text';
+  @override
+  String get layoutTextQuestionImageAnswers => 'Text → Image';
+  @override
+  String get layoutTextQuestionTextAnswers => 'Text → Text';
+  @override
+  String get layoutAudioQuestionTextAnswers => 'Audio → Text';
+  @override
+  String get layoutText => 'Text';
+  @override
+  String get layoutAudio => 'Audio';
+  @override
+  String get layoutMode => 'Layout';
+  @override
+  String get layoutModeUsed => 'Layout used';
+  @override
+  String get layoutBreakdown => 'Layout Breakdown';
+
+  // Reverse layout question templates
+  @override
+  String selectThe(String name) => 'Select the $name';
+  @override
+  String whichOneIs(String name) => 'Which one is $name';
 }
 
 void main() {

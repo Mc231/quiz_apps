@@ -4013,38 +4013,50 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ---
 
-### Sprint 13.6: Data Persistence & App-Wide Integration
+### Sprint 13.6: Data Persistence & App-Wide Integration ✅
 
 **Goal:** Ensure layout information is persisted in database and displayed throughout the app.
 
 **Tasks:**
-- [ ] Add database migration for layout columns:
+- [x] Add database migration for layout columns:
   - `layout_mode` column in `quiz_sessions` table
-  - `layout_used` column in `quiz_answers` table
-- [ ] Update `QuizSession` model with `layoutMode` field
-- [ ] Update `QuizAnswer` model with `layoutUsed` field
-- [ ] Update `QuizSessionDataSource` to persist/retrieve layout data
-- [ ] Update `QuizBloc` to record layout per answer
-- [ ] Update Session History Screen to show layout mode badge/indicator
-- [ ] Update Session Detail Screen to show layout per question
-- [ ] Update Statistics Screen with layout mode breakdown
-- [ ] Update Results Screen to show layout mode used
-- [ ] Update Analytics events (`QuizEvent`, `QuestionEvent`) with layout parameters
-- [ ] Add localization strings for layout mode labels
-- [ ] Write tests for persistence and display
+  - `layout_used` column in `question_answers` table
+- [x] Update `QuizSession` model with `layoutMode` field
+- [x] Update `QuestionAnswer` model with `layoutUsed` field
+- [x] Update `QuizSessionDataSource` to persist/retrieve layout data
+- [x] Update `QuizBloc` to record layout per answer
+- [x] Update Session History Screen to show layout mode badge/indicator
+- [x] Update Session Detail Screen to show layout per question
+- [x] Update Results Screen to show layout mode used
+- [x] Update Analytics events (`QuizEvent`) with layout parameters
+- [x] Add localization strings for layout mode labels
+- [x] Write tests for persistence and display
 
-**Files to Modify:**
-- `packages/shared_services/lib/src/storage/database/database_helper.dart`
-- `packages/shared_services/lib/src/storage/models/quiz_session.dart`
-- `packages/shared_services/lib/src/storage/models/quiz_answer.dart`
-- `packages/shared_services/lib/src/storage/data_sources/quiz_session_data_source.dart`
-- `packages/quiz_engine/lib/src/bloc/quiz/quiz_bloc.dart`
-- `packages/quiz_engine/lib/src/screens/session_history_screen.dart`
-- `packages/quiz_engine/lib/src/screens/session_detail_screen.dart`
-- `packages/quiz_engine/lib/src/screens/statistics_screen.dart`
-- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
-- `packages/shared_services/lib/src/analytics/events/quiz_event.dart`
-- `packages/shared_services/lib/src/analytics/events/question_event.dart`
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration_v7.dart`
+- ✅ `packages/quiz_engine/lib/src/utils/layout_mode_labels.dart`
+
+**Files Modified:**
+- ✅ `packages/shared_services/lib/src/storage/database/database_config.dart` (version 6 → 7)
+- ✅ `packages/shared_services/lib/src/storage/database/tables/quiz_sessions_table.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/tables/question_answers_table.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/app_database.dart`
+- ✅ `packages/shared_services/lib/src/storage/models/quiz_session.dart`
+- ✅ `packages/shared_services/lib/src/storage/models/question_answer.dart`
+- ✅ `packages/shared_services/lib/src/storage/quiz_storage_adapter.dart`
+- ✅ `packages/quiz_engine_core/lib/src/storage/quiz_storage_service.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/managers/quiz_session_manager.dart`
+- ✅ `packages/quiz_engine_core/lib/src/business_logic/quiz_bloc.dart`
+- ✅ `packages/quiz_engine_core/lib/src/model/quiz_results.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/session_card.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/question_review_widget.dart`
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/quiz_event.dart`
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart`
+- ✅ `packages/quiz_engine_core/test/managers/quiz_session_manager_test.dart`
+- ✅ `packages/quiz_engine_core/test/storage/quiz_storage_service_test.dart`
+- ✅ `packages/quiz_engine/test/achievements/base_achievements_test.dart`
 
 ---
 

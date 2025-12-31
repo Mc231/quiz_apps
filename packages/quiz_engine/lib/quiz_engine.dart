@@ -129,6 +129,7 @@ export 'src/widgets/adaptive_resource_panel.dart';
 
 // Utils
 export 'src/utils/default_data_loader.dart';
+export 'src/utils/layout_mode_labels.dart';
 
 // Achievements
 export 'src/achievements/achievement_category.dart';

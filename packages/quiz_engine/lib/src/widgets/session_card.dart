@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/quiz_localizations.dart';
+import '../utils/layout_mode_labels.dart';
 
 /// Data model for session card display.
 class SessionCardData {
@@ -15,6 +16,7 @@ class SessionCardData {
     required this.startTime,
     this.durationSeconds,
     this.quizCategory,
+    this.layoutMode,
   });
 
   /// Unique session ID.
@@ -43,6 +45,9 @@ class SessionCardData {
 
   /// Optional quiz category.
   final String? quizCategory;
+
+  /// Layout mode used for this quiz session.
+  final String? layoutMode;
 
   /// Whether this is a perfect score.
   bool get isPerfectScore => scorePercentage >= 100.0;
@@ -260,11 +265,23 @@ class SessionCard extends StatelessWidget {
   }
 
   Widget _buildFooter(BuildContext context) {
-    return Text(
-      formatDate(data.startTime),
-      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: Colors.grey[500],
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            formatDate(data.startTime),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey[500],
+                ),
           ),
+        ),
+        if (data.layoutMode != null)
+          LayoutModeBadge(
+            layoutMode: data.layoutMode,
+            compact: true,
+            showIcon: true,
+          ),
+      ],
     );
   }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/layout_mode_labels.dart';
+
 /// Data model for a reviewed question.
 class ReviewedQuestion {
   /// Creates a [ReviewedQuestion].
@@ -12,6 +14,7 @@ class ReviewedQuestion {
     this.isSkipped = false,
     this.explanation,
     this.questionImagePath,
+    this.layoutUsed,
   });
 
   /// Question number (1-indexed).
@@ -37,6 +40,9 @@ class ReviewedQuestion {
 
   /// Optional image path for the question.
   final String? questionImagePath;
+
+  /// Layout used for this question.
+  final String? layoutUsed;
 }
 
 /// Widget for displaying a single reviewed question.
@@ -137,6 +143,16 @@ class QuestionReviewWidget extends StatelessWidget {
               ),
             ),
           ),
+          if (question.layoutUsed != null) ...[
+            const SizedBox(width: 8),
+            Builder(
+              builder: (context) => LayoutModeBadge(
+                layoutMode: question.layoutUsed,
+                compact: true,
+                showIcon: true,
+              ),
+            ),
+          ],
           const Spacer(),
         ],
         _buildStatusIcon(),

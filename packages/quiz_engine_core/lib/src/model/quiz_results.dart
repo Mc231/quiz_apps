@@ -25,6 +25,7 @@ class QuizResults {
     this.hintsUsedSkip = 0,
     this.score = 0,
     this.scoreBreakdown,
+    this.layoutMode,
   });
 
   /// The unique session ID (from storage).
@@ -74,6 +75,9 @@ class QuizResults {
 
   /// Breakdown of the score (base points + bonus points).
   final ScoreBreakdownData? scoreBreakdown;
+
+  /// The layout mode used for this quiz session.
+  final String? layoutMode;
 
   /// Total hints used (50/50 + skip).
   int get totalHintsUsed => hintsUsed5050 + hintsUsedSkip;
@@ -138,6 +142,7 @@ class QuizResults {
     int? hintsUsedSkip,
     int? score,
     ScoreBreakdownData? scoreBreakdown,
+    String? layoutMode,
   }) {
     return QuizResults(
       sessionId: sessionId ?? this.sessionId,
@@ -156,6 +161,7 @@ class QuizResults {
       hintsUsedSkip: hintsUsedSkip ?? this.hintsUsedSkip,
       score: score ?? this.score,
       scoreBreakdown: scoreBreakdown ?? this.scoreBreakdown,
+      layoutMode: layoutMode ?? this.layoutMode,
     );
   }
 

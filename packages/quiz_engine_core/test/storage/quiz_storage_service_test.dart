@@ -121,6 +121,7 @@ void main() {
           required timeSpentSeconds,
           required hintUsed,
           required disabledOptions,
+          layoutUsed,
         }) async {
           saveAnswerCalled = true;
         },

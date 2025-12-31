@@ -309,7 +309,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       );
     }
 
-    // Save to storage
+    // Save to storage with layout info
+    final resolvedLayout = resolveLayoutForQuestion(
+      _progressTracker.currentProgress - 1,
+    );
     await _sessionManager.saveAnswer(
       questionNumber: _progressTracker.currentProgress,
       question: currentQuestion,
@@ -319,6 +322,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       timeSpentSeconds: timeSpentSeconds,
       hintUsed: null,
       disabledOptions: _hintManager.disabledOptions,
+      layoutUsed: _layoutToString(resolvedLayout),
     );
 
     // Show feedback if enabled
@@ -429,7 +433,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
           : _hintManager.hintState?.remainingHints[HintType.skip],
     );
 
-    // Save to storage
+    // Save to storage with layout info
+    final resolvedLayout = resolveLayoutForQuestion(
+      _progressTracker.currentProgress - 1,
+    );
     await _sessionManager.saveAnswer(
       questionNumber: _progressTracker.currentProgress,
       question: currentQuestion,
@@ -439,6 +446,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       timeSpentSeconds: timeSpentSeconds,
       hintUsed: HintType.skip,
       disabledOptions: _hintManager.disabledOptions,
+      layoutUsed: _layoutToString(resolvedLayout),
     );
 
     _pickQuestion();
@@ -603,7 +611,10 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
     // Record the timeout answer
     _progressTracker.recordAnswer(result.answer);
 
-    // Save to storage
+    // Save to storage with layout info
+    final resolvedLayout = resolveLayoutForQuestion(
+      _progressTracker.currentProgress - 1,
+    );
     await _sessionManager.saveAnswer(
       questionNumber: _progressTracker.currentProgress,
       question: currentQuestion,
@@ -613,6 +624,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       timeSpentSeconds: timeSpentSeconds,
       hintUsed: null,
       disabledOptions: _hintManager.disabledOptions,
+      layoutUsed: _layoutToString(resolvedLayout),
     );
 
     _pickQuestion();
@@ -736,6 +748,7 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       hintsUsedSkip: _hintManager.hintsUsedSkip,
       score: scoreBreakdown.totalScore,
       scoreBreakdown: scoreBreakdown,
+      layoutMode: _layoutToString(_config.layoutConfig),
     );
 
     // Track quiz completed (for successful completion)
@@ -777,6 +790,17 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       return layout.selectLayout(questionIndex);
     }
     return layout;
+  }
+
+  /// Converts a [QuizLayoutConfig] to its string representation for storage.
+  String _layoutToString(QuizLayoutConfig layout) {
+    return switch (layout) {
+      ImageQuestionTextAnswersLayout() => 'imageQuestionTextAnswers',
+      TextQuestionImageAnswersLayout() => 'textQuestionImageAnswers',
+      TextQuestionTextAnswersLayout() => 'textQuestionTextAnswers',
+      AudioQuestionTextAnswersLayout() => 'audioQuestionTextAnswers',
+      MixedLayout() => 'mixed', // Should not happen for resolved layouts
+    };
   }
 
   // ============ Private Methods - State Emission ============

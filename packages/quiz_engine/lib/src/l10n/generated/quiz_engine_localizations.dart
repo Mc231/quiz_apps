@@ -2643,6 +2643,60 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Mixed'**
   String get layoutMixed;
+
+  /// Label for image question with text answers layout
+  ///
+  /// In en, this message translates to:
+  /// **'Image → Text'**
+  String get layoutImageQuestionTextAnswers;
+
+  /// Label for text question with image answers layout
+  ///
+  /// In en, this message translates to:
+  /// **'Text → Image'**
+  String get layoutTextQuestionImageAnswers;
+
+  /// Label for text question with text answers layout
+  ///
+  /// In en, this message translates to:
+  /// **'Text → Text'**
+  String get layoutTextQuestionTextAnswers;
+
+  /// Label for audio question with text answers layout
+  ///
+  /// In en, this message translates to:
+  /// **'Audio → Text'**
+  String get layoutAudioQuestionTextAnswers;
+
+  /// Short label for text-only layout
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get layoutText;
+
+  /// Short label for audio layout
+  ///
+  /// In en, this message translates to:
+  /// **'Audio'**
+  String get layoutAudio;
+
+  /// Layout mode label in session details
+  ///
+  /// In en, this message translates to:
+  /// **'Layout'**
+  String get layoutMode;
+
+  /// Label for the layout mode used per question
+  ///
+  /// In en, this message translates to:
+  /// **'Layout used'**
+  String get layoutModeUsed;
+
+  /// Layout breakdown section title in statistics
+  ///
+  /// In en, this message translates to:
+  /// **'Layout Breakdown'**
+  String get layoutBreakdown;
 }
 
 class _QuizEngineLocalizationsDelegate

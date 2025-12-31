@@ -74,4 +74,9 @@ class QuizSessionsColumns {
   static const String appVersion = 'app_version';
   static const String createdAt = 'created_at';
   static const String updatedAt = 'updated_at';
+
+  /// Layout mode used for the quiz session.
+  /// Stores the layout type (e.g., 'imageQuestionTextAnswers', 'mixed').
+  /// Added in migration v7.
+  static const String layoutMode = 'layout_mode';
 }

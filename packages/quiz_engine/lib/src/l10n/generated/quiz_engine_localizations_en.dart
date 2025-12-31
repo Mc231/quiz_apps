@@ -1481,4 +1481,31 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get layoutMixed => 'Mixed';
+
+  @override
+  String get layoutImageQuestionTextAnswers => 'Image → Text';
+
+  @override
+  String get layoutTextQuestionImageAnswers => 'Text → Image';
+
+  @override
+  String get layoutTextQuestionTextAnswers => 'Text → Text';
+
+  @override
+  String get layoutAudioQuestionTextAnswers => 'Audio → Text';
+
+  @override
+  String get layoutText => 'Text';
+
+  @override
+  String get layoutAudio => 'Audio';
+
+  @override
+  String get layoutMode => 'Layout';
+
+  @override
+  String get layoutModeUsed => 'Layout used';
+
+  @override
+  String get layoutBreakdown => 'Layout Breakdown';
 }

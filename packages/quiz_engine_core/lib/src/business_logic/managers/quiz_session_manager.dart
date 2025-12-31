@@ -80,6 +80,9 @@ class QuizSessionManager {
   /// Saves an answer to storage.
   ///
   /// Silently fails if storage is disabled or encounters an error.
+  ///
+  /// [layoutUsed] - Optional layout mode used for this question
+  /// (resolved from MixedLayout or the configured layout).
   Future<void> saveAnswer({
     required int questionNumber,
     required Question question,
@@ -89,6 +92,7 @@ class QuizSessionManager {
     required int? timeSpentSeconds,
     required HintType? hintUsed,
     required Set<QuestionEntry> disabledOptions,
+    String? layoutUsed,
   }) async {
     if (!shouldSaveAnswersDuringQuiz || _currentSessionId == null) {
       return;
@@ -105,6 +109,7 @@ class QuizSessionManager {
         timeSpentSeconds: timeSpentSeconds,
         hintUsed: hintUsed,
         disabledOptions: disabledOptions,
+        layoutUsed: layoutUsed,
       );
     } catch (e) {
       // Storage failure should not block quiz progression

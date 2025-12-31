@@ -86,4 +86,10 @@ class QuestionAnswersColumns {
   static const String disabledOptions = 'disabled_options';
   static const String explanation = 'explanation';
   static const String createdAt = 'created_at';
+
+  /// Layout used for this specific question.
+  /// Stores the resolved layout type for this question
+  /// (e.g., 'imageQuestionTextAnswers', 'textQuestionImageAnswers').
+  /// Added in migration v7.
+  static const String layoutUsed = 'layout_used';
 }

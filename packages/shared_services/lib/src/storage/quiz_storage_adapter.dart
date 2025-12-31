@@ -64,6 +64,7 @@ class QuizStorageAdapter implements QuizStorageService {
       appVersion: config.storageConfig.appVersion,
       createdAt: now,
       updatedAt: now,
+      layoutMode: _mapLayoutMode(config.layoutConfig),
     );
 
     final result = await _storageService.saveQuizSession(session);
@@ -84,6 +85,7 @@ class QuizStorageAdapter implements QuizStorageService {
     required int? timeSpentSeconds,
     required HintType? hintUsed,
     required Set<QuestionEntry> disabledOptions,
+    String? layoutUsed,
   }) async {
     final answerId = _uuid.v4();
     final now = DateTime.now();
@@ -119,6 +121,7 @@ class QuizStorageAdapter implements QuizStorageService {
       disabledOptions: disabledOptions.map((o) => _extractQuestionId(o)).toList(),
       explanation: null,
       createdAt: now,
+      layoutUsed: layoutUsed,
     );
 
     final result = await _storageService.saveQuestionAnswer(answer);
@@ -339,5 +342,16 @@ class QuizStorageAdapter implements QuizStorageService {
       id: _extractQuestionId(entry),
       text: _extractQuestionContent(entry) ?? 'Option ${index + 1}',
     );
+  }
+
+  /// Maps a [QuizLayoutConfig] to its string representation for storage.
+  String _mapLayoutMode(QuizLayoutConfig layout) {
+    return switch (layout) {
+      ImageQuestionTextAnswersLayout() => 'imageQuestionTextAnswers',
+      TextQuestionImageAnswersLayout() => 'textQuestionImageAnswers',
+      TextQuestionTextAnswersLayout() => 'textQuestionTextAnswers',
+      AudioQuestionTextAnswersLayout() => 'audioQuestionTextAnswers',
+      MixedLayout() => 'mixed',
+    };
   }
 }

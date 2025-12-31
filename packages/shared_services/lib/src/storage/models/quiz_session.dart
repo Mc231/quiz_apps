@@ -88,6 +88,7 @@ class QuizSession {
     required this.appVersion,
     required this.createdAt,
     required this.updatedAt,
+    this.layoutMode,
   });
 
   /// Unique identifier for the session.
@@ -165,6 +166,13 @@ class QuizSession {
   /// When the record was last updated.
   final DateTime updatedAt;
 
+  /// Layout mode used for this quiz session.
+  ///
+  /// Stores the configured layout type (e.g., 'imageQuestionTextAnswers',
+  /// 'textQuestionImageAnswers', 'mixed'). For mixed layouts, the actual
+  /// layout per question is stored in [QuestionAnswer.layoutUsed].
+  final String? layoutMode;
+
   /// Whether this session has a perfect score.
   bool get isPerfectScore => scorePercentage >= 100.0;
 
@@ -211,6 +219,7 @@ class QuizSession {
       updatedAt: DateTime.fromMillisecondsSinceEpoch(
         (map[QuizSessionsColumns.updatedAt] as int) * 1000,
       ),
+      layoutMode: map[QuizSessionsColumns.layoutMode] as String?,
     );
   }
 
@@ -243,6 +252,7 @@ class QuizSession {
       QuizSessionsColumns.appVersion: appVersion,
       QuizSessionsColumns.createdAt: createdAt.millisecondsSinceEpoch ~/ 1000,
       QuizSessionsColumns.updatedAt: updatedAt.millisecondsSinceEpoch ~/ 1000,
+      QuizSessionsColumns.layoutMode: layoutMode,
     };
   }
 
@@ -273,6 +283,7 @@ class QuizSession {
     String? appVersion,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? layoutMode,
   }) {
     return QuizSession(
       id: id ?? this.id,
@@ -300,6 +311,7 @@ class QuizSession {
       appVersion: appVersion ?? this.appVersion,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      layoutMode: layoutMode ?? this.layoutMode,
     );
   }
 

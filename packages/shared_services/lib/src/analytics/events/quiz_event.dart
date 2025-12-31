@@ -23,6 +23,7 @@ sealed class QuizEvent extends AnalyticsEvent {
     int? initialLives,
     int? initialHints,
     int? timeLimit,
+    String? layoutMode,
   }) = QuizStartedEvent;
 
   /// Quiz completed event (all questions answered).
@@ -41,6 +42,7 @@ sealed class QuizEvent extends AnalyticsEvent {
     int? finalScore,
     int? starRating,
     bool isPerfectScore,
+    String? layoutMode,
   }) = QuizCompletedEvent;
 
   /// Quiz cancelled event (user quit manually).
@@ -122,6 +124,7 @@ final class QuizStartedEvent extends QuizEvent {
     this.initialLives,
     this.initialHints,
     this.timeLimit,
+    this.layoutMode,
   });
 
   @override
@@ -134,6 +137,7 @@ final class QuizStartedEvent extends QuizEvent {
   final int? initialLives;
   final int? initialHints;
   final int? timeLimit;
+  final String? layoutMode;
 
   @override
   String get eventName => 'quiz_started';
@@ -149,6 +153,7 @@ final class QuizStartedEvent extends QuizEvent {
         if (initialLives != null) 'initial_lives': initialLives,
         if (initialHints != null) 'initial_hints': initialHints,
         if (timeLimit != null) 'time_limit': timeLimit,
+        if (layoutMode != null) 'layout_mode': layoutMode,
       };
 }
 
@@ -169,6 +174,7 @@ final class QuizCompletedEvent extends QuizEvent {
     this.finalScore,
     this.starRating,
     this.isPerfectScore = false,
+    this.layoutMode,
   });
 
   @override
@@ -186,6 +192,7 @@ final class QuizCompletedEvent extends QuizEvent {
   final int? finalScore;
   final int? starRating;
   final bool isPerfectScore;
+  final String? layoutMode;
 
   @override
   String get eventName => 'quiz_completed';
@@ -206,6 +213,7 @@ final class QuizCompletedEvent extends QuizEvent {
         'is_perfect_score': isPerfectScore ? 1 : 0,
         if (finalScore != null) 'final_score': finalScore,
         if (starRating != null) 'star_rating': starRating,
+        if (layoutMode != null) 'layout_mode': layoutMode,
       };
 }
 

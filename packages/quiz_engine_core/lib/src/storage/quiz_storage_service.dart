@@ -41,6 +41,7 @@ abstract class QuizStorageService {
     required int? timeSpentSeconds,
     required HintType? hintUsed,
     required Set<QuestionEntry> disabledOptions,
+    String? layoutUsed,
   });
 
   /// Updates session progress.
@@ -198,6 +199,7 @@ class CallbackQuizStorageService implements QuizStorageService {
     required int? timeSpentSeconds,
     required HintType? hintUsed,
     required Set<QuestionEntry> disabledOptions,
+    String? layoutUsed,
   }) onSaveAnswer;
 
   /// Callback to update progress.
@@ -256,6 +258,7 @@ class CallbackQuizStorageService implements QuizStorageService {
     required int? timeSpentSeconds,
     required HintType? hintUsed,
     required Set<QuestionEntry> disabledOptions,
+    String? layoutUsed,
   }) {
     return onSaveAnswer(
       sessionId: sessionId,
@@ -267,6 +270,7 @@ class CallbackQuizStorageService implements QuizStorageService {
       timeSpentSeconds: timeSpentSeconds,
       hintUsed: hintUsed,
       disabledOptions: disabledOptions,
+      layoutUsed: layoutUsed,
     );
   }
 
@@ -368,6 +372,7 @@ class NoOpQuizStorageService implements QuizStorageService {
     required int? timeSpentSeconds,
     required HintType? hintUsed,
     required Set<QuestionEntry> disabledOptions,
+    String? layoutUsed,
   }) async {
     // No-op
   }

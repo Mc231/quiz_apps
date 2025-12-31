@@ -140,6 +140,7 @@ class QuestionAnswer {
     this.disabledOptions = const [],
     this.explanation,
     required this.createdAt,
+    this.layoutUsed,
   });
 
   /// Unique identifier for this answer record.
@@ -207,6 +208,13 @@ class QuestionAnswer {
 
   /// When this record was created.
   final DateTime createdAt;
+
+  /// Layout used for this specific question.
+  ///
+  /// Stores the resolved layout type for this question
+  /// (e.g., 'imageQuestionTextAnswers', 'textQuestionImageAnswers').
+  /// For non-mixed layouts, this matches the session's layoutMode.
+  final String? layoutUsed;
 
   /// All four options as a list.
   List<AnswerOption> get allOptions => [option1, option2, option3, option4];
@@ -284,6 +292,7 @@ class QuestionAnswer {
       createdAt: DateTime.fromMillisecondsSinceEpoch(
         (map[QuestionAnswersColumns.createdAt] as int) * 1000,
       ),
+      layoutUsed: map[QuestionAnswersColumns.layoutUsed] as String?,
     );
   }
 
@@ -320,6 +329,7 @@ class QuestionAnswer {
       QuestionAnswersColumns.disabledOptions: jsonEncode(disabledOptions),
       QuestionAnswersColumns.explanation: explanation,
       QuestionAnswersColumns.createdAt: createdAt.millisecondsSinceEpoch ~/ 1000,
+      QuestionAnswersColumns.layoutUsed: layoutUsed,
     };
   }
 
@@ -347,6 +357,7 @@ class QuestionAnswer {
     List<String>? disabledOptions,
     String? explanation,
     DateTime? createdAt,
+    String? layoutUsed,
   }) {
     return QuestionAnswer(
       id: id ?? this.id,
@@ -371,6 +382,7 @@ class QuestionAnswer {
       disabledOptions: disabledOptions ?? this.disabledOptions,
       explanation: explanation ?? this.explanation,
       createdAt: createdAt ?? this.createdAt,
+      layoutUsed: layoutUsed ?? this.layoutUsed,
     );
   }
 

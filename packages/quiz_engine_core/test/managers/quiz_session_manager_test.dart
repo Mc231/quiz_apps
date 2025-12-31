@@ -50,6 +50,7 @@ class MockQuizStorageService implements QuizStorageService {
     required int? timeSpentSeconds,
     required HintType? hintUsed,
     required Set<QuestionEntry> disabledOptions,
+    String? layoutUsed,
   }) async {
     saveAnswerCallCount++;
     if (shouldThrowOnSave) {

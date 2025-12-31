@@ -6,6 +6,7 @@ import '../l10n/quiz_localizations.dart';
 import '../rate_app/rate_app_config_provider.dart';
 import '../rate_app/rate_app_controller.dart';
 import '../services/quiz_services_context.dart';
+import '../utils/layout_mode_labels.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../widgets/question_review_widget.dart';
 import '../widgets/score_breakdown.dart';
@@ -403,7 +404,50 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
             value: widget.results.totalHintsUsed.toString(),
             label: l10n.hintsUsed,
           ),
+        if (widget.results.layoutMode != null)
+          _buildLayoutItem(context, l10n),
       ],
+    );
+  }
+
+  Widget _buildLayoutItem(BuildContext context, QuizEngineLocalizations l10n) {
+    final layoutMode = widget.results.layoutMode;
+    if (layoutMode == null) return const SizedBox.shrink();
+
+    final label = getLayoutModeShortLabel(context, layoutMode) ?? layoutMode;
+    final icon = getLayoutModeIcon(layoutMode);
+
+    return SizedBox(
+      width: 80,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.indigo.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: Colors.indigo, size: 24),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            l10n.layoutMode,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey[600],
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 
