@@ -3911,28 +3911,31 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ---
 
-### Sprint 13.2: UI Components
+### Sprint 13.2: UI Components ✅
 
 **Goal:** Create widgets for displaying image-based answer options.
 
 **Tasks:**
-- [ ] Create `ImageOptionButton` widget with:
+- [x] Create `ImageOptionButton` widget with:
   - Asset and network image support
   - Disabled state (for 50/50 hint)
   - Accessibility support (semantic labels)
   - Theme integration
-- [ ] Create `QuizImageAnswersWidget` with:
+- [x] Create `QuizImageAnswersWidget` with:
   - Grid layout (2x2 for 4 options)
   - Responsive sizing
   - Disabled options support
   - Theme integration
-- [ ] Write widget tests for both components
+- [x] Write widget tests for both components
 
-**Files to Create:**
-- `packages/quiz_engine/lib/src/components/image_option_button.dart`
-- `packages/quiz_engine/lib/src/quiz/quiz_image_answers_widget.dart`
-- `packages/quiz_engine/test/widgets/image_option_button_test.dart`
-- `packages/quiz_engine/test/widgets/quiz_image_answers_widget_test.dart`
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/components/image_option_button.dart`
+- ✅ `packages/quiz_engine/lib/src/quiz/quiz_image_answers_widget.dart`
+- ✅ `packages/quiz_engine/test/widgets/image_option_button_test.dart`
+- ✅ `packages/quiz_engine/test/widgets/quiz_image_answers_widget_test.dart`
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added accessibility strings for image answers
 
 ---
 
