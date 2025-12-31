@@ -1,4 +1,5 @@
 import 'base_config.dart';
+import 'quiz_layout_config.dart';
 
 /// Configuration for question behavior and presentation
 class QuestionConfig extends BaseConfig {
@@ -11,6 +12,12 @@ class QuestionConfig extends BaseConfig {
   /// Shuffle answer options order
   final bool shuffleOptions;
 
+  /// Layout configuration for questions and answers.
+  ///
+  /// Defines how questions and answers are displayed.
+  /// If null, defaults to [ImageQuestionTextAnswersLayout].
+  final QuizLayoutConfig? layoutConfig;
+
   @override
   final int version;
 
@@ -18,26 +25,32 @@ class QuestionConfig extends BaseConfig {
     this.optionCount = 4,
     this.shuffleQuestions = true,
     this.shuffleOptions = true,
+    this.layoutConfig,
     this.version = 1,
   });
 
   /// Fixed order configuration (no shuffling)
-  const QuestionConfig.fixedOrder({this.optionCount = 4})
-    : shuffleQuestions = false,
-      shuffleOptions = false,
-      version = 1;
+  const QuestionConfig.fixedOrder({
+    this.optionCount = 4,
+    this.layoutConfig,
+  }) : shuffleQuestions = false,
+       shuffleOptions = false,
+       version = 1;
 
   /// True/False questions (2 options)
-  const QuestionConfig.trueFalse({this.shuffleQuestions = true})
-    : optionCount = 2,
-      shuffleOptions = true,
-      version = 1;
+  const QuestionConfig.trueFalse({
+    this.shuffleQuestions = true,
+    this.layoutConfig,
+  }) : optionCount = 2,
+       shuffleOptions = true,
+       version = 1;
 
   /// Multiple choice with custom option count
   const QuestionConfig.multipleChoice({
     this.optionCount = 4,
     this.shuffleQuestions = true,
     this.shuffleOptions = true,
+    this.layoutConfig,
   }) : version = 1;
 
   @override
@@ -47,6 +60,7 @@ class QuestionConfig extends BaseConfig {
       'optionCount': optionCount,
       'shuffleQuestions': shuffleQuestions,
       'shuffleOptions': shuffleOptions,
+      if (layoutConfig != null) 'layoutConfig': layoutConfig!.toMap(),
     };
   }
 
@@ -56,6 +70,9 @@ class QuestionConfig extends BaseConfig {
       optionCount: map['optionCount'] as int? ?? 4,
       shuffleQuestions: map['shuffleQuestions'] as bool? ?? true,
       shuffleOptions: map['shuffleOptions'] as bool? ?? true,
+      layoutConfig: map['layoutConfig'] != null
+          ? QuizLayoutConfig.fromMap(map['layoutConfig'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -63,11 +80,13 @@ class QuestionConfig extends BaseConfig {
     int? optionCount,
     bool? shuffleQuestions,
     bool? shuffleOptions,
+    QuizLayoutConfig? layoutConfig,
   }) {
     return QuestionConfig(
       optionCount: optionCount ?? this.optionCount,
       shuffleQuestions: shuffleQuestions ?? this.shuffleQuestions,
       shuffleOptions: shuffleOptions ?? this.shuffleOptions,
+      layoutConfig: layoutConfig ?? this.layoutConfig,
       version: version,
     );
   }
