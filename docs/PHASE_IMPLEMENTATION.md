@@ -3674,72 +3674,194 @@ The context-based DI pattern is correctly implemented:
 
 ## Phase 12: Rate App Dialog
 
-**Goal:** Implement a rate app dialog that prompts users to rate the app on the App Store/Play Store after completing quizzes.
+**Goal:** Implement a smart rate app dialog using the "Love Dialog" pattern that prompts happy users to rate the app on the App Store/Play Store after positive quiz experiences.
 
-### Sprint 12.1: Rate App Service
+**Best Practices Applied:**
+- ✅ Two-step "Love Dialog" pattern (pre-screen unhappy users)
+- ✅ Trigger after positive moments (good quiz scores)
+- ✅ Respect platform limits (iOS: 3x per year native dialog)
+- ✅ Score-based filtering (only ask happy users)
+- ✅ Lifetime prompt cap (don't annoy persistent decliners)
+- ✅ 90-day cooldown between prompts
+- ✅ Route unhappy users to feedback instead of App Store
 
-**Tasks:**
-- [ ] Add `in_app_review` package to shared_services
-- [ ] Create `RateAppService` class with:
-  - `shouldShowRateDialog()` - Check if conditions are met
-  - `showRateDialog()` - Show native review dialog
-  - `markRateDialogShown()` - Record that dialog was shown
-  - `markRateDialogDeclined()` - User declined to rate
-- [ ] Create `RateAppConfig` model with:
-  - `isEnabled` - Enable/disable rate prompts (from quiz config)
-  - `minCompletedQuizzes` - Minimum quizzes before prompting
-  - `minDaysSinceInstall` - Minimum days since first launch
-  - `cooldownDays` - Days between prompts (default: 7)
-- [ ] Store rate app state in SharedPreferences:
-  - `lastRatePromptDate` - When dialog was last shown
-  - `hasRated` - User completed rating (don't ask again)
-  - `declineCount` - Number of times user declined
-- [ ] Write unit tests
-
-**Files to Create:**
-- `packages/shared_services/lib/src/rate_app/rate_app_service.dart`
-- `packages/shared_services/lib/src/rate_app/rate_app_config.dart`
-- `packages/shared_services/lib/src/rate_app/rate_app_exports.dart`
-- `packages/shared_services/test/rate_app/rate_app_service_test.dart`
+**User Flow:**
+```
+Quiz Complete (score ≥ 70%) + Conditions Met
+                    │
+                    ▼
+    ┌───────────────────────────────┐
+    │   Are you enjoying FlagsQuiz? │
+    │                               │
+    │   [Not Really]    [Yes! 🎉]   │
+    └───────────────────────────────┘
+           │                │
+           ▼                ▼
+    Show feedback      Show native
+    dialog/email       rating dialog
+    (track: declined)  (track: accepted)
+```
 
 ---
 
-### Sprint 12.2: Rate App Integration
+### Sprint 12.1: Rate App Service & Config ✅
 
 **Tasks:**
-- [ ] Create `RateAppModule` for DI registration
-- [ ] Integrate rate app check in `QuizResultsScreen`
-- [ ] Add `rateAppConfig` to `QuizConfig` (provided by app)
-- [ ] Add analytics events:
-  - `rate_app_prompt_shown`
-  - `rate_app_accepted`
-  - `rate_app_declined`
-  - `rate_app_dismissed`
-- [ ] Export from shared_services
-- [ ] Write integration tests
+- [x] Add `in_app_review` package to shared_services
+- [x] Create `RateAppConfig` model with:
+  - `isEnabled` - Enable/disable rate prompts
+  - `minCompletedQuizzes` - Minimum quizzes before prompting (default: 5)
+  - `minDaysSinceInstall` - Minimum days since first launch (default: 7)
+  - `minScorePercentage` - Minimum score to trigger prompt (default: 70)
+  - `cooldownDays` - Days between prompts (default: 90)
+  - `maxLifetimePrompts` - Stop asking after X prompts (default: 5)
+  - `maxDeclines` - Stop asking after X declines (default: 3)
+  - `useLoveDialog` - Enable two-step approach (default: true)
+  - `feedbackEmail` - Email for unhappy user feedback (optional)
+- [x] Create `RateAppState` model with:
+  - `lastPromptDate` - When dialog was last shown
+  - `hasRated` - User completed rating (never ask again)
+  - `declineCount` - Number of times user declined
+  - `promptCount` - Total prompts shown
+  - `firstLaunchDate` - First app launch date
+- [x] Create `RateAppService` class with:
+  - `initialize()` - Load state from storage
+  - `shouldShowPrompt(quizScore, completedQuizzes)` - Check all conditions
+  - `showLoveDialog(context)` - Show "Are you enjoying?" dialog (Sprint 12.2)
+  - `showNativeRatingDialog()` - Trigger native in-app review
+  - `showFeedbackDialog(context)` - Show feedback option for unhappy users (Sprint 12.2)
+  - `recordPromptShown()` - Update state after prompt
+  - `recordUserRated()` - User completed rating
+  - `recordUserDeclined()` - User said "Not Really"
+  - `recordUserDismissed()` - User dismissed without action
+  - `recordFeedbackSubmitted()` - User submitted feedback
+  - `resetState()` - Reset for testing
+- [x] Store state in SharedPreferences
+- [x] Write unit tests (44 tests passing)
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/rate_app/rate_app_service.dart`
+- ✅ `packages/shared_services/lib/src/rate_app/rate_app_config.dart`
+- ✅ `packages/shared_services/lib/src/rate_app/rate_app_state.dart`
+- ✅ `packages/shared_services/lib/src/rate_app/rate_app_exports.dart`
+- ✅ `packages/shared_services/test/rate_app/rate_app_service_test.dart`
+- ✅ `packages/shared_services/test/rate_app/rate_app_config_test.dart`
+
+**Notes:**
+- `RateAppResult` sealed class added for type-safe result handling
+- UI dialog methods (`showLoveDialog`, `showFeedbackDialog`) will be implemented in Sprint 12.2
+
+---
+
+### Sprint 12.2: Love Dialog UI
+
+**Tasks:**
+- [ ] Create `LoveDialog` widget with:
+  - App icon/logo display
+  - "Are you enjoying {appName}?" question
+  - "Not Really" and "Yes!" buttons
+  - Localized strings
+  - Accessibility support
+- [ ] Create `FeedbackDialog` widget for unhappy path:
+  - "We're sorry to hear that" message
+  - Option to email feedback
+  - Option to dismiss
+- [ ] Add localization strings to quiz_engine ARB files
+- [ ] Write widget tests
+
+**Localization Strings:**
+```json
+{
+  "rateAppLoveDialogTitle": "Are you enjoying {appName}?",
+  "rateAppLoveDialogYes": "Yes!",
+  "rateAppLoveDialogNo": "Not Really",
+  "rateAppFeedbackTitle": "We'd love to hear from you",
+  "rateAppFeedbackMessage": "What could we do better?",
+  "rateAppFeedbackEmailButton": "Send Feedback",
+  "rateAppFeedbackDismiss": "Maybe Later",
+  "rateAppThankYou": "Thank you for your feedback!"
+}
+```
 
 **Files to Create:**
-- `packages/shared_services/lib/src/di/modules/rate_app_module.dart`
+- `packages/quiz_engine/lib/src/rate_app/love_dialog.dart`
+- `packages/quiz_engine/lib/src/rate_app/feedback_dialog.dart`
+- `packages/quiz_engine/lib/src/rate_app/rate_app_widgets_exports.dart`
+- `packages/quiz_engine/test/rate_app/love_dialog_test.dart`
+- `packages/quiz_engine/test/rate_app/feedback_dialog_test.dart`
 
 **Files to Modify:**
-- `packages/quiz_engine/lib/src/config/quiz_config.dart`
-- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
-- `packages/shared_services/lib/shared_services.dart`
-- `packages/shared_services/lib/src/di/di_exports.dart`
+- `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
 
 ---
 
 ### Sprint 12.3: Rate App Analytics Events
 
 **Tasks:**
-- [ ] Create `RateAppEvent` sealed class
+- [ ] Create `RateAppEvent` sealed class with events:
+  - `conditionsChecked` - When conditions are evaluated
+  - `loveDialogShown` - Love dialog displayed
+  - `loveDialogPositive` - User tapped "Yes!"
+  - `loveDialogNegative` - User tapped "Not Really"
+  - `loveDialogDismissed` - User dismissed without action
+  - `nativeDialogShown` - Native rating dialog displayed
+  - `nativeDialogCompleted` - User completed native rating
+  - `nativeDialogCancelled` - User cancelled native dialog
+  - `feedbackDialogShown` - Feedback dialog displayed
+  - `feedbackSubmitted` - User submitted feedback
+  - `feedbackDismissed` - User dismissed feedback dialog
 - [ ] Add to analytics exports
-- [ ] Track all rate app interactions
+- [ ] Update ANALYTICS_EVENTS.md documentation
 - [ ] Write unit tests
 
 **Files to Create:**
 - `packages/shared_services/lib/src/analytics/events/rate_app_event.dart`
 - `packages/shared_services/test/analytics/rate_app_event_test.dart`
+
+**Files to Modify:**
+- `packages/shared_services/lib/src/analytics/analytics_exports.dart`
+- `docs/ANALYTICS_EVENTS.md`
+
+---
+
+### Sprint 12.4: Rate App Integration
+
+**Tasks:**
+- [ ] Add `RateAppService` to `QuizServices` container
+- [ ] Add `rateAppConfig` to app-level configuration
+- [ ] Integrate rate app check in `QuizResultsScreen`:
+  - Check conditions after quiz completion
+  - Show love dialog if conditions met
+  - Handle user responses appropriately
+- [ ] Add rate app trigger to `QuizBloc` completed state
+- [ ] Export from shared_services and quiz_engine
+- [ ] Write integration tests
+
+**Files to Create:**
+- `packages/quiz_engine/test/rate_app/rate_app_integration_test.dart`
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/services/quiz_services.dart`
+- `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart`
+- `packages/shared_services/lib/shared_services.dart`
+- `apps/flagsquiz/lib/app/flags_quiz_dependencies.dart`
+
+---
+
+### Sprint 12.5: Remote Config Support (Optional)
+
+**Tasks:**
+- [ ] Add rate app config to Remote Config schema
+- [ ] Allow runtime adjustment of:
+  - `minCompletedQuizzes`
+  - `minScorePercentage`
+  - `cooldownDays`
+  - `isEnabled` (kill switch)
+- [ ] Write tests
+
+**Files to Modify:**
+- `packages/shared_services/lib/src/config/remote_config_service.dart`
+- `apps/flagsquiz/lib/app/flags_quiz_dependencies.dart`
 
 ---
 
