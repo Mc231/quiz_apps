@@ -3,6 +3,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../models/quiz_category.dart';
+import '../widgets/layout_mode_selector.dart';
 import '../widgets/loading_indicator.dart';
 import 'category_card.dart';
 import 'play_screen_config.dart';
@@ -270,16 +271,143 @@ class _TabbedPlayScreenState extends State<TabbedPlayScreen>
       return _buildEmptyState(context);
     }
 
+    final hasLayoutOptions = widget.config.layoutModeOptions != null &&
+        widget.config.layoutModeOptions!.isNotEmpty;
+
     return ResponsiveBuilder(
       builder: (context, sizingInfo) {
         final layout = _resolveLayout(sizingInfo);
 
         if (layout == PlayScreenLayout.list) {
-          return _buildListView(context, tab.categories);
+          return _buildListViewWithHeader(
+            context,
+            tab.categories,
+            showLayoutSelector: hasLayoutOptions,
+          );
         }
 
-        return _buildGridView(context, tab.categories, sizingInfo);
+        return _buildGridViewWithHeader(
+          context,
+          tab.categories,
+          sizingInfo,
+          showLayoutSelector: hasLayoutOptions,
+        );
       },
+    );
+  }
+
+  Widget? _buildLayoutModeSelector(BuildContext context) {
+    final options = widget.config.layoutModeOptions;
+    if (options == null || options.isEmpty) return null;
+
+    // Find selected option by ID, default to first
+    final selectedId = widget.config.selectedLayoutModeId;
+    final selectedOption = selectedId != null
+        ? options.firstWhere(
+            (o) => o.id == selectedId,
+            orElse: () => options.first,
+          )
+        : options.first;
+
+    return LayoutModeSelector(
+      options: options,
+      selectedOption: selectedOption,
+      onOptionSelected: (option) {
+        widget.config.onLayoutModeChanged?.call(option);
+      },
+      large: true,
+    );
+  }
+
+  Widget _buildListViewWithHeader(
+    BuildContext context,
+    List<QuizCategory> categories, {
+    required bool showLayoutSelector,
+  }) {
+    final config = widget.config.playScreenConfig;
+    final cardStyle = config.cardStyle ?? const CategoryCardStyle.list();
+
+    return CustomScrollView(
+      slivers: [
+        if (showLayoutSelector)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: _buildLayoutModeSelector(context),
+            ),
+          ),
+        SliverPadding(
+          padding: config.padding,
+          sliver: SliverList.separated(
+            itemCount: categories.length,
+            separatorBuilder: (context, index) =>
+                SizedBox(height: config.itemSpacing),
+            itemBuilder: (context, index) {
+              final category = categories[index];
+              return CategoryCard.list(
+                category: category,
+                style: cardStyle,
+                onTap: widget.onCategorySelected != null
+                    ? () => widget.onCategorySelected!(category)
+                    : null,
+                onLongPress: widget.onCategoryLongPress != null
+                    ? () => widget.onCategoryLongPress!(category)
+                    : null,
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGridViewWithHeader(
+    BuildContext context,
+    List<QuizCategory> categories,
+    SizingInformation sizingInfo, {
+    required bool showLayoutSelector,
+  }) {
+    final config = widget.config.playScreenConfig;
+    final columns = _getGridColumns(sizingInfo);
+    final cardStyle = config.cardStyle ?? const CategoryCardStyle.grid();
+
+    return CustomScrollView(
+      slivers: [
+        if (showLayoutSelector)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: _buildLayoutModeSelector(context),
+            ),
+          ),
+        SliverPadding(
+          padding: config.padding,
+          sliver: SliverGrid(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: columns,
+              mainAxisSpacing: config.itemSpacing,
+              crossAxisSpacing: config.itemSpacing,
+              childAspectRatio: config.gridAspectRatio,
+            ),
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final category = categories[index];
+                return CategoryCard.grid(
+                  category: category,
+                  style: cardStyle,
+                  onTap: widget.onCategorySelected != null
+                      ? () => widget.onCategorySelected!(category)
+                      : null,
+                  onLongPress: widget.onCategoryLongPress != null
+                      ? () => widget.onCategoryLongPress!(category)
+                      : null,
+                );
+              },
+              childCount: categories.length,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

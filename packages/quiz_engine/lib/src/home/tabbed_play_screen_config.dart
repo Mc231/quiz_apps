@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/layout_mode_selector.dart';
 import 'play_screen_config.dart';
 
 /// Configuration for [TabbedPlayScreen].
@@ -16,6 +17,10 @@ class TabbedPlayScreenConfig {
     this.tabBarIndicatorWeight = 2.0,
     this.tabBarIsScrollable = false,
     this.playScreenConfig = const PlayScreenConfig(showAppBar: false),
+    this.layoutModeOptions,
+    this.layoutModeSelectorTitle,
+    this.selectedLayoutModeId,
+    this.onLayoutModeChanged,
   });
 
   /// Title for the app bar.
@@ -49,4 +54,24 @@ class TabbedPlayScreenConfig {
 
   /// Configuration for the play screen content (grid/list layout).
   final PlayScreenConfig playScreenConfig;
+
+  /// Available layout mode options for the Play screen.
+  ///
+  /// When provided, a layout mode selector is shown above the category list.
+  /// Users can choose between different question/answer layouts (e.g., Standard,
+  /// Reverse, Mixed).
+  final List<LayoutModeOption>? layoutModeOptions;
+
+  /// Title for the layout mode selector section.
+  final String? layoutModeSelectorTitle;
+
+  /// Currently selected layout mode ID.
+  ///
+  /// This should be synced with settings for persistence.
+  final String? selectedLayoutModeId;
+
+  /// Callback when layout mode is changed.
+  ///
+  /// Use this to persist the selection to settings.
+  final void Function(LayoutModeOption option)? onLayoutModeChanged;
 }
