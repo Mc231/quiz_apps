@@ -1690,6 +1690,15 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get accessibilityRateDialogTitle => 'Rate dialog';
   @override
   String get accessibilityFeedbackDialogTitle => 'Feedback dialog';
+
+  // Image answer accessibility localizations
+  @override
+  String accessibilityImageAnswer(String label) => 'Image answer: $label';
+  @override
+  String accessibilityImageAnswerDisabled(String label) =>
+      'Image answer $label, eliminated';
+  @override
+  String get imageLoadError => 'Failed to load image';
 }
 
 void main() {
