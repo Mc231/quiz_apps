@@ -3805,10 +3805,10 @@ Quiz Complete (score ≥ 70%) + Conditions Met
 
 ---
 
-### Sprint 12.3: Rate App Analytics Events
+### Sprint 12.3: Rate App Analytics Events ✅
 
 **Tasks:**
-- [ ] Create `RateAppEvent` sealed class with events:
+- [x] Create `RateAppEvent` sealed class with events:
   - `conditionsChecked` - When conditions are evaluated
   - `loveDialogShown` - Love dialog displayed
   - `loveDialogPositive` - User tapped "Yes!"
@@ -3816,21 +3816,21 @@ Quiz Complete (score ≥ 70%) + Conditions Met
   - `loveDialogDismissed` - User dismissed without action
   - `nativeDialogShown` - Native rating dialog displayed
   - `nativeDialogCompleted` - User completed native rating
-  - `nativeDialogCancelled` - User cancelled native dialog
+  - `nativeDialogUnavailable` - Native dialog not available on platform
   - `feedbackDialogShown` - Feedback dialog displayed
   - `feedbackSubmitted` - User submitted feedback
   - `feedbackDismissed` - User dismissed feedback dialog
-- [ ] Add to analytics exports
-- [ ] Update ANALYTICS_EVENTS.md documentation
-- [ ] Write unit tests
+- [x] Add to analytics exports
+- [x] Update ANALYTICS_EVENTS.md documentation
+- [x] Write unit tests (16 tests)
 
-**Files to Create:**
-- `packages/shared_services/lib/src/analytics/events/rate_app_event.dart`
-- `packages/shared_services/test/analytics/rate_app_event_test.dart`
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/analytics/events/rate_app_event.dart`
+- ✅ `packages/shared_services/test/analytics/rate_app_event_test.dart`
 
-**Files to Modify:**
-- `packages/shared_services/lib/src/analytics/analytics_exports.dart`
-- `docs/ANALYTICS_EVENTS.md`
+**Files Modified:**
+- ✅ `packages/shared_services/lib/src/analytics/analytics_exports.dart`
+- ✅ `docs/ANALYTICS_EVENTS.md`
 
 ---
 
