@@ -1,6 +1,20 @@
 import 'package:flutter/widgets.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 
+export 'package:quiz_engine_core/quiz_engine_core.dart'
+    show
+        QuizLayoutConfig,
+        ImageQuestionTextAnswersLayout,
+        TextQuestionImageAnswersLayout,
+        TextQuestionTextAnswersLayout,
+        AudioQuestionTextAnswersLayout,
+        MixedLayout,
+        ImageAnswerSize,
+        SmallImageSize,
+        MediumImageSize,
+        LargeImageSize,
+        CustomImageSize;
+
 /// A function that returns a localized string given a BuildContext.
 ///
 /// Used to provide localized titles and subtitles for quiz categories
@@ -72,6 +86,34 @@ class QuizCategory {
   /// Can be overridden by mode-specific settings.
   final bool showAnswerFeedback;
 
+  /// Optional layout configuration for quizzes in this category.
+  ///
+  /// Specifies how questions and answers should be displayed.
+  /// If not provided, the default layout (image question with text answers)
+  /// will be used.
+  ///
+  /// Example usage:
+  /// ```dart
+  /// // Standard layout: Show flag image, select country name
+  /// final standardCategory = QuizCategory(
+  ///   id: 'flags_standard',
+  ///   title: (context) => 'Identify Flags',
+  ///   showAnswerFeedback: true,
+  ///   layoutConfig: QuizLayoutConfig.imageQuestionTextAnswers(),
+  /// );
+  ///
+  /// // Reverse layout: Show country name, select flag image
+  /// final reverseCategory = QuizCategory(
+  ///   id: 'flags_reverse',
+  ///   title: (context) => 'Find the Flag',
+  ///   showAnswerFeedback: true,
+  ///   layoutConfig: QuizLayoutConfig.textQuestionImageAnswers(
+  ///     questionTemplate: 'Select the flag of {name}',
+  ///   ),
+  /// );
+  /// ```
+  final QuizLayoutConfig? layoutConfig;
+
   /// Creates a [QuizCategory].
   ///
   /// [id], [title], and [showAnswerFeedback] are required.
@@ -85,6 +127,7 @@ class QuizCategory {
     this.icon,
     this.config,
     this.metadata,
+    this.layoutConfig,
   });
 
   /// Creates a copy of this category with the given fields replaced.
@@ -97,6 +140,7 @@ class QuizCategory {
     QuizConfig? config,
     Map<String, dynamic>? metadata,
     bool? showAnswerFeedback,
+    QuizLayoutConfig? layoutConfig,
   }) {
     return QuizCategory(
       id: id ?? this.id,
@@ -107,6 +151,7 @@ class QuizCategory {
       config: config ?? this.config,
       metadata: metadata ?? this.metadata,
       showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
+      layoutConfig: layoutConfig ?? this.layoutConfig,
     );
   }
 
