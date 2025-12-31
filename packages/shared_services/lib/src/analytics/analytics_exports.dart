@@ -16,6 +16,7 @@ export 'events/monetization_event.dart';
 export 'events/performance_event.dart';
 export 'events/question_event.dart';
 export 'events/quiz_event.dart';
+export 'events/rate_app_event.dart';
 export 'events/resource_event.dart';
 export 'events/screen_view_event.dart';
 export 'events/settings_event.dart';
