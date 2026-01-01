@@ -7,3 +7,4 @@ library;
 export 'share_config.dart';
 export 'share_result.dart';
 export 'share_service.dart';
+export 'platform_share_service.dart';
