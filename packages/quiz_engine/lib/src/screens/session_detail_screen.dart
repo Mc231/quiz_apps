@@ -21,7 +21,6 @@ class SessionDetailScreen extends StatefulWidget {
     this.onExport,
     this.onDelete,
     this.imageBuilder,
-    this.shareService,
     this.shareConfig,
   });
 
@@ -43,10 +42,10 @@ class SessionDetailScreen extends StatefulWidget {
   /// Optional image builder for question images.
   final Widget Function(String path)? imageBuilder;
 
-  /// Optional share service for sharing session results.
-  final ShareService? shareService;
-
   /// Optional configuration for share UI.
+  ///
+  /// When [ShareService] is configured in [QuizServices], a "Share" button
+  /// will appear. This config customizes the UI.
   final ShareBottomSheetConfig? shareConfig;
 
   @override
@@ -398,7 +397,8 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
 
   Widget _buildActionsRow(BuildContext context) {
     final l10n = QuizL10n.of(context);
-    final hasShare = widget.shareService != null;
+    final shareService = context.shareService;
+    final hasShare = shareService != null;
     final hasExport = widget.onExport != null;
     final hasDelete = widget.onDelete != null;
 
@@ -460,6 +460,9 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
   }
 
   void _showShareSheet(BuildContext context, QuizEngineLocalizations l10n) {
+    final shareService = context.shareService;
+    if (shareService == null) return;
+
     final shareResult = ShareResult.fromQuizCompletion(
       correctCount: widget.session.totalCorrect,
       totalCount: widget.session.totalQuestions,
@@ -473,7 +476,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
     ShareBottomSheet.show(
       context: context,
       result: shareResult,
-      shareService: widget.shareService!,
+      shareService: shareService,
       config: widget.shareConfig ?? const ShareBottomSheetConfig(),
       onShareComplete: (type, result) {
         if (result is ShareOperationSuccess) {
