@@ -2697,6 +2697,48 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Layout Breakdown'**
   String get layoutBreakdown;
+
+  /// Accessibility label for layout mode selector
+  ///
+  /// In en, this message translates to:
+  /// **'Layout mode selector'**
+  String get accessibilityLayoutModeSelector;
+
+  /// Accessibility hint for layout mode selector
+  ///
+  /// In en, this message translates to:
+  /// **'Select how questions and answers are displayed'**
+  String get accessibilityLayoutModeSelectorHint;
+
+  /// Accessibility label for layout mode badge
+  ///
+  /// In en, this message translates to:
+  /// **'Layout mode: {mode}'**
+  String accessibilityLayoutModeBadge(String mode);
+
+  /// Accessibility announcement when layout mode is selected
+  ///
+  /// In en, this message translates to:
+  /// **'{mode} layout selected'**
+  String accessibilityLayoutModeSelected(String mode);
+
+  /// Accessibility label for star rating display
+  ///
+  /// In en, this message translates to:
+  /// **'{stars} out of {total} stars'**
+  String accessibilityStarRating(int stars, int total);
+
+  /// Accessibility label for question filter
+  ///
+  /// In en, this message translates to:
+  /// **'Filter questions'**
+  String get accessibilityFilterQuestions;
+
+  /// Accessibility hint for question filter
+  ///
+  /// In en, this message translates to:
+  /// **'Select which questions to display'**
+  String get accessibilityFilterHint;
 }
 
 class _QuizEngineLocalizationsDelegate

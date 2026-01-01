@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
+import '../l10n/quiz_localizations.dart';
 import '../services/quiz_services_context.dart';
 import '../widgets/question_review_widget.dart';
 import 'session_detail_data.dart';
@@ -575,24 +576,30 @@ class SessionDetailContent extends StatelessWidget {
   }
 
   Widget _buildFilterToggle(BuildContext context) {
-    return SegmentedButton<QuestionFilterMode>(
-      segments: [
-        ButtonSegment<QuestionFilterMode>(
-          value: QuestionFilterMode.all,
-          label: Text(texts.showAllLabel),
+    final l10n = QuizL10n.of(context);
+
+    return Semantics(
+      label: l10n.accessibilityFilterQuestions,
+      hint: l10n.accessibilityFilterHint,
+      child: SegmentedButton<QuestionFilterMode>(
+        segments: [
+          ButtonSegment<QuestionFilterMode>(
+            value: QuestionFilterMode.all,
+            label: Text(texts.showAllLabel),
+          ),
+          ButtonSegment<QuestionFilterMode>(
+            value: QuestionFilterMode.wrongOnly,
+            label: Text(texts.showWrongOnlyLabel),
+          ),
+        ],
+        selected: {filterMode},
+        onSelectionChanged: (Set<QuestionFilterMode> newSelection) {
+          onFilterModeChanged?.call(newSelection.first);
+        },
+        style: ButtonStyle(
+          visualDensity: VisualDensity.compact,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
-        ButtonSegment<QuestionFilterMode>(
-          value: QuestionFilterMode.wrongOnly,
-          label: Text(texts.showWrongOnlyLabel),
-        ),
-      ],
-      selected: {filterMode},
-      onSelectionChanged: (Set<QuestionFilterMode> newSelection) {
-        onFilterModeChanged?.call(newSelection.first);
-      },
-      style: ButtonStyle(
-        visualDensity: VisualDensity.compact,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
     );
   }

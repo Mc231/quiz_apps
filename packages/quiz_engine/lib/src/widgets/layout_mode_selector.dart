@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 
+import '../l10n/quiz_localizations.dart';
+
 /// Represents a layout mode option for the selector.
 ///
 /// Each option has an icon, label, and the actual [QuizLayoutConfig]
@@ -110,10 +112,14 @@ class LayoutModeSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = QuizL10n.of(context);
 
-    return Padding(
-      padding: padding,
-      child: SegmentedButton<LayoutModeOption>(
+    return Semantics(
+      label: l10n.accessibilityLayoutModeSelector,
+      hint: l10n.accessibilityLayoutModeSelectorHint,
+      child: Padding(
+        padding: padding,
+        child: SegmentedButton<LayoutModeOption>(
         segments: options.map((option) {
           return ButtonSegment<LayoutModeOption>(
             value: option,
@@ -152,6 +158,7 @@ class LayoutModeSelector extends StatelessWidget {
         ),
         showSelectedIcon: false,
         expandedInsets: EdgeInsets.zero,
+        ),
       ),
     );
   }

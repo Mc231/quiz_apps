@@ -228,20 +228,25 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
   Widget _buildStarRating(BuildContext context) {
     final starCount = widget.results.starRating;
     final starColor = _getStarColor(starCount);
+    final l10n = QuizL10n.of(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (index) {
-        final isFilled = index < starCount;
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Icon(
-            isFilled ? Icons.star_rounded : Icons.star_outline_rounded,
-            size: 48,
-            color: isFilled ? starColor : Colors.grey[300],
-          ),
-        );
-      }),
+    return Semantics(
+      label: l10n.accessibilityStarRating(starCount, 5),
+      excludeSemantics: true,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List.generate(5, (index) {
+          final isFilled = index < starCount;
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Icon(
+              isFilled ? Icons.star_rounded : Icons.star_outline_rounded,
+              size: 48,
+              color: isFilled ? starColor : Colors.grey[300],
+            ),
+          );
+        }),
+      ),
     );
   }
 
@@ -417,36 +422,40 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
     final label = getLayoutModeShortLabel(context, layoutMode) ?? layoutMode;
     final icon = getLayoutModeIcon(layoutMode);
 
-    return SizedBox(
-      width: 80,
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.indigo.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
+    return Semantics(
+      label: l10n.accessibilityLayoutModeBadge(label),
+      excludeSemantics: true,
+      child: SizedBox(
+        width: 80,
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.indigo.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, color: Colors.indigo, size: 24),
             ),
-            child: Icon(icon, color: Colors.indigo, size: 24),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-          Text(
-            l10n.layoutMode,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
+            Text(
+              l10n.layoutMode,
+              style: TextStyle(
+                fontSize: 12,
+                color: Colors.grey[600],
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

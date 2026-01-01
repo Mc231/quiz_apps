@@ -2302,5 +2302,62 @@
   "layoutBreakdown": "Layout Breakdown",
   "@layoutBreakdown": {
     "description": "Layout breakdown section title in statistics"
+  },
+
+  "accessibilityLayoutModeSelector": "Layout mode selector",
+  "@accessibilityLayoutModeSelector": {
+    "description": "Accessibility label for layout mode selector"
+  },
+
+  "accessibilityLayoutModeSelectorHint": "Select how questions and answers are displayed",
+  "@accessibilityLayoutModeSelectorHint": {
+    "description": "Accessibility hint for layout mode selector"
+  },
+
+  "accessibilityLayoutModeBadge": "Layout mode: {mode}",
+  "@accessibilityLayoutModeBadge": {
+    "description": "Accessibility label for layout mode badge",
+    "placeholders": {
+      "mode": {
+        "type": "String",
+        "example": "Standard"
+      }
+    }
+  },
+
+  "accessibilityLayoutModeSelected": "{mode} layout selected",
+  "@accessibilityLayoutModeSelected": {
+    "description": "Accessibility announcement when layout mode is selected",
+    "placeholders": {
+      "mode": {
+        "type": "String",
+        "example": "Standard"
+      }
+    }
+  },
+
+  "accessibilityStarRating": "{stars} out of {total} stars",
+  "@accessibilityStarRating": {
+    "description": "Accessibility label for star rating display",
+    "placeholders": {
+      "stars": {
+        "type": "int",
+        "example": "3"
+      },
+      "total": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+
+  "accessibilityFilterQuestions": "Filter questions",
+  "@accessibilityFilterQuestions": {
+    "description": "Accessibility label for question filter"
+  },
+
+  "accessibilityFilterHint": "Select which questions to display",
+  "@accessibilityFilterHint": {
+    "description": "Accessibility hint for question filter"
   }
 }

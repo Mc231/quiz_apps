@@ -86,35 +86,40 @@ class LayoutModeBadge extends StatelessWidget {
 
     final theme = Theme.of(context);
     final icon = getLayoutModeIcon(layoutMode);
+    final l10n = QuizL10n.of(context);
 
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: compact ? 6 : 8,
-        vertical: compact ? 2 : 4,
-      ),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(compact ? 4 : 8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (showIcon) ...[
-            Icon(
-              icon,
-              size: compact ? 12 : 14,
-              color: theme.colorScheme.onSurfaceVariant,
+    return Semantics(
+      label: l10n.accessibilityLayoutModeBadge(label),
+      excludeSemantics: true,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: compact ? 6 : 8,
+          vertical: compact ? 2 : 4,
+        ),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surfaceContainerHighest,
+          borderRadius: BorderRadius.circular(compact ? 4 : 8),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (showIcon) ...[
+              Icon(
+                icon,
+                size: compact ? 12 : 14,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              SizedBox(width: compact ? 2 : 4),
+            ],
+            Text(
+              label,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                fontSize: compact ? 10 : null,
+              ),
             ),
-            SizedBox(width: compact ? 2 : 4),
           ],
-          Text(
-            label,
-            style: theme.textTheme.labelSmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              fontSize: compact ? 10 : null,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
