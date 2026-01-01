@@ -3,6 +3,7 @@ import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../services/quiz_services_context.dart';
+import '../share/share_bottom_sheet.dart';
 import '../widgets/question_review_widget.dart';
 import 'session_detail_data.dart';
 import 'session_detail_texts.dart';
@@ -20,6 +21,8 @@ class SessionDetailScreen extends StatefulWidget {
     this.onExport,
     this.onDelete,
     this.imageBuilder,
+    this.shareService,
+    this.shareConfig,
   });
 
   /// Session data to display.
@@ -39,6 +42,12 @@ class SessionDetailScreen extends StatefulWidget {
 
   /// Optional image builder for question images.
   final Widget Function(String path)? imageBuilder;
+
+  /// Optional share service for sharing session results.
+  final ShareService? shareService;
+
+  /// Optional configuration for share UI.
+  final ShareBottomSheetConfig? shareConfig;
 
   @override
   State<SessionDetailScreen> createState() => _SessionDetailScreenState();
@@ -388,24 +397,49 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
   }
 
   Widget _buildActionsRow(BuildContext context) {
+    final l10n = QuizL10n.of(context);
+    final hasShare = widget.shareService != null;
+    final hasExport = widget.onExport != null;
+    final hasDelete = widget.onDelete != null;
+
+    // Count number of buttons to show
+    final buttonCount = (hasShare ? 1 : 0) + (hasExport ? 1 : 0) + (hasDelete ? 1 : 0);
+    if (buttonCount == 0) return const SizedBox.shrink();
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          if (widget.onExport != null)
+          // Share button (social media share with image)
+          if (hasShare)
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: () => _showShareSheet(context, l10n),
+                icon: const Icon(Icons.share),
+                label: Text(l10n.share),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          if (hasShare && (hasExport || hasDelete))
+            const SizedBox(width: 12),
+          // Export button (file export)
+          if (hasExport)
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: widget.onExport,
-                icon: const Icon(Icons.share),
+                icon: const Icon(Icons.download),
                 label: Text(widget.texts.exportLabel),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
               ),
             ),
-          if (widget.onExport != null && widget.onDelete != null)
+          if (hasExport && hasDelete)
             const SizedBox(width: 12),
-          if (widget.onDelete != null)
+          // Delete button
+          if (hasDelete)
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: () => _showDeleteDialog(context),
@@ -422,6 +456,37 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
             ),
         ],
       ),
+    );
+  }
+
+  void _showShareSheet(BuildContext context, QuizEngineLocalizations l10n) {
+    final shareResult = ShareResult.fromQuizCompletion(
+      correctCount: widget.session.totalCorrect,
+      totalCount: widget.session.totalQuestions,
+      categoryName: widget.session.quizName,
+      mode: 'standard',
+      timeTaken: widget.session.durationSeconds != null
+          ? Duration(seconds: widget.session.durationSeconds!)
+          : null,
+    );
+
+    ShareBottomSheet.show(
+      context: context,
+      result: shareResult,
+      shareService: widget.shareService!,
+      config: widget.shareConfig ?? const ShareBottomSheetConfig(),
+      onShareComplete: (type, result) {
+        if (result is ShareOperationSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.shareSuccess)),
+          );
+        }
+      },
+      onShareError: (type, message) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.shareError)),
+        );
+      },
     );
   }
 
@@ -482,6 +547,7 @@ class SessionDetailContent extends StatelessWidget {
     this.onPracticeWrongAnswers,
     this.onExport,
     this.onDelete,
+    this.onShare,
     this.imageBuilder,
   });
 
@@ -508,6 +574,9 @@ class SessionDetailContent extends StatelessWidget {
 
   /// Callback to delete session.
   final VoidCallback? onDelete;
+
+  /// Callback to share session via social media.
+  final VoidCallback? onShare;
 
   /// Optional image builder for question images.
   final Widget Function(String path)? imageBuilder;
@@ -820,23 +889,48 @@ class SessionDetailContent extends StatelessWidget {
   }
 
   Widget _buildActionsRow(BuildContext context) {
+    final l10n = QuizL10n.of(context);
+    final hasShare = onShare != null;
+    final hasExport = onExport != null;
+    final hasDelete = onDelete != null;
+
+    // Count number of buttons
+    final buttonCount = (hasShare ? 1 : 0) + (hasExport ? 1 : 0) + (hasDelete ? 1 : 0);
+    if (buttonCount == 0) return const SizedBox.shrink();
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
         children: [
-          if (onExport != null)
+          // Share button (social media share)
+          if (hasShare)
+            Expanded(
+              child: OutlinedButton.icon(
+                onPressed: isDeleting ? null : onShare,
+                icon: const Icon(Icons.share),
+                label: Text(l10n.share),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                ),
+              ),
+            ),
+          if (hasShare && (hasExport || hasDelete))
+            const SizedBox(width: 12),
+          // Export button (file export)
+          if (hasExport)
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: isDeleting ? null : onExport,
-                icon: const Icon(Icons.share),
+                icon: const Icon(Icons.download),
                 label: Text(texts.exportLabel),
                 style: OutlinedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                 ),
               ),
             ),
-          if (onExport != null && onDelete != null) const SizedBox(width: 12),
-          if (onDelete != null)
+          if (hasExport && hasDelete) const SizedBox(width: 12),
+          // Delete button
+          if (hasDelete)
             Expanded(
               child: OutlinedButton.icon(
                 onPressed: isDeleting ? null : () => _showDeleteDialog(context),
