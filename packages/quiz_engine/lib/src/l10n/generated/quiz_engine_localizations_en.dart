@@ -1536,4 +1536,19 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get accessibilityFilterHint => 'Select which questions to display';
+
+  @override
+  String get sharePerfectScore => 'PERFECT SCORE!';
+
+  @override
+  String get shareAchievementUnlocked => 'ACHIEVEMENT UNLOCKED';
+
+  @override
+  String get shareCallToAction => 'Can you beat my score?';
+
+  @override
+  String get shareImageGenerating => 'Generating share image...';
+
+  @override
+  String get shareImageError => 'Failed to generate share image';
 }

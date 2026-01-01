@@ -2739,6 +2739,36 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Select which questions to display'**
   String get accessibilityFilterHint;
+
+  /// Text displayed on perfect score share image
+  ///
+  /// In en, this message translates to:
+  /// **'PERFECT SCORE!'**
+  String get sharePerfectScore;
+
+  /// Text displayed on achievement share image
+  ///
+  /// In en, this message translates to:
+  /// **'ACHIEVEMENT UNLOCKED'**
+  String get shareAchievementUnlocked;
+
+  /// Call to action text on share image
+  ///
+  /// In en, this message translates to:
+  /// **'Can you beat my score?'**
+  String get shareCallToAction;
+
+  /// Loading message while generating share image
+  ///
+  /// In en, this message translates to:
+  /// **'Generating share image...'**
+  String get shareImageGenerating;
+
+  /// Error message when share image generation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to generate share image'**
+  String get shareImageError;
 }
 
 class _QuizEngineLocalizationsDelegate
