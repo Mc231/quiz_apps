@@ -34,6 +34,7 @@ import '../widgets/practice_empty_state.dart';
 import '../widgets/restore_resource_dialog.dart';
 import '../widgets/session_card.dart';
 import '../rate_app/rate_app_config_provider.dart';
+import '../share/share_bottom_sheet.dart';
 import 'play_tab_type.dart';
 import 'quiz_tab.dart';
 
@@ -418,6 +419,12 @@ class QuizApp extends StatefulWidget {
   /// Duration formatter for statistics.
   final String Function(int seconds)? formatDuration;
 
+  /// Optional configuration for the share bottom sheet.
+  ///
+  /// When [ShareService] is configured in [QuizServices], a "Share" button
+  /// will appear on the results screen. This config customizes the UI.
+  final ShareBottomSheetConfig? shareConfig;
+
   /// Creates a [QuizApp].
   const QuizApp({
     super.key,
@@ -448,6 +455,7 @@ class QuizApp extends StatefulWidget {
     this.formatDate,
     this.formatStatus,
     this.formatDuration,
+    this.shareConfig,
   });
 
   @override
@@ -764,6 +772,7 @@ class _QuizAppState extends State<QuizApp> {
                       layoutModeOptions: widget.challengeLayoutModeOptionsBuilder?.call(context),
                       layoutModeSelectorTitle: widget.challengeLayoutModeSelectorTitleBuilder?.call(context),
                       onQuizCompleted: _handleQuizCompleted,
+                      shareConfig: widget.shareConfig,
                     ),
               ),
             );
@@ -930,6 +939,7 @@ class _QuizAppState extends State<QuizApp> {
                   categoryName: category.title(context),
                   onQuizCompleted: (results) => _handleQuizCompleted(results),
                   useResourceManager: true,
+                  shareConfig: widget.shareConfig,
                 ),
               ),
         ),
