@@ -2384,5 +2384,60 @@
   "shareImageError": "Failed to generate share image",
   "@shareImageError": {
     "description": "Error message when share image generation fails"
+  },
+
+  "shareAsImage": "Share as Image",
+  "@shareAsImage": {
+    "description": "Option to share as image"
+  },
+
+  "shareAsImageDescription": "Create a beautiful image to share",
+  "@shareAsImageDescription": {
+    "description": "Description for share as image option"
+  },
+
+  "shareAsText": "Share as Text",
+  "@shareAsText": {
+    "description": "Option to share as text"
+  },
+
+  "shareAsTextDescription": "Share your score as a message",
+  "@shareAsTextDescription": {
+    "description": "Description for share as text option"
+  },
+
+  "shareUnavailable": "Sharing is not available on this device",
+  "@shareUnavailable": {
+    "description": "Message when sharing is not available"
+  },
+
+  "shareResult": "Share Result",
+  "@shareResult": {
+    "description": "Button to share quiz result"
+  },
+
+  "shareScore": "Share Score",
+  "@shareScore": {
+    "description": "Alternative button text to share score"
+  },
+
+  "shareAchievement": "Share Achievement",
+  "@shareAchievement": {
+    "description": "Button to share unlocked achievement"
+  },
+
+  "shareSuccess": "Shared successfully!",
+  "@shareSuccess": {
+    "description": "Message when sharing completes successfully"
+  },
+
+  "shareCancelled": "Share cancelled",
+  "@shareCancelled": {
+    "description": "Message when user cancels sharing"
+  },
+
+  "shareError": "Failed to share. Please try again.",
+  "@shareError": {
+    "description": "Error message when sharing fails"
   }
 }

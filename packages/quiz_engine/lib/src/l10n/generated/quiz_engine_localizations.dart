@@ -2769,6 +2769,72 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Failed to generate share image'**
   String get shareImageError;
+
+  /// Option to share as image
+  ///
+  /// In en, this message translates to:
+  /// **'Share as Image'**
+  String get shareAsImage;
+
+  /// Description for share as image option
+  ///
+  /// In en, this message translates to:
+  /// **'Create a beautiful image to share'**
+  String get shareAsImageDescription;
+
+  /// Option to share as text
+  ///
+  /// In en, this message translates to:
+  /// **'Share as Text'**
+  String get shareAsText;
+
+  /// Description for share as text option
+  ///
+  /// In en, this message translates to:
+  /// **'Share your score as a message'**
+  String get shareAsTextDescription;
+
+  /// Message when sharing is not available
+  ///
+  /// In en, this message translates to:
+  /// **'Sharing is not available on this device'**
+  String get shareUnavailable;
+
+  /// Button to share quiz result
+  ///
+  /// In en, this message translates to:
+  /// **'Share Result'**
+  String get shareResult;
+
+  /// Alternative button text to share score
+  ///
+  /// In en, this message translates to:
+  /// **'Share Score'**
+  String get shareScore;
+
+  /// Button to share unlocked achievement
+  ///
+  /// In en, this message translates to:
+  /// **'Share Achievement'**
+  String get shareAchievement;
+
+  /// Message when sharing completes successfully
+  ///
+  /// In en, this message translates to:
+  /// **'Shared successfully!'**
+  String get shareSuccess;
+
+  /// Message when user cancels sharing
+  ///
+  /// In en, this message translates to:
+  /// **'Share cancelled'**
+  String get shareCancelled;
+
+  /// Error message when sharing fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to share. Please try again.'**
+  String get shareError;
 }
 
 class _QuizEngineLocalizationsDelegate
