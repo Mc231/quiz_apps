@@ -4483,3 +4483,584 @@ The following phases are planned for future implementation but are currently on 
 - [ ] Write integration tests
 
 </details>
+
+---
+
+## Phase 14: Share Results (Viral Growth)
+
+**Goal:** Enable users to share their quiz results to social media and messaging apps, driving organic installs.
+
+**Priority:** High (Launch Feature)
+
+| Sprint | Description | Size |
+|--------|-------------|------|
+| 14.1 | Share Service & Models | Small |
+| 14.2 | Share Image Generator | Medium |
+| 14.3 | Share UI Integration | Small |
+| 14.4 | Share Analytics & Deep Links | Medium |
+
+**Total: 4 sprints**
+
+<details>
+<summary>Sprint Details (click to expand)</summary>
+
+#### Sprint 14.1: Share Service & Models ✅
+
+**Goal:** Create the core sharing infrastructure.
+
+**Tasks:**
+- [x] Create `ShareResult` model with:
+  - `score` - Percentage or points
+  - `categoryName` - Quiz category played
+  - `correctCount` / `totalCount` - Questions answered
+  - `mode` - Game mode played
+  - `achievementUnlocked` - Optional achievement to highlight
+  - `timestamp` - When quiz was completed
+- [x] Create `ShareService` interface with:
+  - `shareText(ShareResult)` - Share as plain text
+  - `shareImage(ShareResult)` - Share as image with text
+  - `canShare()` - Check if sharing is available
+- [x] Create `ShareConfig` model:
+  - `appStoreUrl` - iOS App Store link
+  - `playStoreUrl` - Android Play Store link
+  - `hashtags` - Default hashtags to include
+  - `enableImageSharing` - Toggle image generation
+- [x] Write unit tests
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/share/share_result.dart`
+- ✅ `packages/shared_services/lib/src/share/share_config.dart`
+- ✅ `packages/shared_services/lib/src/share/share_service.dart`
+- ✅ `packages/shared_services/lib/src/share/share_exports.dart`
+- ✅ `packages/shared_services/test/share/share_result_test.dart`
+- ✅ `packages/shared_services/test/share/share_config_test.dart`
+- ✅ `packages/shared_services/test/share/share_service_test.dart`
+
+---
+
+#### Sprint 14.2: Share Image Generator
+
+**Goal:** Generate beautiful shareable images with quiz results.
+
+**Tasks:**
+- [ ] Create `ShareImageGenerator` service using `RenderRepaintBoundary`
+- [ ] Create `ShareImageTemplate` widget:
+  - App logo/branding
+  - Score display (large, prominent)
+  - Category name and icon
+  - "Can you beat my score?" call-to-action
+  - QR code or app name for download
+- [ ] Support multiple templates (standard, achievement, perfect score)
+- [ ] Handle image export to temporary file
+- [ ] Support dark/light theme variants
+- [ ] Write widget tests
+
+---
+
+#### Sprint 14.3: Share UI Integration
+
+**Goal:** Add share buttons throughout the app.
+
+**Tasks:**
+- [ ] Add share button to `QuizResultsScreen`:
+  - Prominent "Share" button with icon
+  - Bottom sheet with share options (Text, Image)
+- [ ] Add share option to `SessionDetailScreen`
+- [ ] Add share option to achievement unlock notification
+- [ ] Create `ShareBottomSheet` widget with preview
+- [ ] Handle platform-specific sharing (iOS share sheet, Android intent)
+- [ ] Add localization for share text templates
+- [ ] Write widget tests
+
+---
+
+#### Sprint 14.4: Share Analytics & Deep Links
+
+**Goal:** Track sharing behavior and enable deep links for attribution.
+
+**Tasks:**
+- [ ] Create `ShareEvent` sealed class:
+  - `shareInitiated` - User tapped share
+  - `shareTypeSelected` - Text vs Image
+  - `shareCompleted` - Successfully shared
+  - `shareCancelled` - User cancelled
+- [ ] Add share events to analytics exports
+- [ ] Integrate with ShareService
+- [ ] Create `DeepLinkService` for handling incoming links:
+  - Parse deep link parameters
+  - Navigate to appropriate screen
+  - Track referral source
+- [ ] Configure Firebase Dynamic Links / Branch.io (optional)
+- [ ] Write unit tests
+
+</details>
+
+---
+
+## Phase 15: Streak System (Retention)
+
+**Goal:** Implement a streak tracking system to encourage daily play and increase retention.
+
+**Priority:** High (Launch Feature)
+
+| Sprint | Description | Size |
+|--------|-------------|------|
+| 15.1 | Streak Models & Repository | Small |
+| 15.2 | Streak Service & Logic | Medium |
+| 15.3 | Streak UI Components | Medium |
+| 15.4 | Streak Rewards & Achievements | Small |
+
+**Total: 4 sprints**
+
+<details>
+<summary>Sprint Details (click to expand)</summary>
+
+#### Sprint 15.1: Streak Models & Repository
+
+**Goal:** Create data models and persistence for streak tracking.
+
+**Tasks:**
+- [ ] Create `StreakData` model:
+  - `currentStreak` - Current consecutive days
+  - `longestStreak` - All-time best streak
+  - `lastPlayDate` - Last date user completed a quiz
+  - `streakStartDate` - When current streak began
+  - `totalDaysPlayed` - Lifetime days with activity
+- [ ] Create `StreakRepository` interface:
+  - `getStreakData()` - Fetch current streak info
+  - `updateStreak(DateTime playDate)` - Record activity
+  - `resetStreak()` - Reset current streak (for testing)
+  - `watchStreakData()` - Stream for reactive updates
+- [ ] Create `StreakRepositoryImpl` with SQLite/SharedPreferences
+- [ ] Add streak table to database migrations
+- [ ] Write unit tests
+
+---
+
+#### Sprint 15.2: Streak Service & Logic
+
+**Goal:** Implement streak calculation and update logic.
+
+**Tasks:**
+- [ ] Create `StreakService` class:
+  - `getCurrentStreak()` - Get current streak count
+  - `recordActivity()` - Called when quiz completed
+  - `isStreakActive()` - Check if streak still valid today
+  - `getStreakStatus()` - Returns `StreakStatus` enum
+  - `getDaysUntilStreakLost()` - Countdown to streak expiry
+- [ ] Create `StreakStatus` enum:
+  - `active` - Played today, streak maintained
+  - `atRisk` - Haven't played today, streak will break tomorrow
+  - `broken` - Streak was broken
+  - `none` - No streak started
+- [ ] Implement timezone-aware date calculations
+- [ ] Handle edge cases (app not opened for days, timezone changes)
+- [ ] Create `StreakConfig`:
+  - `gracePeriodHours` - Hours after midnight before streak breaks (default: 0)
+  - `freezeTokensEnabled` - Allow streak freeze items
+- [ ] Write unit tests with time mocking
+
+---
+
+#### Sprint 15.3: Streak UI Components
+
+**Goal:** Display streak information throughout the app.
+
+**Tasks:**
+- [ ] Create `StreakBadge` widget:
+  - Flame icon with streak count
+  - Animated flame effect for active streaks
+  - Gray/inactive state for broken streaks
+- [ ] Create `StreakCard` widget for home screen:
+  - Current streak with celebration animation
+  - "Keep your streak alive!" message when at risk
+  - Progress to next streak milestone (7, 30, 100 days)
+- [ ] Add streak display to:
+  - Home screen header
+  - Quiz results screen
+  - Profile/statistics section
+- [ ] Create streak milestone celebration overlay (7 days, 30 days, etc.)
+- [ ] Add localization for streak messages
+- [ ] Write widget tests
+
+---
+
+#### Sprint 15.4: Streak Rewards & Achievements
+
+**Goal:** Integrate streaks with achievements and rewards.
+
+**Tasks:**
+- [ ] Create streak-based achievements:
+  - "First Flame" - Complete 1 day streak
+  - "Week Warrior" - 7 day streak
+  - "Monthly Master" - 30 day streak
+  - "Centurion" - 100 day streak
+  - "Dedication" - 365 day streak
+- [ ] Add achievements to `FlagsQuizAchievements`
+- [ ] Create `StreakReward` model for future reward integration
+- [ ] Create `StreakAnalyticsEvent` class:
+  - `streakExtended` - Streak increased
+  - `streakBroken` - Streak was lost
+  - `streakMilestone` - Reached milestone (7, 30, 100)
+- [ ] Add to analytics exports
+- [ ] Write unit tests
+
+</details>
+
+---
+
+## Phase 16: Daily Challenge (Engagement)
+
+**Goal:** Create a special daily quiz challenge to drive daily engagement and competitive play.
+
+**Priority:** Medium (Post-Launch or v1.1)
+
+| Sprint | Description | Size |
+|--------|-------------|------|
+| 16.1 | Daily Challenge Models & Service | Medium |
+| 16.2 | Daily Challenge Screen | Medium |
+| 16.3 | Daily Leaderboard | Medium |
+| 16.4 | Daily Challenge Rewards | Small |
+
+**Total: 4 sprints**
+
+<details>
+<summary>Sprint Details (click to expand)</summary>
+
+#### Sprint 16.1: Daily Challenge Models & Service
+
+**Goal:** Create infrastructure for daily challenges.
+
+**Tasks:**
+- [ ] Create `DailyChallenge` model:
+  - `id` - Unique identifier (date-based)
+  - `date` - Challenge date
+  - `categoryId` - Random or rotating category
+  - `questionCount` - Number of questions (e.g., 10)
+  - `timeLimit` - Optional time limit
+  - `seed` - Random seed for consistent questions globally
+- [ ] Create `DailyChallengeResult` model:
+  - `challengeId` - Reference to challenge
+  - `score` - Points earned
+  - `correctCount` - Questions correct
+  - `completionTime` - Time to complete
+  - `completedAt` - Timestamp
+- [ ] Create `DailyChallengeService`:
+  - `getTodaysChallenge()` - Get or generate today's challenge
+  - `hasCompletedToday()` - Check if already played
+  - `submitResult(result)` - Save result
+  - `getHistory(days)` - Past challenge results
+- [ ] Create `DailyChallengeRepository` for persistence
+- [ ] Write unit tests
+
+---
+
+#### Sprint 16.2: Daily Challenge Screen
+
+**Goal:** Create dedicated UI for daily challenges.
+
+**Tasks:**
+- [ ] Create `DailyChallengeCard` for home screen:
+  - "Daily Challenge" badge with date
+  - Countdown timer to next challenge
+  - "Completed" state with score
+  - Animated appearance
+- [ ] Create `DailyChallengeScreen`:
+  - Challenge intro with rules
+  - Special themed UI (different from regular quiz)
+  - Results screen with comparison to yesterday
+- [ ] Add daily challenge entry point to home screen
+- [ ] Handle "already completed" state gracefully
+- [ ] Add localization for all text
+- [ ] Write widget tests
+
+---
+
+#### Sprint 16.3: Daily Leaderboard
+
+**Goal:** Add competitive element with daily rankings.
+
+**Tasks:**
+- [ ] Create `DailyLeaderboardEntry` model:
+  - `rank` - Position (1st, 2nd, etc.)
+  - `userId` - Anonymous user ID
+  - `displayName` - User name or "Player #123"
+  - `score` - Challenge score
+  - `completionTime` - Tiebreaker
+- [ ] Create `DailyLeaderboardService`:
+  - `getTodaysLeaderboard(limit)` - Top N players
+  - `getMyRank()` - Current user's position
+  - `submitScore(score)` - Add to leaderboard
+- [ ] Design backend API or use Firebase/Firestore
+- [ ] Create `DailyLeaderboardWidget`:
+  - Top 10 display with avatars
+  - Highlight current user's position
+  - "You ranked #42 of 1,234 players"
+- [ ] Add to daily challenge results screen
+- [ ] Write tests
+
+---
+
+#### Sprint 16.4: Daily Challenge Rewards
+
+**Goal:** Add rewards and achievements for daily challenges.
+
+**Tasks:**
+- [ ] Create daily challenge achievements:
+  - "Daily Devotee" - Complete 10 daily challenges
+  - "Challenge Champion" - Rank #1 on daily leaderboard
+  - "Perfect Day" - 100% on daily challenge
+  - "Early Bird" - Complete within first hour
+- [ ] Add achievements to `FlagsQuizAchievements`
+- [ ] Create `DailyChallengeEvent` for analytics:
+  - `dailyChallengeStarted`
+  - `dailyChallengeCompleted`
+  - `dailyChallengeRanked`
+- [ ] Add bonus points/rewards for daily completion
+- [ ] Integrate with streak system (daily challenge counts for streak)
+- [ ] Write unit tests
+
+</details>
+
+---
+
+## Phase 17: Game Center & Google Play Games
+
+**Goal:** Integrate with platform gaming services for leaderboards, achievements, and cloud saves.
+
+**Priority:** Medium (Post-Launch or v1.1)
+
+| Sprint | Description | Size |
+|--------|-------------|------|
+| 17.1 | Game Service Abstraction | Small |
+| 17.2 | iOS Game Center Integration | Medium |
+| 17.3 | Android Play Games Integration | Medium |
+| 17.4 | Cloud Save Sync | Large |
+
+**Total: 4 sprints**
+
+<details>
+<summary>Sprint Details (click to expand)</summary>
+
+#### Sprint 17.1: Game Service Abstraction
+
+**Goal:** Create platform-agnostic interface for gaming services.
+
+**Tasks:**
+- [ ] Create `GameService` interface:
+  - `signIn()` / `signOut()` - Authentication
+  - `isSignedIn()` - Check auth status
+  - `getPlayerId()` - Get unique player ID
+  - `getPlayerDisplayName()` - Get display name
+  - `getPlayerAvatar()` - Get profile image
+- [ ] Create `LeaderboardService` interface:
+  - `submitScore(leaderboardId, score)` - Submit score
+  - `getTopScores(leaderboardId, count)` - Get top N
+  - `getPlayerScore(leaderboardId)` - Get own score/rank
+  - `showLeaderboard(leaderboardId)` - Open native UI
+- [ ] Create `CloudAchievementService` interface:
+  - `unlockAchievement(achievementId)` - Unlock
+  - `incrementAchievement(achievementId, steps)` - Progress
+  - `showAchievements()` - Open native UI
+- [ ] Create `NoOpGameService` for unsupported platforms
+- [ ] Write unit tests
+
+---
+
+#### Sprint 17.2: iOS Game Center Integration
+
+**Goal:** Implement Game Center for iOS.
+
+**Tasks:**
+- [ ] Add `game_center` or `games_services` package
+- [ ] Create `GameCenterService` implementing `GameService`
+- [ ] Configure Game Center in App Store Connect:
+  - Create leaderboards (Overall Score, Each Category)
+  - Create achievements matching in-app achievements
+- [ ] Implement authentication flow:
+  - Auto sign-in on app launch
+  - Handle sign-in failures gracefully
+- [ ] Map in-app achievements to Game Center achievements
+- [ ] Test on real device with sandbox account
+- [ ] Write integration tests
+
+---
+
+#### Sprint 17.3: Android Play Games Integration
+
+**Goal:** Implement Google Play Games for Android.
+
+**Tasks:**
+- [ ] Add `games_services` package for Android
+- [ ] Create `PlayGamesService` implementing `GameService`
+- [ ] Configure Play Games in Google Play Console:
+  - Create leaderboards
+  - Create achievements
+  - Set up OAuth consent
+- [ ] Implement authentication flow:
+  - Google Sign-In integration
+  - Handle sign-in/sign-out
+- [ ] Map in-app achievements to Play Games achievements
+- [ ] Test on real device with test account
+- [ ] Write integration tests
+
+---
+
+#### Sprint 17.4: Cloud Save Sync
+
+**Goal:** Enable progress sync across devices using cloud saves.
+
+**Tasks:**
+- [ ] Create `CloudSaveService` interface:
+  - `saveGameData(data)` - Save to cloud
+  - `loadGameData()` - Load from cloud
+  - `resolveConflict(local, remote)` - Handle conflicts
+- [ ] Create save data model including:
+  - Achievement progress
+  - Streak data
+  - High scores per category
+  - Settings preferences
+- [ ] Implement for Game Center (iCloud) and Play Games
+- [ ] Handle merge conflicts (take highest scores, union of achievements)
+- [ ] Add "Sync Now" button in settings
+- [ ] Create sync status indicator
+- [ ] Write unit tests
+
+</details>
+
+---
+
+## Phase 18: Push Notifications (Re-engagement)
+
+**Goal:** Implement push notifications to re-engage users and remind them to play.
+
+**Priority:** Medium (Post-Launch)
+
+| Sprint | Description | Size |
+|--------|-------------|------|
+| 18.1 | Notification Service & Permissions | Medium |
+| 18.2 | Local Notifications | Medium |
+| 18.3 | Notification Scheduling | Small |
+| 18.4 | Remote Notifications (Firebase) | Medium |
+
+**Total: 4 sprints**
+
+<details>
+<summary>Sprint Details (click to expand)</summary>
+
+#### Sprint 18.1: Notification Service & Permissions
+
+**Goal:** Create notification infrastructure and handle permissions.
+
+**Tasks:**
+- [ ] Add `flutter_local_notifications` package
+- [ ] Create `NotificationService` interface:
+  - `initialize()` - Setup notification channels
+  - `requestPermission()` - Request user permission
+  - `hasPermission()` - Check permission status
+  - `showNotification(title, body)` - Display immediately
+  - `cancelNotification(id)` - Cancel specific notification
+  - `cancelAll()` - Cancel all notifications
+- [ ] Create `NotificationConfig` model:
+  - `enabled` - Master toggle
+  - `streakReminders` - Streak at risk notifications
+  - `dailyChallengeReminders` - Daily challenge available
+  - `achievementAlerts` - Achievement unlock alerts
+- [ ] Add notification settings to Settings screen
+- [ ] Create platform-specific setup (iOS plist, Android channels)
+- [ ] Write unit tests
+
+---
+
+#### Sprint 18.2: Local Notifications
+
+**Goal:** Implement local notification types.
+
+**Tasks:**
+- [ ] Create `NotificationType` enum:
+  - `streakReminder` - "Don't lose your 7-day streak!"
+  - `dailyChallenge` - "Today's Daily Challenge is ready!"
+  - `comeBack` - "We miss you! Play a quick quiz?"
+  - `achievementProgress` - "You're 1 quiz away from an achievement!"
+- [ ] Create notification content templates (localized)
+- [ ] Implement notification tap handling:
+  - Navigate to appropriate screen
+  - Track notification open in analytics
+- [ ] Support notification actions (iOS):
+  - "Play Now" - Open quiz
+  - "Later" - Snooze
+- [ ] Create `NotificationEvent` for analytics
+- [ ] Write integration tests
+
+---
+
+#### Sprint 18.3: Notification Scheduling
+
+**Goal:** Schedule notifications intelligently.
+
+**Tasks:**
+- [ ] Create `NotificationScheduler` service:
+  - `scheduleStreakReminder()` - Evening reminder if not played
+  - `scheduleDailyChallenge()` - Morning notification
+  - `scheduleComeBack(days)` - After N days of inactivity
+  - `cancelScheduled(type)` - Cancel specific type
+- [ ] Implement smart scheduling:
+  - Detect user's typical play time
+  - Don't notify if already played today
+  - Respect quiet hours (configurable)
+- [ ] Create `NotificationPreferences`:
+  - `reminderTime` - Preferred reminder time
+  - `quietHoursStart` / `quietHoursEnd` - Do not disturb
+- [ ] Add scheduling options to Settings
+- [ ] Write unit tests with time mocking
+
+---
+
+#### Sprint 18.4: Remote Notifications (Firebase)
+
+**Goal:** Enable remote push notifications for announcements and promotions.
+
+**Tasks:**
+- [ ] Add `firebase_messaging` package
+- [ ] Configure Firebase Cloud Messaging:
+  - iOS APNs setup
+  - Android FCM setup
+- [ ] Create `RemoteNotificationService`:
+  - Handle foreground messages
+  - Handle background messages
+  - Handle notification tap
+- [ ] Create notification topics:
+  - `all_users` - App-wide announcements
+  - `streak_users` - Users with active streaks
+  - `premium_users` - Premium subscribers
+- [ ] Implement topic subscription based on user state
+- [ ] Create admin interface or use Firebase Console for sending
+- [ ] Write integration tests
+
+</details>
+
+---
+
+## Launch Checklist
+
+**v1.0 MVP Features:**
+- [x] Core quiz functionality
+- [x] Achievements system
+- [x] In-app purchases (remove ads, hints)
+- [x] Ads integration (banner, interstitial)
+- [x] Analytics (Firebase)
+- [x] Rate app dialog
+- [x] Settings & preferences
+- [x] Session history & statistics
+- [x] Multiple quiz layouts
+
+**v1.0 Recommended Additions:**
+- [ ] Share Results (Phase 14) - High priority for growth
+- [ ] Streak System (Phase 15) - High priority for retention
+
+**v1.1 Features:**
+- [ ] Daily Challenge (Phase 16)
+- [ ] Onboarding Tutorial (Phase B2)
+- [ ] Game Center / Play Games (Phase 17)
+- [ ] Push Notifications (Phase 18)
+
