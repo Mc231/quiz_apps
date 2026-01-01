@@ -9,6 +9,7 @@ import '../models/quiz_data_provider.dart' as models;
 import '../quiz_widget.dart';
 import '../quiz_widget_entry.dart';
 import '../services/quiz_services_context.dart';
+import '../share/share_bottom_sheet.dart';
 import '../widgets/challenge_list.dart';
 import '../widgets/layout_mode_selector.dart';
 
@@ -45,6 +46,7 @@ class ChallengesScreen extends StatefulWidget {
     this.onChallengeStarted,
     this.onQuizCompleted,
     this.completedChallengeCount = 0,
+    this.shareConfig,
   });
 
   /// List of available challenge modes.
@@ -102,6 +104,12 @@ class ChallengesScreen extends StatefulWidget {
 
   /// Number of completed challenges for analytics tracking.
   final int completedChallengeCount;
+
+  /// Optional configuration for the share bottom sheet.
+  ///
+  /// When [ShareService] is configured in [QuizServices], a "Share" button
+  /// will appear on the results screen. This config customizes the UI.
+  final ShareBottomSheetConfig? shareConfig;
 
   @override
   State<ChallengesScreen> createState() => _ChallengesScreenState();
@@ -236,6 +244,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
               storageService: storageAdapter,
               quizAnalyticsService: quizAnalyticsAdapter,
               onQuizCompleted: widget.onQuizCompleted,
+              shareConfig: widget.shareConfig,
             ),
           ),
         ),
