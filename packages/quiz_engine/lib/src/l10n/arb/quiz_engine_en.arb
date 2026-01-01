@@ -2359,5 +2359,30 @@
   "accessibilityFilterHint": "Select which questions to display",
   "@accessibilityFilterHint": {
     "description": "Accessibility hint for question filter"
+  },
+
+  "sharePerfectScore": "PERFECT SCORE!",
+  "@sharePerfectScore": {
+    "description": "Text displayed on perfect score share image"
+  },
+
+  "shareAchievementUnlocked": "ACHIEVEMENT UNLOCKED",
+  "@shareAchievementUnlocked": {
+    "description": "Text displayed on achievement share image"
+  },
+
+  "shareCallToAction": "Can you beat my score?",
+  "@shareCallToAction": {
+    "description": "Call to action text on share image"
+  },
+
+  "shareImageGenerating": "Generating share image...",
+  "@shareImageGenerating": {
+    "description": "Loading message while generating share image"
+  },
+
+  "shareImageError": "Failed to generate share image",
+  "@shareImageError": {
+    "description": "Error message when share image generation fails"
   }
 }
