@@ -4,7 +4,7 @@
 
 **Implementation Tracking:** See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md) for phase/sprint progress and task tracking.
 
-**Last Updated:** 2025-12-23
+**Last Updated:** 2026-01-01
 
 ---
 
@@ -369,7 +369,141 @@ class QuizThemeData {
 
 ---
 
-### 8. Shared Services Implementation
+### 8. Quiz Layout Configuration System
+
+**Location:** `quiz_engine_core` (models) + `quiz_engine` (UI)
+
+The layout system allows configuring how questions and answers are displayed, supporting different visual styles like image questions with text answers, text questions with image answers, or mixed modes.
+
+#### QuizLayoutConfig (Sealed Class)
+
+```dart
+// packages/quiz_engine_core/lib/src/models/quiz_layout_config.dart
+
+sealed class QuizLayoutConfig {
+  const QuizLayoutConfig();
+
+  // Factory constructors for all layout variants
+  factory QuizLayoutConfig.imageQuestionTextAnswers() = ImageQuestionTextAnswersLayout;
+  factory QuizLayoutConfig.textQuestionImageAnswers({String? questionTemplate}) = TextQuestionImageAnswersLayout;
+  factory QuizLayoutConfig.textQuestionTextAnswers() = TextQuestionTextAnswersLayout;
+  factory QuizLayoutConfig.imageQuestionImageAnswers() = ImageQuestionImageAnswersLayout;
+  factory QuizLayoutConfig.mixed({double imageProbability = 0.5}) = MixedLayout;
+}
+
+// Layout variants
+class ImageQuestionTextAnswersLayout extends QuizLayoutConfig {
+  const ImageQuestionTextAnswersLayout();
+}
+
+class TextQuestionImageAnswersLayout extends QuizLayoutConfig {
+  final String? questionTemplate; // e.g., "Which flag belongs to {country}?"
+  const TextQuestionImageAnswersLayout({this.questionTemplate});
+}
+
+class MixedLayout extends QuizLayoutConfig {
+  final double imageProbability; // 0.5 = 50% each type
+  const MixedLayout({this.imageProbability = 0.5});
+}
+```
+
+#### Layout Modes
+
+| Layout Mode | Question Display | Answer Display | Use Case |
+|-------------|-----------------|----------------|----------|
+| `imageQuestionTextAnswers` | Image (flag) | Text buttons | Standard flags quiz |
+| `textQuestionImageAnswers` | Text (country name) | Image grid | Reverse mode |
+| `textQuestionTextAnswers` | Text | Text buttons | Capital cities quiz |
+| `imageQuestionImageAnswers` | Image | Image grid | Visual matching |
+| `mixed` | Random | Matches question | Variety/challenge |
+
+#### Category Configuration
+
+```dart
+// Set layout at category level
+final europeCategory = QuizCategory(
+  id: 'europe',
+  name: 'Europe',
+  layoutConfig: QuizLayoutConfig.imageQuestionTextAnswers(), // Standard
+);
+
+final reverseCategory = QuizCategory(
+  id: 'europe_reverse',
+  name: 'Europe (Reverse)',
+  layoutConfig: QuizLayoutConfig.textQuestionImageAnswers(
+    questionTemplate: 'Which flag belongs to {country}?',
+  ),
+);
+
+final mixedCategory = QuizCategory(
+  id: 'europe_mixed',
+  name: 'Europe (Mixed)',
+  layoutConfig: QuizLayoutConfig.mixed(imageProbability: 0.5),
+);
+```
+
+#### Play Tab Layout Mode Selector
+
+The `LayoutModeSelector` widget allows users to switch between layout modes on the Play tab:
+
+```dart
+// Layout options for the selector
+final layoutOptions = [
+  LayoutModeOption(
+    id: 'standard',
+    icon: Icons.image,
+    label: 'Standard',
+    layoutConfig: QuizLayoutConfig.imageQuestionTextAnswers(),
+  ),
+  LayoutModeOption(
+    id: 'reverse',
+    icon: Icons.text_fields,
+    label: 'Reverse',
+    layoutConfig: QuizLayoutConfig.textQuestionImageAnswers(),
+  ),
+  LayoutModeOption(
+    id: 'mixed',
+    icon: Icons.shuffle,
+    label: 'Mixed',
+    layoutConfig: QuizLayoutConfig.mixed(),
+  ),
+];
+
+// In QuizApp configuration
+QuizApp(
+  playLayoutModeOptionsBuilder: (context) => layoutOptions,
+  playLayoutModeSelectorTitleBuilder: (context) => 'Quiz Mode',
+)
+```
+
+#### Persistence
+
+The user's preferred layout mode is saved in settings:
+
+```dart
+// QuizSettings stores the preference
+class QuizSettings {
+  final String? preferredLayoutModeId; // 'standard', 'reverse', 'mixed'
+}
+
+// SettingsService methods
+await settingsService.setPreferredLayoutMode('reverse');
+final layoutId = settingsService.settings.preferredLayoutModeId;
+```
+
+#### UI Components
+
+| Widget | Location | Purpose |
+|--------|----------|---------|
+| `QuizLayout` | `quiz_engine/lib/src/quiz/quiz_layout.dart` | Main layout container |
+| `ImageAnswerOptionWidget` | `quiz_engine/lib/src/quiz/widgets/` | Image answer grid item |
+| `ImageAnswersGrid` | `quiz_engine/lib/src/quiz/widgets/` | Grid of image answers |
+| `LayoutModeSelector` | `quiz_engine/lib/src/widgets/` | Mode selector chip group |
+| `LayoutModeSelectorCard` | `quiz_engine/lib/src/widgets/` | Selector with title |
+
+---
+
+### 9. Shared Services Implementation
 
 **Location:** `shared_services`
 
@@ -1835,5 +1969,5 @@ See [PHASE_IMPLEMENTATION.md](./PHASE_IMPLEMENTATION.md#phase-11-quizapp-refacto
 ---
 
 **Document Version:** 1.3
-**Last Updated:** 2025-12-23
+**Last Updated:** 2026-01-01
 **Status:** Phase 5 Completed - Phase 11 (QuizApp Refactoring) Planned
