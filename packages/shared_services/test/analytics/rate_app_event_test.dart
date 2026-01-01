@@ -16,7 +16,7 @@ void main() {
         );
 
         expect(event.eventName, 'rate_app_conditions_checked');
-        expect(event.parameters['should_show'], true);
+        expect(event.parameters['should_show'], 1); // Firebase uses int for booleans
         expect(event.parameters['completed_quizzes'], 10);
         expect(event.parameters['quiz_score'], 85);
         expect(event.parameters['days_since_install'], 14);
@@ -36,7 +36,7 @@ void main() {
           declineCount: 0,
         );
 
-        expect(event.parameters['should_show'], false);
+        expect(event.parameters['should_show'], 0); // Firebase uses int for booleans
         expect(event.parameters['blocking_reason'], 'Not enough quizzes completed');
       });
     });

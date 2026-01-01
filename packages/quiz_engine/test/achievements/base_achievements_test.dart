@@ -919,6 +919,24 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String selectThe(String name) => 'Select the $name';
   @override
   String whichOneIs(String name) => 'Which one is $name';
+
+  // Accessibility strings
+  @override
+  String get accessibilityLayoutModeSelector => 'Layout mode selector';
+  @override
+  String get accessibilityLayoutModeSelectorHint =>
+      'Select how questions and answers are displayed';
+  @override
+  String accessibilityLayoutModeBadge(String mode) => 'Layout mode: $mode';
+  @override
+  String accessibilityLayoutModeSelected(String mode) => '$mode layout selected';
+  @override
+  String accessibilityStarRating(int stars, int total) =>
+      '$stars out of $total stars';
+  @override
+  String get accessibilityFilterQuestions => 'Filter questions';
+  @override
+  String get accessibilityFilterHint => 'Select which questions to display';
 }
 
 void main() {
