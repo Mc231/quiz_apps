@@ -148,3 +148,6 @@ export 'src/achievements/widgets/achievements_list.dart';
 
 // Rate App (In-app review UI)
 export 'src/rate_app/rate_app_widgets_exports.dart';
+
+// Share (Shareable image generation)
+export 'src/share/share_exports.dart';
