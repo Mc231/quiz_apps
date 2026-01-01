@@ -9,6 +9,7 @@ export 'analytics_service.dart';
 
 // Events
 export 'events/achievement_event.dart';
+export 'events/deep_link_event.dart';
 export 'events/error_event.dart';
 export 'events/hint_event.dart';
 export 'events/interaction_event.dart';
@@ -20,6 +21,7 @@ export 'events/rate_app_event.dart';
 export 'events/resource_event.dart';
 export 'events/screen_view_event.dart';
 export 'events/settings_event.dart';
+export 'events/share_event.dart';
 
 // Services
 export 'services/composite_analytics_service.dart';

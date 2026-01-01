@@ -54,3 +54,6 @@ export 'src/rate_app/rate_app_exports.dart';
 
 // Share (Social sharing of quiz results)
 export 'src/share/share_exports.dart';
+
+// Deep Links (App URL scheme handling)
+export 'src/deeplink/deeplink_exports.dart';
