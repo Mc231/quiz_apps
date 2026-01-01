@@ -51,3 +51,6 @@ export 'src/iap/iap_exports.dart';
 
 // Rate App (In-app review prompts)
 export 'src/rate_app/rate_app_exports.dart';
+
+// Share (Social sharing of quiz results)
+export 'src/share/share_exports.dart';
