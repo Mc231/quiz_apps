@@ -1771,6 +1771,40 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get accessibilityFilterQuestions => 'Filter questions';
   @override
   String get accessibilityFilterHint => 'Select which questions to display';
+
+  // Share strings
+  @override
+  String get shareAsImage => 'Share as Image';
+  @override
+  String get shareAsImageDescription => 'Create a beautiful image to share';
+  @override
+  String get shareAsText => 'Share as Text';
+  @override
+  String get shareAsTextDescription => 'Share your score as a message';
+  @override
+  String get shareUnavailable => 'Sharing is not available on this device';
+  @override
+  String get shareResult => 'Share Result';
+  @override
+  String get shareScore => 'Share Score';
+  @override
+  String get shareAchievement => 'Share Achievement';
+  @override
+  String get shareSuccess => 'Shared successfully!';
+  @override
+  String get shareCancelled => 'Share cancelled';
+  @override
+  String get shareError => 'Failed to share. Please try again.';
+  @override
+  String get shareImageGenerating => 'Generating share image...';
+  @override
+  String get shareImageError => 'Failed to generate share image';
+  @override
+  String get shareAchievementUnlocked => 'Achievement Unlocked';
+  @override
+  String get sharePerfectScore => 'Perfect Score!';
+  @override
+  String get shareCallToAction => 'Try it yourself!';
 }
 
 void main() {
