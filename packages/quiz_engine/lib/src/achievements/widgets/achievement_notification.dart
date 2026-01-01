@@ -76,7 +76,6 @@ class AchievementNotification extends StatefulWidget {
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
-    this.shareService,
     this.shareConfig,
     this.shownAt,
   });
@@ -102,10 +101,10 @@ class AchievementNotification extends StatefulWidget {
   /// Optional audio service for sound effects.
   final AudioService? audioService;
 
-  /// Optional share service for sharing achievements.
-  final ShareService? shareService;
-
   /// Optional configuration for share UI.
+  ///
+  /// When [ShareService] is configured in [QuizServices], a share button
+  /// will appear. This config customizes the UI.
   final ShareBottomSheetConfig? shareConfig;
 
   /// When the notification was shown (for calculating time to tap).
@@ -367,7 +366,8 @@ class _AchievementNotificationState extends State<AchievementNotification>
 
   Widget _buildContent(BuildContext context, ThemeData theme) {
     final l10n = QuizL10n.of(context);
-    final canShare = widget.shareService != null || widget.onShare != null;
+    final shareService = context.shareService;
+    final canShare = shareService != null || widget.onShare != null;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -459,7 +459,8 @@ class _AchievementNotificationState extends State<AchievementNotification>
       return;
     }
 
-    if (widget.shareService != null) {
+    final shareService = context.shareService;
+    if (shareService != null) {
       final achievementName = widget.achievement.name(context);
 
       final shareResult = ShareResult.fromAchievement(
@@ -472,7 +473,7 @@ class _AchievementNotificationState extends State<AchievementNotification>
       ShareBottomSheet.show(
         context: context,
         result: shareResult,
-        shareService: widget.shareService!,
+        shareService: shareService,
         config: widget.shareConfig ?? const ShareBottomSheetConfig(),
       );
     }
