@@ -3,6 +3,7 @@ import 'package:shared_services/shared_services.dart';
 
 import '../achievements/flags_achievements_data_provider.dart';
 import '../data/flags_data_provider.dart';
+import '../deeplink/flags_quiz_deep_link_service.dart';
 
 /// Contains all dependencies needed to run the Flags Quiz app.
 ///
@@ -17,6 +18,7 @@ class FlagsQuizDependencies {
     required this.dataProvider,
     required this.categories,
     required this.navigatorObserver,
+    required this.deepLinkService,
   });
 
   /// All core services bundled together.
@@ -36,4 +38,7 @@ class FlagsQuizDependencies {
 
   /// Navigator observer for automatic screen tracking.
   final AnalyticsNavigatorObserver navigatorObserver;
+
+  /// Deep link service for handling flagsquiz:// URLs.
+  final FlagsQuizDeepLinkService deepLinkService;
 }
