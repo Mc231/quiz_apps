@@ -1,5 +1,6 @@
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 
+import 'share/share_bottom_sheet.dart';
 import 'theme/quiz_theme_data.dart';
 
 
@@ -82,6 +83,12 @@ class QuizWidgetEntry {
   /// Defaults to false for backward compatibility.
   final bool useResourceManager;
 
+  /// Optional configuration for the share bottom sheet.
+  ///
+  /// When [ShareService] is configured in [QuizServices], a "Share" button
+  /// will appear on the results screen. This config customizes the UI.
+  final ShareBottomSheetConfig? shareConfig;
+
   /// Creates a `QuizWidgetEntry` with a ConfigManager.
   ///
   /// [title] - Title for the quiz UI
@@ -95,6 +102,7 @@ class QuizWidgetEntry {
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
   /// [filter] - Optional filter for question selection
   /// [useResourceManager] - Whether to use global ResourceManager (defaults to false)
+  /// [shareConfig] - Optional configuration for share bottom sheet
   QuizWidgetEntry({
     required this.title,
     required this.dataProvider,
@@ -107,6 +115,7 @@ class QuizWidgetEntry {
     this.onQuizCompleted,
     this.filter,
     this.useResourceManager = false,
+    this.shareConfig,
   });
 
   /// Creates a `QuizWidgetEntry` with a default configuration.
@@ -125,6 +134,7 @@ class QuizWidgetEntry {
   /// [onQuizCompleted] - Optional callback for achievement/analytics integration
   /// [filter] - Optional filter for question selection
   /// [useResourceManager] - Whether to use global ResourceManager (defaults to false)
+  /// [shareConfig] - Optional configuration for share bottom sheet
   QuizWidgetEntry.withDefaultConfig({
     required this.title,
     required this.dataProvider,
@@ -137,5 +147,6 @@ class QuizWidgetEntry {
     this.onQuizCompleted,
     this.filter,
     this.useResourceManager = false,
+    this.shareConfig,
   })  : configManager = ConfigManager(defaultConfig: defaultConfig);
 }

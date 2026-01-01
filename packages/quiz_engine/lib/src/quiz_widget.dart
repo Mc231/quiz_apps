@@ -61,6 +61,7 @@ class QuizWidget extends StatelessWidget {
         child: QuizScreen(
           title: quizEntry.title,
           themeData: quizEntry.themeData,
+          shareConfig: quizEntry.shareConfig,
         ),
       ),
     );
