@@ -10,6 +10,7 @@ import '../config/iap_config_production.dart';
 import '../data/country_counts.dart';
 import '../data/flags_categories.dart';
 import '../data/flags_data_provider.dart';
+import '../deeplink/flags_quiz_deep_link_service.dart';
 import 'flags_quiz_dependencies.dart';
 
 /// Provides a fully initialized [FlagsQuizApp] instance.
@@ -236,6 +237,24 @@ class FlagsQuizAppProvider {
     );
     await rateAppService.initialize();
 
+    // Initialize deep link service for handling flagsquiz:// URLs
+    final deepLinkService = FlagsQuizDeepLinkService();
+    await deepLinkService.initialize();
+
+    // Create share service with analytics tracking
+    final shareService = AnalyticsShareService(
+      shareService: PlatformShareService(
+        config: ShareConfig(
+          appName: 'Flags Quiz',
+          appStoreUrl: 'https://apps.apple.com/app/flags-quiz/id123456789',
+          playStoreUrl:
+              'https://play.google.com/store/apps/details?id=com.vsapps.flagsquiz',
+        ),
+      ),
+      analyticsService: screenAnalyticsService,
+      sourceScreen: 'quiz_results',
+    );
+
     // Bundle all services together
     final services = QuizServices(
       settingsService: settingsService,
@@ -247,6 +266,7 @@ class FlagsQuizAppProvider {
       adsService: analyticsAdsService,
       iapService: iapService,
       rateAppService: rateAppService,
+      shareService: shareService,
     );
 
     return FlagsQuizDependencies(
@@ -256,6 +276,7 @@ class FlagsQuizAppProvider {
       dataProvider: dataProvider,
       categories: categories,
       navigatorObserver: navigatorObserver,
+      deepLinkService: deepLinkService,
     );
   }
 
