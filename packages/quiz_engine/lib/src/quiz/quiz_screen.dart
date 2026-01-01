@@ -31,10 +31,17 @@ class QuizScreen extends StatefulWidget {
   final String title;
   final QuizThemeData themeData;
 
+  /// Optional configuration for the share bottom sheet.
+  ///
+  /// When [ShareService] is configured in [QuizServices], a "Share" button
+  /// will appear on the results screen. This config customizes the UI.
+  final ShareBottomSheetConfig? shareConfig;
+
   const QuizScreen({
     super.key,
     required this.title,
     this.themeData = const QuizThemeData(),
+    this.shareConfig,
   });
 
   @override
@@ -524,6 +531,8 @@ class QuizScreenState extends State<QuizScreen> {
           Navigator.of(context).pop();
         },
         imageBuilder: _buildQuestionImage,
+        shareService: context.shareService,
+        shareConfig: widget.shareConfig,
       );
     }
 
