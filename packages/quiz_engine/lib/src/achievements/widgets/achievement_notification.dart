@@ -6,6 +6,7 @@ import 'package:shared_services/shared_services.dart';
 
 import '../../l10n/quiz_localizations.dart';
 import '../../services/quiz_services_context.dart';
+import '../../share/share_bottom_sheet.dart';
 import '../../theme/quiz_animations.dart';
 
 // Re-export for convenience
@@ -71,9 +72,12 @@ class AchievementNotification extends StatefulWidget {
     required this.achievement,
     this.onDismiss,
     this.onTap,
+    this.onShare,
     this.style = const AchievementNotificationStyle(),
     this.hapticService,
     this.audioService,
+    this.shareService,
+    this.shareConfig,
     this.shownAt,
   });
 
@@ -86,6 +90,9 @@ class AchievementNotification extends StatefulWidget {
   /// Called when the notification is tapped (before dismiss).
   final VoidCallback? onTap;
 
+  /// Called when the user taps the share button.
+  final VoidCallback? onShare;
+
   /// Style configuration.
   final AchievementNotificationStyle style;
 
@@ -94,6 +101,12 @@ class AchievementNotification extends StatefulWidget {
 
   /// Optional audio service for sound effects.
   final AudioService? audioService;
+
+  /// Optional share service for sharing achievements.
+  final ShareService? shareService;
+
+  /// Optional configuration for share UI.
+  final ShareBottomSheetConfig? shareConfig;
 
   /// When the notification was shown (for calculating time to tap).
   final DateTime? shownAt;
@@ -353,17 +366,49 @@ class _AchievementNotificationState extends State<AchievementNotification>
   }
 
   Widget _buildContent(BuildContext context, ThemeData theme) {
+    final l10n = QuizL10n.of(context);
+    final canShare = widget.shareService != null || widget.onShare != null;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Achievement Unlocked!',
-          style: theme.textTheme.labelSmall?.copyWith(
-            color: theme.colorScheme.primary,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: Text(
+                l10n.achievementUnlocked,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
+              ),
+            ),
+            // Share button
+            if (canShare)
+              GestureDetector(
+                onTap: _handleShare,
+                excludeFromSemantics: true,
+                child: Semantics(
+                  label: l10n.shareAchievement,
+                  button: true,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.share,
+                      size: 18,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ),
+          ],
         ),
         const SizedBox(height: 4),
         Text(
@@ -403,6 +448,34 @@ class _AchievementNotificationState extends State<AchievementNotification>
         ),
       ],
     );
+  }
+
+  void _handleShare() {
+    // Cancel auto-dismiss when user interacts with share
+    _dismissTimer?.cancel();
+
+    if (widget.onShare != null) {
+      widget.onShare!();
+      return;
+    }
+
+    if (widget.shareService != null) {
+      final achievementName = widget.achievement.name(context);
+
+      final shareResult = ShareResult.fromAchievement(
+        achievementId: widget.achievement.id,
+        achievementName: achievementName,
+        achievementTier: widget.achievement.tier.name,
+        pointsAwarded: widget.achievement.points,
+      );
+
+      ShareBottomSheet.show(
+        context: context,
+        result: shareResult,
+        shareService: widget.shareService!,
+        config: widget.shareConfig ?? const ShareBottomSheetConfig(),
+      );
+    }
   }
 }
 
