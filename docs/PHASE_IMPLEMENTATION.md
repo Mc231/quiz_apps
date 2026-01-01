@@ -4536,7 +4536,6 @@ The following phases are planned for future implementation but are currently on 
 - ✅ `packages/shared_services/test/share/share_config_test.dart`
 - ✅ `packages/shared_services/test/share/share_service_test.dart`
 
----
 
 #### Sprint 14.2: Share Image Generator ✅
 
@@ -4564,20 +4563,35 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 14.3: Share UI Integration
+#### Sprint 14.3: Share UI Integration ✅
 
 **Goal:** Add share buttons throughout the app.
 
 **Tasks:**
-- [ ] Add share button to `QuizResultsScreen`:
+- [x] Add share button to `QuizResultsScreen`:
   - Prominent "Share" button with icon
   - Bottom sheet with share options (Text, Image)
-- [ ] Add share option to `SessionDetailScreen`
-- [ ] Add share option to achievement unlock notification
-- [ ] Create `ShareBottomSheet` widget with preview
-- [ ] Handle platform-specific sharing (iOS share sheet, Android intent)
-- [ ] Add localization for share text templates
-- [ ] Write widget tests
+- [x] Add share option to `SessionDetailScreen`
+- [x] Add share option to achievement unlock notification
+- [x] Create `ShareBottomSheet` widget with preview
+- [x] Handle platform-specific sharing (iOS share sheet, Android intent)
+- [x] Add localization for share text templates
+- [x] Write widget tests
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/share/platform_share_service.dart`
+- ✅ `packages/quiz_engine/lib/src/share/share_bottom_sheet.dart`
+- ✅ `packages/quiz_engine/test/share/share_bottom_sheet_test.dart`
+
+**Files Modified:**
+- ✅ `packages/shared_services/pubspec.yaml` - Added share_plus dependency
+- ✅ `packages/shared_services/lib/src/share/share_exports.dart` - Added PlatformShareService export
+- ✅ `packages/shared_services/lib/src/share/share_result.dart` - Added fromAchievement factory
+- ✅ `packages/quiz_engine/lib/src/share/share_exports.dart` - Added ShareBottomSheet export
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Added share button and ShareService
+- ✅ `packages/quiz_engine/lib/src/screens/session_detail_screen.dart` - Added share button and ShareService
+- ✅ `packages/quiz_engine/lib/src/achievements/widgets/achievement_notification.dart` - Added share button
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added share localization strings
 
 ---
 
