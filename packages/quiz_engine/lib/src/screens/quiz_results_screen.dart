@@ -6,6 +6,7 @@ import '../l10n/quiz_localizations.dart';
 import '../rate_app/rate_app_config_provider.dart';
 import '../rate_app/rate_app_controller.dart';
 import '../services/quiz_services_context.dart';
+import '../share/share_bottom_sheet.dart';
 import '../utils/layout_mode_labels.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../widgets/question_review_widget.dart';
@@ -44,6 +45,8 @@ class QuizResultsScreen extends StatefulWidget {
     this.onReviewSession,
     this.onPlayAgain,
     this.imageBuilder,
+    this.shareService,
+    this.shareConfig,
   });
 
   /// The quiz results to display.
@@ -61,6 +64,13 @@ class QuizResultsScreen extends StatefulWidget {
 
   /// Optional image builder for question images in review.
   final Widget Function(String path)? imageBuilder;
+
+  /// Optional share service for sharing results.
+  /// When provided, a "Share" button will be displayed.
+  final ShareService? shareService;
+
+  /// Optional configuration for share UI.
+  final ShareBottomSheetConfig? shareConfig;
 
   @override
   State<QuizResultsScreen> createState() => _QuizResultsScreenState();
@@ -509,6 +519,23 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Share button (if share service is available)
+          if (widget.shareService != null) ...[
+            ElevatedButton.icon(
+              onPressed: () => _showShareSheet(context, l10n),
+              icon: const Icon(Icons.share),
+              label: Text(l10n.shareResult),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                foregroundColor: Theme.of(context).colorScheme.onSecondary,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+          ],
           // Review This Session button
           OutlinedButton.icon(
             onPressed: () => _navigateToSessionDetail(context, l10n),
@@ -541,6 +568,36 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showShareSheet(BuildContext context, QuizEngineLocalizations l10n) {
+    final shareResult = ShareResult.fromQuizCompletion(
+      correctCount: widget.results.correctAnswers,
+      totalCount: widget.results.totalQuestions,
+      categoryName: widget.results.quizName,
+      categoryId: widget.results.quizId,
+      mode: 'standard', // TODO: Get actual mode from results
+      timeTaken: Duration(seconds: widget.results.durationSeconds),
+    );
+
+    ShareBottomSheet.show(
+      context: context,
+      result: shareResult,
+      shareService: widget.shareService!,
+      config: widget.shareConfig ?? const ShareBottomSheetConfig(),
+      onShareComplete: (type, result) {
+        if (result is ShareOperationSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(l10n.shareSuccess)),
+          );
+        }
+      },
+      onShareError: (type, message) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.shareError)),
+        );
+      },
     );
   }
 
