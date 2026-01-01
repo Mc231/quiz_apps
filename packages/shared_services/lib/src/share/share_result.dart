@@ -89,6 +89,30 @@ class ShareResult {
     );
   }
 
+  /// Creates a result from an unlocked achievement.
+  ///
+  /// This is used when sharing an achievement independently,
+  /// not as part of a quiz result.
+  factory ShareResult.fromAchievement({
+    required String achievementId,
+    required String achievementName,
+    required String achievementTier,
+    required int pointsAwarded,
+  }) {
+    return ShareResult(
+      score: 0,
+      categoryName: achievementName,
+      correctCount: 0,
+      totalCount: 0,
+      mode: 'achievement',
+      timestamp: DateTime.now(),
+      categoryId: achievementId,
+      achievementUnlocked: achievementName,
+      // Store tier and points in streak fields for now
+      streakCount: pointsAwarded,
+    );
+  }
+
   /// Score as percentage (0.0 - 100.0).
   final double score;
 
