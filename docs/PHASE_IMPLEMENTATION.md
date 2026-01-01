@@ -4538,22 +4538,29 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 14.2: Share Image Generator
+#### Sprint 14.2: Share Image Generator ✅
 
 **Goal:** Generate beautiful shareable images with quiz results.
 
 **Tasks:**
-- [ ] Create `ShareImageGenerator` service using `RenderRepaintBoundary`
-- [ ] Create `ShareImageTemplate` widget:
+- [x] Create `ShareImageGenerator` service using `RenderRepaintBoundary`
+- [x] Create `ShareImageTemplate` widget:
   - App logo/branding
   - Score display (large, prominent)
   - Category name and icon
   - "Can you beat my score?" call-to-action
   - QR code or app name for download
-- [ ] Support multiple templates (standard, achievement, perfect score)
-- [ ] Handle image export to temporary file
-- [ ] Support dark/light theme variants
-- [ ] Write widget tests
+- [x] Support multiple templates (standard, achievement, perfect score)
+- [x] Handle image export to temporary file
+- [x] Support dark/light theme variants
+- [x] Write widget tests
+
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/share/share_image_template.dart`
+- ✅ `packages/quiz_engine/lib/src/share/share_image_generator.dart`
+- ✅ `packages/quiz_engine/lib/src/share/share_exports.dart`
+- ✅ `packages/quiz_engine/test/share/share_image_template_test.dart`
+- ✅ `packages/quiz_engine/test/share/share_image_generator_test.dart`
 
 ---
 
