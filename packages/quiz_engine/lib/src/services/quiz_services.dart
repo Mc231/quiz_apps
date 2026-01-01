@@ -49,6 +49,7 @@ class QuizServices {
     required this.adsService,
     required this.iapService,
     this.rateAppService,
+    this.shareService,
   });
 
   /// Creates a [QuizServices] with no-op implementations for analytics, ads, and IAP.
@@ -60,6 +61,7 @@ class QuizServices {
     required AchievementService achievementService,
     required ResourceManager resourceManager,
     RateAppService? rateAppService,
+    ShareService? shareService,
   }) {
     return QuizServices(
       settingsService: settingsService,
@@ -71,6 +73,7 @@ class QuizServices {
       adsService: NoAdsService(),
       iapService: NoOpIAPService(),
       rateAppService: rateAppService,
+      shareService: shareService,
     );
   }
 
@@ -131,6 +134,16 @@ class QuizServices {
   /// Optional - when null, rate app prompts are disabled.
   final RateAppService? rateAppService;
 
+  /// Service for sharing quiz results.
+  ///
+  /// Provides:
+  /// - Share as text (with app store links)
+  /// - Share as image (with generated graphics)
+  /// - Platform-specific share functionality
+  ///
+  /// Optional - when null, share button is hidden on results screen.
+  final ShareService? shareService;
+
   /// Creates a copy of this [QuizServices] with the given fields replaced.
   QuizServices copyWith({
     SettingsService? settingsService,
@@ -142,6 +155,7 @@ class QuizServices {
     AdsService? adsService,
     IAPService? iapService,
     RateAppService? rateAppService,
+    ShareService? shareService,
   }) {
     return QuizServices(
       settingsService: settingsService ?? this.settingsService,
@@ -154,6 +168,7 @@ class QuizServices {
       adsService: adsService ?? this.adsService,
       iapService: iapService ?? this.iapService,
       rateAppService: rateAppService ?? this.rateAppService,
+      shareService: shareService ?? this.shareService,
     );
   }
 
@@ -170,7 +185,8 @@ class QuizServices {
           resourceManager == other.resourceManager &&
           adsService == other.adsService &&
           iapService == other.iapService &&
-          rateAppService == other.rateAppService;
+          rateAppService == other.rateAppService &&
+          shareService == other.shareService;
 
   @override
   int get hashCode => Object.hash(
@@ -183,5 +199,6 @@ class QuizServices {
         adsService,
         iapService,
         rateAppService,
+        shareService,
       );
 }

@@ -92,4 +92,10 @@ extension QuizServicesContext on BuildContext {
   ///
   /// Throws a [FlutterError] if no [QuizServicesProvider] is found.
   RateAppService? get rateAppService => services.rateAppService;
+
+  /// Returns the [ShareService] from the closest [QuizServicesProvider] ancestor,
+  /// or null if not configured.
+  ///
+  /// Throws a [FlutterError] if no [QuizServicesProvider] is found.
+  ShareService? get shareService => services.shareService;
 }
