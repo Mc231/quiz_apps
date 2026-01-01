@@ -4486,6 +4486,41 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
+### Phase B3: Deep Link Navigation
+
+**Status:** BACKLOG
+
+**Goal:** Implement actual navigation handling for deep links when the app receives `flagsquiz://` URLs.
+
+**Context:** Sprint 14.4 created the deep link infrastructure:
+- `FlagsQuizDeepLinkService` - Receives and parses deep links
+- `FlagsQuizDeepLinkRoute` - Sealed class for route types (quiz, achievement, challenge, unknown)
+- `DeepLinkRouter` - Parses URIs into routes
+- `DeepLinkHandler` - Widget wrapper that listens for deep links
+
+Currently, the app logs deep links but doesn't navigate because QuizApp doesn't expose a navigation API.
+
+**Tasks:**
+- [ ] Expose navigation API from QuizApp (GlobalKey<NavigatorState> or similar)
+- [ ] Implement `QuizRoute` handling - navigate to quiz category and start quiz
+- [ ] Implement `AchievementRoute` handling - navigate to achievement details screen
+- [ ] Implement `ChallengeRoute` handling - navigate to challenge and start it
+- [ ] Handle edge cases (invalid category ID, locked content, etc.)
+- [ ] Add deep link analytics for successful navigation
+- [ ] Write integration tests for deep link navigation
+- [ ] Test on iOS and Android with actual deep links
+
+**Example Deep Links:**
+- `flagsquiz://quiz/europe` - Opens European flags quiz
+- `flagsquiz://achievement/first_perfect` - Shows achievement details
+- `flagsquiz://challenge/speed_round` - Opens speed round challenge
+
+**Files to Modify:**
+- `packages/quiz_engine/lib/src/app/quiz_app.dart` - Expose navigation API
+- `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Implement route handlers
+
+---
+
 ## Phase 14: Share Results (Viral Growth)
 
 **Goal:** Enable users to share their quiz results to social media and messaging apps, driving organic installs.
@@ -4595,24 +4630,79 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 14.4: Share Analytics & Deep Links
+#### Sprint 14.4: Share Analytics & Deep Links ✅
 
-**Goal:** Track sharing behavior and enable deep links for attribution.
+**Goal:** Track sharing behavior and handle app scheme deep links.
 
 **Tasks:**
-- [ ] Create `ShareEvent` sealed class:
-  - `shareInitiated` - User tapped share
-  - `shareTypeSelected` - Text vs Image
-  - `shareCompleted` - Successfully shared
-  - `shareCancelled` - User cancelled
-- [ ] Add share events to analytics exports
-- [ ] Integrate with ShareService
-- [ ] Create `DeepLinkService` for handling incoming links:
-  - Parse deep link parameters
-  - Navigate to appropriate screen
-  - Track referral source
-- [ ] Configure Firebase Dynamic Links / Branch.io (optional)
-- [ ] Write unit tests
+
+**Share Analytics:**
+- [x] Create `ShareEvent` sealed class:
+  - `shareInitiated` - User tapped share (content type, source screen)
+  - `shareTypeSelected` - Text vs Image selected
+  - `shareCompleted` - Successfully shared (platform if available)
+  - `shareCancelled` - User cancelled share sheet
+  - `shareFailed` - Share failed with error
+- [x] Add share events to analytics exports
+- [x] Integrate analytics with `ShareService`
+- [x] Add share analytics to UI integration points
+
+**Deep Links (App Scheme):**
+
+*shared_services (generic interface):*
+- [x] Create abstract `DeepLinkService` interface:
+  - `Stream<Uri> get linkStream` - incoming deep links
+  - `Uri? get initialLink` - cold start deep link
+  - `void dispose()`
+- [x] Create `DeepLinkEvent` for analytics:
+  - `deepLinkReceived` - Link opened (scheme, host, path)
+  - `deepLinkHandled` - Successfully navigated
+  - `deepLinkFailed` - Invalid or unhandled link
+
+*apps/flagsquiz (app-specific implementation):*
+- [x] Create `FlagsQuizDeepLinkService` implementing `DeepLinkService`:
+  - Handle `flagsquiz://` scheme
+  - Use `app_links` package
+- [x] Create `FlagsQuizDeepLinkRoute` sealed class:
+  - `quiz(categoryId)` - Open specific quiz category
+  - `achievement(achievementId)` - Show achievement details
+  - `challenge(challengeId)` - Open specific challenge
+  - `unknown(url)` - Unrecognized deep link
+- [x] Create `DeepLinkRouter` to parse Uri → Route
+- [x] Configure platform URL schemes:
+  - iOS: Add `flagsquiz` URL scheme to Info.plist
+  - Android: Add intent-filter to AndroidManifest.xml
+- [x] Integrate with app navigation (DeepLinkHandler wrapper)
+- [x] Write unit tests
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/analytics/events/share_event.dart` - ShareEvent sealed class (5 events)
+- ✅ `packages/shared_services/lib/src/analytics/events/deep_link_event.dart` - DeepLinkEvent sealed class (3 events)
+- ✅ `packages/shared_services/lib/src/deeplink/deep_link_service.dart` - Abstract DeepLinkService interface
+- ✅ `packages/shared_services/lib/src/deeplink/deeplink_exports.dart` - Deep link exports
+- ✅ `packages/shared_services/lib/src/share/analytics_share_service.dart` - AnalyticsShareService decorator
+- ✅ `apps/flagsquiz/lib/deeplink/flags_quiz_deep_link_route.dart` - Route sealed class
+- ✅ `apps/flagsquiz/lib/deeplink/deep_link_router.dart` - URI parser
+- ✅ `apps/flagsquiz/lib/deeplink/flags_quiz_deep_link_service.dart` - App-specific implementation
+- ✅ `apps/flagsquiz/lib/deeplink/deep_link_handler.dart` - Widget for handling deep links
+- ✅ `apps/flagsquiz/lib/deeplink/deeplink_exports.dart` - Deep link exports
+
+**Files Modified:**
+- ✅ `packages/shared_services/lib/src/analytics/analytics_exports.dart` - Added share and deep link events
+- ✅ `packages/shared_services/lib/src/analytics/analytics_event.dart` - Updated docs
+- ✅ `packages/shared_services/lib/src/share/share_exports.dart` - Added AnalyticsShareService
+- ✅ `packages/shared_services/lib/shared_services.dart` - Added deep link exports
+- ✅ `apps/flagsquiz/pubspec.yaml` - Added app_links dependency
+- ✅ `apps/flagsquiz/ios/Runner/Info.plist` - Added CFBundleURLTypes for flagsquiz://
+- ✅ `apps/flagsquiz/android/app/src/main/AndroidManifest.xml` - Added intent-filter for deep links
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_dependencies.dart` - Added deepLinkService
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Initialize deep link service
+- ✅ `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Wrapped with DeepLinkHandler
+
+**Tests Created:**
+- ✅ `packages/shared_services/test/analytics/events/share_event_test.dart`
+- ✅ `packages/shared_services/test/analytics/events/deep_link_event_test.dart`
+- ✅ `apps/flagsquiz/test/deeplink/deep_link_router_test.dart`
 
 </details>
 
