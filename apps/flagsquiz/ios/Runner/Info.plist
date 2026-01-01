@@ -313,5 +313,18 @@
 			<string>3qcr597p9d.skadnetwork</string>
 		</dict>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>com.vsapps.flagsquiz</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>flagsquiz</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
