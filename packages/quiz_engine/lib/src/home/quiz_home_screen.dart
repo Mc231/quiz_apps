@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
@@ -163,6 +165,7 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
   // Streak state
   int _streakCount = 0;
   StreakStatus _streakStatus = StreakStatus.none;
+  StreamSubscription<StreakData>? _streakSubscription;
 
   /// Gets the analytics service from context.
   AnalyticsService get _analyticsService => context.screenAnalyticsService;
@@ -227,7 +230,7 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
     }
   }
 
-  /// Loads streak data from the streak service.
+  /// Loads streak data from the streak service and subscribes to updates.
   Future<void> _loadStreakData() async {
     final streakService = _streakService;
     if (streakService == null) return;
@@ -241,9 +244,33 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
           _streakStatus = status;
         });
       }
+
+      // Subscribe to streak updates if not already subscribed
+      _streakSubscription ??= streakService.watchStreakData().listen(
+        _onStreakDataChanged,
+        onError: (_) {}, // Silently ignore errors
+      );
     } catch (e) {
       // Silently ignore streak loading errors
     }
+  }
+
+  /// Handles streak data changes from the stream.
+  void _onStreakDataChanged(StreakData data) {
+    if (!mounted) return;
+
+    final streakService = _streakService;
+    if (streakService == null) return;
+
+    // Update streak status asynchronously
+    streakService.getStreakStatus().then((status) {
+      if (mounted) {
+        setState(() {
+          _streakCount = data.currentStreak;
+          _streakStatus = status;
+        });
+      }
+    });
   }
 
   /// Tracks the initial screen view when the home screen loads.
@@ -261,6 +288,7 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _streakSubscription?.cancel();
     super.dispose();
   }
 
