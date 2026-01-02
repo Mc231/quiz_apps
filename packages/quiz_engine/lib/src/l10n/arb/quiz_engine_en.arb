@@ -2575,5 +2575,219 @@
       "days": {"type": "int"},
       "title": {"type": "String"}
     }
+  },
+
+  "dailyChallenge": "Daily Challenge",
+  "@dailyChallenge": {
+    "description": "Daily challenge card/screen title"
+  },
+
+  "dailyChallengeSubtitle": "Test your knowledge with today's challenge",
+  "@dailyChallengeSubtitle": {
+    "description": "Daily challenge card subtitle"
+  },
+
+  "dailyChallengeCompleted": "Completed!",
+  "@dailyChallengeCompleted": {
+    "description": "Status when daily challenge is completed"
+  },
+
+  "dailyChallengeAvailable": "Available Now",
+  "@dailyChallengeAvailable": {
+    "description": "Status when daily challenge is available"
+  },
+
+  "dailyChallengeNextIn": "Next in {time}",
+  "@dailyChallengeNextIn": {
+    "description": "Countdown to next challenge",
+    "placeholders": {
+      "time": {"type": "String"}
+    }
+  },
+
+  "dailyChallengeQuestions": "{count} Questions",
+  "@dailyChallengeQuestions": {
+    "description": "Number of questions in daily challenge",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "dailyChallengeTimeLimit": "{minutes} min limit",
+  "@dailyChallengeTimeLimit": {
+    "description": "Time limit for daily challenge",
+    "placeholders": {
+      "minutes": {"type": "int"}
+    }
+  },
+
+  "dailyChallengeNoTimeLimit": "No time limit",
+  "@dailyChallengeNoTimeLimit": {
+    "description": "When daily challenge has no time limit"
+  },
+
+  "dailyChallengeStart": "Start Challenge",
+  "@dailyChallengeStart": {
+    "description": "Button to start daily challenge"
+  },
+
+  "dailyChallengeRules": "Challenge Rules",
+  "@dailyChallengeRules": {
+    "description": "Rules section title"
+  },
+
+  "dailyChallengeRule1": "Answer all questions to complete",
+  "@dailyChallengeRule1": {
+    "description": "First rule for daily challenge"
+  },
+
+  "dailyChallengeRule2": "Earn bonus points for streaks",
+  "@dailyChallengeRule2": {
+    "description": "Second rule for daily challenge"
+  },
+
+  "dailyChallengeRule3": "Complete quickly for time bonus",
+  "@dailyChallengeRule3": {
+    "description": "Third rule for daily challenge"
+  },
+
+  "dailyChallengeRule4": "One attempt per day",
+  "@dailyChallengeRule4": {
+    "description": "Fourth rule for daily challenge"
+  },
+
+  "dailyChallengeResultTitle": "Challenge Complete!",
+  "@dailyChallengeResultTitle": {
+    "description": "Title on daily challenge results screen"
+  },
+
+  "dailyChallengeYourScore": "Your Score",
+  "@dailyChallengeYourScore": {
+    "description": "Your score label"
+  },
+
+  "dailyChallengeYesterdayScore": "Yesterday's Score",
+  "@dailyChallengeYesterdayScore": {
+    "description": "Yesterday's score label for comparison"
+  },
+
+  "dailyChallengeNoYesterday": "No data from yesterday",
+  "@dailyChallengeNoYesterday": {
+    "description": "When there's no yesterday data"
+  },
+
+  "dailyChallengeImprovement": "+{points} improvement!",
+  "@dailyChallengeImprovement": {
+    "description": "Improvement from yesterday",
+    "placeholders": {
+      "points": {"type": "int"}
+    }
+  },
+
+  "dailyChallengeDecline": "{points} less than yesterday",
+  "@dailyChallengeDecline": {
+    "description": "Decline from yesterday",
+    "placeholders": {
+      "points": {"type": "int"}
+    }
+  },
+
+  "dailyChallengeSameScore": "Same as yesterday!",
+  "@dailyChallengeSameScore": {
+    "description": "When score is same as yesterday"
+  },
+
+  "dailyChallengeCurrentStreak": "Current Streak",
+  "@dailyChallengeCurrentStreak": {
+    "description": "Current streak label"
+  },
+
+  "dailyChallengeBestStreak": "Best Streak",
+  "@dailyChallengeBestStreak": {
+    "description": "Best streak label"
+  },
+
+  "dailyChallengeStreak": "Streak",
+  "@dailyChallengeStreak": {
+    "description": "Streak section title"
+  },
+
+  "dailyChallengeNewBestStreak": "New Best!",
+  "@dailyChallengeNewBestStreak": {
+    "description": "Badge shown when current streak equals or exceeds best streak"
+  },
+
+  "dailyChallengeAlreadyCompleted": "Already Completed",
+  "@dailyChallengeAlreadyCompleted": {
+    "description": "Title when challenge already done"
+  },
+
+  "dailyChallengeAlreadyCompletedMessage": "You've already completed today's challenge. Come back tomorrow for a new one!",
+  "@dailyChallengeAlreadyCompletedMessage": {
+    "description": "Message when challenge already done"
+  },
+
+  "dailyChallengeViewResults": "View Results",
+  "@dailyChallengeViewResults": {
+    "description": "Button to view results"
+  },
+
+  "dailyChallengeCategory": "Category: {category}",
+  "@dailyChallengeCategory": {
+    "description": "Shows the category for the challenge",
+    "placeholders": {
+      "category": {"type": "String"}
+    }
+  },
+
+  "dailyChallengeScoreBreakdown": "Score Breakdown",
+  "@dailyChallengeScoreBreakdown": {
+    "description": "Score breakdown section title"
+  },
+
+  "dailyChallengeBaseScore": "Base Score",
+  "@dailyChallengeBaseScore": {
+    "description": "Base score label"
+  },
+
+  "dailyChallengeStreakBonus": "Streak Bonus",
+  "@dailyChallengeStreakBonus": {
+    "description": "Streak bonus label"
+  },
+
+  "dailyChallengeTimeBonus": "Time Bonus",
+  "@dailyChallengeTimeBonus": {
+    "description": "Time bonus label"
+  },
+
+  "dailyChallengeTotalScore": "Total Score",
+  "@dailyChallengeTotalScore": {
+    "description": "Total score label"
+  },
+
+  "dailyChallengePerfectScore": "Perfect Score!",
+  "@dailyChallengePerfectScore": {
+    "description": "Displayed when user gets 100%"
+  },
+
+  "dailyChallengeCompletionTime": "Completion Time",
+  "@dailyChallengeCompletionTime": {
+    "description": "Completion time label"
+  },
+
+  "accessibilityDailyChallengeCard": "Daily challenge, {status}",
+  "@accessibilityDailyChallengeCard": {
+    "description": "Accessibility label for daily challenge card",
+    "placeholders": {
+      "status": {"type": "String"}
+    }
+  },
+
+  "accessibilityDailyChallengeCountdown": "Next daily challenge available in {time}",
+  "@accessibilityDailyChallengeCountdown": {
+    "description": "Accessibility label for countdown",
+    "placeholders": {
+      "time": {"type": "String"}
+    }
   }
 }

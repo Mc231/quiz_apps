@@ -2973,6 +2973,234 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Milestone reached: {days} day streak. {title}'**
   String accessibilityStreakMilestone(int days, String title);
+
+  /// Daily challenge card/screen title
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Challenge'**
+  String get dailyChallenge;
+
+  /// Daily challenge card subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Test your knowledge with today\'s challenge'**
+  String get dailyChallengeSubtitle;
+
+  /// Status when daily challenge is completed
+  ///
+  /// In en, this message translates to:
+  /// **'Completed!'**
+  String get dailyChallengeCompleted;
+
+  /// Status when daily challenge is available
+  ///
+  /// In en, this message translates to:
+  /// **'Available Now'**
+  String get dailyChallengeAvailable;
+
+  /// Countdown to next challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Next in {time}'**
+  String dailyChallengeNextIn(String time);
+
+  /// Number of questions in daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Questions'**
+  String dailyChallengeQuestions(int count);
+
+  /// Time limit for daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min limit'**
+  String dailyChallengeTimeLimit(int minutes);
+
+  /// When daily challenge has no time limit
+  ///
+  /// In en, this message translates to:
+  /// **'No time limit'**
+  String get dailyChallengeNoTimeLimit;
+
+  /// Button to start daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Start Challenge'**
+  String get dailyChallengeStart;
+
+  /// Rules section title
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge Rules'**
+  String get dailyChallengeRules;
+
+  /// First rule for daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Answer all questions to complete'**
+  String get dailyChallengeRule1;
+
+  /// Second rule for daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Earn bonus points for streaks'**
+  String get dailyChallengeRule2;
+
+  /// Third rule for daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Complete quickly for time bonus'**
+  String get dailyChallengeRule3;
+
+  /// Fourth rule for daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'One attempt per day'**
+  String get dailyChallengeRule4;
+
+  /// Title on daily challenge results screen
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge Complete!'**
+  String get dailyChallengeResultTitle;
+
+  /// Your score label
+  ///
+  /// In en, this message translates to:
+  /// **'Your Score'**
+  String get dailyChallengeYourScore;
+
+  /// Yesterday's score label for comparison
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday\'s Score'**
+  String get dailyChallengeYesterdayScore;
+
+  /// When there's no yesterday data
+  ///
+  /// In en, this message translates to:
+  /// **'No data from yesterday'**
+  String get dailyChallengeNoYesterday;
+
+  /// Improvement from yesterday
+  ///
+  /// In en, this message translates to:
+  /// **'+{points} improvement!'**
+  String dailyChallengeImprovement(int points);
+
+  /// Decline from yesterday
+  ///
+  /// In en, this message translates to:
+  /// **'{points} less than yesterday'**
+  String dailyChallengeDecline(int points);
+
+  /// When score is same as yesterday
+  ///
+  /// In en, this message translates to:
+  /// **'Same as yesterday!'**
+  String get dailyChallengeSameScore;
+
+  /// Current streak label
+  ///
+  /// In en, this message translates to:
+  /// **'Current Streak'**
+  String get dailyChallengeCurrentStreak;
+
+  /// Best streak label
+  ///
+  /// In en, this message translates to:
+  /// **'Best Streak'**
+  String get dailyChallengeBestStreak;
+
+  /// Streak section title
+  ///
+  /// In en, this message translates to:
+  /// **'Streak'**
+  String get dailyChallengeStreak;
+
+  /// Badge shown when current streak equals or exceeds best streak
+  ///
+  /// In en, this message translates to:
+  /// **'New Best!'**
+  String get dailyChallengeNewBestStreak;
+
+  /// Title when challenge already done
+  ///
+  /// In en, this message translates to:
+  /// **'Already Completed'**
+  String get dailyChallengeAlreadyCompleted;
+
+  /// Message when challenge already done
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve already completed today\'s challenge. Come back tomorrow for a new one!'**
+  String get dailyChallengeAlreadyCompletedMessage;
+
+  /// Button to view results
+  ///
+  /// In en, this message translates to:
+  /// **'View Results'**
+  String get dailyChallengeViewResults;
+
+  /// Shows the category for the challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Category: {category}'**
+  String dailyChallengeCategory(String category);
+
+  /// Score breakdown section title
+  ///
+  /// In en, this message translates to:
+  /// **'Score Breakdown'**
+  String get dailyChallengeScoreBreakdown;
+
+  /// Base score label
+  ///
+  /// In en, this message translates to:
+  /// **'Base Score'**
+  String get dailyChallengeBaseScore;
+
+  /// Streak bonus label
+  ///
+  /// In en, this message translates to:
+  /// **'Streak Bonus'**
+  String get dailyChallengeStreakBonus;
+
+  /// Time bonus label
+  ///
+  /// In en, this message translates to:
+  /// **'Time Bonus'**
+  String get dailyChallengeTimeBonus;
+
+  /// Total score label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Score'**
+  String get dailyChallengeTotalScore;
+
+  /// Displayed when user gets 100%
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Score!'**
+  String get dailyChallengePerfectScore;
+
+  /// Completion time label
+  ///
+  /// In en, this message translates to:
+  /// **'Completion Time'**
+  String get dailyChallengeCompletionTime;
+
+  /// Accessibility label for daily challenge card
+  ///
+  /// In en, this message translates to:
+  /// **'Daily challenge, {status}'**
+  String accessibilityDailyChallengeCard(String status);
+
+  /// Accessibility label for countdown
+  ///
+  /// In en, this message translates to:
+  /// **'Next daily challenge available in {time}'**
+  String accessibilityDailyChallengeCountdown(String time);
 }
 
 class _QuizEngineLocalizationsDelegate

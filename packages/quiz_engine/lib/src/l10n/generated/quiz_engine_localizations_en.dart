@@ -1671,4 +1671,136 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String accessibilityStreakMilestone(int days, String title) {
     return 'Milestone reached: $days day streak. $title';
   }
+
+  @override
+  String get dailyChallenge => 'Daily Challenge';
+
+  @override
+  String get dailyChallengeSubtitle =>
+      'Test your knowledge with today\'s challenge';
+
+  @override
+  String get dailyChallengeCompleted => 'Completed!';
+
+  @override
+  String get dailyChallengeAvailable => 'Available Now';
+
+  @override
+  String dailyChallengeNextIn(String time) {
+    return 'Next in $time';
+  }
+
+  @override
+  String dailyChallengeQuestions(int count) {
+    return '$count Questions';
+  }
+
+  @override
+  String dailyChallengeTimeLimit(int minutes) {
+    return '$minutes min limit';
+  }
+
+  @override
+  String get dailyChallengeNoTimeLimit => 'No time limit';
+
+  @override
+  String get dailyChallengeStart => 'Start Challenge';
+
+  @override
+  String get dailyChallengeRules => 'Challenge Rules';
+
+  @override
+  String get dailyChallengeRule1 => 'Answer all questions to complete';
+
+  @override
+  String get dailyChallengeRule2 => 'Earn bonus points for streaks';
+
+  @override
+  String get dailyChallengeRule3 => 'Complete quickly for time bonus';
+
+  @override
+  String get dailyChallengeRule4 => 'One attempt per day';
+
+  @override
+  String get dailyChallengeResultTitle => 'Challenge Complete!';
+
+  @override
+  String get dailyChallengeYourScore => 'Your Score';
+
+  @override
+  String get dailyChallengeYesterdayScore => 'Yesterday\'s Score';
+
+  @override
+  String get dailyChallengeNoYesterday => 'No data from yesterday';
+
+  @override
+  String dailyChallengeImprovement(int points) {
+    return '+$points improvement!';
+  }
+
+  @override
+  String dailyChallengeDecline(int points) {
+    return '$points less than yesterday';
+  }
+
+  @override
+  String get dailyChallengeSameScore => 'Same as yesterday!';
+
+  @override
+  String get dailyChallengeCurrentStreak => 'Current Streak';
+
+  @override
+  String get dailyChallengeBestStreak => 'Best Streak';
+
+  @override
+  String get dailyChallengeStreak => 'Streak';
+
+  @override
+  String get dailyChallengeNewBestStreak => 'New Best!';
+
+  @override
+  String get dailyChallengeAlreadyCompleted => 'Already Completed';
+
+  @override
+  String get dailyChallengeAlreadyCompletedMessage =>
+      'You\'ve already completed today\'s challenge. Come back tomorrow for a new one!';
+
+  @override
+  String get dailyChallengeViewResults => 'View Results';
+
+  @override
+  String dailyChallengeCategory(String category) {
+    return 'Category: $category';
+  }
+
+  @override
+  String get dailyChallengeScoreBreakdown => 'Score Breakdown';
+
+  @override
+  String get dailyChallengeBaseScore => 'Base Score';
+
+  @override
+  String get dailyChallengeStreakBonus => 'Streak Bonus';
+
+  @override
+  String get dailyChallengeTimeBonus => 'Time Bonus';
+
+  @override
+  String get dailyChallengeTotalScore => 'Total Score';
+
+  @override
+  String get dailyChallengePerfectScore => 'Perfect Score!';
+
+  @override
+  String get dailyChallengeCompletionTime => 'Completion Time';
+
+  @override
+  String accessibilityDailyChallengeCard(String status) {
+    return 'Daily challenge, $status';
+  }
+
+  @override
+  String accessibilityDailyChallengeCountdown(String time) {
+    return 'Next daily challenge available in $time';
+  }
 }
