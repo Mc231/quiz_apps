@@ -1,6 +1,7 @@
 import 'package:flags_quiz/achievements/flags_achievements.dart';
 import 'package:flags_quiz/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:quiz_engine/src/achievements/achievement_category.dart';
 import 'package:quiz_engine/src/achievements/base_achievements.dart';
 import 'package:quiz_engine/src/l10n/generated/quiz_engine_localizations.dart';
 import 'package:shared_services/shared_services.dart';
@@ -1908,7 +1909,7 @@ void main() {
         FlagsAchievements.categoryExplorer,
         FlagsAchievements.categoryRegionMastery,
         FlagsAchievements.categoryCollection,
-        FlagsAchievements.categoryDailyStreak,
+        AchievementCategory.dedication.name, // Daily streak uses dedication category
       };
 
       for (final achievement in achievements) {
@@ -2118,8 +2119,9 @@ void main() {
   group('Daily Streak achievements', () {
     test('daily streak category has 5 achievements', () {
       final achievements = FlagsAchievements.all(appL10n);
+      // Daily streak achievements use the 'dedication' category for UI grouping
       final streakAchievements = achievements
-          .where((a) => a.category == FlagsAchievements.categoryDailyStreak)
+          .where((a) => a.category == AchievementCategory.dedication.name)
           .toList();
       expect(streakAchievements.length, equals(5));
     });

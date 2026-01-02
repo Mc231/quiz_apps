@@ -906,7 +906,7 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
         ),
       ),
 
-      // --- Daily Streak (5) ---
+      // --- Daily Streak (5) - Uses 'dedication' category for UI grouping ---
       Achievement(
         id: 'first_flame',
         name: (ctx) =>
@@ -916,7 +916,7 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
             'Complete your first day streak',
         icon: '🔥',
         tier: AchievementTier.common,
-        category: FlagsAchievements.categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 1,
@@ -931,7 +931,7 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
             'Maintain a 7 day streak',
         icon: '⚔️',
         tier: AchievementTier.uncommon,
-        category: FlagsAchievements.categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 7,
@@ -946,7 +946,7 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
             'Maintain a 30 day streak',
         icon: '📅',
         tier: AchievementTier.rare,
-        category: FlagsAchievements.categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 30,
@@ -961,7 +961,7 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
             'Maintain a 100 day streak',
         icon: '🏛️',
         tier: AchievementTier.epic,
-        category: FlagsAchievements.categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 100,
@@ -976,7 +976,7 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
             'Maintain a 365 day streak',
         icon: '👑',
         tier: AchievementTier.legendary,
-        category: FlagsAchievements.categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 365,

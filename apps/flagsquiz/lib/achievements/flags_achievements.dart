@@ -9,7 +9,7 @@ import '../l10n/app_localizations.dart';
 /// - Explorer (7): Complete each continent quiz
 /// - Region Mastery (6): Get 5 perfect scores in each region
 /// - Collection (1): Collect all flags
-/// - Daily Streak (5): Maintain daily play streaks
+/// - Daily Streak (5): Maintain daily play streaks (uses 'dedication' category for UI)
 ///
 /// Usage:
 /// ```dart
@@ -26,9 +26,6 @@ class FlagsAchievements {
 
   /// Achievement category for collection achievements.
   static const String categoryCollection = 'collection';
-
-  /// Achievement category for daily streak achievements.
-  static const String categoryDailyStreak = 'daily_streak';
 
   // ===========================================================================
   // Explorer Category (7 achievements)
@@ -256,6 +253,7 @@ class FlagsAchievements {
 
   // ===========================================================================
   // Daily Streak Category (5 achievements)
+  // Uses 'dedication' category for UI grouping
   // ===========================================================================
 
   /// First Flame - Complete 1 day streak
@@ -265,7 +263,7 @@ class FlagsAchievements {
         description: (_) => l10n.achievementFirstFlameDesc,
         icon: '🔥',
         tier: AchievementTier.common,
-        category: categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 1,
@@ -279,7 +277,7 @@ class FlagsAchievements {
         description: (_) => l10n.achievementWeekWarriorDesc,
         icon: '⚔️',
         tier: AchievementTier.uncommon,
-        category: categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 7,
@@ -293,7 +291,7 @@ class FlagsAchievements {
         description: (_) => l10n.achievementMonthlyMasterDesc,
         icon: '📅',
         tier: AchievementTier.rare,
-        category: categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 30,
@@ -307,7 +305,7 @@ class FlagsAchievements {
         description: (_) => l10n.achievementCenturionDesc,
         icon: '🏛️',
         tier: AchievementTier.epic,
-        category: categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 100,
@@ -321,7 +319,7 @@ class FlagsAchievements {
         description: (_) => l10n.achievementDedicationDesc,
         icon: '👑',
         tier: AchievementTier.legendary,
-        category: categoryDailyStreak,
+        category: AchievementCategory.dedication.name,
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 365,
