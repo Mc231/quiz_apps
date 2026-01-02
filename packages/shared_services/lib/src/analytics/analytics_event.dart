@@ -15,6 +15,7 @@
 /// - RateAppEvent - In-app review tracking (Sprint 12.3)
 /// - ShareEvent - Share functionality tracking (Sprint 14.4)
 /// - DeepLinkEvent - Deep link handling (Sprint 14.4)
+/// - StreakEvent - Streak tracking (Sprint 15.4)
 ///
 /// Note: Each category is sealed within its own file for exhaustive
 /// pattern matching while allowing the base class to be extended
