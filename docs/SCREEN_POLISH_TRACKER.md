@@ -13,8 +13,8 @@ This document tracks the UI polish status of all screens in the Quiz Apps projec
 | Screen | File | Status | Notes |
 |--------|------|--------|-------|
 | Quiz Home Screen | `quiz_engine/lib/src/home/quiz_home_screen.dart` | [ ] | |
-| Tabbed Play Screen | `quiz_engine/lib/src/home/tabbed_play_screen.dart` | [ ] | |
-| Play Screen | `quiz_engine/lib/src/home/play_screen.dart` | [ ] | |
+| Tabbed Play Screen | `quiz_engine/lib/src/home/tabbed_play_screen.dart` | [x] | Play, Challenges, Practice tabs polished |
+| Play Screen | `quiz_engine/lib/src/home/play_screen.dart` | [x] | Category selection polished |
 
 ---
 
@@ -30,8 +30,8 @@ This document tracks the UI polish status of all screens in the Quiz Apps projec
 
 | Screen | File | Status | Notes |
 |--------|------|--------|-------|
-| Practice Start Screen | `quiz_engine/lib/src/screens/practice_start_screen.dart` | [ ] | |
-| Practice Complete Screen | `quiz_engine/lib/src/screens/practice_complete_screen.dart` | [ ] | |
+| Practice Start Screen | `quiz_engine/lib/src/screens/practice_start_screen.dart` | [x] | Practice mode entry polished |
+| Practice Complete Screen | `quiz_engine/lib/src/screens/practice_complete_screen.dart` | [x] | Practice results polished |
 | Quiz Results Screen | `quiz_engine/lib/src/screens/quiz_results_screen.dart` | [ ] | |
 
 ---
@@ -40,7 +40,7 @@ This document tracks the UI polish status of all screens in the Quiz Apps projec
 
 | Screen | File | Status | Notes |
 |--------|------|--------|-------|
-| Challenges Screen | `quiz_engine/lib/src/screens/challenges_screen.dart` | [ ] | |
+| Challenges Screen | `quiz_engine/lib/src/screens/challenges_screen.dart` | [x] | Challenge modes and category picker polished |
 | Session History Screen | `quiz_engine/lib/src/screens/session_history_screen.dart` | [ ] | |
 | Session Detail Screen | `quiz_engine/lib/src/screens/session_detail_screen.dart` | [ ] | |
 
@@ -103,15 +103,15 @@ When polishing a screen, verify:
 
 | Category | Polished | Total | Progress |
 |----------|----------|-------|----------|
-| Navigation & Home | 0 | 3 | 0% |
+| Navigation & Home | 2 | 3 | 67% |
 | Quiz Execution | 0 | 1 | 0% |
-| Session Flow | 0 | 3 | 0% |
-| Content & History | 0 | 3 | 0% |
+| Session Flow | 2 | 3 | 67% |
+| Content & History | 1 | 3 | 33% |
 | Statistics | 0 | 2 | 0% |
 | Feature | 0 | 2 | 0% |
 | Daily Challenge | 1 | 2 | 50% |
 | App Entry | 0 | 1 | 0% |
-| **Total** | **1** | **17** | **6%** |
+| **Total** | **6** | **17** | **35%** |
 
 ---
 
