@@ -14,6 +14,7 @@ import 'migrations/migration_v5.dart';
 import 'migrations/migration_v6.dart';
 import 'migrations/migration_v7.dart';
 import 'migrations/migration_v8.dart';
+import 'migrations/migration_v9.dart';
 
 /// The main database class that handles initialization and provides access.
 class AppDatabase {
@@ -38,6 +39,7 @@ class AppDatabase {
     const MigrationV6(),
     const MigrationV7(),
     const MigrationV8(),
+    const MigrationV9(),
   ];
 
   /// The migration runner.
