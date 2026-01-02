@@ -4777,28 +4777,46 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 15.2: Streak Service & Logic
+#### Sprint 15.2: Streak Service & Logic ✅
 
 **Goal:** Implement streak calculation and update logic.
 
 **Tasks:**
-- [ ] Create `StreakService` class:
+- [x] Create `StreakService` class:
   - `getCurrentStreak()` - Get current streak count
   - `recordActivity()` - Called when quiz completed
   - `isStreakActive()` - Check if streak still valid today
   - `getStreakStatus()` - Returns `StreakStatus` enum
   - `getDaysUntilStreakLost()` - Countdown to streak expiry
-- [ ] Create `StreakStatus` enum:
+  - `getNextMilestone()` - Get next milestone to reach
+  - `getMilestoneProgress()` - Progress to next milestone (0.0-1.0)
+- [x] Create `StreakStatus` enum:
   - `active` - Played today, streak maintained
   - `atRisk` - Haven't played today, streak will break tomorrow
   - `broken` - Streak was broken
   - `none` - No streak started
-- [ ] Implement timezone-aware date calculations
-- [ ] Handle edge cases (app not opened for days, timezone changes)
-- [ ] Create `StreakConfig`:
+- [x] Implement timezone-aware date calculations with grace period support
+- [x] Handle edge cases (app not opened for days, same-day duplicate plays)
+- [x] Create `StreakConfig`:
   - `gracePeriodHours` - Hours after midnight before streak breaks (default: 0)
   - `freezeTokensEnabled` - Allow streak freeze items
-- [ ] Write unit tests with time mocking
+  - `streakMilestones` - Milestone days for celebrations [7, 14, 30, 50, 100, 365]
+- [x] Create `StreakActivityResult` for recording activity outcomes
+- [x] Write unit tests with time mocking (68 tests)
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/streak/streak_status.dart`
+- ✅ `packages/shared_services/lib/src/streak/streak_config.dart`
+- ✅ `packages/shared_services/lib/src/streak/streak_service.dart`
+- ✅ `packages/shared_services/lib/src/streak/streak_exports.dart`
+
+**Files Modified:**
+- ✅ `packages/shared_services/lib/shared_services.dart` - Added streak exports
+
+**Tests Created:**
+- ✅ `packages/shared_services/test/streak/streak_status_test.dart`
+- ✅ `packages/shared_services/test/streak/streak_config_test.dart`
+- ✅ `packages/shared_services/test/streak/streak_service_test.dart`
 
 ---
 
