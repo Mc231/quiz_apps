@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
-import '../theme/quiz_accessibility.dart';
 import '../theme/quiz_animations.dart';
+import '../theme/status_bar_style.dart';
 
 /// Data required for the daily challenge results screen.
 class DailyChallengeResultsData {
@@ -183,19 +182,15 @@ class _DailyChallengeResultsScreenState
     final primaryColor =
         widget.config.primaryColor ?? theme.colorScheme.primary;
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: theme.brightness == Brightness.dark
-          ? SystemUiOverlayStyle.light
-          : SystemUiOverlayStyle.dark,
+    return StatusBarStyle.matchAppBar(
       child: Scaffold(
-        body: SafeArea(
-          child: CustomScrollView(
-            slivers: [
-              SliverAppBar(
-                pinned: true,
-                title: Text(l10n.dailyChallengeResultTitle),
-                centerTitle: true,
-                actions: [
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              pinned: true,
+              title: Text(l10n.dailyChallengeResultTitle),
+              centerTitle: true,
+              actions: [
                 if (widget.onShareResult != null)
                   IconButton(
                     icon: const Icon(Icons.share),
@@ -228,6 +223,7 @@ class _DailyChallengeResultsScreenState
                           ],
                           const SizedBox(height: 32),
                           _buildDoneButton(theme, l10n, primaryColor),
+                          const SizedBox(height: 32),
                         ],
                       ),
                     ),
@@ -238,7 +234,6 @@ class _DailyChallengeResultsScreenState
           ],
         ),
       ),
-      ),
     );
   }
 
@@ -248,6 +243,16 @@ class _DailyChallengeResultsScreenState
     Color primaryColor,
   ) {
     final isPerfect = widget.data.isPerfectScore;
+    final isDark = theme.brightness == Brightness.dark;
+
+    // Use theme-aware background colors for better visibility
+    final cardColor = isPerfect
+        ? (isDark
+            ? Colors.amber.withValues(alpha: 0.15)
+            : Colors.amber.shade50)
+        : (isDark
+            ? primaryColor.withValues(alpha: 0.15)
+            : theme.colorScheme.primaryContainer.withValues(alpha: 0.5));
 
     return AnimatedBuilder(
       animation: _scoreAnimationController,
@@ -255,10 +260,8 @@ class _DailyChallengeResultsScreenState
         return Transform.scale(
           scale: _scoreScaleAnimation.value,
           child: Card(
-            elevation: 2,
-            color: isPerfect
-                ? Colors.amber.withValues(alpha: 0.1)
-                : primaryColor.withValues(alpha: 0.1),
+            elevation: isDark ? 2 : 0,
+            color: cardColor,
             child: Padding(
               padding: const EdgeInsets.all(32),
               child: Column(
@@ -286,11 +289,15 @@ class _DailyChallengeResultsScreenState
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    '${_scoreCountAnimation.value}%',
-                    style: theme.textTheme.displayLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: isPerfect ? Colors.amber.shade700 : primaryColor,
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      '${_scoreCountAnimation.value}%',
+                      style: theme.textTheme.displayLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: isPerfect ? Colors.amber.shade700 : primaryColor,
+                      ),
+                      maxLines: 1,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -703,25 +710,33 @@ class _DailyChallengeResultsScreenState
     QuizEngineLocalizations l10n,
     Color primaryColor,
   ) {
-    return QuizAccessibility.ensureMinTouchTarget(
-      child: FilledButton.icon(
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
         onPressed: widget.onDone,
-        icon: const Icon(Icons.check, color: Colors.white),
-        label: Text(
-          l10n.done,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-        ),
-        style: FilledButton.styleFrom(
+        style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
           foregroundColor: Colors.white,
+          minimumSize: const Size(0, 52),
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.check, color: Colors.white),
+            const SizedBox(width: 8),
+            Text(
+              l10n.done,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
       ),
     );

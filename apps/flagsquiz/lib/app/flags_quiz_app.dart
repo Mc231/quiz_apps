@@ -401,9 +401,12 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
             categoryName: categoryName,
           ),
           onDone: () => Navigator.of(ctx).pop(),
-          onShareResult: () {
-            // TODO: Implement share functionality
-          },
+          onShareResult: () => _shareDailyChallengeResult(
+            ctx,
+            result,
+            categoryName,
+            stats.currentStreak,
+          ),
         ),
       ),
     );
@@ -423,6 +426,38 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
       'oc' => l10n.oceania,
       _ => null,
     };
+  }
+
+  /// Shares daily challenge result using the share bottom sheet.
+  Future<void> _shareDailyChallengeResult(
+    BuildContext context,
+    DailyChallengeResult result,
+    String? categoryName,
+    int currentStreak,
+  ) async {
+    final shareService = _deps.services.shareService;
+    if (shareService == null) return;
+
+    final shareResult = ShareResult(
+      score: result.score.toDouble(),
+      categoryName: categoryName ?? 'Daily Challenge',
+      correctCount: result.correctCount,
+      totalCount: result.totalQuestions,
+      mode: 'daily_challenge',
+      timestamp: result.completedAt,
+      streakCount: currentStreak,
+      timeTaken: Duration(seconds: result.completionTimeSeconds),
+    );
+
+    await ShareBottomSheet.show(
+      context: context,
+      result: shareResult,
+      shareService: shareService,
+      config: ShareBottomSheetConfig(
+        appName: 'Flags Quiz',
+        showImageOption: shareService.canShareImage(),
+      ),
+    );
   }
 
   // ===========================================================================

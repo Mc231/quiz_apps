@@ -491,6 +491,7 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen>
           ),
         ),
         style: FilledButton.styleFrom(
+          alignment: Alignment.center,
           backgroundColor: primaryColor,
           foregroundColor: Colors.white,
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),

@@ -123,6 +123,7 @@ export 'src/theme/quiz_theme_data.dart';
 export 'src/theme/game_resource_theme.dart';
 export 'src/theme/quiz_animations.dart';
 export 'src/theme/quiz_accessibility.dart';
+export 'src/theme/status_bar_style.dart';
 
 // Feedback
 export 'src/feedback/quiz_feedback_service.dart';
