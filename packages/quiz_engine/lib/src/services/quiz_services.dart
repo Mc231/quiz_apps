@@ -19,6 +19,7 @@ import 'package:shared_services/shared_services.dart';
 ///   quizAnalyticsService: quizAnalyticsService,
 ///   resourceManager: resourceManager,
 ///   rateAppService: rateAppService,
+///   streakService: streakService,
 /// );
 ///
 /// // Wrap your widget tree
@@ -50,6 +51,7 @@ class QuizServices {
     required this.iapService,
     this.rateAppService,
     this.shareService,
+    this.streakService,
   });
 
   /// Creates a [QuizServices] with no-op implementations for analytics, ads, and IAP.
@@ -144,6 +146,17 @@ class QuizServices {
   /// Optional - when null, share button is hidden on results screen.
   final ShareService? shareService;
 
+  /// Service for managing daily play streaks.
+  ///
+  /// Provides:
+  /// - Current streak tracking
+  /// - Streak status (active, at-risk, broken)
+  /// - Milestone progress and celebrations
+  /// - Longest streak records
+  ///
+  /// Optional - when null, streak UI components are hidden.
+  final StreakService? streakService;
+
   /// Creates a copy of this [QuizServices] with the given fields replaced.
   QuizServices copyWith({
     SettingsService? settingsService,
@@ -156,6 +169,7 @@ class QuizServices {
     IAPService? iapService,
     RateAppService? rateAppService,
     ShareService? shareService,
+    StreakService? streakService,
   }) {
     return QuizServices(
       settingsService: settingsService ?? this.settingsService,
@@ -169,6 +183,7 @@ class QuizServices {
       iapService: iapService ?? this.iapService,
       rateAppService: rateAppService ?? this.rateAppService,
       shareService: shareService ?? this.shareService,
+      streakService: streakService ?? this.streakService,
     );
   }
 
@@ -186,7 +201,8 @@ class QuizServices {
           adsService == other.adsService &&
           iapService == other.iapService &&
           rateAppService == other.rateAppService &&
-          shareService == other.shareService;
+          shareService == other.shareService &&
+          streakService == other.streakService;
 
   @override
   int get hashCode => Object.hash(
@@ -200,5 +216,6 @@ class QuizServices {
         iapService,
         rateAppService,
         shareService,
+        streakService,
       );
 }

@@ -16,6 +16,7 @@ import '../screens/session_history_texts.dart';
 import '../screens/statistics_dashboard_screen.dart';
 import '../screens/statistics_dashboard_data.dart';
 import '../utils/default_data_loader.dart';
+import '../streak/streak_badge.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../widgets/loading_indicator.dart';
 import '../widgets/question_review_widget.dart';
@@ -159,11 +160,18 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
   final GlobalKey<TabbedPlayScreenState> _playScreenKey =
       GlobalKey<TabbedPlayScreenState>();
 
+  // Streak state
+  int _streakCount = 0;
+  StreakStatus _streakStatus = StreakStatus.none;
+
   /// Gets the analytics service from context.
   AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
   /// Gets the storage service from context.
   StorageService get _storageService => context.storageService;
+
+  /// Gets the streak service from context (optional).
+  StreakService? get _streakService => context.streakService;
 
   List<QuizTab> get _tabs {
     final configTabs = widget.config.tabConfig.tabs;
@@ -206,6 +214,7 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeDataLoader();
       _loadDataForCurrentTab();
+      _loadStreakData();
       _trackInitialScreenView();
     });
   }
@@ -215,6 +224,25 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
     if (!_dataLoaderInitialized && mounted) {
       _dataLoader = DefaultDataLoader(_storageService);
       _dataLoaderInitialized = true;
+    }
+  }
+
+  /// Loads streak data from the streak service.
+  Future<void> _loadStreakData() async {
+    final streakService = _streakService;
+    if (streakService == null) return;
+
+    try {
+      final streak = await streakService.getCurrentStreak();
+      final status = await streakService.getStreakStatus();
+      if (mounted) {
+        setState(() {
+          _streakCount = streak;
+          _streakStatus = status;
+        });
+      }
+    } catch (e) {
+      // Silently ignore streak loading errors
     }
   }
 
@@ -242,6 +270,7 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
     // Reload data when app is resumed to ensure fresh statistics
     if (state == AppLifecycleState.resumed) {
       _loadDataForCurrentTab();
+      _loadStreakData();
     }
   }
 
@@ -667,6 +696,16 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
 
   List<Widget>? _buildAppBarActions(BuildContext context) {
     final actions = <Widget>[];
+
+    // Add streak badge if streak service is available and streak > 0
+    if (_streakService != null && _streakCount > 0) {
+      actions.add(
+        StreakBadgeCompact(
+          streakCount: _streakCount,
+          status: _streakStatus,
+        ),
+      );
+    }
 
     // Add custom actions
     if (widget.config.appBarActions != null) {

@@ -8,6 +8,7 @@ import '../rate_app/rate_app_controller.dart';
 import '../services/quiz_services_context.dart';
 import '../share/share_bottom_sheet.dart';
 import '../utils/layout_mode_labels.dart';
+import '../streak/streak_badge.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../widgets/question_review_widget.dart';
 import '../widgets/score_breakdown.dart';
@@ -83,6 +84,11 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
   bool _screenViewLogged = false;
   bool _rateAppChecked = false;
 
+  // Streak state
+  int _streakCount = 0;
+  StreakStatus _streakStatus = StreakStatus.none;
+  bool _streakLoaded = false;
+
   @override
   Widget build(BuildContext context) {
     // Log screen view on first build when context is available
@@ -90,9 +96,29 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
       _screenViewLogged = true;
       _logScreenView();
       _scheduleRateAppCheck();
+      _loadStreakData();
     }
 
     return _buildScreen(context);
+  }
+
+  Future<void> _loadStreakData() async {
+    final streakService = context.streakService;
+    if (streakService == null) return;
+
+    try {
+      final streak = await streakService.getCurrentStreak();
+      final status = await streakService.getStreakStatus();
+      if (mounted) {
+        setState(() {
+          _streakCount = streak;
+          _streakStatus = status;
+          _streakLoaded = true;
+        });
+      }
+    } catch (e) {
+      // Silently ignore streak loading errors
+    }
   }
 
   void _logScreenView() {
@@ -421,7 +447,33 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
           ),
         if (widget.results.layoutMode != null)
           _buildLayoutItem(context, l10n),
+        // Show streak badge if streak is active
+        if (_streakLoaded && _streakCount > 0)
+          _buildStreakItem(context, l10n),
       ],
+    );
+  }
+
+  Widget _buildStreakItem(BuildContext context, QuizEngineLocalizations l10n) {
+    return SizedBox(
+      width: 80,
+      child: Column(
+        children: [
+          StreakBadgeCompact(
+            streakCount: _streakCount,
+            status: _streakStatus,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.streakDayStreak,
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.grey[600],
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
     );
   }
 
