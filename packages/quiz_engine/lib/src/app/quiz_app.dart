@@ -442,6 +442,26 @@ class QuizApp extends StatefulWidget {
   /// ```
   final Widget Function(String categoryId)? shareCategoryIconBuilder;
 
+  /// Builder for a header widget shown above categories in the Play tab.
+  ///
+  /// When provided, this widget is rendered at the top of the Play tab content,
+  /// above the layout mode selector (if present) and the category grid/list.
+  ///
+  /// Common use cases:
+  /// - Daily challenge card
+  /// - Featured quizzes banner
+  /// - Promotional content
+  ///
+  /// Example:
+  /// ```dart
+  /// playTabHeaderWidgetBuilder: (context) => DailyChallengeCardBuilder(
+  ///   service: dailyChallengeService,
+  ///   categoryProvider: () async => 'all',
+  ///   onStartChallenge: (challenge) => navigateToDailyChallenge(challenge),
+  /// ),
+  /// ```
+  final Widget Function(BuildContext context)? playTabHeaderWidgetBuilder;
+
   /// Creates a [QuizApp].
   const QuizApp({
     super.key,
@@ -474,6 +494,7 @@ class QuizApp extends StatefulWidget {
     this.formatDuration,
     this.shareConfig,
     this.shareCategoryIconBuilder,
+    this.playTabHeaderWidgetBuilder,
   });
 
   @override
@@ -753,6 +774,7 @@ class _QuizAppState extends State<QuizApp> {
         tabBarIndicatorWeight: baseConfig.tabBarIndicatorWeight,
         tabBarIsScrollable: baseConfig.tabBarIsScrollable,
         playScreenConfig: baseConfig.playScreenConfig,
+        headerWidgetBuilder: widget.playTabHeaderWidgetBuilder,
       );
     }
 
@@ -780,6 +802,7 @@ class _QuizAppState extends State<QuizApp> {
           setState(() {});
         }
       },
+      headerWidgetBuilder: widget.playTabHeaderWidgetBuilder,
     );
   }
 

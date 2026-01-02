@@ -21,6 +21,7 @@ class TabbedPlayScreenConfig {
     this.layoutModeSelectorTitle,
     this.selectedLayoutModeId,
     this.onLayoutModeChanged,
+    this.headerWidgetBuilder,
   });
 
   /// Title for the app bar.
@@ -74,4 +75,23 @@ class TabbedPlayScreenConfig {
   ///
   /// Use this to persist the selection to settings.
   final void Function(LayoutModeOption option)? onLayoutModeChanged;
+
+  /// Builder for a header widget shown above the category list.
+  ///
+  /// When provided, this widget is rendered at the top of the Play tab content,
+  /// above the layout mode selector (if present) and the category grid/list.
+  ///
+  /// Common use cases:
+  /// - Daily challenge card
+  /// - Featured quizzes banner
+  /// - Promotional content
+  ///
+  /// Example:
+  /// ```dart
+  /// headerWidgetBuilder: (context) => DailyChallengeCard(
+  ///   service: dailyChallengeService,
+  ///   onTap: (challenge) => navigateToDailyChallenge(challenge),
+  /// ),
+  /// ```
+  final Widget Function(BuildContext context)? headerWidgetBuilder;
 }

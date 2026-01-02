@@ -126,6 +126,15 @@ abstract class StatisticsRepository {
   /// Resets all statistics.
   Future<void> resetAllStatistics();
 
+  /// Updates statistics after a daily challenge completion.
+  ///
+  /// [isPerfect] - Whether the challenge was completed with 100% score.
+  /// [currentStreak] - The current daily challenge streak.
+  Future<void> updateDailyChallengeStats({
+    required bool isPerfect,
+    required int currentStreak,
+  });
+
   // ===========================================================================
   // Quiz Type Statistics
   // ===========================================================================
@@ -260,6 +269,23 @@ class StatisticsRepositoryImpl implements StatisticsRepository {
     // Notify listeners
     _notifyGlobalStatsChanged();
     _notifyDailyStatsChanged();
+  }
+
+  @override
+  Future<void> updateDailyChallengeStats({
+    required bool isPerfect,
+    required int currentStreak,
+  }) async {
+    await _dataSource.updateDailyChallengeStats(
+      isPerfect: isPerfect,
+      currentStreak: currentStreak,
+    );
+
+    // Invalidate cache
+    _invalidateCache();
+
+    // Notify listeners
+    _notifyGlobalStatsChanged();
   }
 
   // ===========================================================================

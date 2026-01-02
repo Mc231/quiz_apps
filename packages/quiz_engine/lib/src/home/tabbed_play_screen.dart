@@ -336,6 +336,16 @@ class TabbedPlayScreenState extends State<TabbedPlayScreen>
     );
   }
 
+  Widget? _buildHeaderWidget(BuildContext context) {
+    final builder = widget.config.headerWidgetBuilder;
+    if (builder == null) return null;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: builder(context),
+    );
+  }
+
   Widget _buildListViewWithHeader(
     BuildContext context,
     List<QuizCategory> categories, {
@@ -343,9 +353,12 @@ class TabbedPlayScreenState extends State<TabbedPlayScreen>
   }) {
     final config = widget.config.playScreenConfig;
     final cardStyle = config.cardStyle ?? const CategoryCardStyle.list();
+    final headerWidget = _buildHeaderWidget(context);
 
     return CustomScrollView(
       slivers: [
+        if (headerWidget != null)
+          SliverToBoxAdapter(child: headerWidget),
         if (showLayoutSelector)
           SliverToBoxAdapter(
             child: Padding(
@@ -387,9 +400,12 @@ class TabbedPlayScreenState extends State<TabbedPlayScreen>
     final config = widget.config.playScreenConfig;
     final columns = _getGridColumns(sizingInfo);
     final cardStyle = config.cardStyle ?? const CategoryCardStyle.grid();
+    final headerWidget = _buildHeaderWidget(context);
 
     return CustomScrollView(
       slivers: [
+        if (headerWidget != null)
+          SliverToBoxAdapter(child: headerWidget),
         if (showLayoutSelector)
           SliverToBoxAdapter(
             child: Padding(

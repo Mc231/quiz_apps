@@ -2,6 +2,7 @@
 library;
 
 import '../database/migrations/migration_v2.dart';
+import '../database/migrations/migration_v10.dart';
 import '../database/tables/statistics_tables.dart';
 
 /// Aggregate statistics across all quiz sessions.
@@ -36,6 +37,11 @@ class GlobalStatistics {
     this.consecutivePerfectScores = 0,
     this.totalAchievementsUnlocked = 0,
     this.totalAchievementPoints = 0,
+    // V10 fields for daily challenges
+    this.totalDailyChallengesCompleted = 0,
+    this.dailyChallengeStreak = 0,
+    this.bestDailyChallengeStreak = 0,
+    this.perfectDailyChallenges = 0,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -122,6 +128,20 @@ class GlobalStatistics {
 
   /// Total achievement points (cached for quick display).
   final int totalAchievementPoints;
+
+  // === V10 Fields for Daily Challenges ===
+
+  /// Total number of daily challenges completed.
+  final int totalDailyChallengesCompleted;
+
+  /// Current daily challenge streak (consecutive days).
+  final int dailyChallengeStreak;
+
+  /// Best daily challenge streak ever achieved.
+  final int bestDailyChallengeStreak;
+
+  /// Total number of perfect daily challenges (100% score).
+  final int perfectDailyChallenges;
 
   /// When this record was created.
   final DateTime createdAt;
@@ -223,6 +243,18 @@ class GlobalStatistics {
               0,
       totalAchievementPoints:
           (map[GlobalStatisticsColumnsV2.totalAchievementPoints] as int?) ?? 0,
+      // V10 fields
+      totalDailyChallengesCompleted:
+          (map[GlobalStatisticsColumnsV10.totalDailyChallengesCompleted]
+                  as int?) ??
+              0,
+      dailyChallengeStreak:
+          (map[GlobalStatisticsColumnsV10.dailyChallengeStreak] as int?) ?? 0,
+      bestDailyChallengeStreak:
+          (map[GlobalStatisticsColumnsV10.bestDailyChallengeStreak] as int?) ??
+              0,
+      perfectDailyChallenges:
+          (map[GlobalStatisticsColumnsV10.perfectDailyChallenges] as int?) ?? 0,
       createdAt: DateTime.fromMillisecondsSinceEpoch(
         (map[GlobalStatisticsColumns.createdAt] as int) * 1000,
       ),
@@ -270,6 +302,13 @@ class GlobalStatistics {
       GlobalStatisticsColumnsV2.totalAchievementsUnlocked:
           totalAchievementsUnlocked,
       GlobalStatisticsColumnsV2.totalAchievementPoints: totalAchievementPoints,
+      // V10 fields
+      GlobalStatisticsColumnsV10.totalDailyChallengesCompleted:
+          totalDailyChallengesCompleted,
+      GlobalStatisticsColumnsV10.dailyChallengeStreak: dailyChallengeStreak,
+      GlobalStatisticsColumnsV10.bestDailyChallengeStreak:
+          bestDailyChallengeStreak,
+      GlobalStatisticsColumnsV10.perfectDailyChallenges: perfectDailyChallenges,
       GlobalStatisticsColumns.createdAt:
           createdAt.millisecondsSinceEpoch ~/ 1000,
       GlobalStatisticsColumns.updatedAt:
@@ -307,6 +346,11 @@ class GlobalStatistics {
     int? consecutivePerfectScores,
     int? totalAchievementsUnlocked,
     int? totalAchievementPoints,
+    // V10 fields
+    int? totalDailyChallengesCompleted,
+    int? dailyChallengeStreak,
+    int? bestDailyChallengeStreak,
+    int? perfectDailyChallenges,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -350,6 +394,14 @@ class GlobalStatistics {
           totalAchievementsUnlocked ?? this.totalAchievementsUnlocked,
       totalAchievementPoints:
           totalAchievementPoints ?? this.totalAchievementPoints,
+      // V10 fields
+      totalDailyChallengesCompleted:
+          totalDailyChallengesCompleted ?? this.totalDailyChallengesCompleted,
+      dailyChallengeStreak: dailyChallengeStreak ?? this.dailyChallengeStreak,
+      bestDailyChallengeStreak:
+          bestDailyChallengeStreak ?? this.bestDailyChallengeStreak,
+      perfectDailyChallenges:
+          perfectDailyChallenges ?? this.perfectDailyChallenges,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

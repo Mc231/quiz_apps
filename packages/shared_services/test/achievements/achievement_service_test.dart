@@ -173,6 +173,12 @@ class MockStatisticsDataSource implements StatisticsDataSource {
 
   @override
   Future<void> updateQuizTypeStatisticsForSession(QuizSession session) async {}
+
+  @override
+  Future<void> updateDailyChallengeStats({
+    required bool isPerfect,
+    required int currentStreak,
+  }) async {}
 }
 
 void main() {

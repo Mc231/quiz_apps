@@ -3,6 +3,7 @@ library;
 
 import '../database/app_database.dart';
 import '../database/migrations/migration_v2.dart';
+import '../database/migrations/migration_v10.dart';
 import '../database/tables/daily_statistics_table.dart';
 import '../database/tables/statistics_tables.dart';
 import '../models/daily_statistics.dart';
@@ -66,6 +67,16 @@ abstract class StatisticsDataSource {
   Future<void> updateAchievementStats({
     required int totalUnlocked,
     required int totalPoints,
+  });
+
+  // Daily Challenge Statistics (V10)
+  /// Updates global statistics after a daily challenge completion.
+  ///
+  /// [isPerfect] - Whether the challenge was completed with 100% score.
+  /// [currentStreak] - The current daily challenge streak from the service.
+  Future<void> updateDailyChallengeStats({
+    required bool isPerfect,
+    required int currentStreak,
   });
 }
 
@@ -588,5 +599,33 @@ class StatisticsDataSourceImpl implements StatisticsDataSource {
       },
       where: '${GlobalStatisticsColumns.id} = 1',
     );
+  }
+
+  // ==========================================================================
+  // Daily Challenge Statistics (V10)
+  // ==========================================================================
+
+  @override
+  Future<void> updateDailyChallengeStats({
+    required bool isPerfect,
+    required int currentStreak,
+  }) async {
+    final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    // Get current best streak to compare
+    final stats = await getGlobalStatistics();
+    final newBestStreak = currentStreak > stats.bestDailyChallengeStreak
+        ? currentStreak
+        : stats.bestDailyChallengeStreak;
+
+    await _database.rawQuery('''
+      UPDATE $globalStatisticsTable SET
+        ${GlobalStatisticsColumnsV10.totalDailyChallengesCompleted} = ${GlobalStatisticsColumnsV10.totalDailyChallengesCompleted} + 1,
+        ${GlobalStatisticsColumnsV10.dailyChallengeStreak} = ?,
+        ${GlobalStatisticsColumnsV10.bestDailyChallengeStreak} = ?,
+        ${GlobalStatisticsColumnsV10.perfectDailyChallenges} = ${GlobalStatisticsColumnsV10.perfectDailyChallenges} + ${isPerfect ? 1 : 0},
+        ${GlobalStatisticsColumns.updatedAt} = ?
+      WHERE ${GlobalStatisticsColumns.id} = 1
+    ''', [currentStreak, newBestStreak, timestamp]);
   }
 }

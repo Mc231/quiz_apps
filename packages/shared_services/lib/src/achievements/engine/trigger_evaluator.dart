@@ -276,6 +276,12 @@ class TriggerEvaluator {
         session?.totalSkipped ?? 0,
       StatField.sessionIsPerfect =>
         (session?.scorePercentage ?? 0) >= 100.0 ? 1 : 0,
+
+      // Daily Challenge fields (from GlobalStatistics)
+      StatField.totalDailyChallengesCompleted =>
+        stats.totalDailyChallengesCompleted,
+      StatField.dailyChallengeStreak => stats.dailyChallengeStreak,
+      StatField.perfectDailyChallenges => stats.perfectDailyChallenges,
     };
   }
 

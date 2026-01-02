@@ -157,3 +157,6 @@ export 'src/share/share_exports.dart';
 
 // Streak Widgets
 export 'src/streak/streak_widgets_exports.dart';
+
+// Daily Challenge
+export 'src/daily_challenge/daily_challenge_exports.dart';

@@ -99,6 +99,17 @@ enum StatField {
 
   /// Consecutive perfect scores.
   consecutivePerfectScores,
+
+  // === Daily Challenge fields ===
+
+  /// Total number of daily challenges completed.
+  totalDailyChallengesCompleted,
+
+  /// Current daily challenge streak.
+  dailyChallengeStreak,
+
+  /// Number of perfect daily challenges.
+  perfectDailyChallenges,
 }
 
 /// Extension providing field metadata.
@@ -126,6 +137,9 @@ extension StatFieldExtension on StatField {
         StatField.sessionsWithoutHints => true,
         StatField.quickAnswersCount => true,
         StatField.consecutivePerfectScores => true,
+        StatField.totalDailyChallengesCompleted => true,
+        StatField.dailyChallengeStreak => true,
+        StatField.perfectDailyChallenges => true,
         _ => false,
       };
 

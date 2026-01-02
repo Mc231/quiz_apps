@@ -9,6 +9,7 @@ export 'analytics_service.dart';
 
 // Events
 export 'events/achievement_event.dart';
+export 'events/daily_challenge_event.dart';
 export 'events/deep_link_event.dart';
 export 'events/error_event.dart';
 export 'events/hint_event.dart';
