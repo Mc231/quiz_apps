@@ -187,6 +187,12 @@ abstract class QuizEngineLocalizations {
   /// **'Incorrect!'**
   String get incorrectFeedback;
 
+  /// Label shown above correct answer in feedback
+  ///
+  /// In en, this message translates to:
+  /// **'Correct answer:'**
+  String get correctAnswerLabel;
+
   /// Video load error message
   ///
   /// In en, this message translates to:

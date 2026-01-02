@@ -76,6 +76,11 @@
     "description": "Incorrect answer feedback"
   },
 
+  "correctAnswerLabel": "Correct answer:",
+  "@correctAnswerLabel": {
+    "description": "Label shown above correct answer in feedback"
+  },
+
   "videoLoadError": "Failed to load video",
   "@videoLoadError": {
     "description": "Video load error message"

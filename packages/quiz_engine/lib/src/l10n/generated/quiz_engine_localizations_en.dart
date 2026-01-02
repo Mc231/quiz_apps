@@ -55,6 +55,9 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String get incorrectFeedback => 'Incorrect!';
 
   @override
+  String get correctAnswerLabel => 'Correct answer:';
+
+  @override
   String get videoLoadError => 'Failed to load video';
 
   @override

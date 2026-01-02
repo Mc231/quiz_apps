@@ -147,8 +147,9 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
     final l10n = QuizL10n.of(context);
     final message = isCorrect ? l10n.correctFeedback : l10n.incorrectFeedback;
 
-    // Check if we should show the correct answer (for incorrect answers in image layout)
-    final showCorrectAnswer = !isCorrect && _isImageAnswerLayout();
+    // Determine what type of correct answer preview to show for incorrect answers
+    final showImageAnswer = !isCorrect && _isImageAnswerLayout();
+    final showTextAnswer = !isCorrect && _isTextAnswerLayout();
 
     return Card(
       elevation: 8,
@@ -169,10 +170,14 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
                 color: Colors.white,
               ),
             ),
-            // Show correct answer image for incorrect image answer layouts
-            if (showCorrectAnswer) ...[
+            // Show correct answer for incorrect answers
+            if (showImageAnswer) ...[
               const SizedBox(height: 16),
-              _buildCorrectAnswerPreview(),
+              _buildCorrectAnswerImagePreview(),
+            ],
+            if (showTextAnswer) ...[
+              const SizedBox(height: 16),
+              _buildCorrectAnswerTextPreview(),
             ],
           ],
         ),
@@ -186,8 +191,16 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
     return layout is TextQuestionImageAnswersLayout;
   }
 
+  /// Checks if the current layout uses text answers.
+  bool _isTextAnswerLayout() {
+    final layout = widget.layoutConfig;
+    return layout is ImageQuestionTextAnswersLayout ||
+        layout is TextQuestionTextAnswersLayout ||
+        layout is AudioQuestionTextAnswersLayout;
+  }
+
   /// Builds a preview of the correct answer for image answer layouts.
-  Widget _buildCorrectAnswerPreview() {
+  Widget _buildCorrectAnswerImagePreview() {
     final correctAnswer = widget.feedbackState.question.answer;
     final imageSize = _getCorrectAnswerImageSize();
 
@@ -218,6 +231,65 @@ class _AnswerFeedbackWidgetState extends State<AnswerFeedbackWidget>
       tablet: 100,
       desktop: 120,
       watch: 48,
+    );
+  }
+
+  /// Builds a preview of the correct answer for text answer layouts.
+  Widget _buildCorrectAnswerTextPreview() {
+    final correctAnswer = widget.feedbackState.question.answer;
+    final l10n = QuizL10n.of(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.white, width: 2),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            l10n.correctAnswerLabel,
+            style: TextStyle(
+              fontSize: _getCorrectAnswerLabelSize(),
+              color: Colors.white.withValues(alpha: 0.8),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            correctAnswer.otherOptions['name'] as String? ?? '',
+            style: TextStyle(
+              fontSize: _getCorrectAnswerTextSize(),
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Returns the font size for the correct answer label.
+  double _getCorrectAnswerLabelSize() {
+    return getValueForScreenType<double>(
+      context: context,
+      mobile: 12,
+      tablet: 14,
+      desktop: 14,
+      watch: 10,
+    );
+  }
+
+  /// Returns the font size for the correct answer text.
+  double _getCorrectAnswerTextSize() {
+    return getValueForScreenType<double>(
+      context: context,
+      mobile: 18,
+      tablet: 22,
+      desktop: 22,
+      watch: 14,
     );
   }
 
