@@ -145,6 +145,7 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
         style: const DailyChallengeCardStyle(
           compact: true,
           showCountdown: true,
+          hideWhenCompleted: true,
         ),
       ),
     );

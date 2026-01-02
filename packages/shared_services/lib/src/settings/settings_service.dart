@@ -161,6 +161,17 @@ class SettingsService {
     await updateSettings(newSettings);
   }
 
+  /// Sets the preferred layout mode for Challenge quizzes
+  ///
+  /// [modeId] - The layout mode ID to save (e.g., 'standard', 'reverse', 'mixed')
+  /// Pass null to clear the preference and use the default layout.
+  Future<void> setChallengeLayoutMode(String? modeId) async {
+    final newSettings = modeId == null
+        ? _currentSettings.copyWith(clearPreferredChallengeLayoutModeId: true)
+        : _currentSettings.copyWith(preferredChallengeLayoutModeId: modeId);
+    await updateSettings(newSettings);
+  }
+
   /// Resets all settings to defaults
   ///
   /// Returns the default settings

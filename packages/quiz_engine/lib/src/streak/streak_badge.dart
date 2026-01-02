@@ -379,8 +379,9 @@ class StreakBadgeCompact extends StatelessWidget {
     super.key,
     required this.streakCount,
     required this.status,
-    this.size = 20.0,
+    this.size = 26.0,
     this.onTap,
+    this.showTooltip = true,
   });
 
   /// The current streak count.
@@ -395,6 +396,9 @@ class StreakBadgeCompact extends StatelessWidget {
   /// Optional callback when tapped.
   final VoidCallback? onTap;
 
+  /// Whether to show tooltip on long press.
+  final bool showTooltip;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -402,8 +406,9 @@ class StreakBadgeCompact extends StatelessWidget {
 
     final color = _getColor(theme);
     final statusMessage = _getStatusMessage(l10n);
+    final tooltipMessage = _getTooltipMessage(l10n);
 
-    return Semantics(
+    final badge = Semantics(
       label: l10n.accessibilityStreakBadge(streakCount, statusMessage),
       button: onTap != null,
       child: InkWell(
@@ -411,7 +416,7 @@ class StreakBadgeCompact extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         excludeFromSemantics: true,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -420,11 +425,11 @@ class StreakBadgeCompact extends StatelessWidget {
                 size: size,
                 color: color,
               ),
-              const SizedBox(width: 2),
+              const SizedBox(width: 4),
               Text(
                 '$streakCount',
                 style: TextStyle(
-                  fontSize: size * 0.7,
+                  fontSize: size * 0.75,
                   fontWeight: FontWeight.bold,
                   color: color,
                 ),
@@ -434,6 +439,26 @@ class StreakBadgeCompact extends StatelessWidget {
         ),
       ),
     );
+
+    if (showTooltip) {
+      return Tooltip(
+        message: tooltipMessage,
+        preferBelow: true,
+        child: badge,
+      );
+    }
+
+    return badge;
+  }
+
+  String _getTooltipMessage(QuizEngineLocalizations l10n) {
+    if (streakCount == 0) {
+      return l10n.streakTooltipNoStreak;
+    } else if (streakCount == 1) {
+      return l10n.streakTooltipSingular;
+    } else {
+      return l10n.streakTooltipPlural(streakCount);
+    }
   }
 
   Color _getColor(ThemeData theme) {

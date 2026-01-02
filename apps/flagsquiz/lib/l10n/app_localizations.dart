@@ -2632,6 +2632,24 @@ abstract class AppLocalizations {
   /// **'Mix'**
   String get layoutModeMixedShort;
 
+  /// Description for standard layout mode
+  ///
+  /// In en, this message translates to:
+  /// **'See the flag, guess the country name'**
+  String get layoutModeStandardDesc;
+
+  /// Description for reverse layout mode
+  ///
+  /// In en, this message translates to:
+  /// **'See the country name, guess the flag'**
+  String get layoutModeReverseDesc;
+
+  /// Description for mixed layout mode
+  ///
+  /// In en, this message translates to:
+  /// **'Randomly alternate between both modes'**
+  String get layoutModeMixedDesc;
+
   /// Title for the layout mode selector section
   ///
   /// In en, this message translates to:

@@ -2686,6 +2686,18 @@ abstract class QuizEngineLocalizations {
   /// **'Layout'**
   String get layoutMode;
 
+  /// Title for the quiz mode selector on play screen
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz Mode'**
+  String get quizModeTitle;
+
+  /// Subtitle explaining the quiz mode selector
+  ///
+  /// In en, this message translates to:
+  /// **'Choose how questions are displayed'**
+  String get quizModeSubtitle;
+
   /// Label for the layout mode used per question
   ///
   /// In en, this message translates to:
@@ -2955,6 +2967,24 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Total Days'**
   String get streakTotalDaysLabel;
+
+  /// Tooltip for streak badge when no streak
+  ///
+  /// In en, this message translates to:
+  /// **'Start playing to build your streak!'**
+  String get streakTooltipNoStreak;
+
+  /// Tooltip for streak badge with 1 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'1 day streak - keep it going!'**
+  String get streakTooltipSingular;
+
+  /// Tooltip for streak badge with multiple days
+  ///
+  /// In en, this message translates to:
+  /// **'{count} day streak - amazing!'**
+  String streakTooltipPlural(int count);
 
   /// Accessibility label for streak badge
   ///

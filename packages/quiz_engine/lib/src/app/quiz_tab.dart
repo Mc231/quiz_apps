@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../l10n/quiz_localizations.dart';
 
@@ -140,10 +140,10 @@ sealed class QuizTab {
 /// Tab for playing quizzes (category selection).
 final class PlayTab extends QuizTab {
   /// Default icon for play tab.
-  static const IconData defaultIcon = IconData(0xe51a, fontFamily: 'MaterialIcons'); // play_circle_outline
+  static const IconData defaultIcon = Icons.home_outlined;
 
   /// Default selected icon for play tab.
-  static const IconData defaultSelectedIcon = IconData(0xe518, fontFamily: 'MaterialIcons'); // play_circle
+  static const IconData defaultSelectedIcon = Icons.home;
 
   /// Creates a [PlayTab].
   PlayTab({String Function(BuildContext context)? labelBuilder})
@@ -161,10 +161,10 @@ final class PlayTab extends QuizTab {
 /// Tab for viewing quiz history.
 final class HistoryTab extends QuizTab {
   /// Default icon for history tab.
-  static const IconData defaultIcon = IconData(0xe3ce, fontFamily: 'MaterialIcons'); // history_outlined
+  static const IconData defaultIcon = Icons.format_list_bulleted_outlined;
 
   /// Default selected icon for history tab.
-  static const IconData defaultSelectedIcon = IconData(0xe3cd, fontFamily: 'MaterialIcons'); // history
+  static const IconData defaultSelectedIcon = Icons.format_list_bulleted;
 
   /// Creates a [HistoryTab].
   HistoryTab({String Function(BuildContext context)? labelBuilder})
@@ -182,10 +182,10 @@ final class HistoryTab extends QuizTab {
 /// Tab for viewing statistics.
 final class StatisticsTab extends QuizTab {
   /// Default icon for statistics tab.
-  static const IconData defaultIcon = IconData(0xe025, fontFamily: 'MaterialIcons'); // analytics_outlined
+  static const IconData defaultIcon = Icons.bar_chart_outlined;
 
   /// Default selected icon for statistics tab.
-  static const IconData defaultSelectedIcon = IconData(0xe024, fontFamily: 'MaterialIcons'); // analytics
+  static const IconData defaultSelectedIcon = Icons.bar_chart;
 
   /// Creates a [StatisticsTab].
   StatisticsTab({String Function(BuildContext context)? labelBuilder})
@@ -203,10 +203,10 @@ final class StatisticsTab extends QuizTab {
 /// Tab for app settings.
 final class SettingsTab extends QuizTab {
   /// Default icon for settings tab.
-  static const IconData defaultIcon = IconData(0xe8b8, fontFamily: 'MaterialIcons'); // settings_outlined
+  static const IconData defaultIcon = Icons.settings_outlined;
 
   /// Default selected icon for settings tab.
-  static const IconData defaultSelectedIcon = IconData(0xe8b8, fontFamily: 'MaterialIcons'); // settings
+  static const IconData defaultSelectedIcon = Icons.settings;
 
   /// Creates a [SettingsTab].
   SettingsTab({String Function(BuildContext context)? labelBuilder})
@@ -224,12 +224,10 @@ final class SettingsTab extends QuizTab {
 /// Tab for viewing achievements.
 final class AchievementsTab extends QuizTab {
   /// Default icon for achievements tab.
-  static const IconData defaultIcon =
-      IconData(0xe1af, fontFamily: 'MaterialIcons'); // emoji_events_outlined
+  static const IconData defaultIcon = Icons.emoji_events_outlined;
 
   /// Default selected icon for achievements tab.
-  static const IconData defaultSelectedIcon =
-      IconData(0xe1ae, fontFamily: 'MaterialIcons'); // emoji_events
+  static const IconData defaultSelectedIcon = Icons.emoji_events;
 
   /// Creates an [AchievementsTab].
   AchievementsTab({String Function(BuildContext context)? labelBuilder})

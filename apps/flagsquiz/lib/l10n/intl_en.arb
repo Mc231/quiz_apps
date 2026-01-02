@@ -1638,6 +1638,18 @@
   "@layoutModeMixedShort": {
     "description": "Short label for mixed layout mode"
   },
+  "layoutModeStandardDesc": "See the flag, guess the country name",
+  "@layoutModeStandardDesc": {
+    "description": "Description for standard layout mode"
+  },
+  "layoutModeReverseDesc": "See the country name, guess the flag",
+  "@layoutModeReverseDesc": {
+    "description": "Description for reverse layout mode"
+  },
+  "layoutModeMixedDesc": "Randomly alternate between both modes",
+  "@layoutModeMixedDesc": {
+    "description": "Description for mixed layout mode"
+  },
   "quizMode": "Quiz Mode",
   "@quizMode": {
     "description": "Title for the layout mode selector section"

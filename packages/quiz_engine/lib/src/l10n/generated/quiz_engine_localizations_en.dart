@@ -1504,6 +1504,12 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String get layoutMode => 'Layout';
 
   @override
+  String get quizModeTitle => 'Quiz Mode';
+
+  @override
+  String get quizModeSubtitle => 'Choose how questions are displayed';
+
+  @override
   String get layoutModeUsed => 'Layout used';
 
   @override
@@ -1656,6 +1662,17 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
 
   @override
   String get streakTotalDaysLabel => 'Total Days';
+
+  @override
+  String get streakTooltipNoStreak => 'Start playing to build your streak!';
+
+  @override
+  String get streakTooltipSingular => '1 day streak - keep it going!';
+
+  @override
+  String streakTooltipPlural(int count) {
+    return '$count day streak - amazing!';
+  }
 
   @override
   String accessibilityStreakBadge(int count, String status) {

@@ -27,6 +27,7 @@ List<LayoutModeOption> createFlagsLayoutOptions(BuildContext context) {
       icon: Icons.image_outlined,
       label: l10n.layoutModeStandard,
       shortLabel: l10n.layoutModeStandardShort,
+      description: l10n.layoutModeStandardDesc,
       layoutConfig: const ImageQuestionTextAnswersLayout(),
     ),
     LayoutModeOption(
@@ -34,6 +35,7 @@ List<LayoutModeOption> createFlagsLayoutOptions(BuildContext context) {
       icon: Icons.text_fields,
       label: l10n.layoutModeReverse,
       shortLabel: l10n.layoutModeReverseShort,
+      description: l10n.layoutModeReverseDesc,
       layoutConfig: TextQuestionImageAnswersLayout(
         questionTemplate: l10n.whichFlagIs('{name}'),
       ),
@@ -43,6 +45,7 @@ List<LayoutModeOption> createFlagsLayoutOptions(BuildContext context) {
       icon: Icons.shuffle,
       label: l10n.layoutModeMixed,
       shortLabel: l10n.layoutModeMixedShort,
+      description: l10n.layoutModeMixedDesc,
       layoutConfig: MixedLayout(
         layouts: [
           const ImageQuestionTextAnswersLayout(),

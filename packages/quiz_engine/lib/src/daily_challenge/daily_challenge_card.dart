@@ -19,6 +19,7 @@ class DailyChallengeCardStyle {
     this.padding = const EdgeInsets.all(16.0),
     this.showCountdown = true,
     this.compact = false,
+    this.hideWhenCompleted = false,
   });
 
   /// Background color of the card when challenge is available.
@@ -44,6 +45,12 @@ class DailyChallengeCardStyle {
 
   /// Whether to use compact layout.
   final bool compact;
+
+  /// Whether to hide the card when challenge is completed.
+  ///
+  /// If true, the card will not be shown after the user completes
+  /// today's challenge. Default is false.
+  final bool hideWhenCompleted;
 }
 
 /// A card widget displaying the daily challenge status.
@@ -309,12 +316,15 @@ class _DailyChallengeCardState extends State<DailyChallengeCard>
 
   Widget _buildBadge(ThemeData theme, QuizEngineLocalizations l10n, Color accentColor) {
     final isCompleted = widget.status.isCompleted;
+    final isDark = theme.brightness == Brightness.dark;
+    // Use high-contrast green for visibility on all backgrounds
+    final completedColor = isDark ? Colors.green.shade400 : const Color(0xFF1B5E20);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: isCompleted
-            ? Colors.green.withValues(alpha: 0.15)
+            ? completedColor.withValues(alpha: 0.15)
             : accentColor.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(8),
       ),
@@ -323,7 +333,7 @@ class _DailyChallengeCardState extends State<DailyChallengeCard>
             ? l10n.dailyChallengeCompleted
             : l10n.dailyChallengeAvailable,
         style: theme.textTheme.labelSmall?.copyWith(
-          color: isCompleted ? Colors.green : accentColor,
+          color: isCompleted ? completedColor : accentColor,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -331,22 +341,28 @@ class _DailyChallengeCardState extends State<DailyChallengeCard>
   }
 
   Widget _buildStatusText(ThemeData theme, QuizEngineLocalizations l10n, Color accentColor) {
+    final isDark = theme.brightness == Brightness.dark;
+    // Use high-contrast green for visibility on all backgrounds
+    // Light mode: green.shade900 (0xFF1B5E20) - very dark green
+    // Dark mode: green.shade400 - bright enough for dark backgrounds
+    final completedColor = isDark ? Colors.green.shade400 : const Color(0xFF1B5E20);
+
     if (widget.status.isCompleted) {
       final result = widget.status.result;
       if (result != null) {
         return Text(
           '${l10n.score}: ${result.score}%',
           style: theme.textTheme.bodySmall?.copyWith(
-            color: Colors.green,
-            fontWeight: FontWeight.w500,
+            color: completedColor,
+            fontWeight: FontWeight.w600,
           ),
         );
       }
       return Text(
         l10n.dailyChallengeCompleted,
         style: theme.textTheme.bodySmall?.copyWith(
-          color: Colors.green,
-          fontWeight: FontWeight.w500,
+          color: completedColor,
+          fontWeight: FontWeight.w600,
         ),
       );
     }

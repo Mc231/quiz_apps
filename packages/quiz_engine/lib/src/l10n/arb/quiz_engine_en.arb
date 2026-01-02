@@ -2294,6 +2294,16 @@
     "description": "Layout mode label in session details"
   },
 
+  "quizModeTitle": "Quiz Mode",
+  "@quizModeTitle": {
+    "description": "Title for the quiz mode selector on play screen"
+  },
+
+  "quizModeSubtitle": "Choose how questions are displayed",
+  "@quizModeSubtitle": {
+    "description": "Subtitle explaining the quiz mode selector"
+  },
+
   "layoutModeUsed": "Layout used",
   "@layoutModeUsed": {
     "description": "Label for the layout mode used per question"
@@ -2548,6 +2558,24 @@
   "streakTotalDaysLabel": "Total Days",
   "@streakTotalDaysLabel": {
     "description": "Label for total days played"
+  },
+
+  "streakTooltipNoStreak": "Start playing to build your streak!",
+  "@streakTooltipNoStreak": {
+    "description": "Tooltip for streak badge when no streak"
+  },
+
+  "streakTooltipSingular": "1 day streak - keep it going!",
+  "@streakTooltipSingular": {
+    "description": "Tooltip for streak badge with 1 day streak"
+  },
+
+  "streakTooltipPlural": "{count} day streak - amazing!",
+  "@streakTooltipPlural": {
+    "description": "Tooltip for streak badge with multiple days",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
   },
 
   "accessibilityStreakBadge": "{count} day streak, {status}",

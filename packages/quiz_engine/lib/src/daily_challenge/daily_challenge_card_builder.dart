@@ -152,6 +152,11 @@ class _DailyChallengeCardBuilderState extends State<DailyChallengeCardBuilder> {
       return const SizedBox.shrink();
     }
 
+    // Hide card if completed and hideWhenCompleted is enabled
+    if (status.isCompleted && widget.style.hideWhenCompleted) {
+      return const SizedBox.shrink();
+    }
+
     return DailyChallengeCard(
       status: status,
       style: widget.style,

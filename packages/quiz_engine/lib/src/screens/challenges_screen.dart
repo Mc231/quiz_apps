@@ -472,15 +472,46 @@ class _CategoryPickerSheet extends StatefulWidget {
 
 class _CategoryPickerSheetState extends State<_CategoryPickerSheet> {
   LayoutModeOption? _selectedLayoutOption;
+  bool _initialized = false;
 
   @override
-  void initState() {
-    super.initState();
-    // Default to first option if available
-    if (widget.layoutModeOptions != null &&
-        widget.layoutModeOptions!.isNotEmpty) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      _initialized = true;
+      _initLayoutOption();
+    }
+  }
+
+  void _initLayoutOption() {
+    if (widget.layoutModeOptions == null ||
+        widget.layoutModeOptions!.isEmpty) {
+      return;
+    }
+
+    // Try to load saved preference from settings
+    final settingsService = context.settingsService;
+    final savedModeId = settingsService.currentSettings.preferredChallengeLayoutModeId;
+
+    if (savedModeId != null) {
+      // Find the option with the saved ID
+      final savedOption = widget.layoutModeOptions!.firstWhere(
+        (option) => option.id == savedModeId,
+        orElse: () => widget.layoutModeOptions!.first,
+      );
+      _selectedLayoutOption = savedOption;
+    } else {
+      // Default to first option
       _selectedLayoutOption = widget.layoutModeOptions!.first;
     }
+  }
+
+  void _onLayoutOptionChanged(LayoutModeOption option) {
+    setState(() {
+      _selectedLayoutOption = option;
+    });
+    // Save the preference
+    context.settingsService.setChallengeLayoutMode(option.id);
   }
 
   @override
@@ -560,11 +591,7 @@ class _CategoryPickerSheetState extends State<_CategoryPickerSheet> {
                 title: widget.layoutModeSelectorTitle,
                 options: widget.layoutModeOptions!,
                 selectedOption: _selectedLayoutOption!,
-                onOptionSelected: (option) {
-                  setState(() {
-                    _selectedLayoutOption = option;
-                  });
-                },
+                onOptionSelected: _onLayoutOptionChanged,
               ),
             ],
 

@@ -1102,6 +1102,10 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String accessibilityDailyChallengeCountdown(String time) =>
       'Next challenge in $time';
+  @override
+  String get quizModeTitle => 'Quiz Mode';
+  @override
+  String get quizModeSubtitle => 'Select how questions are presented';
 }
 
 void main() {

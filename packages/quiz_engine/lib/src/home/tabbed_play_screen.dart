@@ -317,6 +317,8 @@ class TabbedPlayScreenState extends State<TabbedPlayScreen>
     final options = widget.config.layoutModeOptions;
     if (options == null || options.isEmpty) return null;
 
+    final l10n = QuizL10n.of(context);
+
     // Find selected option by ID, default to first
     final selectedId = widget.config.selectedLayoutModeId;
     final selectedOption = selectedId != null
@@ -326,13 +328,14 @@ class TabbedPlayScreenState extends State<TabbedPlayScreen>
           )
         : options.first;
 
-    return LayoutModeSelector(
+    return LayoutModeSelectorCard(
+      title: l10n.quizModeTitle,
+      subtitle: l10n.quizModeSubtitle,
       options: options,
       selectedOption: selectedOption,
       onOptionSelected: (option) {
         widget.config.onLayoutModeChanged?.call(option);
       },
-      large: true,
     );
   }
 
@@ -341,7 +344,7 @@ class TabbedPlayScreenState extends State<TabbedPlayScreen>
     if (builder == null) return null;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(top: 16, bottom: 16),
       child: builder(context),
     );
   }

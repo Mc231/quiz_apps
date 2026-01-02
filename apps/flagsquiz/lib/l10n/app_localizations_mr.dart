@@ -1241,6 +1241,15 @@ class AppLocalizationsMr extends AppLocalizations {
   String get layoutModeMixedShort => 'Mix';
 
   @override
+  String get layoutModeStandardDesc => 'See the flag, guess the country name';
+
+  @override
+  String get layoutModeReverseDesc => 'See the country name, guess the flag';
+
+  @override
+  String get layoutModeMixedDesc => 'Randomly alternate between both modes';
+
+  @override
   String get quizMode => 'Quiz Mode';
 
   @override

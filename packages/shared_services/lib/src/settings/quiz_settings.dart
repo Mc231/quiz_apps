@@ -46,6 +46,13 @@ class QuizSettings {
   /// If null, uses the default layout from the data provider.
   final String? preferredLayoutModeId;
 
+  /// Preferred layout mode ID for Challenge quizzes.
+  ///
+  /// This is the ID of the layout mode option (e.g., 'standard', 'reverse', 'mixed')
+  /// that the user prefers for challenge quizzes.
+  /// If null, uses the default layout (first option).
+  final String? preferredChallengeLayoutModeId;
+
   /// Creates a new QuizSettings instance
   const QuizSettings({
     required this.soundEnabled,
@@ -53,6 +60,7 @@ class QuizSettings {
     required this.hapticEnabled,
     required this.themeMode,
     this.preferredLayoutModeId,
+    this.preferredChallengeLayoutModeId,
   });
 
   /// Returns default settings with all features enabled
@@ -73,6 +81,8 @@ class QuizSettings {
     AppThemeMode? themeMode,
     String? preferredLayoutModeId,
     bool clearPreferredLayoutModeId = false,
+    String? preferredChallengeLayoutModeId,
+    bool clearPreferredChallengeLayoutModeId = false,
   }) {
     return QuizSettings(
       soundEnabled: soundEnabled ?? this.soundEnabled,
@@ -82,6 +92,9 @@ class QuizSettings {
       preferredLayoutModeId: clearPreferredLayoutModeId
           ? null
           : (preferredLayoutModeId ?? this.preferredLayoutModeId),
+      preferredChallengeLayoutModeId: clearPreferredChallengeLayoutModeId
+          ? null
+          : (preferredChallengeLayoutModeId ?? this.preferredChallengeLayoutModeId),
     );
   }
 
@@ -94,6 +107,8 @@ class QuizSettings {
       'themeMode': themeMode.name,
       if (preferredLayoutModeId != null)
         'preferredLayoutModeId': preferredLayoutModeId,
+      if (preferredChallengeLayoutModeId != null)
+        'preferredChallengeLayoutModeId': preferredChallengeLayoutModeId,
     };
   }
 
@@ -105,6 +120,7 @@ class QuizSettings {
       hapticEnabled: json['hapticEnabled'] as bool? ?? true,
       themeMode: _parseThemeMode(json['themeMode'] as String?),
       preferredLayoutModeId: json['preferredLayoutModeId'] as String?,
+      preferredChallengeLayoutModeId: json['preferredChallengeLayoutModeId'] as String?,
     );
   }
 
@@ -142,7 +158,8 @@ class QuizSettings {
         other.musicEnabled == musicEnabled &&
         other.hapticEnabled == hapticEnabled &&
         other.themeMode == themeMode &&
-        other.preferredLayoutModeId == preferredLayoutModeId;
+        other.preferredLayoutModeId == preferredLayoutModeId &&
+        other.preferredChallengeLayoutModeId == preferredChallengeLayoutModeId;
   }
 
   @override
@@ -153,6 +170,7 @@ class QuizSettings {
       hapticEnabled,
       themeMode,
       preferredLayoutModeId,
+      preferredChallengeLayoutModeId,
     );
   }
 
@@ -163,7 +181,8 @@ class QuizSettings {
         'musicEnabled: $musicEnabled, '
         'hapticEnabled: $hapticEnabled, '
         'themeMode: $themeMode, '
-        'preferredLayoutModeId: $preferredLayoutModeId'
+        'preferredLayoutModeId: $preferredLayoutModeId, '
+        'preferredChallengeLayoutModeId: $preferredChallengeLayoutModeId'
         ')';
   }
 }
