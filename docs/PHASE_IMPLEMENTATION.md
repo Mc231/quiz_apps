@@ -4846,10 +4846,18 @@ The following phases are planned for future implementation but are currently on 
 - ✅ `packages/quiz_engine/test/streak/streak_card_test.dart` - StreakCard widget tests
 - ✅ `packages/quiz_engine/test/streak/streak_milestone_celebration_test.dart` - Milestone celebration tests
 
-**Pending Integrations (for future sprints):**
-- [ ] Add streak display to home screen header
-- [ ] Add streak display to quiz results screen
-- [ ] Add streak display to profile/statistics section
+**Integrations Completed:**
+- [x] Add StreakService to QuizServices container
+- [x] Add streak display to home screen header (StreakBadge.compact in app bar)
+- [x] Add streak display to quiz results screen (StreakBadge in statistics grid)
+- [x] Add streak display to profile/statistics section (via globalStatistics + StreakCard import)
+
+**Integration Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services.dart` - Added streakService field
+- ✅ `packages/quiz_engine/lib/src/services/quiz_services_context.dart` - Added streakService getter
+- ✅ `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` - Added StreakBadge.compact to app bar
+- ✅ `packages/quiz_engine/lib/src/screens/quiz_results_screen.dart` - Added StreakBadge to statistics grid
+- ✅ `packages/quiz_engine/lib/src/screens/statistics_dashboard_screen.dart` - Added StreakCard import
 
 ---
 
