@@ -4919,31 +4919,58 @@ The following phases are planned for future implementation but are currently on 
 <details>
 <summary>Sprint Details (click to expand)</summary>
 
-#### Sprint 16.1: Daily Challenge Models & Service
+#### Sprint 16.1: Daily Challenge Models & Service ✅
 
 **Goal:** Create infrastructure for daily challenges.
 
 **Tasks:**
-- [ ] Create `DailyChallenge` model:
+- [x] Create `DailyChallenge` model:
   - `id` - Unique identifier (date-based)
   - `date` - Challenge date
   - `categoryId` - Random or rotating category
   - `questionCount` - Number of questions (e.g., 10)
   - `timeLimit` - Optional time limit
   - `seed` - Random seed for consistent questions globally
-- [ ] Create `DailyChallengeResult` model:
+- [x] Create `DailyChallengeResult` model:
   - `challengeId` - Reference to challenge
   - `score` - Points earned
   - `correctCount` - Questions correct
   - `completionTime` - Time to complete
   - `completedAt` - Timestamp
-- [ ] Create `DailyChallengeService`:
+- [x] Create `DailyChallengeService`:
   - `getTodaysChallenge()` - Get or generate today's challenge
   - `hasCompletedToday()` - Check if already played
   - `submitResult(result)` - Save result
   - `getHistory(days)` - Past challenge results
-- [ ] Create `DailyChallengeRepository` for persistence
-- [ ] Write unit tests
+- [x] Create `DailyChallengeRepository` for persistence
+- [x] Write unit tests
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/storage/models/daily_challenge.dart`
+- ✅ `packages/shared_services/lib/src/storage/models/daily_challenge_result.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/tables/daily_challenge_table.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration_v9.dart`
+- ✅ `packages/shared_services/lib/src/storage/data_sources/daily_challenge_data_source.dart`
+- ✅ `packages/shared_services/lib/src/storage/repositories/daily_challenge_repository.dart`
+- ✅ `packages/shared_services/lib/src/storage/services/daily_challenge_service.dart`
+- ✅ `packages/shared_services/test/storage/models/daily_challenge_test.dart`
+- ✅ `packages/shared_services/test/storage/models/daily_challenge_result_test.dart`
+- ✅ `packages/shared_services/test/storage/services/daily_challenge_service_test.dart`
+
+**Files Modified:**
+- ✅ `packages/shared_services/lib/src/storage/database/app_database.dart` (added MigrationV9)
+- ✅ `packages/shared_services/lib/src/storage/database/database_config.dart` (version 8 → 9)
+- ✅ `packages/shared_services/lib/src/storage/storage_exports.dart` (added exports)
+- ✅ `packages/shared_services/lib/src/storage/data_sources/data_sources_exports.dart`
+- ✅ `packages/shared_services/lib/src/storage/repositories/repositories_exports.dart`
+
+**Additional Features Implemented:**
+- `CategoryRotationStrategy` interface with `RandomCategoryRotation` and `SequentialCategoryRotation` implementations
+- `DailyChallengeConfig` for configurable bonuses (streak bonus, time bonus, perfect score multiplier)
+- `DailyChallengeStats` for comprehensive statistics
+- `DailyChallengeStatus` for reactive status updates
+- Streak calculation and bonus system
+- Time-based bonus for fast completions
 
 ---
 
