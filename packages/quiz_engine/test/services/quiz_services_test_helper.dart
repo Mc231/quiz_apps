@@ -65,6 +65,14 @@ class MockSettingsService implements SettingsService {
   }
 
   @override
+  Future<void> setChallengeLayoutMode(String? modeId) async {
+    _settings = modeId == null
+        ? _settings.copyWith(clearPreferredChallengeLayoutModeId: true)
+        : _settings.copyWith(preferredChallengeLayoutModeId: modeId);
+    _controller.add(_settings);
+  }
+
+  @override
   Future<QuizSettings> resetToDefaults() async {
     _settings = QuizSettings.defaultSettings();
     _controller.add(_settings);
