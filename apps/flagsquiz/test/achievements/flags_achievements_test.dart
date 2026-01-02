@@ -860,6 +860,21 @@ class MockAppLocalizations extends AppLocalizations {
   String get achievementDedication => 'Dedication';
   @override
   String get achievementDedicationDesc => 'Maintain a 365 day streak';
+
+  // Daily Challenge achievements
+  @override
+  String get achievementDailyDevotee => 'Daily Devotee';
+  @override
+  String get achievementDailyDevoteeDesc => 'Complete 10 daily challenges';
+  @override
+  String get achievementPerfectDay => 'Perfect Day';
+  @override
+  String get achievementPerfectDayDesc => 'Get 100% on a daily challenge';
+  @override
+  String get achievementEarlyBird => 'Early Bird';
+  @override
+  String get achievementEarlyBirdDesc =>
+      'Complete a daily challenge within the first hour of the day';
 }
 
 /// Mock QuizEngineLocalizations for testing.
@@ -1879,6 +1894,83 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String accessibilityStreakMilestone(int days, String title) =>
       'Milestone reached: $days day streak. $title';
+
+  // Daily Challenge localizations
+  @override
+  String get dailyChallenge => 'Daily Challenge';
+  @override
+  String get dailyChallengeSubtitle => 'Complete it before midnight!';
+  @override
+  String get dailyChallengeAvailable => 'Available Now';
+  @override
+  String get dailyChallengeCompleted => 'Completed';
+  @override
+  String dailyChallengeNextIn(String time) => 'Next in $time';
+  @override
+  String dailyChallengeQuestions(int count) => '$count questions';
+  @override
+  String dailyChallengeTimeLimit(int minutes) => '$minutes minutes';
+  @override
+  String get dailyChallengeNoTimeLimit => 'No time limit';
+  @override
+  String get dailyChallengeStart => 'Start Challenge';
+  @override
+  String dailyChallengeDecline(int points) => 'Maybe Later (-$points pts)';
+  @override
+  String get dailyChallengeRules => 'Rules';
+  @override
+  String get dailyChallengeRule1 => 'One attempt per day';
+  @override
+  String get dailyChallengeRule2 => 'Maintain your streak';
+  @override
+  String get dailyChallengeRule3 => 'Complete before midnight';
+  @override
+  String get dailyChallengeRule4 => 'Earn bonus points for streaks';
+  @override
+  String get dailyChallengeResultTitle => 'Challenge Complete!';
+  @override
+  String get dailyChallengeYourScore => 'Your Score';
+  @override
+  String get dailyChallengeYesterdayScore => 'Yesterday\'s Score';
+  @override
+  String dailyChallengeImprovement(int points) => '+$points improvement';
+  @override
+  String get dailyChallengeSameScore => 'Same as yesterday';
+  @override
+  String get dailyChallengeNoYesterday => 'No score from yesterday';
+  @override
+  String get dailyChallengeCurrentStreak => 'Current Streak';
+  @override
+  String get dailyChallengeBestStreak => 'Best Streak';
+  @override
+  String get dailyChallengeAlreadyCompleted => 'Already Completed';
+  @override
+  String get dailyChallengeAlreadyCompletedMessage =>
+      'Come back tomorrow for a new challenge!';
+  @override
+  String get dailyChallengeViewResults => 'View Results';
+  @override
+  String dailyChallengeCategory(String category) => 'Category: $category';
+  @override
+  String get dailyChallengeScoreBreakdown => 'Score Breakdown';
+  @override
+  String get dailyChallengeBaseScore => 'Base Score';
+  @override
+  String get dailyChallengeStreakBonus => 'Streak Bonus';
+  @override
+  String get dailyChallengeTimeBonus => 'Time Bonus';
+  @override
+  String get dailyChallengeTotalScore => 'Total Score';
+  @override
+  String get dailyChallengePerfectScore => 'Perfect Score!';
+  @override
+  String get dailyChallengeCompletionTime => 'Completion Time';
+  @override
+  String accessibilityDailyChallengeCard(String status) =>
+      'Daily challenge, $status';
+  @override
+  String accessibilityDailyChallengeCountdown(String time) =>
+      'Next challenge in $time';
 }
 
 void main() {
@@ -1891,10 +1983,10 @@ void main() {
   });
 
   group('FlagsAchievements', () {
-    test('all() returns exactly 19 achievements', () {
+    test('all() returns exactly 22 achievements', () {
       final achievements = FlagsAchievements.all(appL10n);
       expect(achievements.length, equals(FlagsAchievements.count));
-      expect(achievements.length, equals(19));
+      expect(achievements.length, equals(22));
     });
 
     test('all achievements have unique IDs', () {
@@ -1909,6 +2001,7 @@ void main() {
         FlagsAchievements.categoryExplorer,
         FlagsAchievements.categoryRegionMastery,
         FlagsAchievements.categoryCollection,
+        FlagsAchievements.categoryDailyChallenge,
         AchievementCategory.dedication.name, // Daily streak uses dedication category
       };
 
@@ -2000,21 +2093,21 @@ void main() {
       }
 
       // Common: 6 explore_* + 1 first_flame = 7
-      // Uncommon: 1 week_warrior = 1
-      // Rare: 6 master_* + 1 world_traveler + 1 monthly_master = 8
+      // Uncommon: 1 week_warrior + 1 daily_devotee = 2
+      // Rare: 5 master_* + 1 world_traveler + 1 monthly_master + 1 perfect_day + 1 early_bird = 9
       // Epic: 1 master_world + 1 centurion = 2
       // Legendary: 1 flag_collector + 1 dedication = 2
       expect(tierCounts[AchievementTier.common], equals(7));
-      expect(tierCounts[AchievementTier.uncommon], equals(1));
-      expect(tierCounts[AchievementTier.rare], equals(7));
+      expect(tierCounts[AchievementTier.uncommon], equals(2));
+      expect(tierCounts[AchievementTier.rare], equals(9));
       expect(tierCounts[AchievementTier.epic], equals(2));
       expect(tierCounts[AchievementTier.legendary], equals(2));
     });
 
-    test('allWithBase() returns 72 achievements', () {
+    test('allWithBase() returns 75 achievements', () {
       final achievements = FlagsAchievements.allWithBase(quizL10n, appL10n);
       expect(achievements.length, equals(FlagsAchievements.totalCount));
-      expect(achievements.length, equals(72));
+      expect(achievements.length, equals(75));
     });
 
     test('allWithBase() includes both base and flags achievements', () {
@@ -2190,6 +2283,72 @@ void main() {
           achievement.icon.isNotEmpty,
           isTrue,
           reason: 'Achievement ${achievement.id} has empty icon',
+        );
+      }
+    });
+  });
+
+  group('Daily Challenge achievements', () {
+    test('daily challenge category has 3 achievements', () {
+      final achievements = FlagsAchievements.all(appL10n);
+      final dailyChallengeAchievements = achievements
+          .where((a) => a.category == FlagsAchievements.categoryDailyChallenge)
+          .toList();
+      expect(dailyChallengeAchievements.length, equals(3));
+    });
+
+    test('daily devotee is uncommon tier with 10 challenge target', () {
+      final achievement = FlagsAchievements.dailyDevotee(appL10n);
+      expect(achievement.id, equals('daily_devotee'));
+      expect(achievement.tier, equals(AchievementTier.uncommon));
+      expect(achievement.trigger, isA<CumulativeTrigger>());
+      final trigger = achievement.trigger as CumulativeTrigger;
+      expect(trigger.target, equals(10));
+      expect(trigger.field, equals(StatField.totalDailyChallengesCompleted));
+    });
+
+    test('perfect day is rare tier with custom trigger', () {
+      final achievement = FlagsAchievements.perfectDay(appL10n);
+      expect(achievement.id, equals('perfect_day'));
+      expect(achievement.tier, equals(AchievementTier.rare));
+      expect(achievement.trigger, isA<CustomTrigger>());
+    });
+
+    test('early bird is rare tier with custom trigger', () {
+      final achievement = FlagsAchievements.earlyBird(appL10n);
+      expect(achievement.id, equals('early_bird'));
+      expect(achievement.tier, equals(AchievementTier.rare));
+      expect(achievement.trigger, isA<CustomTrigger>());
+    });
+
+    test('all daily challenge achievements have calendar/sun related icons', () {
+      final dailyChallengeAchievements = [
+        FlagsAchievements.dailyDevotee(appL10n),
+        FlagsAchievements.perfectDay(appL10n),
+        FlagsAchievements.earlyBird(appL10n),
+      ];
+
+      for (final achievement in dailyChallengeAchievements) {
+        expect(
+          achievement.icon.isNotEmpty,
+          isTrue,
+          reason: 'Achievement ${achievement.id} has empty icon',
+        );
+      }
+    });
+
+    test('all daily challenge achievements use correct category', () {
+      final dailyChallengeAchievements = [
+        FlagsAchievements.dailyDevotee(appL10n),
+        FlagsAchievements.perfectDay(appL10n),
+        FlagsAchievements.earlyBird(appL10n),
+      ];
+
+      for (final achievement in dailyChallengeAchievements) {
+        expect(
+          achievement.category,
+          equals(FlagsAchievements.categoryDailyChallenge),
+          reason: 'Achievement ${achievement.id} has wrong category',
         );
       }
     });

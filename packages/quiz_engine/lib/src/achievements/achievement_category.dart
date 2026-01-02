@@ -26,6 +26,9 @@ enum AchievementCategory {
 
   /// Special gameplay achievements (no hints, flawless, comeback)
   skill,
+
+  /// Daily challenge achievements (devotee, perfect day, early bird)
+  dailyChallenge,
 }
 
 /// Extension providing category metadata.
@@ -40,6 +43,7 @@ extension AchievementCategoryExtension on AchievementCategory {
         AchievementCategory.challenge => 'Challenge',
         AchievementCategory.dedication => 'Dedication',
         AchievementCategory.skill => 'Skill',
+        AchievementCategory.dailyChallenge => 'Daily Challenge',
       };
 
   /// Icon for the category.
@@ -52,6 +56,7 @@ extension AchievementCategoryExtension on AchievementCategory {
         AchievementCategory.challenge => '🏆',
         AchievementCategory.dedication => '📅',
         AchievementCategory.skill => '💎',
+        AchievementCategory.dailyChallenge => '📆',
       };
 
   /// Order for sorting categories in display.

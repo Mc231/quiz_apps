@@ -5,11 +5,12 @@ import '../l10n/app_localizations.dart';
 
 /// Flags Quiz specific achievements.
 ///
-/// Contains 19 app-specific achievements organized into 4 categories:
+/// Contains 22 app-specific achievements organized into 5 categories:
 /// - Explorer (7): Complete each continent quiz
 /// - Region Mastery (6): Get 5 perfect scores in each region
 /// - Collection (1): Collect all flags
 /// - Daily Streak (5): Maintain daily play streaks (uses 'dedication' category for UI)
+/// - Daily Challenge (3): Daily challenge specific achievements
 ///
 /// Usage:
 /// ```dart
@@ -26,6 +27,9 @@ class FlagsAchievements {
 
   /// Achievement category for collection achievements.
   static const String categoryCollection = 'collection';
+
+  /// Achievement category for daily challenge achievements.
+  static const String categoryDailyChallenge = 'dailyChallenge';
 
   // ===========================================================================
   // Explorer Category (7 achievements)
@@ -327,12 +331,73 @@ class FlagsAchievements {
       );
 
   // ===========================================================================
+  // Daily Challenge Category (3 achievements)
+  // ===========================================================================
+
+  /// Daily Devotee - Complete 10 daily challenges
+  static Achievement dailyDevotee(AppLocalizations l10n) => Achievement(
+        id: 'daily_devotee',
+        name: (_) => l10n.achievementDailyDevotee,
+        description: (_) => l10n.achievementDailyDevoteeDesc,
+        icon: '📆',
+        tier: AchievementTier.uncommon,
+        category: categoryDailyChallenge,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.totalDailyChallengesCompleted,
+          target: 10,
+        ),
+      );
+
+  /// Perfect Day - Get 100% on a daily challenge
+  static Achievement perfectDay(AppLocalizations l10n) => Achievement(
+        id: 'perfect_day',
+        name: (_) => l10n.achievementPerfectDay,
+        description: (_) => l10n.achievementPerfectDayDesc,
+        icon: '☀️',
+        tier: AchievementTier.rare,
+        category: categoryDailyChallenge,
+        trigger: AchievementTrigger.custom(
+          evaluate: (stats, session) {
+            // Check if this is a daily challenge with perfect score
+            if (session == null) return false;
+            final isDailyChallenge = session.quizId.startsWith('daily_');
+            final isPerfect = session.totalCorrect == session.totalAnswered;
+            return isDailyChallenge && isPerfect;
+          },
+          target: 1,
+        ),
+      );
+
+  /// Early Bird - Complete a daily challenge within the first hour of the day
+  static Achievement earlyBird(AppLocalizations l10n) => Achievement(
+        id: 'early_bird',
+        name: (_) => l10n.achievementEarlyBird,
+        description: (_) => l10n.achievementEarlyBirdDesc,
+        icon: '🐦',
+        tier: AchievementTier.rare,
+        category: categoryDailyChallenge,
+        trigger: AchievementTrigger.custom(
+          evaluate: (stats, session) {
+            // Check if completed within first hour of the day
+            if (session == null) return false;
+            final isDailyChallenge = session.quizId.startsWith('daily_');
+            if (!isDailyChallenge) return false;
+            // Check if completion time is within first hour (0:00 - 1:00)
+            final endTime = session.endTime;
+            if (endTime == null) return false;
+            return endTime.hour < 1;
+          },
+          target: 1,
+        ),
+      );
+
+  // ===========================================================================
   // All Achievements
   // ===========================================================================
 
   /// Returns all Flags Quiz specific achievements.
   ///
-  /// This includes all 19 app-specific achievements.
+  /// This includes all 22 app-specific achievements.
   static List<Achievement> all(AppLocalizations l10n) => [
         // Explorer (7)
         exploreAfrica(l10n),
@@ -357,15 +422,19 @@ class FlagsAchievements {
         monthlyMaster(l10n),
         centurion(l10n),
         dedication(l10n),
+        // Daily Challenge (3)
+        dailyDevotee(l10n),
+        perfectDay(l10n),
+        earlyBird(l10n),
       ];
 
   /// Returns the count of all Flags Quiz specific achievements.
-  static const int count = 19;
+  static const int count = 22;
 
   /// Returns the combined list of all achievements (base + flags-specific).
   ///
-  /// This includes all 53 base achievements and 19 app-specific achievements
-  /// for a total of 72 achievements.
+  /// This includes all 53 base achievements and 22 app-specific achievements
+  /// for a total of 75 achievements.
   static List<Achievement> allWithBase(
     QuizEngineLocalizations quizL10n,
     AppLocalizations appL10n,
@@ -377,5 +446,5 @@ class FlagsAchievements {
   }
 
   /// Total count of all achievements (base + flags-specific).
-  static const int totalCount = BaseAchievements.count + count; // 53 + 19 = 72
+  static const int totalCount = BaseAchievements.count + count; // 53 + 22 = 75
 }

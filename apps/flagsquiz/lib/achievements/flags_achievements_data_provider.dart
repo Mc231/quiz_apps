@@ -48,7 +48,7 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
   })  : _achievementService = achievementService,
         _sessionRepository = sessionRepository;
 
-  /// Gets all 72 achievements (53 base + 19 flags-specific).
+  /// Gets all 75 achievements (53 base + 22 flags-specific).
   ///
   /// Uses deferred localization via QuizL10n.of(ctx) and AppLocalizations.of(ctx).
   List<Achievement> _getAllAchievements() {
@@ -980,6 +980,72 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
         trigger: AchievementTrigger.cumulative(
           field: StatField.consecutiveDaysPlayed,
           target: 365,
+        ),
+      ),
+
+      // ===========================================================================
+      // DAILY CHALLENGE ACHIEVEMENTS (3 total)
+      // ===========================================================================
+
+      // --- Daily Challenge (3) ---
+      Achievement(
+        id: 'daily_devotee',
+        name: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementDailyDevotee ?? 'Daily Devotee',
+        description: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementDailyDevoteeDesc ??
+            'Complete 10 daily challenges',
+        icon: '📆',
+        tier: AchievementTier.uncommon,
+        category: AchievementCategory.dailyChallenge.name,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.totalDailyChallengesCompleted,
+          target: 10,
+        ),
+      ),
+      Achievement(
+        id: 'perfect_day',
+        name: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementPerfectDay ?? 'Perfect Day',
+        description: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementPerfectDayDesc ??
+            'Get 100% on a daily challenge',
+        icon: '☀️',
+        tier: AchievementTier.rare,
+        category: AchievementCategory.dailyChallenge.name,
+        trigger: AchievementTrigger.custom(
+          evaluate: (stats, session) {
+            // Check if this is a daily challenge with perfect score
+            if (session == null) return false;
+            final isDailyChallenge = session.quizId.startsWith('daily_');
+            final isPerfect = session.totalCorrect == session.totalAnswered;
+            return isDailyChallenge && isPerfect;
+          },
+          target: 1,
+        ),
+      ),
+      Achievement(
+        id: 'early_bird',
+        name: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementEarlyBird ?? 'Early Bird',
+        description: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementEarlyBirdDesc ??
+            'Complete a daily challenge within the first hour of the day',
+        icon: '🐦',
+        tier: AchievementTier.rare,
+        category: AchievementCategory.dailyChallenge.name,
+        trigger: AchievementTrigger.custom(
+          evaluate: (stats, session) {
+            // Check if completed within first hour of the day
+            if (session == null) return false;
+            final isDailyChallenge = session.quizId.startsWith('daily_');
+            if (!isDailyChallenge) return false;
+            // Check if completion time is within first hour (0:00 - 1:00)
+            final endTime = session.endTime;
+            if (endTime == null) return false;
+            return endTime.hour < 1;
+          },
+          target: 1,
         ),
       ),
     ];
