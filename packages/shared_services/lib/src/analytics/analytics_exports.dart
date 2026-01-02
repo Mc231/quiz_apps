@@ -22,6 +22,7 @@ export 'events/resource_event.dart';
 export 'events/screen_view_event.dart';
 export 'events/settings_event.dart';
 export 'events/share_event.dart';
+export 'events/streak_event.dart';
 
 // Services
 export 'services/composite_analytics_service.dart';
