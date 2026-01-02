@@ -48,7 +48,7 @@ class QuizConfig extends BaseConfig {
 
   const QuizConfig({
     required this.quizId,
-    this.modeConfig = const StandardMode(showAnswerFeedback: true),
+    this.modeConfig = const StandardMode(),
     this.scoringStrategy = const SimpleScoring(),
     this.uiBehaviorConfig = const UIBehaviorConfig(),
     this.hintConfig = const HintConfig(),

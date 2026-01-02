@@ -325,8 +325,8 @@ class QuizBloc extends SingleSubscriptionBloc<QuizState> {
       layoutUsed: _layoutToString(resolvedLayout),
     );
 
-    // Show feedback if enabled
-    if (_config.modeConfig.showAnswerFeedback) {
+    // Show feedback based on configuration
+    if (_config.modeConfig.answerFeedbackConfig.shouldShowFeedback(result.isCorrect)) {
       final feedbackDuration = Duration(
         milliseconds: _config.uiBehaviorConfig.answerFeedbackDuration,
       );

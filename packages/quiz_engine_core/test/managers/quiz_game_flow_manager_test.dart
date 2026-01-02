@@ -36,7 +36,7 @@ void main() {
     test('should initialize with items', () {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
 
       expect(manager.isInitialized, isTrue);
@@ -47,7 +47,7 @@ void main() {
     test('should apply filter during initialization', () {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
         filter: (item) => item != testEntry1 && item != testEntry2,
       );
 
@@ -59,7 +59,7 @@ void main() {
     setUp(() {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
     });
 
@@ -78,7 +78,7 @@ void main() {
       );
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
 
       manager.pickNextQuestion();
@@ -105,7 +105,7 @@ void main() {
       );
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
 
       // Pick all questions
@@ -124,7 +124,7 @@ void main() {
     setUp(() {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
     });
 
@@ -136,7 +136,7 @@ void main() {
       );
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
 
       final question = manager.pickNextQuestion(remainingLives: 0);
@@ -153,7 +153,7 @@ void main() {
       );
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
 
       final question = manager.pickNextQuestion(totalTimeRemaining: 0);
@@ -176,7 +176,7 @@ void main() {
     test('should predict game over when no items', () {
       manager.initialize(
         items: [],
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
 
       expect(manager.wouldBeGameOver(), isTrue);
@@ -185,7 +185,7 @@ void main() {
     test('should predict game over when out of lives', () {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
 
       expect(manager.wouldBeGameOver(remainingLives: 0), isTrue);
@@ -194,7 +194,7 @@ void main() {
     test('should predict game over when time expired', () {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
 
       expect(manager.wouldBeGameOver(totalTimeRemaining: 0), isTrue);
@@ -203,7 +203,7 @@ void main() {
     test('should not predict game over in endless mode with no items', () {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const EndlessMode(showAnswerFeedback: true),
+        modeConfig: const EndlessMode(),
       );
 
       // Exhaust items
@@ -218,7 +218,7 @@ void main() {
     test('should predict game over in endless mode when out of lives', () {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const EndlessMode(showAnswerFeedback: true),
+        modeConfig: const EndlessMode(),
       );
 
       expect(manager.wouldBeGameOver(remainingLives: 0), isTrue);
@@ -229,7 +229,7 @@ void main() {
     test('should replenish questions in endless mode', () {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const EndlessMode(showAnswerFeedback: true),
+        modeConfig: const EndlessMode(),
       );
 
       // Pick all 5 questions
@@ -248,7 +248,7 @@ void main() {
     test('should reset all state', () {
       manager.initialize(
         items: createTestItems(),
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
       );
       manager.pickNextQuestion();
 

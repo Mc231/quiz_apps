@@ -73,7 +73,7 @@ class FlagsDailyChallengeDataProvider {
       hintConfig: const HintConfig.noHints(),
       // Standard mode with answer feedback
       modeConfig: QuizModeConfig.timed(
-        showAnswerFeedback: true,
+        answerFeedbackConfig: AnswerFeedbackConfig.always(),
         timePerQuestion: timeLimitSeconds ?? 30,
         allowSkip: false,
       ),

@@ -225,8 +225,8 @@ void main() {
       final configWithFeedback = provider.createQuizConfig(context, categoryWithFeedback);
       final configWithoutFeedback = provider.createQuizConfig(context, categoryWithoutFeedback);
 
-      expect(configWithFeedback!.modeConfig.showAnswerFeedback, isTrue);
-      expect(configWithoutFeedback!.modeConfig.showAnswerFeedback, isFalse);
+      expect(configWithFeedback!.modeConfig.answerFeedbackConfig, isA<AlwaysFeedbackConfig>());
+      expect(configWithoutFeedback!.modeConfig.answerFeedbackConfig, isA<NoFeedbackConfig>());
     });
   });
 

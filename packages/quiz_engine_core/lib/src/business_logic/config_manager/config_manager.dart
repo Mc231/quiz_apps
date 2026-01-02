@@ -1,3 +1,4 @@
+import '../../model/config/answer_feedback_config.dart';
 import '../../model/config/quiz_config.dart';
 import '../../model/config/quiz_mode_config.dart';
 import '../../model/config/ui_behavior_config.dart';
@@ -76,12 +77,13 @@ class ConfigManager {
       var modeConfig = baseConfig.modeConfig;
       if (settings['showAnswerFeedback'] != null) {
         final showFeedback = settings['showAnswerFeedback'] as bool;
+        final feedbackConfig = AnswerFeedbackConfig.fromBool(showFeedback);
         modeConfig = switch (modeConfig) {
-          StandardMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
-          TimedMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
-          LivesMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
-          EndlessMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
-          SurvivalMode() => modeConfig.copyWith(showAnswerFeedback: showFeedback),
+          StandardMode() => modeConfig.copyWith(answerFeedbackConfig: feedbackConfig),
+          TimedMode() => modeConfig.copyWith(answerFeedbackConfig: feedbackConfig),
+          LivesMode() => modeConfig.copyWith(answerFeedbackConfig: feedbackConfig),
+          EndlessMode() => modeConfig.copyWith(answerFeedbackConfig: feedbackConfig),
+          SurvivalMode() => modeConfig.copyWith(answerFeedbackConfig: feedbackConfig),
         };
       }
 

@@ -303,12 +303,12 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     final hasLives = challenge.lives != null;
     final hasPerQuestionTime = challenge.questionTimeSeconds != null;
     final hasTotalTime = challenge.totalTimeSeconds != null;
-    final showFeedback = challenge.showAnswerFeedback;
+    final feedbackConfig = AnswerFeedbackConfig.fromBool(challenge.showAnswerFeedback);
 
     // Survival: lives + time
     if (hasLives && (hasPerQuestionTime || hasTotalTime)) {
       return QuizModeConfig.survival(
-        showAnswerFeedback: showFeedback,
+        answerFeedbackConfig: feedbackConfig,
         lives: challenge.lives!,
         timePerQuestion: challenge.questionTimeSeconds ?? 30,
         totalTimeLimit: challenge.totalTimeSeconds,
@@ -318,7 +318,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     // Lives only
     if (hasLives) {
       return QuizModeConfig.lives(
-        showAnswerFeedback: showFeedback,
+        answerFeedbackConfig: feedbackConfig,
         lives: challenge.lives!,
         allowSkip: challenge.allowSkip,
       );
@@ -327,7 +327,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     // Timed only
     if (hasPerQuestionTime || hasTotalTime) {
       return QuizModeConfig.timed(
-        showAnswerFeedback: showFeedback,
+        answerFeedbackConfig: feedbackConfig,
         timePerQuestion: challenge.questionTimeSeconds ?? 30,
         totalTimeLimit: challenge.totalTimeSeconds,
         allowSkip: challenge.allowSkip,
@@ -336,12 +336,12 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
 
     // Endless mode
     if (challenge.isEndless) {
-      return QuizModeConfig.endless(showAnswerFeedback: showFeedback);
+      return QuizModeConfig.endless(answerFeedbackConfig: feedbackConfig);
     }
 
     // Standard mode
     return QuizModeConfig.standard(
-      showAnswerFeedback: showFeedback,
+      answerFeedbackConfig: feedbackConfig,
       allowSkip: challenge.allowSkip,
     );
   }

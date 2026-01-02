@@ -276,28 +276,28 @@ void main() {
 
   group('QuizModeToString extension', () {
     test('modeString returns correct values', () {
-      expect(const StandardMode(showAnswerFeedback: true).modeString, equals('normal'));
-      expect(const TimedMode(showAnswerFeedback: true).modeString, equals('timed'));
-      expect(const LivesMode(showAnswerFeedback: true).modeString, equals('survival'));
-      expect(const EndlessMode(showAnswerFeedback: true).modeString, equals('endless'));
-      expect(const SurvivalMode(showAnswerFeedback: true).modeString, equals('survival'));
+      expect(const StandardMode().modeString, equals('normal'));
+      expect(const TimedMode().modeString, equals('timed'));
+      expect(const LivesMode().modeString, equals('survival'));
+      expect(const EndlessMode().modeString, equals('endless'));
+      expect(const SurvivalMode().modeString, equals('survival'));
     });
 
     test('questionTimeLimit returns correct values', () {
-      expect(const StandardMode(showAnswerFeedback: true).questionTimeLimit, isNull);
-      expect(const TimedMode(showAnswerFeedback: true, timePerQuestion: 30).questionTimeLimit, equals(30));
-      expect(const LivesMode(showAnswerFeedback: true).questionTimeLimit, isNull);
-      expect(const EndlessMode(showAnswerFeedback: true).questionTimeLimit, isNull);
-      expect(const SurvivalMode(showAnswerFeedback: true, timePerQuestion: 20).questionTimeLimit, equals(20));
+      expect(const StandardMode().questionTimeLimit, isNull);
+      expect(const TimedMode( timePerQuestion: 30).questionTimeLimit, equals(30));
+      expect(const LivesMode().questionTimeLimit, isNull);
+      expect(const EndlessMode().questionTimeLimit, isNull);
+      expect(const SurvivalMode( timePerQuestion: 20).questionTimeLimit, equals(20));
     });
 
     test('totalTimeLimit returns correct values', () {
-      expect(const StandardMode(showAnswerFeedback: true).totalTimeLimit, isNull);
-      expect(const TimedMode(showAnswerFeedback: true, totalTimeLimit: 300).totalTimeLimit, equals(300));
-      expect(const TimedMode(showAnswerFeedback: true).totalTimeLimit, isNull);
-      expect(const LivesMode(showAnswerFeedback: true).totalTimeLimit, isNull);
-      expect(const EndlessMode(showAnswerFeedback: true).totalTimeLimit, isNull);
-      expect(const SurvivalMode(showAnswerFeedback: true, totalTimeLimit: 600).totalTimeLimit, equals(600));
+      expect(const StandardMode().totalTimeLimit, isNull);
+      expect(const TimedMode( totalTimeLimit: 300).totalTimeLimit, equals(300));
+      expect(const TimedMode().totalTimeLimit, isNull);
+      expect(const LivesMode().totalTimeLimit, isNull);
+      expect(const EndlessMode().totalTimeLimit, isNull);
+      expect(const SurvivalMode( totalTimeLimit: 600).totalTimeLimit, equals(600));
     });
   });
 }

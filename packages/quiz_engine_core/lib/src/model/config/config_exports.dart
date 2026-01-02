@@ -7,6 +7,7 @@ library;
 /// import 'package:quiz_engine_core/src/model/config/config_exports.dart';
 /// ```
 
+export 'answer_feedback_config.dart';
 export 'base_config.dart';
 export 'quiz_config.dart';
 export 'quiz_mode_config.dart';

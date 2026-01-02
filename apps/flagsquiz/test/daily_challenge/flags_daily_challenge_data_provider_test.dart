@@ -66,7 +66,7 @@ void main() {
         );
 
         final timedMode = config.modeConfig as TimedMode;
-        expect(timedMode.showAnswerFeedback, true);
+        expect(timedMode.answerFeedbackConfig, isA<AlwaysFeedbackConfig>());
       });
 
       test('uses timed scoring strategy', () {

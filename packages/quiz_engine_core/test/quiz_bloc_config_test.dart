@@ -66,7 +66,7 @@ void main() {
     test('ConfigManager holds QuizConfig with custom mode', () {
       final defaultConfig = QuizConfig(
         quizId: 'timed_quiz',
-        modeConfig: QuizModeConfig.timed(showAnswerFeedback: true, timePerQuestion: 30),
+        modeConfig: QuizModeConfig.timed( timePerQuestion: 30),
       );
       final configManager = ConfigManager(defaultConfig: defaultConfig);
 
@@ -242,7 +242,7 @@ void main() {
       expect(config.quizId, 'test_quiz');
       expect(config.uiBehaviorConfig.playSounds, true);
       expect(config.uiBehaviorConfig.hapticFeedback, true);
-      expect(config.modeConfig.showAnswerFeedback, true);
+      expect(config.modeConfig.answerFeedbackConfig is AlwaysFeedbackConfig, isTrue);
     });
 
     test('ConfigManager with settings applies settings to config', () async {
@@ -261,7 +261,7 @@ void main() {
       expect(config.quizId, 'test_quiz');
       expect(config.uiBehaviorConfig.playSounds, false);
       expect(config.uiBehaviorConfig.hapticFeedback, false);
-      expect(config.modeConfig.showAnswerFeedback, false);
+      expect(config.modeConfig.answerFeedbackConfig is NoFeedbackConfig, isTrue);
     });
 
     test('ConfigManager preserves non-settings UI behavior fields', () async {
@@ -286,7 +286,7 @@ void main() {
       // Settings applied
       expect(config.uiBehaviorConfig.playSounds, false);
       expect(config.uiBehaviorConfig.hapticFeedback, true);
-      expect(config.modeConfig.showAnswerFeedback, false);
+      expect(config.modeConfig.answerFeedbackConfig is NoFeedbackConfig, isTrue);
 
       // Preserved from defaultConfig
       expect(config.uiBehaviorConfig.answerFeedbackDuration, 2500);
@@ -296,7 +296,7 @@ void main() {
     test('ConfigManager preserves all non-UI config fields', () async {
       final defaultConfig = QuizConfig(
         quizId: 'test_quiz',
-        modeConfig: QuizModeConfig.timed(showAnswerFeedback: true, timePerQuestion: 15),
+        modeConfig: QuizModeConfig.timed( timePerQuestion: 15),
         hintConfig: HintConfig.noHints(),
         scoringStrategy: const TimedScoring(
           basePointsPerQuestion: 100,
@@ -340,7 +340,7 @@ void main() {
 
       expect(config.uiBehaviorConfig.playSounds, false);
       expect(config.uiBehaviorConfig.hapticFeedback, true); // Default
-      expect(config.modeConfig.showAnswerFeedback, true); // Default from modeConfig
+      expect(config.modeConfig.answerFeedbackConfig is AlwaysFeedbackConfig, isTrue); // Default from modeConfig
     });
 
     test('ConfigManager settings reflect real-time changes', () async {

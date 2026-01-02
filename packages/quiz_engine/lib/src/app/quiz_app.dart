@@ -1417,7 +1417,7 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
     // Practice mode: standard (no lives, no time limit), no storage, no hints
     final practiceConfig = QuizConfig(
       quizId: 'practice',
-      modeConfig: QuizModeConfig.standard(showAnswerFeedback: true),
+      modeConfig: QuizModeConfig.standard(),
       hintConfig: const HintConfig.noHints(),
       storageConfig: StorageConfig.disabled,
     );

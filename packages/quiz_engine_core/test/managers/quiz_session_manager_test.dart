@@ -130,7 +130,7 @@ void main() {
   QuizConfig createConfig({bool storageEnabled = true, bool saveAnswers = true}) {
     return QuizConfig(
       quizId: 'test-quiz',
-      modeConfig: const StandardMode(showAnswerFeedback: true),
+      modeConfig: const StandardMode(),
       storageConfig: StorageConfig(
         enabled: storageEnabled,
         saveAnswersDuringQuiz: saveAnswers,

@@ -26,7 +26,6 @@ void main() {
     test('should initialize with TimedMode question timer', () {
       manager.initialize(const TimedMode(
         timePerQuestion: 30,
-        showAnswerFeedback: true,
       ));
 
       expect(manager.hasQuestionTimer, isTrue);
@@ -35,7 +34,6 @@ void main() {
     test('should initialize with TimedMode total timer', () {
       manager.initialize(const TimedMode(
         totalTimeLimit: 300,
-        showAnswerFeedback: true,
       ));
 
       expect(manager.hasTotalTimer, isTrue);
@@ -47,7 +45,6 @@ void main() {
         lives: 3,
         timePerQuestion: 15,
         totalTimeLimit: 180,
-        showAnswerFeedback: true,
       ));
 
       expect(manager.hasQuestionTimer, isTrue);
@@ -56,14 +53,14 @@ void main() {
     });
 
     test('should not set timers for StandardMode', () {
-      manager.initialize(const StandardMode(showAnswerFeedback: true));
+      manager.initialize(const StandardMode());
 
       expect(manager.hasQuestionTimer, isFalse);
       expect(manager.hasTotalTimer, isFalse);
     });
 
     test('should not set timers for EndlessMode', () {
-      manager.initialize(const EndlessMode(showAnswerFeedback: true));
+      manager.initialize(const EndlessMode());
 
       expect(manager.hasQuestionTimer, isFalse);
       expect(manager.hasTotalTimer, isFalse);
@@ -128,7 +125,6 @@ void main() {
         );
         manager.initialize(const TimedMode(
           timePerQuestion: 30,
-          showAnswerFeedback: true,
         ));
 
         manager.startQuestionTimer();
@@ -152,7 +148,6 @@ void main() {
         );
         manager.initialize(const TimedMode(
           timePerQuestion: 5,
-          showAnswerFeedback: true,
         ));
         manager.startQuestionStopwatch();
 
@@ -169,7 +164,6 @@ void main() {
       fakeAsync((async) {
         manager.initialize(const TimedMode(
           timePerQuestion: 30,
-          showAnswerFeedback: true,
         ));
         manager.startQuestionTimer();
 
@@ -188,7 +182,6 @@ void main() {
       fakeAsync((async) {
         manager.initialize(const TimedMode(
           timePerQuestion: 30,
-          showAnswerFeedback: true,
         ));
         manager.startQuestionTimer();
 
@@ -209,7 +202,6 @@ void main() {
       fakeAsync((async) {
         manager.initialize(const TimedMode(
           totalTimeLimit: 60,
-          showAnswerFeedback: true,
         ));
 
         manager.startTotalTimer();
@@ -229,7 +221,6 @@ void main() {
         );
         manager.initialize(const TimedMode(
           totalTimeLimit: 5,
-          showAnswerFeedback: true,
         ));
 
         manager.startTotalTimer();
@@ -246,7 +237,6 @@ void main() {
       fakeAsync((async) {
         manager.initialize(const TimedMode(
           totalTimeLimit: 60,
-          showAnswerFeedback: true,
         ));
         manager.startTotalTimer();
 
@@ -267,7 +257,6 @@ void main() {
         manager.initialize(const TimedMode(
           timePerQuestion: 30,
           totalTimeLimit: 300,
-          showAnswerFeedback: true,
         ));
         manager.startQuestionTimer();
         manager.startTotalTimer();
@@ -293,7 +282,6 @@ void main() {
         manager.initialize(const TimedMode(
           timePerQuestion: 30,
           totalTimeLimit: 300,
-          showAnswerFeedback: true,
         ));
         manager.startQuestionTimer();
         manager.startTotalTimer();
@@ -336,7 +324,6 @@ void main() {
       fakeAsync((async) {
         manager.initialize(const TimedMode(
           timePerQuestion: 30,
-          showAnswerFeedback: true,
         ));
         manager.pauseTimers();
 
@@ -356,7 +343,6 @@ void main() {
         manager.initialize(const TimedMode(
           timePerQuestion: 30,
           totalTimeLimit: 300,
-          showAnswerFeedback: true,
         ));
         manager.startSession();
         manager.startQuestionStopwatch();
@@ -382,7 +368,6 @@ void main() {
         manager.initialize(const TimedMode(
           timePerQuestion: 30,
           totalTimeLimit: 300,
-          showAnswerFeedback: true,
         ));
         manager.startSession();
         manager.startQuestionTimer();

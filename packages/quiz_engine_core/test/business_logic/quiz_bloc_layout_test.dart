@@ -269,7 +269,7 @@ void main() {
       final map = {
         'quizId': 'test',
         'modeConfig':
-            const StandardMode(showAnswerFeedback: true).toMap(),
+            const StandardMode().toMap(),
         'scoringStrategy': const SimpleScoring().toMap(),
         // layoutConfig is missing
       };

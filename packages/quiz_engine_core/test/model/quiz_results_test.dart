@@ -44,7 +44,7 @@ void main() {
         skippedAnswers: 0,
         timedOutAnswers: 0,
         durationSeconds: 120,
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
         answers: answers,
         hintsUsed5050: 1,
         hintsUsedSkip: 0,
@@ -67,7 +67,7 @@ void main() {
         skippedAnswers: 0,
         timedOutAnswers: 0,
         durationSeconds: 0,
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
         answers: [],
       );
       expect(emptyResults.scorePercentage, 0);
@@ -106,7 +106,7 @@ void main() {
           skippedAnswers: 0,
           timedOutAnswers: 0,
           durationSeconds: 60,
-          modeConfig: const StandardMode(showAnswerFeedback: true),
+          modeConfig: const StandardMode(),
           answers: [],
         );
         expect(results80.starRating, 4);
@@ -128,7 +128,7 @@ void main() {
           skippedAnswers: 0,
           timedOutAnswers: 0,
           durationSeconds: 60,
-          modeConfig: const StandardMode(showAnswerFeedback: true),
+          modeConfig: const StandardMode(),
           answers: [],
         );
         expect(results40.starRating, 2);
@@ -146,7 +146,7 @@ void main() {
           skippedAnswers: 0,
           timedOutAnswers: 0,
           durationSeconds: 60,
-          modeConfig: const StandardMode(showAnswerFeedback: true),
+          modeConfig: const StandardMode(),
           answers: [],
         );
         expect(results20.starRating, 1);
@@ -164,7 +164,7 @@ void main() {
           skippedAnswers: 0,
           timedOutAnswers: 0,
           durationSeconds: 60,
-          modeConfig: const StandardMode(showAnswerFeedback: true),
+          modeConfig: const StandardMode(),
           answers: [],
         );
         expect(results10.starRating, 0);
@@ -233,7 +233,7 @@ void main() {
         skippedAnswers: 0,
         timedOutAnswers: 0,
         durationSeconds: 120,
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
         answers: answers,
         hintsUsed5050: 1,
         hintsUsedSkip: 0,
@@ -251,28 +251,28 @@ void main() {
     group('QuizModeConfig variants', () {
       test('works with TimedMode', () {
         final timedResults = results.copyWith(
-          modeConfig: const TimedMode(showAnswerFeedback: true, timePerQuestion: 30),
+          modeConfig: const TimedMode( timePerQuestion: 30),
         );
         expect(timedResults.modeConfig, isA<TimedMode>());
       });
 
       test('works with LivesMode', () {
         final livesResults = results.copyWith(
-          modeConfig: const LivesMode(showAnswerFeedback: true, lives: 3),
+          modeConfig: const LivesMode( lives: 3),
         );
         expect(livesResults.modeConfig, isA<LivesMode>());
       });
 
       test('works with EndlessMode', () {
         final endlessResults = results.copyWith(
-          modeConfig: const EndlessMode(showAnswerFeedback: true),
+          modeConfig: const EndlessMode(),
         );
         expect(endlessResults.modeConfig, isA<EndlessMode>());
       });
 
       test('works with SurvivalMode', () {
         final survivalResults = results.copyWith(
-          modeConfig: const SurvivalMode(showAnswerFeedback: true, lives: 3, timePerQuestion: 30),
+          modeConfig: const SurvivalMode( lives: 3, timePerQuestion: 30),
         );
         expect(survivalResults.modeConfig, isA<SurvivalMode>());
       });
@@ -292,7 +292,7 @@ void main() {
         skippedAnswers: 0,
         timedOutAnswers: 0,
         durationSeconds: 60,
-        modeConfig: const StandardMode(showAnswerFeedback: true),
+        modeConfig: const StandardMode(),
         answers: [],
       );
 
