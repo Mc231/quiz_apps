@@ -4893,6 +4893,7 @@ The following phases are planned for future implementation but are currently on 
 - ✅ `packages/shared_services/lib/src/analytics/analytics_exports.dart`
 - ✅ `packages/shared_services/lib/src/analytics/analytics_event.dart`
 - ✅ `apps/flagsquiz/lib/achievements/flags_achievements.dart`
+- ✅ `apps/flagsquiz/lib/achievements/flags_achievements_data_provider.dart` - Added streak achievements to runtime data source
 - ✅ `apps/flagsquiz/lib/l10n/intl_en.arb`
 - ✅ `apps/flagsquiz/test/achievements/flags_achievements_test.dart`
 
