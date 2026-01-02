@@ -57,3 +57,6 @@ export 'src/share/share_exports.dart';
 
 // Deep Links (App URL scheme handling)
 export 'src/deeplink/deeplink_exports.dart';
+
+// Streak (Daily play tracking and retention)
+export 'src/streak/streak_exports.dart';
