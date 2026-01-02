@@ -95,6 +95,7 @@ class FlagsQuizAppProvider {
     final storageService = sl.get<StorageService>();
     final achievementService = sl.get<AchievementService>();
     final sessionRepository = sl.get<QuizSessionRepository>();
+    final streakService = sl.get<StreakService>();
 
     // Create categories and data provider
     final categories = createFlagsCategoriesWithLayout(countryCounts, mode: FlagsLayoutMode.standard);
@@ -267,6 +268,7 @@ class FlagsQuizAppProvider {
       iapService: iapService,
       rateAppService: rateAppService,
       shareService: shareService,
+      streakService: streakService,
     );
 
     return FlagsQuizDependencies(
