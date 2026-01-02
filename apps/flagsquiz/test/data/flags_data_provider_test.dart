@@ -21,7 +21,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         layoutConfig: null,
       );
 
@@ -37,7 +37,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         layoutConfig: const TextQuestionImageAnswersLayout(
           questionTemplate: '{name}', // placeholder
         ),
@@ -62,7 +62,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         layoutConfig: const TextQuestionImageAnswersLayout(
           questionTemplate: '{name}',
           imageSize: customSize,
@@ -83,7 +83,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         layoutConfig: MixedLayout(
           layouts: [
             QuizLayoutConfig.imageQuestionTextAnswers(),
@@ -114,7 +114,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         layoutConfig: const ImageQuestionTextAnswersLayout(),
       );
 
@@ -130,7 +130,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         layoutConfig: const TextQuestionTextAnswersLayout(),
       );
 
@@ -146,7 +146,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         layoutConfig: const AudioQuestionTextAnswersLayout(),
       );
 
@@ -162,7 +162,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         layoutConfig: MixedLayout(
           layouts: [
             QuizLayoutConfig.imageQuestionTextAnswers(),
@@ -196,7 +196,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       final config = provider.createQuizConfig(context, category);
@@ -213,13 +213,13 @@ void main() {
       final categoryWithFeedback = QuizCategory(
         id: 'test1',
         title: (_) => 'Test',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       final categoryWithoutFeedback = QuizCategory(
         id: 'test2',
         title: (_) => 'Test',
-        showAnswerFeedback: false,
+        answerFeedbackConfig: const NoFeedbackConfig(),
       );
 
       final configWithFeedback = provider.createQuizConfig(context, categoryWithFeedback);
@@ -244,7 +244,7 @@ void main() {
       final category = QuizCategory(
         id: 'test',
         title: (_) => 'Test Category',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       final config = provider.createStorageConfig(context, category);

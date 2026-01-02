@@ -28,6 +28,9 @@ sealed class AnswerFeedbackConfig {
   /// Returns true if feedback should be displayed.
   bool shouldShowFeedback(bool isCorrect);
 
+  /// Whether feedback can be shown at all.
+  bool get canBeShown => this is! NoFeedbackConfig;
+
   /// Convert to map for serialization.
   Map<String, dynamic> toMap();
 

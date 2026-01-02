@@ -13,13 +13,13 @@ final List<QuizCategory> testCategories = [
     id: 'category1',
     title: (_) => 'Test Category 1',
     icon: Icons.star,
-    showAnswerFeedback: true,
+    answerFeedbackConfig: const AlwaysFeedbackConfig(),
   ),
   QuizCategory(
     id: 'category2',
     title: (_) => 'Test Category 2',
     icon: Icons.circle,
-    showAnswerFeedback: true,
+    answerFeedbackConfig: const AlwaysFeedbackConfig(),
   ),
 ];
 

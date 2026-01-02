@@ -9,21 +9,21 @@ void main() {
     title: (context) => 'Test Category',
     subtitle: (context) => 'Test Subtitle',
     icon: Icons.quiz,
-    showAnswerFeedback: true,
+    answerFeedbackConfig: const AlwaysFeedbackConfig(),
   );
 
   final categoryWithImage = QuizCategory(
     id: 'image',
     title: (context) => 'Image Category',
     imageProvider: const AssetImage('assets/test.png'),
-    showAnswerFeedback: true,
+    answerFeedbackConfig: const AlwaysFeedbackConfig(),
   );
 
   final categoryNoSubtitle = QuizCategory(
     id: 'no_subtitle',
     title: (context) => 'No Subtitle',
     icon: Icons.category,
-    showAnswerFeedback: true,
+    answerFeedbackConfig: const AlwaysFeedbackConfig(),
   );
 
   Widget buildTestWidget({
@@ -81,7 +81,7 @@ void main() {
       final category = QuizCategory(
         id: 'default',
         title: (context) => 'Default',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       await tester.pumpWidget(

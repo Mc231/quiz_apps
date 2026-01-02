@@ -51,14 +51,14 @@ void main() {
   final testCategory = QuizCategory(
     id: 'test',
     title: (context) => 'Test',
-    showAnswerFeedback: true,
+    answerFeedbackConfig: const AlwaysFeedbackConfig(),
     config: const QuizConfig(quizId: 'category_config'),
   );
 
   final categoryWithLayout = QuizCategory(
     id: 'layout_test',
     title: (context) => 'Layout Test',
-    showAnswerFeedback: true,
+    answerFeedbackConfig: const AlwaysFeedbackConfig(),
     layoutConfig: QuizLayoutConfig.textQuestionImageAnswers(
       questionTemplate: 'Select {name}',
     ),

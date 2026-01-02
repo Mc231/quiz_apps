@@ -19,14 +19,14 @@ void main() {
       title: (context) => 'Europe',
       subtitle: (context) => '50 countries',
       icon: Icons.flag,
-      showAnswerFeedback: true,
+      answerFeedbackConfig: const AlwaysFeedbackConfig(),
     ),
     QuizCategory(
       id: 'asia',
       title: (context) => 'Asia',
       subtitle: (context) => '48 countries',
       icon: Icons.public,
-      showAnswerFeedback: true,
+      answerFeedbackConfig: const AlwaysFeedbackConfig(),
     ),
   ];
 

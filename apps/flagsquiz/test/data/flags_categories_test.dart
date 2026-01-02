@@ -43,7 +43,7 @@ void main() {
       final categories = createFlagsCategories(counts);
 
       for (final category in categories) {
-        expect(category.showAnswerFeedback, isTrue);
+        expect(category.answerFeedbackConfig.canBeShown, isTrue);
       }
     });
   });
@@ -59,6 +59,7 @@ void main() {
       final categories = createFlagsCategoriesWithLayout(
         counts,
         mode: FlagsLayoutMode.standard,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       for (final category in categories) {
@@ -72,6 +73,7 @@ void main() {
       final categories = createFlagsCategoriesWithLayout(
         counts,
         mode: FlagsLayoutMode.reverse,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       for (final category in categories) {
@@ -84,6 +86,7 @@ void main() {
       final categories = createFlagsCategoriesWithLayout(
         counts,
         mode: FlagsLayoutMode.mixed,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       for (final category in categories) {
@@ -101,6 +104,7 @@ void main() {
       final categories = createFlagsCategoriesWithLayout(
         counts,
         mode: FlagsLayoutMode.reverse,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       for (final category in categories) {

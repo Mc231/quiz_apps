@@ -13,7 +13,11 @@ export 'package:quiz_engine_core/quiz_engine_core.dart'
         SmallImageSize,
         MediumImageSize,
         LargeImageSize,
-        CustomImageSize;
+        CustomImageSize,
+        AnswerFeedbackConfig,
+        AlwaysFeedbackConfig,
+        OnlyOnFailureFeedbackConfig,
+        NoFeedbackConfig;
 
 /// A function that returns a localized string given a BuildContext.
 ///
@@ -84,7 +88,7 @@ class QuizCategory {
   ///
   /// This is required and must be explicitly set for each category.
   /// Can be overridden by mode-specific settings.
-  final bool showAnswerFeedback;
+  final AnswerFeedbackConfig answerFeedbackConfig;
 
   /// Optional layout configuration for quizzes in this category.
   ///
@@ -116,12 +120,12 @@ class QuizCategory {
 
   /// Creates a [QuizCategory].
   ///
-  /// [id], [title], and [showAnswerFeedback] are required.
+  /// [id], [title], and [answerFeedbackConfig] are required.
   /// Either [imageProvider] or [icon] should typically be provided.
   const QuizCategory({
     required this.id,
     required this.title,
-    required this.showAnswerFeedback,
+    required this.answerFeedbackConfig,
     this.subtitle,
     this.imageProvider,
     this.icon,
@@ -139,7 +143,7 @@ class QuizCategory {
     IconData? icon,
     QuizConfig? config,
     Map<String, dynamic>? metadata,
-    bool? showAnswerFeedback,
+    AnswerFeedbackConfig? answerFeedbackConfig,
     QuizLayoutConfig? layoutConfig,
   }) {
     return QuizCategory(
@@ -150,7 +154,7 @@ class QuizCategory {
       icon: icon ?? this.icon,
       config: config ?? this.config,
       metadata: metadata ?? this.metadata,
-      showAnswerFeedback: showAnswerFeedback ?? this.showAnswerFeedback,
+      answerFeedbackConfig: answerFeedbackConfig ?? this.answerFeedbackConfig,
       layoutConfig: layoutConfig ?? this.layoutConfig,
     );
   }

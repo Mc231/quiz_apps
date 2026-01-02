@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart';
 
 import '../extensions/continent_additions.dart';
 import '../l10n/app_localizations.dart';
@@ -22,7 +23,7 @@ List<QuizCategory> createFlagsCategories(CountryCounts counts) {
       title: (context) => continent.localizedName(context) ?? continent.name,
       subtitle: (context) => _getContinentSubtitle(context, continent, counts),
       icon: _getContinentIcon(continent),
-      showAnswerFeedback: true,
+      answerFeedbackConfig: AnswerFeedbackConfig.onlyOnFailure(),
       layoutConfig: QuizLayoutConfig.imageQuestionTextAnswers(),
     );
   }).toList();
@@ -53,17 +54,18 @@ enum FlagsLayoutMode {
 ///   mode: FlagsLayoutMode.reverse,
 /// );
 /// ```
-List<QuizCategory> createFlagsCategoriesWithLayout(
-  CountryCounts counts, {
+List<QuizCategory> createFlagsCategoriesWithLayout(CountryCounts counts, {
   required FlagsLayoutMode mode,
+  required AnswerFeedbackConfig answerFeedbackConfig,
 }) {
   return Continent.values.map((continent) {
     return QuizCategory(
       id: _getCategoryId(continent, mode),
       title: (context) => _getCategoryTitle(context, continent, mode),
-      subtitle: (context) => _getCategorySubtitle(context, continent, counts, mode),
+      subtitle: (context) =>
+          _getCategorySubtitle(context, continent, counts, mode),
       icon: _getContinentIcon(continent),
-      showAnswerFeedback: true,
+      answerFeedbackConfig: answerFeedbackConfig,
       layoutConfig: _getLayoutConfig(mode),
     );
   }).toList();
@@ -72,17 +74,18 @@ List<QuizCategory> createFlagsCategoriesWithLayout(
 /// Creates a single category for a continent with a specific layout mode.
 ///
 /// Useful when you want to create individual categories rather than all at once.
-QuizCategory createFlagCategory(
-  Continent continent,
-  CountryCounts counts, {
-  FlagsLayoutMode mode = FlagsLayoutMode.standard,
-}) {
+QuizCategory createFlagCategory(Continent continent,
+    CountryCounts counts, {
+      FlagsLayoutMode mode = FlagsLayoutMode.standard,
+      AnswerFeedbackConfig answerFeedbackConfig = const OnlyOnFailureFeedbackConfig()
+    }) {
   return QuizCategory(
     id: _getCategoryId(continent, mode),
     title: (context) => _getCategoryTitle(context, continent, mode),
-    subtitle: (context) => _getCategorySubtitle(context, continent, counts, mode),
+    subtitle: (context) =>
+        _getCategorySubtitle(context, continent, counts, mode),
     icon: _getContinentIcon(continent),
-    showAnswerFeedback: true,
+    answerFeedbackConfig: answerFeedbackConfig,
     layoutConfig: _getLayoutConfig(mode),
   );
 }
@@ -97,11 +100,9 @@ String _getCategoryId(Continent continent, FlagsLayoutMode mode) {
 }
 
 /// Gets the category title based on continent and layout mode.
-String _getCategoryTitle(
-  BuildContext context,
-  Continent continent,
-  FlagsLayoutMode mode,
-) {
+String _getCategoryTitle(BuildContext context,
+    Continent continent,
+    FlagsLayoutMode mode,) {
   final baseName = continent.localizedName(context) ?? continent.name;
   final l10n = AppLocalizations.of(context)!;
 
@@ -113,18 +114,17 @@ String _getCategoryTitle(
 }
 
 /// Gets the category subtitle based on continent, counts, and layout mode.
-String _getCategorySubtitle(
-  BuildContext context,
-  Continent continent,
-  CountryCounts counts,
-  FlagsLayoutMode mode,
-) {
+String _getCategorySubtitle(BuildContext context,
+    Continent continent,
+    CountryCounts counts,
+    FlagsLayoutMode mode,) {
   final l10n = AppLocalizations.of(context)!;
   final count = counts.getCount(continent);
 
   return switch (mode) {
     FlagsLayoutMode.standard => '$count ${l10n.questions}',
-    FlagsLayoutMode.reverse => '${l10n.identifyFlags} - $count ${l10n.questions}',
+    FlagsLayoutMode.reverse =>
+    '${l10n.identifyFlags} - $count ${l10n.questions}',
     FlagsLayoutMode.mixed => '$count ${l10n.questions}',
   };
 }
@@ -133,27 +133,27 @@ String _getCategorySubtitle(
 QuizLayoutConfig _getLayoutConfig(FlagsLayoutMode mode) {
   return switch (mode) {
     FlagsLayoutMode.standard => QuizLayoutConfig.imageQuestionTextAnswers(),
-    FlagsLayoutMode.reverse => QuizLayoutConfig.textQuestionImageAnswers(
-        // Template will be localized by FlagsDataProvider.createLayoutConfig
-        questionTemplate: '{name}',
-      ),
-    FlagsLayoutMode.mixed => QuizLayoutConfig.mixed(
-        layouts: [
-          QuizLayoutConfig.imageQuestionTextAnswers(),
-          QuizLayoutConfig.textQuestionImageAnswers(
-            questionTemplate: '{name}',
-          ),
-        ],
-      ),
+    FlagsLayoutMode.reverse =>
+        QuizLayoutConfig.textQuestionImageAnswers(
+          // Template will be localized by FlagsDataProvider.createLayoutConfig
+          questionTemplate: '{name}',
+        ),
+    FlagsLayoutMode.mixed =>
+        QuizLayoutConfig.mixed(
+          layouts: [
+            QuizLayoutConfig.imageQuestionTextAnswers(),
+            QuizLayoutConfig.textQuestionImageAnswers(
+              questionTemplate: '{name}',
+            ),
+          ],
+        ),
   };
 }
 
 /// Gets the subtitle for a continent showing the country count.
-String _getContinentSubtitle(
-  BuildContext context,
-  Continent continent,
-  CountryCounts counts,
-) {
+String _getContinentSubtitle(BuildContext context,
+    Continent continent,
+    CountryCounts counts,) {
   final l10n = AppLocalizations.of(context)!;
   final count = counts.getCount(continent);
   return '$count ${l10n.questions}';

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_engine/quiz_engine.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../achievements/flags_achievements_data_provider.dart';
@@ -99,7 +100,9 @@ class FlagsQuizAppProvider {
     final streakService = sl.get<StreakService>();
 
     // Create categories and data provider
-    final categories = createFlagsCategoriesWithLayout(countryCounts, mode: FlagsLayoutMode.standard);
+    final categories = createFlagsCategoriesWithLayout(countryCounts,
+        mode: FlagsLayoutMode.standard,
+        answerFeedbackConfig: AnswerFeedbackConfig.onlyOnFailure());
     const dataProvider = FlagsDataProvider();
 
     // Create achievements data provider and initialize at startup

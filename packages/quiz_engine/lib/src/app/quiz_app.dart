@@ -985,7 +985,7 @@ class _QuizAppState extends State<QuizApp> {
             'soundEnabled': _settingsService.currentSettings.soundEnabled,
             'hapticEnabled':
                 _settingsService.currentSettings.hapticEnabled,
-            'showAnswerFeedback': category.showAnswerFeedback,
+            'showAnswerFeedback': category.answerFeedbackConfig.canBeShown,
           },
     );
 

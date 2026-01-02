@@ -303,7 +303,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
     final hasLives = challenge.lives != null;
     final hasPerQuestionTime = challenge.questionTimeSeconds != null;
     final hasTotalTime = challenge.totalTimeSeconds != null;
-    final feedbackConfig = AnswerFeedbackConfig.fromBool(challenge.showAnswerFeedback);
+    final feedbackConfig = AnswerFeedbackConfig.none();
 
     // Survival: lives + time
     if (hasLives && (hasPerQuestionTime || hasTotalTime)) {

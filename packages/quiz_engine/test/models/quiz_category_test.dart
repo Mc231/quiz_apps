@@ -11,7 +11,7 @@ void main() {
       final category = QuizCategory(
         id: 'europe',
         title: (context) => 'Europe',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       expect(category.id, 'europe');
@@ -33,7 +33,7 @@ void main() {
         title: (context) => 'Europe',
         subtitle: (context) => '50 countries',
         icon: Icons.flag,
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         config: config,
         metadata: metadata,
         layoutConfig: layoutConfig,
@@ -51,7 +51,7 @@ void main() {
         id: 'europe',
         title: (context) => 'Europe',
         icon: Icons.flag,
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       final copied = original.copyWith(
@@ -72,7 +72,7 @@ void main() {
         id: 'europe',
         title: (context) => 'Europe',
         icon: Icons.flag,
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
         config: config,
       );
 
@@ -87,20 +87,20 @@ void main() {
       final category1 = QuizCategory(
         id: 'europe',
         title: (context) => 'Europe',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       final category2 = QuizCategory(
         id: 'europe',
         title: (context) => 'Different Title',
         icon: Icons.flag,
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       final category3 = QuizCategory(
         id: 'asia',
         title: (context) => 'Asia',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       expect(category1 == category2, isTrue);
@@ -111,13 +111,13 @@ void main() {
       final category1 = QuizCategory(
         id: 'europe',
         title: (context) => 'Europe',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       final category2 = QuizCategory(
         id: 'europe',
         title: (context) => 'Different',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       expect(category1.hashCode, category2.hashCode);
@@ -127,7 +127,7 @@ void main() {
       final category = QuizCategory(
         id: 'europe',
         title: (context) => 'Europe',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       expect(category.toString(), 'QuizCategory(id: europe)');
@@ -139,7 +139,7 @@ void main() {
         final category = QuizCategory(
           id: 'standard',
           title: (context) => 'Standard Quiz',
-          showAnswerFeedback: true,
+          answerFeedbackConfig: const AlwaysFeedbackConfig(),
           layoutConfig: layoutConfig,
         );
 
@@ -153,7 +153,7 @@ void main() {
         final category = QuizCategory(
           id: 'reverse',
           title: (context) => 'Find the Flag',
-          showAnswerFeedback: true,
+          answerFeedbackConfig: const AlwaysFeedbackConfig(),
           layoutConfig: layoutConfig,
         );
 
@@ -167,7 +167,7 @@ void main() {
         final category = QuizCategory(
           id: 'trivia',
           title: (context) => 'Trivia',
-          showAnswerFeedback: true,
+          answerFeedbackConfig: const AlwaysFeedbackConfig(),
           layoutConfig: layoutConfig,
         );
 
@@ -182,7 +182,7 @@ void main() {
         final category = QuizCategory(
           id: 'audio',
           title: (context) => 'Audio Quiz',
-          showAnswerFeedback: true,
+          answerFeedbackConfig: const AlwaysFeedbackConfig(),
           layoutConfig: layoutConfig,
         );
 
@@ -202,7 +202,7 @@ void main() {
         final category = QuizCategory(
           id: 'mixed',
           title: (context) => 'Mixed Quiz',
-          showAnswerFeedback: true,
+          answerFeedbackConfig: const AlwaysFeedbackConfig(),
           layoutConfig: layoutConfig,
         );
 
@@ -215,7 +215,7 @@ void main() {
         final original = QuizCategory(
           id: 'test',
           title: (context) => 'Test',
-          showAnswerFeedback: true,
+          answerFeedbackConfig: const AlwaysFeedbackConfig(),
           layoutConfig: QuizLayoutConfig.imageQuestionTextAnswers(),
         );
 
@@ -233,7 +233,7 @@ void main() {
         final original = QuizCategory(
           id: 'test',
           title: (context) => 'Test',
-          showAnswerFeedback: true,
+          answerFeedbackConfig: const AlwaysFeedbackConfig(),
           layoutConfig: layoutConfig,
         );
 
@@ -249,7 +249,7 @@ void main() {
         id: 'europe',
         title: (context) => 'Localized Europe',
         subtitle: (context) => '50 countries',
-        showAnswerFeedback: true,
+        answerFeedbackConfig: const AlwaysFeedbackConfig(),
       );
 
       String? resolvedTitle;
