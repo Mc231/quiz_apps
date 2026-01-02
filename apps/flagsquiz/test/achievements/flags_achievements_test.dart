@@ -837,6 +837,28 @@ class MockAppLocalizations extends AppLocalizations {
   String get layoutModeMixedShort => 'Mix';
   @override
   String get quizMode => 'Quiz Mode';
+
+  // Streak achievements
+  @override
+  String get achievementFirstFlame => 'First Flame';
+  @override
+  String get achievementFirstFlameDesc => 'Complete your first day streak';
+  @override
+  String get achievementWeekWarrior => 'Week Warrior';
+  @override
+  String get achievementWeekWarriorDesc => 'Maintain a 7 day streak';
+  @override
+  String get achievementMonthlyMaster => 'Monthly Master';
+  @override
+  String get achievementMonthlyMasterDesc => 'Maintain a 30 day streak';
+  @override
+  String get achievementCenturion => 'Centurion';
+  @override
+  String get achievementCenturionDesc => 'Maintain a 100 day streak';
+  @override
+  String get achievementDedication => 'Dedication';
+  @override
+  String get achievementDedicationDesc => 'Maintain a 365 day streak';
 }
 
 /// Mock QuizEngineLocalizations for testing.
@@ -1868,10 +1890,10 @@ void main() {
   });
 
   group('FlagsAchievements', () {
-    test('all() returns exactly 14 achievements', () {
+    test('all() returns exactly 19 achievements', () {
       final achievements = FlagsAchievements.all(appL10n);
       expect(achievements.length, equals(FlagsAchievements.count));
-      expect(achievements.length, equals(14));
+      expect(achievements.length, equals(19));
     });
 
     test('all achievements have unique IDs', () {
@@ -1886,6 +1908,7 @@ void main() {
         FlagsAchievements.categoryExplorer,
         FlagsAchievements.categoryRegionMastery,
         FlagsAchievements.categoryCollection,
+        FlagsAchievements.categoryDailyStreak,
       };
 
       for (final achievement in achievements) {
@@ -1975,18 +1998,22 @@ void main() {
             (tierCounts[achievement.tier] ?? 0) + 1;
       }
 
-      // 6 common (explore_*), 7 rare (mastery_*), 1 legendary (flag_collector)
-      // Plus world_traveler is rare
-      expect(tierCounts[AchievementTier.common], equals(6));
-      expect(tierCounts[AchievementTier.rare], equals(6));
-      expect(tierCounts[AchievementTier.epic], equals(1));
-      expect(tierCounts[AchievementTier.legendary], equals(1));
+      // Common: 6 explore_* + 1 first_flame = 7
+      // Uncommon: 1 week_warrior = 1
+      // Rare: 6 master_* + 1 world_traveler + 1 monthly_master = 8
+      // Epic: 1 master_world + 1 centurion = 2
+      // Legendary: 1 flag_collector + 1 dedication = 2
+      expect(tierCounts[AchievementTier.common], equals(7));
+      expect(tierCounts[AchievementTier.uncommon], equals(1));
+      expect(tierCounts[AchievementTier.rare], equals(7));
+      expect(tierCounts[AchievementTier.epic], equals(2));
+      expect(tierCounts[AchievementTier.legendary], equals(2));
     });
 
-    test('allWithBase() returns 67 achievements', () {
+    test('allWithBase() returns 72 achievements', () {
       final achievements = FlagsAchievements.allWithBase(quizL10n, appL10n);
       expect(achievements.length, equals(FlagsAchievements.totalCount));
-      expect(achievements.length, equals(67));
+      expect(achievements.length, equals(72));
     });
 
     test('allWithBase() includes both base and flags achievements', () {
@@ -2085,6 +2112,84 @@ void main() {
         FlagsAchievements.flagCollector(appL10n).trigger,
         isA<CustomTrigger>(),
       );
+    });
+  });
+
+  group('Daily Streak achievements', () {
+    test('daily streak category has 5 achievements', () {
+      final achievements = FlagsAchievements.all(appL10n);
+      final streakAchievements = achievements
+          .where((a) => a.category == FlagsAchievements.categoryDailyStreak)
+          .toList();
+      expect(streakAchievements.length, equals(5));
+    });
+
+    test('first flame is common tier with 1 day target', () {
+      final achievement = FlagsAchievements.firstFlame(appL10n);
+      expect(achievement.id, equals('first_flame'));
+      expect(achievement.tier, equals(AchievementTier.common));
+      expect(achievement.trigger, isA<CumulativeTrigger>());
+      final trigger = achievement.trigger as CumulativeTrigger;
+      expect(trigger.target, equals(1));
+      expect(trigger.field, equals(StatField.consecutiveDaysPlayed));
+    });
+
+    test('week warrior is uncommon tier with 7 day target', () {
+      final achievement = FlagsAchievements.weekWarrior(appL10n);
+      expect(achievement.id, equals('week_warrior'));
+      expect(achievement.tier, equals(AchievementTier.uncommon));
+      expect(achievement.trigger, isA<CumulativeTrigger>());
+      final trigger = achievement.trigger as CumulativeTrigger;
+      expect(trigger.target, equals(7));
+      expect(trigger.field, equals(StatField.consecutiveDaysPlayed));
+    });
+
+    test('monthly master is rare tier with 30 day target', () {
+      final achievement = FlagsAchievements.monthlyMaster(appL10n);
+      expect(achievement.id, equals('monthly_master'));
+      expect(achievement.tier, equals(AchievementTier.rare));
+      expect(achievement.trigger, isA<CumulativeTrigger>());
+      final trigger = achievement.trigger as CumulativeTrigger;
+      expect(trigger.target, equals(30));
+      expect(trigger.field, equals(StatField.consecutiveDaysPlayed));
+    });
+
+    test('centurion is epic tier with 100 day target', () {
+      final achievement = FlagsAchievements.centurion(appL10n);
+      expect(achievement.id, equals('centurion'));
+      expect(achievement.tier, equals(AchievementTier.epic));
+      expect(achievement.trigger, isA<CumulativeTrigger>());
+      final trigger = achievement.trigger as CumulativeTrigger;
+      expect(trigger.target, equals(100));
+      expect(trigger.field, equals(StatField.consecutiveDaysPlayed));
+    });
+
+    test('dedication is legendary tier with 365 day target', () {
+      final achievement = FlagsAchievements.dedication(appL10n);
+      expect(achievement.id, equals('dedication'));
+      expect(achievement.tier, equals(AchievementTier.legendary));
+      expect(achievement.trigger, isA<CumulativeTrigger>());
+      final trigger = achievement.trigger as CumulativeTrigger;
+      expect(trigger.target, equals(365));
+      expect(trigger.field, equals(StatField.consecutiveDaysPlayed));
+    });
+
+    test('all streak achievements have fire/achievement related icons', () {
+      final streakAchievements = [
+        FlagsAchievements.firstFlame(appL10n),
+        FlagsAchievements.weekWarrior(appL10n),
+        FlagsAchievements.monthlyMaster(appL10n),
+        FlagsAchievements.centurion(appL10n),
+        FlagsAchievements.dedication(appL10n),
+      ];
+
+      for (final achievement in streakAchievements) {
+        expect(
+          achievement.icon.isNotEmpty,
+          isTrue,
+          reason: 'Achievement ${achievement.id} has empty icon',
+        );
+      }
     });
   });
 }
