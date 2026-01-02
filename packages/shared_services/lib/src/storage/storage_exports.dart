@@ -9,6 +9,7 @@ export 'database/database_config.dart';
 export 'database/database_initializer.dart';
 
 // Table definitions
+export 'database/tables/daily_challenge_table.dart';
 export 'database/tables/daily_statistics_table.dart';
 export 'database/tables/practice_progress_table.dart';
 export 'database/tables/question_answers_table.dart';
@@ -18,6 +19,8 @@ export 'database/tables/statistics_tables.dart';
 export 'database/tables/streak_table.dart';
 
 // Models
+export 'models/daily_challenge.dart';
+export 'models/daily_challenge_result.dart';
 export 'models/daily_statistics.dart';
 export 'models/global_statistics.dart';
 export 'models/paginated_result.dart';
@@ -40,6 +43,7 @@ export 'storage_service.dart';
 // Quiz Storage Adapter
 export 'quiz_storage_adapter.dart';
 
-// Export Services
+// Services
+export 'services/daily_challenge_service.dart';
 export 'services/data_export_service.dart';
 export 'services/session_export_service.dart';
