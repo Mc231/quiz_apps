@@ -875,6 +875,14 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get achievementEarlyBirdDesc =>
       'Complete a daily challenge within the first hour of the day';
+
+  // Layout mode descriptions
+  @override
+  String get layoutModeStandardDesc => 'See flag, guess name';
+  @override
+  String get layoutModeReverseDesc => 'See name, guess flag';
+  @override
+  String get layoutModeMixedDesc => 'Both directions randomly';
 }
 
 /// Mock QuizEngineLocalizations for testing.
@@ -1971,6 +1979,24 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String accessibilityDailyChallengeCountdown(String time) =>
       'Next challenge in $time';
+
+  // Missing methods for streak tooltip and quiz mode
+  @override
+  String get correctAnswerLabel => 'Correct answer:';
+  @override
+  String get streakTooltipNoStreak => 'Start your streak!';
+  @override
+  String get streakTooltipSingular => '1 correct in a row';
+  @override
+  String streakTooltipPlural(int count) => '$count correct in a row';
+  @override
+  String get quizModeTitle => 'Quiz Mode';
+  @override
+  String get quizModeSubtitle => 'Select a mode';
+  @override
+  String get dailyChallengeStreak => 'Daily Streak';
+  @override
+  String get dailyChallengeNewBestStreak => 'New Best Streak!';
 }
 
 void main() {

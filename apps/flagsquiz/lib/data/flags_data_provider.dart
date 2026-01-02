@@ -76,7 +76,7 @@ class FlagsDataProvider extends engine.QuizDataProvider {
       // Lives mode with 5 hearts and skip button enabled
       // answerFeedbackConfig comes from the category
       modeConfig: QuizModeConfig.lives(
-        answerFeedbackConfig: AnswerFeedbackConfig.none(),
+        answerFeedbackConfig: category.answerFeedbackConfig,
         lives: 5,
         allowSkip: true,
       ),
