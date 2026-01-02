@@ -4861,25 +4861,40 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 15.4: Streak Rewards & Achievements
+#### Sprint 15.4: Streak Rewards & Achievements ✅
 
 **Goal:** Integrate streaks with achievements and rewards.
 
 **Tasks:**
-- [ ] Create streak-based achievements:
+- [x] Create streak-based achievements:
   - "First Flame" - Complete 1 day streak
   - "Week Warrior" - 7 day streak
   - "Monthly Master" - 30 day streak
   - "Centurion" - 100 day streak
   - "Dedication" - 365 day streak
-- [ ] Add achievements to `FlagsQuizAchievements`
-- [ ] Create `StreakReward` model for future reward integration
-- [ ] Create `StreakAnalyticsEvent` class:
+- [x] Add achievements to `FlagsQuizAchievements`
+- [x] Create `StreakReward` model for future reward integration
+- [x] Create `StreakAnalyticsEvent` class:
   - `streakExtended` - Streak increased
   - `streakBroken` - Streak was lost
   - `streakMilestone` - Reached milestone (7, 30, 100)
-- [ ] Add to analytics exports
-- [ ] Write unit tests
+  - `streakRestored` - Streak recovered via freeze token
+- [x] Add to analytics exports
+- [x] Write unit tests
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/streak/streak_reward.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/streak_event.dart`
+- ✅ `packages/shared_services/test/streak/streak_reward_test.dart`
+- ✅ `packages/shared_services/test/analytics/streak_event_test.dart`
+
+**Files Modified:**
+- ✅ `packages/shared_services/lib/src/streak/streak_exports.dart`
+- ✅ `packages/shared_services/lib/src/analytics/analytics_exports.dart`
+- ✅ `packages/shared_services/lib/src/analytics/analytics_event.dart`
+- ✅ `apps/flagsquiz/lib/achievements/flags_achievements.dart`
+- ✅ `apps/flagsquiz/lib/l10n/intl_en.arb`
+- ✅ `apps/flagsquiz/test/achievements/flags_achievements_test.dart`
 
 </details>
 
