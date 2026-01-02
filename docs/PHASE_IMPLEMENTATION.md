@@ -4737,25 +4737,43 @@ The following phases are planned for future implementation but are currently on 
 <details>
 <summary>Sprint Details (click to expand)</summary>
 
-#### Sprint 15.1: Streak Models & Repository
+#### Sprint 15.1: Streak Models & Repository ✅
 
 **Goal:** Create data models and persistence for streak tracking.
 
 **Tasks:**
-- [ ] Create `StreakData` model:
+- [x] Create `StreakData` model:
   - `currentStreak` - Current consecutive days
   - `longestStreak` - All-time best streak
   - `lastPlayDate` - Last date user completed a quiz
   - `streakStartDate` - When current streak began
   - `totalDaysPlayed` - Lifetime days with activity
-- [ ] Create `StreakRepository` interface:
+- [x] Create `StreakRepository` interface:
   - `getStreakData()` - Fetch current streak info
   - `updateStreak(DateTime playDate)` - Record activity
   - `resetStreak()` - Reset current streak (for testing)
   - `watchStreakData()` - Stream for reactive updates
-- [ ] Create `StreakRepositoryImpl` with SQLite/SharedPreferences
-- [ ] Add streak table to database migrations
-- [ ] Write unit tests
+- [x] Create `StreakRepositoryImpl` with SQLite
+- [x] Add streak table to database migrations (V8)
+- [x] Write unit tests
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/storage/models/streak_data.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/tables/streak_table.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration_v8.dart`
+- ✅ `packages/shared_services/lib/src/storage/data_sources/streak_data_source.dart`
+- ✅ `packages/shared_services/lib/src/storage/repositories/streak_repository.dart`
+
+**Files Modified:**
+- ✅ `packages/shared_services/lib/src/storage/database/database_config.dart` - Version bumped to 8
+- ✅ `packages/shared_services/lib/src/storage/database/app_database.dart` - Added MigrationV8
+- ✅ `packages/shared_services/lib/src/storage/storage_exports.dart` - Added streak exports
+- ✅ `packages/shared_services/lib/src/storage/data_sources/data_sources_exports.dart`
+- ✅ `packages/shared_services/lib/src/storage/repositories/repositories_exports.dart`
+
+**Tests Created:**
+- ✅ `packages/shared_services/test/storage/models/streak_data_test.dart`
+- ✅ `packages/shared_services/test/storage/repositories/streak_repository_test.dart`
 
 ---
 
