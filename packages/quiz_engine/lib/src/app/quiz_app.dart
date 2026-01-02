@@ -497,6 +497,7 @@ class _QuizAppState extends State<QuizApp> {
   AchievementService get _achievementService => _services.achievementService;
   AnalyticsService get _screenAnalyticsService => _services.screenAnalyticsService;
   QuizAnalyticsService get _quizAnalyticsService => _services.quizAnalyticsService;
+  StreakService? get _streakService => _services.streakService;
 
   @override
   void initState() {
@@ -1057,6 +1058,9 @@ class _QuizAppState extends State<QuizApp> {
         }
       }
     }
+
+    // Record activity for streak tracking
+    await _streakService?.recordActivity();
   }
 
   /// Handles practice session completion.
