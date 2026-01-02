@@ -1141,6 +1141,102 @@ QuizServicesScope(
 4. **Use `maybeServices` for optional access** - Returns null if not in tree
 5. **Use `wrapWithQuizServices()` in tests** - Provides mock services automatically
 
+### 9. Achievements System (CRITICAL - Layered Architecture)
+
+**The achievements system has a confusing layered architecture with base and app-specific achievements.**
+
+#### Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      RUNNING APP                            │
+│  FlagsAchievementsDataProvider._getAllAchievements()        │
+│  └── Returns ALL 75 achievements (base + app-specific)      │
+│      └── This is what the app ACTUALLY uses!                │
+└─────────────────────────────────────────────────────────────┘
+                              ▲
+                              │ Must include ALL achievements
+                              │
+┌─────────────────────────────┴───────────────────────────────┐
+│                    DEFINITION LAYER                         │
+├─────────────────────────────┬───────────────────────────────┤
+│ quiz_engine package         │ flagsquiz app                 │
+│                             │                               │
+│ BaseAchievements (53)       │ FlagsAchievements (22)        │
+│ - first_quiz                │ - explore_africa              │
+│ - first_perfect             │ - master_europe               │
+│ - quizzes_10...500          │ - daily_devotee               │
+│ - perfect_5...50            │ - perfect_day                 │
+│ - speed achievements        │ - early_bird                  │
+│ - streak achievements       │ - etc.                        │
+│ - etc.                      │                               │
+│                             │                               │
+│ Generic for ANY quiz app    │ Specific to Flags Quiz        │
+└─────────────────────────────┴───────────────────────────────┘
+```
+
+#### The Problem
+
+When adding achievements, you must update **multiple locations**:
+
+| Layer | Location | Purpose |
+|-------|----------|---------|
+| Base (shared) | `packages/quiz_engine/.../base_achievements.dart` | Generic achievements reusable across apps |
+| App-specific | `apps/flagsquiz/.../flags_achievements.dart` | App-specific achievement definitions |
+| **Data Provider** | `apps/flagsquiz/.../flags_achievements_data_provider.dart` | **ACTUAL source used by running app** |
+
+**The data provider (`_getAllAchievements()`) must contain ALL achievements inline - both base AND app-specific!**
+
+#### Why This Architecture?
+
+1. **BaseAchievements** - Reusable across quiz apps (quiz_engine package)
+2. **FlagsAchievements** - App-specific achievements (clean API with static methods)
+3. **DataProvider** - Combines both with deferred localization `(ctx) => AppLocalizations.of(ctx)?.string`
+
+The data provider uses inline definitions because it needs runtime context for localization, while the definition classes use parameters.
+
+#### When Adding New Achievements
+
+1. **Add to `FlagsAchievements`** - Define the achievement with static method
+2. **Add to `_getAllAchievements()`** - Copy the achievement definition inline
+3. **Update counts** - Update comment in data provider (e.g., "75 achievements")
+4. **Add localization strings** - Add to `.arb` files
+5. **Run tests** - Verify count matches expected total
+
+```dart
+// ❌ WRONG - Only added to FlagsAchievements (won't appear in app!)
+static Achievement newAchievement(l10n) => Achievement(...);
+
+// ✅ CORRECT - Added to BOTH places
+// 1. FlagsAchievements.newAchievement()
+// 2. FlagsAchievementsDataProvider._getAllAchievements() list
+```
+
+#### Achievement Categories
+
+Available categories from `AchievementCategory` enum:
+- `beginner` - First steps
+- `progress` - Cumulative milestones
+- `mastery` - Score-based
+- `speed` - Time-based
+- `streak` - Consecutive correct
+- `challenge` - Challenge modes
+- `dedication` - Consistency
+- `skill` - Special gameplay
+- `dailyChallenge` - Daily challenge specific
+
+#### Current Achievement Counts
+
+| Source | Base | App-Specific | Total |
+|--------|------|--------------|-------|
+| BaseAchievements | 53 | - | 53 |
+| FlagsAchievements | - | 22 | 22 |
+| **Total** | **53** | **22** | **75** |
+
+#### Future Improvement
+
+Consider refactoring to use `FlagsAchievements.allWithBase()` directly in the data provider to eliminate duplication. This would require solving the localization context issue.
+
 ## Troubleshooting
 
 ### "Package not found" errors
