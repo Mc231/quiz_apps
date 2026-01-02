@@ -1106,6 +1106,18 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get quizModeTitle => 'Quiz Mode';
   @override
   String get quizModeSubtitle => 'Select how questions are presented';
+
+  // Correct answer label (for feedback widget)
+  @override
+  String get correctAnswerLabel => 'Correct answer:';
+
+  // Streak tooltip strings
+  @override
+  String get streakTooltipNoStreak => 'Start your streak!';
+  @override
+  String get streakTooltipSingular => '1 correct in a row';
+  @override
+  String streakTooltipPlural(int count) => '$count correct in a row';
 }
 
 void main() {
