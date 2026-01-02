@@ -5,10 +5,11 @@ import '../l10n/app_localizations.dart';
 
 /// Flags Quiz specific achievements.
 ///
-/// Contains 14 app-specific achievements organized into 3 categories:
+/// Contains 19 app-specific achievements organized into 4 categories:
 /// - Explorer (7): Complete each continent quiz
 /// - Region Mastery (6): Get 5 perfect scores in each region
 /// - Collection (1): Collect all flags
+/// - Daily Streak (5): Maintain daily play streaks
 ///
 /// Usage:
 /// ```dart
@@ -25,6 +26,9 @@ class FlagsAchievements {
 
   /// Achievement category for collection achievements.
   static const String categoryCollection = 'collection';
+
+  /// Achievement category for daily streak achievements.
+  static const String categoryDailyStreak = 'daily_streak';
 
   // ===========================================================================
   // Explorer Category (7 achievements)
@@ -251,12 +255,86 @@ class FlagsAchievements {
       );
 
   // ===========================================================================
+  // Daily Streak Category (5 achievements)
+  // ===========================================================================
+
+  /// First Flame - Complete 1 day streak
+  static Achievement firstFlame(AppLocalizations l10n) => Achievement(
+        id: 'first_flame',
+        name: (_) => l10n.achievementFirstFlame,
+        description: (_) => l10n.achievementFirstFlameDesc,
+        icon: '🔥',
+        tier: AchievementTier.common,
+        category: categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 1,
+        ),
+      );
+
+  /// Week Warrior - Maintain a 7 day streak
+  static Achievement weekWarrior(AppLocalizations l10n) => Achievement(
+        id: 'week_warrior',
+        name: (_) => l10n.achievementWeekWarrior,
+        description: (_) => l10n.achievementWeekWarriorDesc,
+        icon: '⚔️',
+        tier: AchievementTier.uncommon,
+        category: categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 7,
+        ),
+      );
+
+  /// Monthly Master - Maintain a 30 day streak
+  static Achievement monthlyMaster(AppLocalizations l10n) => Achievement(
+        id: 'monthly_master',
+        name: (_) => l10n.achievementMonthlyMaster,
+        description: (_) => l10n.achievementMonthlyMasterDesc,
+        icon: '📅',
+        tier: AchievementTier.rare,
+        category: categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 30,
+        ),
+      );
+
+  /// Centurion - Maintain a 100 day streak
+  static Achievement centurion(AppLocalizations l10n) => Achievement(
+        id: 'centurion',
+        name: (_) => l10n.achievementCenturion,
+        description: (_) => l10n.achievementCenturionDesc,
+        icon: '🏛️',
+        tier: AchievementTier.epic,
+        category: categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 100,
+        ),
+      );
+
+  /// Dedication - Maintain a 365 day streak
+  static Achievement dedication(AppLocalizations l10n) => Achievement(
+        id: 'dedication',
+        name: (_) => l10n.achievementDedication,
+        description: (_) => l10n.achievementDedicationDesc,
+        icon: '👑',
+        tier: AchievementTier.legendary,
+        category: categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 365,
+        ),
+      );
+
+  // ===========================================================================
   // All Achievements
   // ===========================================================================
 
   /// Returns all Flags Quiz specific achievements.
   ///
-  /// This includes all 14 app-specific achievements.
+  /// This includes all 19 app-specific achievements.
   static List<Achievement> all(AppLocalizations l10n) => [
         // Explorer (7)
         exploreAfrica(l10n),
@@ -275,15 +353,21 @@ class FlagsAchievements {
         masterWorld(l10n),
         // Collection (1)
         flagCollector(l10n),
+        // Daily Streak (5)
+        firstFlame(l10n),
+        weekWarrior(l10n),
+        monthlyMaster(l10n),
+        centurion(l10n),
+        dedication(l10n),
       ];
 
   /// Returns the count of all Flags Quiz specific achievements.
-  static const int count = 14;
+  static const int count = 19;
 
   /// Returns the combined list of all achievements (base + flags-specific).
   ///
-  /// This includes all 53 base achievements and 14 app-specific achievements
-  /// for a total of 67 achievements.
+  /// This includes all 53 base achievements and 19 app-specific achievements
+  /// for a total of 72 achievements.
   static List<Achievement> allWithBase(
     QuizEngineLocalizations quizL10n,
     AppLocalizations appL10n,
@@ -295,5 +379,5 @@ class FlagsAchievements {
   }
 
   /// Total count of all achievements (base + flags-specific).
-  static const int totalCount = BaseAchievements.count + count; // 53 + 14 = 67
+  static const int totalCount = BaseAchievements.count + count; // 53 + 19 = 72
 }
