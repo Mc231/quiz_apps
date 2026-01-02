@@ -2835,6 +2835,144 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Failed to share. Please try again.'**
   String get shareError;
+
+  /// Streak count in days
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String streakDays(int count);
+
+  /// Label for day streak
+  ///
+  /// In en, this message translates to:
+  /// **'day streak'**
+  String get streakDayStreak;
+
+  /// Message when streak is active (played today)
+  ///
+  /// In en, this message translates to:
+  /// **'On Fire!'**
+  String get streakActive;
+
+  /// Message when streak is at risk (not played today yet)
+  ///
+  /// In en, this message translates to:
+  /// **'Keep your streak alive!'**
+  String get streakAtRisk;
+
+  /// Message when streak was broken
+  ///
+  /// In en, this message translates to:
+  /// **'Streak lost'**
+  String get streakBroken;
+
+  /// Message when user has no streak
+  ///
+  /// In en, this message translates to:
+  /// **'Start your streak today!'**
+  String get streakNone;
+
+  /// Call to action when streak is at risk
+  ///
+  /// In en, this message translates to:
+  /// **'Play today to keep going!'**
+  String get streakPlayToday;
+
+  /// Confirmation that user played today
+  ///
+  /// In en, this message translates to:
+  /// **'You played today!'**
+  String get streakPlayedToday;
+
+  /// Shows next milestone to reach
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {days} days'**
+  String streakNextMilestone(int days);
+
+  /// Celebration for reaching a milestone
+  ///
+  /// In en, this message translates to:
+  /// **'{days} Day Streak!'**
+  String streakMilestoneReached(int days);
+
+  /// 7 day streak milestone name
+  ///
+  /// In en, this message translates to:
+  /// **'Week Warrior'**
+  String get streakMilestone7;
+
+  /// 14 day streak milestone name
+  ///
+  /// In en, this message translates to:
+  /// **'Two Week Champion'**
+  String get streakMilestone14;
+
+  /// 30 day streak milestone name
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Master'**
+  String get streakMilestone30;
+
+  /// 50 day streak milestone name
+  ///
+  /// In en, this message translates to:
+  /// **'Fifty Day Legend'**
+  String get streakMilestone50;
+
+  /// 100 day streak milestone name
+  ///
+  /// In en, this message translates to:
+  /// **'Centurion'**
+  String get streakMilestone100;
+
+  /// 365 day streak milestone name
+  ///
+  /// In en, this message translates to:
+  /// **'Year of Dedication'**
+  String get streakMilestone365;
+
+  /// Message shown on milestone celebration
+  ///
+  /// In en, this message translates to:
+  /// **'Amazing dedication! Keep it up!'**
+  String get streakMilestoneMessage;
+
+  /// Message when user achieves a new streak record
+  ///
+  /// In en, this message translates to:
+  /// **'New personal best!'**
+  String get streakNewRecord;
+
+  /// Label for longest streak stat
+  ///
+  /// In en, this message translates to:
+  /// **'Longest'**
+  String get streakLongestLabel;
+
+  /// Label for total days played
+  ///
+  /// In en, this message translates to:
+  /// **'Total Days'**
+  String get streakTotalDaysLabel;
+
+  /// Accessibility label for streak badge
+  ///
+  /// In en, this message translates to:
+  /// **'{count} day streak, {status}'**
+  String accessibilityStreakBadge(int count, String status);
+
+  /// Accessibility label for streak card
+  ///
+  /// In en, this message translates to:
+  /// **'Current streak: {count} days. {message}'**
+  String accessibilityStreakCard(int count, String message);
+
+  /// Accessibility label for streak milestone celebration
+  ///
+  /// In en, this message translates to:
+  /// **'Milestone reached: {days} day streak. {title}'**
+  String accessibilityStreakMilestone(int days, String title);
 }
 
 class _QuizEngineLocalizationsDelegate

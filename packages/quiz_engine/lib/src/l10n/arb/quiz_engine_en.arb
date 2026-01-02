@@ -2439,5 +2439,141 @@
   "shareError": "Failed to share. Please try again.",
   "@shareError": {
     "description": "Error message when sharing fails"
+  },
+
+  "streakDays": "{count, plural, =1{1 day} other{{count} days}}",
+  "@streakDays": {
+    "description": "Streak count in days",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "streakDayStreak": "day streak",
+  "@streakDayStreak": {
+    "description": "Label for day streak"
+  },
+
+  "streakActive": "On Fire!",
+  "@streakActive": {
+    "description": "Message when streak is active (played today)"
+  },
+
+  "streakAtRisk": "Keep your streak alive!",
+  "@streakAtRisk": {
+    "description": "Message when streak is at risk (not played today yet)"
+  },
+
+  "streakBroken": "Streak lost",
+  "@streakBroken": {
+    "description": "Message when streak was broken"
+  },
+
+  "streakNone": "Start your streak today!",
+  "@streakNone": {
+    "description": "Message when user has no streak"
+  },
+
+  "streakPlayToday": "Play today to keep going!",
+  "@streakPlayToday": {
+    "description": "Call to action when streak is at risk"
+  },
+
+  "streakPlayedToday": "You played today!",
+  "@streakPlayedToday": {
+    "description": "Confirmation that user played today"
+  },
+
+  "streakNextMilestone": "Next: {days} days",
+  "@streakNextMilestone": {
+    "description": "Shows next milestone to reach",
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+
+  "streakMilestoneReached": "{days} Day Streak!",
+  "@streakMilestoneReached": {
+    "description": "Celebration for reaching a milestone",
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+
+  "streakMilestone7": "Week Warrior",
+  "@streakMilestone7": {
+    "description": "7 day streak milestone name"
+  },
+
+  "streakMilestone14": "Two Week Champion",
+  "@streakMilestone14": {
+    "description": "14 day streak milestone name"
+  },
+
+  "streakMilestone30": "Monthly Master",
+  "@streakMilestone30": {
+    "description": "30 day streak milestone name"
+  },
+
+  "streakMilestone50": "Fifty Day Legend",
+  "@streakMilestone50": {
+    "description": "50 day streak milestone name"
+  },
+
+  "streakMilestone100": "Centurion",
+  "@streakMilestone100": {
+    "description": "100 day streak milestone name"
+  },
+
+  "streakMilestone365": "Year of Dedication",
+  "@streakMilestone365": {
+    "description": "365 day streak milestone name"
+  },
+
+  "streakMilestoneMessage": "Amazing dedication! Keep it up!",
+  "@streakMilestoneMessage": {
+    "description": "Message shown on milestone celebration"
+  },
+
+  "streakNewRecord": "New personal best!",
+  "@streakNewRecord": {
+    "description": "Message when user achieves a new streak record"
+  },
+
+  "streakLongestLabel": "Longest",
+  "@streakLongestLabel": {
+    "description": "Label for longest streak stat"
+  },
+
+  "streakTotalDaysLabel": "Total Days",
+  "@streakTotalDaysLabel": {
+    "description": "Label for total days played"
+  },
+
+  "accessibilityStreakBadge": "{count} day streak, {status}",
+  "@accessibilityStreakBadge": {
+    "description": "Accessibility label for streak badge",
+    "placeholders": {
+      "count": {"type": "int"},
+      "status": {"type": "String"}
+    }
+  },
+
+  "accessibilityStreakCard": "Current streak: {count} days. {message}",
+  "@accessibilityStreakCard": {
+    "description": "Accessibility label for streak card",
+    "placeholders": {
+      "count": {"type": "int"},
+      "message": {"type": "String"}
+    }
+  },
+
+  "accessibilityStreakMilestone": "Milestone reached: {days} day streak. {title}",
+  "@accessibilityStreakMilestone": {
+    "description": "Accessibility label for streak milestone celebration",
+    "placeholders": {
+      "days": {"type": "int"},
+      "title": {"type": "String"}
+    }
   }
 }
