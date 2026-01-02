@@ -427,6 +427,21 @@ class QuizApp extends StatefulWidget {
   /// will appear on the results screen. This config customizes the UI.
   final ShareBottomSheetConfig? shareConfig;
 
+  /// Optional builder for category icons in share images.
+  ///
+  /// When provided, this builder creates a widget (e.g., flag image) to display
+  /// on the share image for the given category ID. This makes share images
+  /// more visually appealing by including category-specific imagery.
+  ///
+  /// Example:
+  /// ```dart
+  /// shareCategoryIconBuilder: (categoryId) => Image.asset(
+  ///   'assets/flags/${categoryId}_representative.png',
+  ///   fit: BoxFit.cover,
+  /// ),
+  /// ```
+  final Widget Function(String categoryId)? shareCategoryIconBuilder;
+
   /// Creates a [QuizApp].
   const QuizApp({
     super.key,
@@ -458,6 +473,7 @@ class QuizApp extends StatefulWidget {
     this.formatStatus,
     this.formatDuration,
     this.shareConfig,
+    this.shareCategoryIconBuilder,
   });
 
   @override
@@ -799,6 +815,7 @@ class _QuizAppState extends State<QuizApp> {
                       layoutModeSelectorTitle: widget.challengeLayoutModeSelectorTitleBuilder?.call(context),
                       onQuizCompleted: _handleQuizCompleted,
                       shareConfig: widget.shareConfig,
+                      shareCategoryIconBuilder: widget.shareCategoryIconBuilder,
                     ),
               ),
             );
@@ -965,7 +982,7 @@ class _QuizAppState extends State<QuizApp> {
                   categoryName: category.title(context),
                   onQuizCompleted: (results) => _handleQuizCompleted(results),
                   useResourceManager: true,
-                  shareConfig: widget.shareConfig,
+                  shareConfig: _buildShareConfigForCategory(category.id),
                 ),
               ),
         ),
@@ -1050,7 +1067,28 @@ class _QuizAppState extends State<QuizApp> {
     }
   }
 
-  /// Navigates to the Play (quiz) tab.
+  /// Builds share config for a specific category.
+  ///
+  /// Merges the base [shareConfig] with a category-specific icon if
+  /// [shareCategoryIconBuilder] is provided.
+  ShareBottomSheetConfig? _buildShareConfigForCategory(String categoryId) {
+    if (widget.shareConfig == null) return null;
+
+    final categoryIcon = widget.shareCategoryIconBuilder?.call(categoryId);
+    if (categoryIcon == null) {
+      return widget.shareConfig;
+    }
+
+    return ShareBottomSheetConfig(
+      appName: widget.shareConfig!.appName,
+      appLogoAsset: widget.shareConfig!.appLogoAsset,
+      categoryIcon: categoryIcon,
+      useDarkTheme: widget.shareConfig!.useDarkTheme,
+      showTextOption: widget.shareConfig!.showTextOption,
+      showImageOption: widget.shareConfig!.showImageOption,
+    );
+  }
+
   void _navigateToPlayTab() {
     // This is a simple implementation - in a more complex app,
     // you might use a different navigation approach

@@ -10,6 +10,37 @@ import '../initialization/flags_quiz_dependencies.dart';
 import '../l10n/app_localizations.dart';
 import '../practice/flags_practice_data_provider.dart';
 
+/// Builds a representative flag icon for a category (continent).
+///
+/// Returns a flag image widget that represents the category in share images.
+/// Each continent gets a representative country's flag.
+Widget _buildShareCategoryIcon(String categoryId) {
+  // Strip suffixes like _reverse, _mixed to get base continent ID
+  final baseId = categoryId.split('_').first;
+
+  // Map continent ID to a representative country code
+  final countryCode = switch (baseId) {
+    'all' => 'UN', // United Nations flag for "World"
+    'af' => 'ZA', // South Africa for Africa
+    'eu' => 'FR', // France for Europe
+    'as' => 'JP', // Japan for Asia
+    'na' => 'US', // USA for North America
+    'sa' => 'BR', // Brazil for South America
+    'oc' => 'AU', // Australia for Oceania
+    _ => 'UN', // Default to UN flag
+  };
+
+  return Image.asset(
+    'assets/images/$countryCode.png',
+    fit: BoxFit.cover,
+    errorBuilder: (_, __, ___) => const Icon(
+      Icons.flag,
+      size: 100,
+      color: Colors.white,
+    ),
+  );
+}
+
 /// The main Flags Quiz application widget.
 ///
 /// Uses [QuizApp] from quiz_engine with app-specific configuration.
@@ -58,9 +89,11 @@ class FlagsQuizApp extends StatelessWidget {
       practiceDataProvider: FlagsPracticeDataProvider.fromServiceLocator(),
       shareConfig: const ShareBottomSheetConfig(
         appName: 'Flags Quiz',
+        appLogoAsset: 'assets/app_icon.png',
         showTextOption: true,
         showImageOption: true,
       ),
+      shareCategoryIconBuilder: _buildShareCategoryIcon,
       config: QuizAppConfig(
         title: 'Flags Quiz',
         appLocalizationDelegates: AppLocalizations.localizationsDelegates,

@@ -47,6 +47,7 @@ class ChallengesScreen extends StatefulWidget {
     this.onQuizCompleted,
     this.completedChallengeCount = 0,
     this.shareConfig,
+    this.shareCategoryIconBuilder,
   });
 
   /// List of available challenge modes.
@@ -111,6 +112,12 @@ class ChallengesScreen extends StatefulWidget {
   /// will appear on the results screen. This config customizes the UI.
   final ShareBottomSheetConfig? shareConfig;
 
+  /// Optional builder for category icons in share images.
+  ///
+  /// When provided, this builder creates a widget (e.g., flag image) to display
+  /// on the share image for the given category ID.
+  final Widget Function(String categoryId)? shareCategoryIconBuilder;
+
   @override
   State<ChallengesScreen> createState() => _ChallengesScreenState();
 }
@@ -122,6 +129,25 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
   StorageService get _storageService => context.storageService;
 
   bool _screenViewLogged = false;
+
+  /// Builds share config for a specific category.
+  ShareBottomSheetConfig? _buildShareConfigForCategory(String categoryId) {
+    if (widget.shareConfig == null) return null;
+
+    final categoryIcon = widget.shareCategoryIconBuilder?.call(categoryId);
+    if (categoryIcon == null) {
+      return widget.shareConfig;
+    }
+
+    return ShareBottomSheetConfig(
+      appName: widget.shareConfig!.appName,
+      appLogoAsset: widget.shareConfig!.appLogoAsset,
+      categoryIcon: categoryIcon,
+      useDarkTheme: widget.shareConfig!.useDarkTheme,
+      showTextOption: widget.shareConfig!.showTextOption,
+      showImageOption: widget.shareConfig!.showImageOption,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -244,7 +270,7 @@ class _ChallengesScreenState extends State<ChallengesScreen> {
               storageService: storageAdapter,
               quizAnalyticsService: quizAnalyticsAdapter,
               onQuizCompleted: widget.onQuizCompleted,
-              shareConfig: widget.shareConfig,
+              shareConfig: _buildShareConfigForCategory(category.id),
             ),
           ),
         ),
