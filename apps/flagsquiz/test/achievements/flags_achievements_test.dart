@@ -1805,6 +1805,57 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get sharePerfectScore => 'Perfect Score!';
   @override
   String get shareCallToAction => 'Try it yourself!';
+
+  // Streak localizations
+  @override
+  String streakDays(int count) => '$count days';
+  @override
+  String get streakDayStreak => 'day streak';
+  @override
+  String get streakActive => 'On Fire!';
+  @override
+  String get streakAtRisk => 'Keep your streak alive!';
+  @override
+  String get streakBroken => 'Streak lost';
+  @override
+  String get streakNone => 'Start your streak today!';
+  @override
+  String get streakPlayToday => 'Play today to keep going!';
+  @override
+  String get streakPlayedToday => 'You played today!';
+  @override
+  String streakNextMilestone(int days) => 'Next: $days days';
+  @override
+  String streakMilestoneReached(int days) => '$days Day Streak!';
+  @override
+  String get streakMilestone7 => 'Week Warrior';
+  @override
+  String get streakMilestone14 => 'Two Week Champion';
+  @override
+  String get streakMilestone30 => 'Monthly Master';
+  @override
+  String get streakMilestone50 => 'Fifty Day Legend';
+  @override
+  String get streakMilestone100 => 'Centurion';
+  @override
+  String get streakMilestone365 => 'Year of Dedication';
+  @override
+  String get streakMilestoneMessage => 'Amazing dedication! Keep it up!';
+  @override
+  String get streakNewRecord => 'New personal best!';
+  @override
+  String get streakLongestLabel => 'Longest';
+  @override
+  String get streakTotalDaysLabel => 'Total Days';
+  @override
+  String accessibilityStreakBadge(int count, String status) =>
+      '$count day streak, $status';
+  @override
+  String accessibilityStreakCard(int count, String message) =>
+      'Current streak: $count days. $message';
+  @override
+  String accessibilityStreakMilestone(int days, String title) =>
+      'Milestone reached: $days day streak. $title';
 }
 
 void main() {
