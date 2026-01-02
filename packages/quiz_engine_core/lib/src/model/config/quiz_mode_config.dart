@@ -122,9 +122,13 @@ AnswerFeedbackConfig _parseAnswerFeedbackConfig(
   }
 
   // Backward compatibility: check for legacy boolean field
+  // Legacy true -> OnlyOnFailureFeedbackConfig (default)
+  // Legacy false -> NoFeedbackConfig
   if (map.containsKey('showAnswerFeedback')) {
     final showFeedback = map['showAnswerFeedback'] as bool? ?? true;
-    return AnswerFeedbackConfig.fromBool(showFeedback);
+    return showFeedback
+        ? const OnlyOnFailureFeedbackConfig()
+        : const NoFeedbackConfig();
   }
 
   // Return mode-specific default

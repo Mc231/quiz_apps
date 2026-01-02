@@ -36,24 +36,13 @@ sealed class AnswerFeedbackConfig {
 
   /// Deserialize from map.
   factory AnswerFeedbackConfig.fromMap(Map<String, dynamic> map) {
-    final type = map['type'] as String? ?? 'always';
+    final type = map['type'] as String? ?? 'onlyOnFailure';
     return switch (type) {
       'always' => const AlwaysFeedbackConfig(),
       'onlyOnFailure' => const OnlyOnFailureFeedbackConfig(),
       'none' => const NoFeedbackConfig(),
-      _ => const AlwaysFeedbackConfig(), // Default fallback
+      _ => const OnlyOnFailureFeedbackConfig(), // Default fallback
     };
-  }
-
-  /// Deserialize from legacy boolean value.
-  ///
-  /// For backward compatibility with old configs that used boolean.
-  /// - true -> AlwaysFeedbackConfig
-  /// - false -> NoFeedbackConfig
-  factory AnswerFeedbackConfig.fromBool(bool showFeedback) {
-    return showFeedback
-        ? const AlwaysFeedbackConfig()
-        : const NoFeedbackConfig();
   }
 }
 

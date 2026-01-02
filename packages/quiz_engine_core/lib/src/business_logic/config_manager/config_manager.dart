@@ -77,7 +77,9 @@ class ConfigManager {
       var modeConfig = baseConfig.modeConfig;
       if (settings['showAnswerFeedback'] != null) {
         final showFeedback = settings['showAnswerFeedback'] as bool;
-        final feedbackConfig = AnswerFeedbackConfig.fromBool(showFeedback);
+        final feedbackConfig = showFeedback
+            ? const OnlyOnFailureFeedbackConfig()
+            : const NoFeedbackConfig();
         modeConfig = switch (modeConfig) {
           StandardMode() => modeConfig.copyWith(answerFeedbackConfig: feedbackConfig),
           TimedMode() => modeConfig.copyWith(answerFeedbackConfig: feedbackConfig),
