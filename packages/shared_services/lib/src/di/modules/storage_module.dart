@@ -49,6 +49,10 @@ class StorageModule extends DependencyModule {
     sl.registerLazySingleton<AchievementDataSource>(
       () => AchievementDataSourceImpl(database: sl.get<AppDatabase>()),
     );
+
+    sl.registerLazySingleton<StreakDataSource>(
+      () => StreakDataSourceImpl(database: sl.get<AppDatabase>()),
+    );
   }
 
   void _registerRepositories(ServiceLocator sl) {
@@ -98,6 +102,18 @@ class StorageModule extends DependencyModule {
         engine: sl.get<AchievementEngine>(),
         analyticsService:
             sl.getOrNull<AnalyticsService>() ?? NoOpAnalyticsService(),
+      ),
+    );
+
+    sl.registerLazySingleton<StreakRepository>(
+      () => StreakRepositoryImpl(
+        dataSource: sl.get<StreakDataSource>(),
+      ),
+    );
+
+    sl.registerLazySingleton<StreakService>(
+      () => StreakServiceImpl(
+        repository: sl.get<StreakRepository>(),
       ),
     );
 
