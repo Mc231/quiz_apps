@@ -93,7 +93,8 @@ void main() {
       expect(captured, hasLength(1));
       final event = captured.first as RateAppEvent;
       expect(event.eventName, 'rate_app_conditions_checked');
-      expect(event.parameters['should_show'], false);
+      // Analytics parameters serialize booleans as 0/1
+      expect(event.parameters['should_show'], anyOf(false, 0));
       expect(event.parameters['blocking_reason'], 'score_too_low');
     });
 

@@ -9,41 +9,43 @@ import '../mocks/mock_analytics_service.dart';
 
 /// Wraps a widget with services and properly handles overlay attachment.
 /// Returns a widget that attaches the controller to the overlay.
+/// Note: QuizServicesProvider must be ABOVE MaterialApp so overlay entries
+/// can access services.
 Widget wrapWithServicesAndOverlay(
   MockAnalyticsService analyticsService,
   AchievementNotificationController controller,
 ) {
-  return MaterialApp(
-    localizationsDelegates: const [
-      QuizLocalizationsDelegate(),
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-    supportedLocales: const [Locale('en')],
-    home: Builder(
-      builder: (context) {
-        // Attach controller in next frame when overlay is available
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          controller.attach(Overlay.of(context));
-        });
-        return QuizServicesProvider(
-          services: QuizServices(
-            screenAnalyticsService: analyticsService,
-            quizAnalyticsService: NoOpQuizAnalyticsService(),
-            settingsService: _MockSettingsService(),
-            storageService: _MockStorageService(),
-            achievementService: _MockAchievementService(),
-            resourceManager: ResourceManager(
-              config: ResourceConfig.standard(),
-              repository: InMemoryResourceRepository(),
-            ),
-            adsService: NoAdsService(),
-            iapService: NoOpIAPService(),
-          ),
-          child: const Scaffold(body: Text('Test')),
-        );
-      },
+  return QuizServicesProvider(
+    services: QuizServices(
+      screenAnalyticsService: analyticsService,
+      quizAnalyticsService: NoOpQuizAnalyticsService(),
+      settingsService: _MockSettingsService(),
+      storageService: _MockStorageService(),
+      achievementService: _MockAchievementService(),
+      resourceManager: ResourceManager(
+        config: ResourceConfig.standard(),
+        repository: InMemoryResourceRepository(),
+      ),
+      adsService: NoAdsService(),
+      iapService: NoOpIAPService(),
+    ),
+    child: MaterialApp(
+      localizationsDelegates: const [
+        QuizLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [Locale('en')],
+      home: Builder(
+        builder: (context) {
+          // Attach controller in next frame when overlay is available
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            controller.attach(Overlay.of(context));
+          });
+          return const Scaffold(body: Text('Test'));
+        },
+      ),
     ),
   );
 }
