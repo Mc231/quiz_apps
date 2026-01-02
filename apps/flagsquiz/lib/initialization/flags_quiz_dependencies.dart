@@ -2,6 +2,7 @@ import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../achievements/flags_achievements_data_provider.dart';
+import '../daily_challenge/flags_daily_challenge_data_provider.dart';
 import '../data/flags_data_provider.dart';
 import '../deeplink/flags_quiz_deep_link_service.dart';
 
@@ -19,6 +20,9 @@ class FlagsQuizDependencies {
     required this.categories,
     required this.navigatorObserver,
     required this.deepLinkService,
+    required this.dailyChallengeService,
+    required this.dailyChallengeDataProvider,
+    required this.statisticsRepository,
   });
 
   /// All core services bundled together.
@@ -41,4 +45,13 @@ class FlagsQuizDependencies {
 
   /// Deep link service for handling flagsquiz:// URLs.
   final FlagsQuizDeepLinkService deepLinkService;
+
+  /// Daily challenge service for managing daily challenges.
+  final DailyChallengeService dailyChallengeService;
+
+  /// Data provider for loading daily challenge questions.
+  final FlagsDailyChallengeDataProvider dailyChallengeDataProvider;
+
+  /// Statistics repository for updating global statistics.
+  final StatisticsRepository statisticsRepository;
 }

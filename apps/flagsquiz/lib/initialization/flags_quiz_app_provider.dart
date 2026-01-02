@@ -7,6 +7,7 @@ import 'package:shared_services/shared_services.dart';
 import '../achievements/flags_achievements_data_provider.dart';
 import '../app/flags_quiz_app.dart';
 import '../config/iap_config_production.dart';
+import '../daily_challenge/flags_daily_challenge_data_provider.dart';
 import '../data/country_counts.dart';
 import '../data/flags_categories.dart';
 import '../data/flags_data_provider.dart';
@@ -242,6 +243,22 @@ class FlagsQuizAppProvider {
     final deepLinkService = FlagsQuizDeepLinkService();
     await deepLinkService.initialize();
 
+    // Initialize daily challenge service
+    final dailyChallengeDataSource = DailyChallengeDataSourceImpl(
+      database: sl.get<AppDatabase>(),
+    );
+    final dailyChallengeRepository = DailyChallengeRepositoryImpl(
+      dataSource: dailyChallengeDataSource,
+    );
+    final dailyChallengeService = DailyChallengeServiceImpl(
+      repository: dailyChallengeRepository,
+      availableCategories: const ['all', 'af', 'eu', 'as', 'na', 'sa', 'oc'],
+      questionCount: 10,
+    );
+
+    // Create daily challenge data provider
+    const dailyChallengeDataProvider = FlagsDailyChallengeDataProvider();
+
     // Create share service with analytics tracking
     final shareService = AnalyticsShareService(
       shareService: PlatformShareService(
@@ -271,6 +288,9 @@ class FlagsQuizAppProvider {
       streakService: streakService,
     );
 
+    // Get statistics repository for updating daily challenge stats
+    final statisticsRepository = sl.get<StatisticsRepository>();
+
     return FlagsQuizDependencies(
       services: services,
       secrets: secrets,
@@ -279,6 +299,9 @@ class FlagsQuizAppProvider {
       categories: categories,
       navigatorObserver: navigatorObserver,
       deepLinkService: deepLinkService,
+      dailyChallengeService: dailyChallengeService,
+      dailyChallengeDataProvider: dailyChallengeDataProvider,
+      statisticsRepository: statisticsRepository,
     );
   }
 

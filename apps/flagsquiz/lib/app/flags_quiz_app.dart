@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:quiz_engine/quiz_engine.dart';
+import 'package:quiz_engine_core/quiz_engine_core.dart';
+import 'package:shared_services/shared_services.dart';
 
 import '../data/flags_challenges.dart';
 import '../data/flags_layout_options.dart';
@@ -58,7 +60,7 @@ Widget _buildShareCategoryIcon(String categoryId) {
 ///   runApp(await FlagsQuizAppProvider.provideApp());
 /// }
 /// ```
-class FlagsQuizApp extends StatelessWidget {
+class FlagsQuizApp extends StatefulWidget {
   /// Creates a [FlagsQuizApp].
   const FlagsQuizApp({
     super.key,
@@ -69,67 +71,372 @@ class FlagsQuizApp extends StatelessWidget {
   final FlagsQuizDependencies dependencies;
 
   @override
+  State<FlagsQuizApp> createState() => _FlagsQuizAppState();
+}
+
+class _FlagsQuizAppState extends State<FlagsQuizApp> {
+  FlagsQuizDependencies get _deps => widget.dependencies;
+
+  @override
   Widget build(BuildContext context) {
     return DeepLinkHandler(
-      deepLinkService: dependencies.deepLinkService,
-      analyticsService: dependencies.services.screenAnalyticsService,
+      deepLinkService: _deps.deepLinkService,
+      analyticsService: _deps.services.screenAnalyticsService,
       onRoute: _handleDeepLinkRoute,
       child: QuizApp(
-      services: dependencies.services,
-      categories: dependencies.categories,
-      dataProvider: dependencies.dataProvider,
-      achievementsDataProvider: dependencies.achievementsProvider,
-      challenges: FlagsChallenges.all,
-      challengeLayoutModeOptionsBuilder: createFlagsLayoutOptions,
-      challengeLayoutModeSelectorTitleBuilder: (context) =>
-          AppLocalizations.of(context)!.quizMode,
-      playLayoutModeOptionsBuilder: createFlagsLayoutOptions,
-      playLayoutModeSelectorTitleBuilder: (context) =>
-          AppLocalizations.of(context)!.quizMode,
-      practiceDataProvider: FlagsPracticeDataProvider.fromServiceLocator(),
-      shareConfig: const ShareBottomSheetConfig(
-        appName: 'Flags Quiz',
-        appLogoAsset: 'assets/app_icon.png',
-        showTextOption: true,
-        showImageOption: true,
-      ),
-      shareCategoryIconBuilder: _buildShareCategoryIcon,
-      config: QuizAppConfig(
-        title: 'Flags Quiz',
-        appLocalizationDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        useMaterial3: false,
-        primaryColor: Colors.white,
-        scaffoldBackgroundColor: Colors.white,
-        appBarTheme: const AppBarTheme(elevation: 0),
-        navigatorObservers: [dependencies.navigatorObserver],
-        rateAppConfig: const RateAppUiConfig(
+        services: _deps.services,
+        categories: _deps.categories,
+        dataProvider: _deps.dataProvider,
+        achievementsDataProvider: _deps.achievementsProvider,
+        challenges: FlagsChallenges.all,
+        challengeLayoutModeOptionsBuilder: createFlagsLayoutOptions,
+        challengeLayoutModeSelectorTitleBuilder: (context) =>
+            AppLocalizations.of(context)!.quizMode,
+        playLayoutModeOptionsBuilder: createFlagsLayoutOptions,
+        playLayoutModeSelectorTitleBuilder: (context) =>
+            AppLocalizations.of(context)!.quizMode,
+        practiceDataProvider: FlagsPracticeDataProvider.fromServiceLocator(),
+        shareConfig: const ShareBottomSheetConfig(
           appName: 'Flags Quiz',
-          feedbackEmail: 'support@flagsquiz.app',
-          delaySeconds: 2,
+          appLogoAsset: 'assets/app_icon.png',
+          showTextOption: true,
+          showImageOption: true,
         ),
-      ),
-      homeConfig: QuizHomeScreenConfig(
-        tabConfig: QuizTabConfig(
-          tabs: [
-            QuizTab.play(),
-            QuizTab.achievements(),
-            QuizTab.history(),
-            QuizTab.statistics(),
-          ],
+        shareCategoryIconBuilder: _buildShareCategoryIcon,
+        playTabHeaderWidgetBuilder: _buildDailyChallengeCard,
+        config: QuizAppConfig(
+          title: 'Flags Quiz',
+          appLocalizationDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          useMaterial3: false,
+          primaryColor: Colors.white,
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: const AppBarTheme(elevation: 0),
+          navigatorObservers: [_deps.navigatorObserver],
+          rateAppConfig: const RateAppUiConfig(
+            appName: 'Flags Quiz',
+            feedbackEmail: 'support@flagsquiz.app',
+            delaySeconds: 2,
+          ),
         ),
-        showSettingsInAppBar: true,
-      ),
+        homeConfig: QuizHomeScreenConfig(
+          tabConfig: QuizTabConfig(
+            tabs: [
+              QuizTab.play(),
+              QuizTab.achievements(),
+              QuizTab.history(),
+              QuizTab.statistics(),
+            ],
+          ),
+          showSettingsInAppBar: true,
+        ),
       ),
     );
   }
+
+  /// Builds the daily challenge card for the Play tab header.
+  Widget _buildDailyChallengeCard(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: DailyChallengeCardBuilder(
+        service: _deps.dailyChallengeService,
+        onStartChallenge: (challenge) => _navigateToDailyChallenge(context, challenge),
+        onViewResults: (result) => _navigateToDailyChallengeResults(context, result),
+        style: const DailyChallengeCardStyle(
+          compact: true,
+          showCountdown: true,
+        ),
+      ),
+    );
+  }
+
+  /// Navigates to the daily challenge intro screen.
+  Future<void> _navigateToDailyChallenge(
+    BuildContext context,
+    DailyChallenge challenge,
+  ) async {
+    // Get current result (if any)
+    final result = await _deps.dailyChallengeService.getTodaysResult();
+    final timeRemaining = _deps.dailyChallengeService.getTimeUntilNextChallenge();
+
+    // Build status
+    final status = DailyChallengeStatus(
+      challenge: challenge,
+      result: result,
+      isCompleted: result != null,
+      timeUntilNextChallenge: timeRemaining,
+    );
+
+    // Get category name for display
+    final l10n = AppLocalizations.of(context);
+    final categoryName = _getCategoryName(challenge.categoryId, l10n);
+
+    if (!context.mounted) return;
+
+    // Navigate to daily challenge screen
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        builder: (context) => DailyChallengeScreen(
+          data: DailyChallengeScreenData(
+            status: status,
+            categoryName: categoryName,
+          ),
+          onStartChallenge: () => _startDailyChallengeQuiz(context, challenge),
+          onViewResults: result != null
+              ? () => _navigateToDailyChallengeResults(
+                  context,
+                  result,
+                  challenge.categoryId,
+                )
+              : null,
+          onBack: () => Navigator.of(context).pop(),
+        ),
+      ),
+    );
+  }
+
+  /// Starts the actual quiz for the daily challenge.
+  Future<void> _startDailyChallengeQuiz(
+    BuildContext context,
+    DailyChallenge challenge,
+  ) async {
+    // Get current streak for analytics
+    final stats = await _deps.dailyChallengeService.getStats();
+
+    // Log challenge started event
+    await _deps.services.screenAnalyticsService.logEvent(
+      DailyChallengeEvent.started(
+        challengeId: challenge.id,
+        categoryId: challenge.categoryId,
+        totalQuestions: challenge.questionCount,
+        timeLimitSeconds: challenge.timeLimitSeconds,
+        currentStreak: stats.currentStreak,
+      ),
+    );
+
+    // Load questions
+    final questions = await _deps.dailyChallengeDataProvider.loadQuestions(
+      context,
+      categoryId: challenge.categoryId,
+      seed: challenge.seed,
+      count: challenge.questionCount,
+    );
+
+    if (!context.mounted) return;
+
+    // Create quiz config
+    final quizConfig = _deps.dailyChallengeDataProvider.createQuizConfig(
+      challengeId: challenge.id,
+      timeLimitSeconds: challenge.timeLimitSeconds,
+    );
+
+    final storageConfig = _deps.dailyChallengeDataProvider.createStorageConfig(
+      challenge.categoryId,
+    );
+
+    final layoutConfig = _deps.dailyChallengeDataProvider.createLayoutConfig();
+
+    // Get localized title
+    final l10n = AppLocalizations.of(context);
+    final categoryName = _getCategoryName(challenge.categoryId, l10n);
+
+    // Create config manager for the quiz
+    final configManager = ConfigManager(
+      defaultConfig: quizConfig.copyWith(
+        storageConfig: storageConfig,
+        layoutConfig: layoutConfig,
+      ),
+      getSettings: () => {
+        'soundEnabled': _deps.services.settingsService.currentSettings.soundEnabled,
+        'hapticEnabled': _deps.services.settingsService.currentSettings.hapticEnabled,
+        'showAnswerFeedback': true,
+      },
+    );
+
+    // Navigate to quiz using QuizWidget
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        settings: const RouteSettings(name: 'daily_challenge_quiz'),
+        builder: (ctx) => QuizWidget(
+          quizEntry: QuizWidgetEntry(
+            title: categoryName ?? 'Daily Challenge',
+            dataProvider: () async => questions,
+            configManager: configManager,
+            storageService: null, // Don't store daily challenge sessions in quiz history
+            quizAnalyticsService: _deps.services.quizAnalyticsService,
+            categoryId: challenge.categoryId,
+            categoryName: categoryName ?? challenge.categoryId,
+            onQuizCompleted: (results) async {
+              // Pop back from quiz screen
+              if (ctx.mounted) {
+                Navigator.of(ctx).pop();
+              }
+              // Submit the result
+              if (context.mounted) {
+                await _submitDailyChallengeResult(context, challenge, results);
+              }
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Submits the daily challenge result and shows results screen.
+  Future<void> _submitDailyChallengeResult(
+    BuildContext context,
+    DailyChallenge challenge,
+    QuizResults quizResults,
+  ) async {
+    // Submit result to service (returns result with calculated bonuses)
+    final dailyChallengeResult = await _deps.dailyChallengeService.submitResult(
+      challengeId: challenge.id,
+      correctCount: quizResults.correctAnswers,
+      totalQuestions: quizResults.totalQuestions,
+      completionTimeSeconds: quizResults.durationSeconds,
+    );
+
+    // Get updated streak for analytics and statistics
+    final stats = await _deps.dailyChallengeService.getStats();
+
+    // Update global statistics with daily challenge data
+    await _deps.statisticsRepository.updateDailyChallengeStats(
+      isPerfect: dailyChallengeResult.isPerfectScore,
+      currentStreak: stats.currentStreak,
+    );
+
+    // Check if early bird (completed before 7 AM local time)
+    final now = DateTime.now();
+    final isEarlyBird = now.hour < 7;
+
+    // Create a session for achievement checking
+    final dailyChallengeSession = QuizSession(
+      id: dailyChallengeResult.id,
+      quizId: 'daily_${challenge.id}',
+      quizName: 'Daily Challenge',
+      quizType: 'daily_challenge',
+      quizCategory: challenge.categoryId,
+      totalQuestions: dailyChallengeResult.totalQuestions,
+      totalAnswered: dailyChallengeResult.totalQuestions,
+      totalCorrect: dailyChallengeResult.correctCount,
+      totalFailed: dailyChallengeResult.incorrectCount,
+      totalSkipped: 0,
+      scorePercentage: dailyChallengeResult.scorePercentage,
+      score: dailyChallengeResult.score,
+      startTime: dailyChallengeResult.completedAt.subtract(
+        Duration(seconds: dailyChallengeResult.completionTimeSeconds),
+      ),
+      endTime: dailyChallengeResult.completedAt,
+      durationSeconds: dailyChallengeResult.completionTimeSeconds,
+      completionStatus: CompletionStatus.completed,
+      mode: QuizMode.timed,
+      appVersion: '1.0.0',
+      createdAt: now,
+      updatedAt: now,
+    );
+
+    // Check achievements for this session
+    await _deps.services.achievementService.checkAfterSession(dailyChallengeSession);
+
+    // Log challenge completed event
+    await _deps.services.screenAnalyticsService.logEvent(
+      DailyChallengeEvent.completed(
+        challengeId: challenge.id,
+        categoryId: challenge.categoryId,
+        score: dailyChallengeResult.score,
+        correctCount: dailyChallengeResult.correctCount,
+        totalQuestions: dailyChallengeResult.totalQuestions,
+        completionTimeSeconds: dailyChallengeResult.completionTimeSeconds,
+        streakBonus: dailyChallengeResult.streakBonus,
+        timeBonus: dailyChallengeResult.timeBonus,
+        isPerfect: dailyChallengeResult.isPerfectScore,
+        currentStreak: stats.currentStreak,
+        isEarlyBird: isEarlyBird,
+      ),
+    );
+
+    // Navigate to results screen
+    if (context.mounted) {
+      await _navigateToDailyChallengeResults(
+        context,
+        dailyChallengeResult,
+        challenge.categoryId,
+      );
+    }
+  }
+
+  /// Navigates to the daily challenge results screen.
+  ///
+  /// The [categoryId] is optional - if not provided, it will be retrieved
+  /// from today's challenge via the service.
+  Future<void> _navigateToDailyChallengeResults(
+    BuildContext context,
+    DailyChallengeResult result, [
+    String? categoryId,
+  ]) async {
+    // Get streak info from stats
+    final stats = await _deps.dailyChallengeService.getStats();
+
+    // Get categoryId from challenge if not provided
+    var resolvedCategoryId = categoryId;
+    if (resolvedCategoryId == null) {
+      final challenge = await _deps.dailyChallengeService.getTodaysChallenge();
+      resolvedCategoryId = challenge.categoryId;
+    }
+
+    if (!context.mounted) return;
+
+    // Get category name for display
+    final l10n = AppLocalizations.of(context);
+    final categoryName = _getCategoryName(resolvedCategoryId, l10n);
+
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute(
+        settings: const RouteSettings(name: 'daily_challenge_results'),
+        builder: (ctx) => DailyChallengeResultsScreen(
+          data: DailyChallengeResultsData(
+            todayResult: result,
+            currentStreak: stats.currentStreak,
+            bestStreak: stats.longestStreak,
+            categoryName: categoryName,
+          ),
+          onDone: () => Navigator.of(ctx).pop(),
+          onShareResult: () {
+            // TODO: Implement share functionality
+          },
+        ),
+      ),
+    );
+  }
+
+  /// Gets localized category name from category ID.
+  String? _getCategoryName(String categoryId, AppLocalizations? l10n) {
+    if (l10n == null) return null;
+
+    return switch (categoryId.toLowerCase()) {
+      'all' => l10n.all,
+      'af' => l10n.africa,
+      'eu' => l10n.europe,
+      'as' => l10n.asia,
+      'na' => l10n.northAmerica,
+      'sa' => l10n.southAmerica,
+      'oc' => l10n.oceania,
+      _ => null,
+    };
+  }
+
+  // ===========================================================================
+  // Deep Link Handling
+  // ===========================================================================
 
   /// Handles parsed deep link routes.
   ///
   /// Uses [QuizNavigation] from the quiz_engine package to navigate
   /// to the appropriate screen based on the deep link route type.
   void _handleDeepLinkRoute(
-      BuildContext context, FlagsQuizDeepLinkRoute route) {
+    BuildContext context,
+    FlagsQuizDeepLinkRoute route,
+  ) {
     // Log the route for debugging
     if (kDebugMode) {
       debugPrint('FlagsQuizApp: Received deep link route: $route');
