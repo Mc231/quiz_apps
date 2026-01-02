@@ -2697,6 +2697,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Maintain a 365 day streak'**
   String get achievementDedicationDesc;
+
+  /// Achievement name for completing 10 daily challenges
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Devotee'**
+  String get achievementDailyDevotee;
+
+  /// Achievement description for completing 10 daily challenges
+  ///
+  /// In en, this message translates to:
+  /// **'Complete 10 daily challenges'**
+  String get achievementDailyDevoteeDesc;
+
+  /// Achievement name for 100% on daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Day'**
+  String get achievementPerfectDay;
+
+  /// Achievement description for 100% on daily challenge
+  ///
+  /// In en, this message translates to:
+  /// **'Get 100% on a daily challenge'**
+  String get achievementPerfectDayDesc;
+
+  /// Achievement name for completing daily challenge within first hour
+  ///
+  /// In en, this message translates to:
+  /// **'Early Bird'**
+  String get achievementEarlyBird;
+
+  /// Achievement description for completing daily challenge within first hour
+  ///
+  /// In en, this message translates to:
+  /// **'Complete a daily challenge within the first hour of the day'**
+  String get achievementEarlyBirdDesc;
 }
 
 class _AppLocalizationsDelegate

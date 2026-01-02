@@ -4974,28 +4974,43 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 16.2: Daily Challenge Screen
+#### Sprint 16.2: Daily Challenge Screen ✅
 
 **Goal:** Create dedicated UI for daily challenges.
 
 **Tasks:**
-- [ ] Create `DailyChallengeCard` for home screen:
+- [x] Create `DailyChallengeCard` for home screen:
   - "Daily Challenge" badge with date
   - Countdown timer to next challenge
   - "Completed" state with score
   - Animated appearance
-- [ ] Create `DailyChallengeScreen`:
+- [x] Create `DailyChallengeScreen`:
   - Challenge intro with rules
   - Special themed UI (different from regular quiz)
   - Results screen with comparison to yesterday
-- [ ] Add daily challenge entry point to home screen
-- [ ] Handle "already completed" state gracefully
-- [ ] Add localization for all text
-- [ ] Write widget tests
+- [x] Add daily challenge entry point to home screen
+- [x] Handle "already completed" state gracefully
+- [x] Add localization for all text
+- [x] Write widget tests
+
+**Files Created:**
+- ✅ `packages/quiz_engine/lib/src/daily_challenge/daily_challenge_card.dart`
+- ✅ `packages/quiz_engine/lib/src/daily_challenge/daily_challenge_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/daily_challenge/daily_challenge_results_screen.dart`
+- ✅ `packages/quiz_engine/lib/src/daily_challenge/daily_challenge_exports.dart`
+- ✅ `packages/quiz_engine/test/daily_challenge/daily_challenge_card_test.dart`
+- ✅ `packages/quiz_engine/test/daily_challenge/daily_challenge_screen_test.dart`
+- ✅ `packages/quiz_engine/test/daily_challenge/daily_challenge_results_screen_test.dart`
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart` - Added daily challenge exports
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb` - Added 40+ localization strings
 
 ---
 
-#### Sprint 16.3: Daily Leaderboard
+#### Sprint 16.3: Daily Leaderboard ⏸️ (DEFERRED)
+
+**Status:** Skipped for now - may implement later.
 
 **Goal:** Add competitive element with daily rankings.
 
@@ -5020,24 +5035,90 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 16.4: Daily Challenge Rewards
+#### Sprint 16.4: Daily Challenge Rewards ✅
 
 **Goal:** Add rewards and achievements for daily challenges.
 
 **Tasks:**
-- [ ] Create daily challenge achievements:
+- [x] Create daily challenge achievements:
   - "Daily Devotee" - Complete 10 daily challenges
-  - "Challenge Champion" - Rank #1 on daily leaderboard
+  - ~~"Challenge Champion" - Rank #1 on daily leaderboard~~ (Skipped - requires leaderboard)
   - "Perfect Day" - 100% on daily challenge
   - "Early Bird" - Complete within first hour
-- [ ] Add achievements to `FlagsQuizAchievements`
-- [ ] Create `DailyChallengeEvent` for analytics:
+- [x] Add achievements to `FlagsQuizAchievements`
+- [x] Create `DailyChallengeEvent` for analytics:
   - `dailyChallengeStarted`
   - `dailyChallengeCompleted`
   - `dailyChallengeRanked`
-- [ ] Add bonus points/rewards for daily completion
-- [ ] Integrate with streak system (daily challenge counts for streak)
-- [ ] Write unit tests
+  - `dailyChallengeSkipped`
+- [x] Add `dailyChallenge` category to `AchievementCategory` enum
+- [x] Add `StatField` entries for daily challenges (totalDailyChallengesCompleted, dailyChallengeStreak, perfectDailyChallenges)
+- [ ] Add bonus points/rewards for daily completion (Future sprint)
+- [ ] Integrate with streak system (Future sprint)
+- [x] Write unit tests
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/analytics/events/daily_challenge_event.dart`
+- ✅ `packages/shared_services/test/analytics/events/daily_challenge_event_test.dart`
+
+**Files Modified:**
+- ✅ `packages/quiz_engine/lib/src/achievements/achievement_category.dart` - Added `dailyChallenge` category
+- ✅ `packages/shared_services/lib/src/achievements/models/stat_field.dart` - Added daily challenge fields
+- ✅ `packages/shared_services/lib/src/achievements/engine/trigger_evaluator.dart` - Added daily challenge field handling
+- ✅ `packages/shared_services/lib/src/analytics/analytics_exports.dart` - Exported DailyChallengeEvent
+- ✅ `apps/flagsquiz/lib/achievements/flags_achievements.dart` - Added 3 daily challenge achievements (dailyDevotee, perfectDay, earlyBird)
+- ✅ `apps/flagsquiz/lib/l10n/intl_en.arb` - Added localization strings for new achievements
+- ✅ `apps/flagsquiz/test/achievements/flags_achievements_test.dart` - Added tests for daily challenge achievements
+
+---
+
+#### Sprint 16.5: Daily Challenge App Integration ✅
+
+**Goal:** Integrate the Daily Challenge feature into the Flags Quiz app UI.
+
+**Tasks:**
+- [x] Add `DailyChallengeService` initialization to `FlagsQuizDependencies`
+- [x] Create `FlagsDailyChallengeDataProvider` to supply quiz questions for daily challenges
+- [x] Add `DailyChallengeCard` to Play tab (above categories):
+  - Show current challenge status (available/completed)
+  - Handle tap to launch `DailyChallengeScreen`
+  - Show countdown to next challenge when completed
+- [x] Wire up `DailyChallengeScreen` navigation:
+  - Connect to quiz flow with daily challenge questions
+  - Save results via `DailyChallengeService`
+  - Navigate to `DailyChallengeResultsScreen` on completion
+- [x] Connect analytics events:
+  - Fire `DailyChallengeEvent.started` when challenge begins
+  - Fire `DailyChallengeEvent.completed` when challenge finishes
+- [x] Update `GlobalStatistics` with daily challenge counts:
+  - Track `totalDailyChallengesCompleted`
+  - Track `dailyChallengeStreak`
+  - Track `perfectDailyChallenges`
+- [x] Wire achievement triggers to daily challenge completion
+- [x] Write integration tests
+
+**Files Created:**
+- ✅ `apps/flagsquiz/lib/daily_challenge/flags_daily_challenge_data_provider.dart`
+- ✅ `packages/shared_services/lib/src/storage/database/migrations/migration_v10.dart`
+- ✅ `apps/flagsquiz/test/daily_challenge/flags_daily_challenge_data_provider_test.dart`
+
+**Files Modified:**
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_dependencies.dart` - Added dailyChallengeService, dailyChallengeDataProvider, statisticsRepository
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Added DailyChallengeService initialization
+- ✅ `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Added DailyChallengeCard, navigation flow, achievement checking
+- ✅ `packages/shared_services/lib/src/storage/models/global_statistics.dart` - Added daily challenge fields
+- ✅ `packages/shared_services/lib/src/storage/data_sources/statistics_data_source.dart` - Added updateDailyChallengeStats
+- ✅ `packages/shared_services/lib/src/storage/repositories/statistics_repository.dart` - Added updateDailyChallengeStats
+- ✅ `packages/shared_services/lib/src/achievements/engine/trigger_evaluator.dart` - Added daily challenge stat field evaluation
+- ✅ `packages/shared_services/lib/src/storage/database/database_config.dart` - Version bump to 10
+- ✅ `packages/shared_services/lib/src/storage/database/app_database.dart` - Added MigrationV10
+- ✅ `packages/shared_services/test/achievements/achievement_service_test.dart` - Added mock method
+- ✅ `packages/shared_services/test/storage/database_config_test.dart` - Updated version expectation
+
+**Dependencies:**
+- Sprint 16.1 (DailyChallengeService) ✅
+- Sprint 16.2 (DailyChallengeScreen UI) ✅
+- Sprint 16.4 (Analytics & Achievements) ✅
 
 </details>
 

@@ -1272,4 +1272,23 @@ class AppLocalizationsSk extends AppLocalizations {
 
   @override
   String get achievementDedicationDesc => 'Maintain a 365 day streak';
+
+  @override
+  String get achievementDailyDevotee => 'Daily Devotee';
+
+  @override
+  String get achievementDailyDevoteeDesc => 'Complete 10 daily challenges';
+
+  @override
+  String get achievementPerfectDay => 'Perfect Day';
+
+  @override
+  String get achievementPerfectDayDesc => 'Get 100% on a daily challenge';
+
+  @override
+  String get achievementEarlyBird => 'Early Bird';
+
+  @override
+  String get achievementEarlyBirdDesc =>
+      'Complete a daily challenge within the first hour of the day';
 }

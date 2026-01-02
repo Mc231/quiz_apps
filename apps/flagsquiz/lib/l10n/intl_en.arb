@@ -1681,5 +1681,29 @@
   "achievementDedicationDesc": "Maintain a 365 day streak",
   "@achievementDedicationDesc": {
     "description": "Achievement description for 365 day streak"
+  },
+  "achievementDailyDevotee": "Daily Devotee",
+  "@achievementDailyDevotee": {
+    "description": "Achievement name for completing 10 daily challenges"
+  },
+  "achievementDailyDevoteeDesc": "Complete 10 daily challenges",
+  "@achievementDailyDevoteeDesc": {
+    "description": "Achievement description for completing 10 daily challenges"
+  },
+  "achievementPerfectDay": "Perfect Day",
+  "@achievementPerfectDay": {
+    "description": "Achievement name for 100% on daily challenge"
+  },
+  "achievementPerfectDayDesc": "Get 100% on a daily challenge",
+  "@achievementPerfectDayDesc": {
+    "description": "Achievement description for 100% on daily challenge"
+  },
+  "achievementEarlyBird": "Early Bird",
+  "@achievementEarlyBird": {
+    "description": "Achievement name for completing daily challenge within first hour"
+  },
+  "achievementEarlyBirdDesc": "Complete a daily challenge within the first hour of the day",
+  "@achievementEarlyBirdDesc": {
+    "description": "Achievement description for completing daily challenge within first hour"
   }
 }
