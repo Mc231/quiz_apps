@@ -48,7 +48,7 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
   })  : _achievementService = achievementService,
         _sessionRepository = sessionRepository;
 
-  /// Gets all 67 achievements (53 base + 14 flags-specific).
+  /// Gets all 72 achievements (53 base + 19 flags-specific).
   ///
   /// Uses deferred localization via QuizL10n.of(ctx) and AppLocalizations.of(ctx).
   List<Achievement> _getAllAchievements() {
@@ -684,7 +684,7 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
       ),
 
       // ===========================================================================
-      // FLAGS-SPECIFIC ACHIEVEMENTS (14 total)
+      // FLAGS-SPECIFIC ACHIEVEMENTS (19 total)
       // ===========================================================================
 
       // --- Explorer (7) ---
@@ -903,6 +903,83 @@ class FlagsAchievementsDataProvider implements AchievementsDataProvider {
           evaluate: (stats, session) => false,
           getProgress: (stats) => 0,
           target: 195,
+        ),
+      ),
+
+      // --- Daily Streak (5) ---
+      Achievement(
+        id: 'first_flame',
+        name: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementFirstFlame ?? 'First Flame',
+        description: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementFirstFlameDesc ??
+            'Complete your first day streak',
+        icon: '🔥',
+        tier: AchievementTier.common,
+        category: FlagsAchievements.categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 1,
+        ),
+      ),
+      Achievement(
+        id: 'week_warrior',
+        name: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementWeekWarrior ?? 'Week Warrior',
+        description: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementWeekWarriorDesc ??
+            'Maintain a 7 day streak',
+        icon: '⚔️',
+        tier: AchievementTier.uncommon,
+        category: FlagsAchievements.categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 7,
+        ),
+      ),
+      Achievement(
+        id: 'monthly_master',
+        name: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementMonthlyMaster ?? 'Monthly Master',
+        description: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementMonthlyMasterDesc ??
+            'Maintain a 30 day streak',
+        icon: '📅',
+        tier: AchievementTier.rare,
+        category: FlagsAchievements.categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 30,
+        ),
+      ),
+      Achievement(
+        id: 'centurion',
+        name: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementCenturion ?? 'Centurion',
+        description: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementCenturionDesc ??
+            'Maintain a 100 day streak',
+        icon: '🏛️',
+        tier: AchievementTier.epic,
+        category: FlagsAchievements.categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 100,
+        ),
+      ),
+      Achievement(
+        id: 'dedication',
+        name: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementDedication ?? 'Dedication',
+        description: (ctx) =>
+            AppLocalizations.of(ctx)?.achievementDedicationDesc ??
+            'Maintain a 365 day streak',
+        icon: '👑',
+        tier: AchievementTier.legendary,
+        category: FlagsAchievements.categoryDailyStreak,
+        trigger: AchievementTrigger.cumulative(
+          field: StatField.consecutiveDaysPlayed,
+          target: 365,
         ),
       ),
     ];
