@@ -1242,4 +1242,34 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get quizMode => 'Quiz Mode';
+
+  @override
+  String get achievementFirstFlame => 'First Flame';
+
+  @override
+  String get achievementFirstFlameDesc => 'Complete your first day streak';
+
+  @override
+  String get achievementWeekWarrior => 'Week Warrior';
+
+  @override
+  String get achievementWeekWarriorDesc => 'Maintain a 7 day streak';
+
+  @override
+  String get achievementMonthlyMaster => 'Monthly Master';
+
+  @override
+  String get achievementMonthlyMasterDesc => 'Maintain a 30 day streak';
+
+  @override
+  String get achievementCenturion => 'Centurion';
+
+  @override
+  String get achievementCenturionDesc => 'Maintain a 100 day streak';
+
+  @override
+  String get achievementDedication => 'Dedication';
+
+  @override
+  String get achievementDedicationDesc => 'Maintain a 365 day streak';
 }

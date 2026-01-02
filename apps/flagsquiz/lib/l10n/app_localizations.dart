@@ -2637,6 +2637,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Quiz Mode'**
   String get quizMode;
+
+  /// Achievement name for 1 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'First Flame'**
+  String get achievementFirstFlame;
+
+  /// Achievement description for 1 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'Complete your first day streak'**
+  String get achievementFirstFlameDesc;
+
+  /// Achievement name for 7 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'Week Warrior'**
+  String get achievementWeekWarrior;
+
+  /// Achievement description for 7 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain a 7 day streak'**
+  String get achievementWeekWarriorDesc;
+
+  /// Achievement name for 30 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly Master'**
+  String get achievementMonthlyMaster;
+
+  /// Achievement description for 30 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain a 30 day streak'**
+  String get achievementMonthlyMasterDesc;
+
+  /// Achievement name for 100 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'Centurion'**
+  String get achievementCenturion;
+
+  /// Achievement description for 100 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain a 100 day streak'**
+  String get achievementCenturionDesc;
+
+  /// Achievement name for 365 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'Dedication'**
+  String get achievementDedication;
+
+  /// Achievement description for 365 day streak
+  ///
+  /// In en, this message translates to:
+  /// **'Maintain a 365 day streak'**
+  String get achievementDedicationDesc;
 }
 
 class _AppLocalizationsDelegate
