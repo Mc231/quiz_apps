@@ -36,6 +36,8 @@ import '../widgets/session_card.dart';
 import '../rate_app/rate_app_config_provider.dart';
 import '../share/share_bottom_sheet.dart';
 import 'play_tab_type.dart';
+import 'quiz_navigation.dart';
+import 'quiz_navigation_result.dart';
 import 'quiz_tab.dart';
 
 /// Configuration for rate app prompts in the quiz results screen.
@@ -466,8 +468,11 @@ class _QuizAppState extends State<QuizApp> {
   late QuizSettings _currentSettings;
   late StreamSubscription<QuizSettings> _settingsSubscription;
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  final GlobalKey<QuizHomeScreenState> _homeScreenKey =
+      GlobalKey<QuizHomeScreenState>();
   AchievementNotificationController? _notificationController;
   StreamSubscription<List<Achievement>>? _achievementSubscription;
+  late final _QuizNavigationImpl _navigation;
 
   // Convenience getters for services
   QuizServices get _services => widget.services;
@@ -484,6 +489,18 @@ class _QuizAppState extends State<QuizApp> {
     _settingsSubscription = _settingsService.settingsStream.listen(
       _onSettingsChanged,
     );
+
+    // Create navigation implementation
+    _navigation = _QuizNavigationImpl(
+      navigatorKey: _navigatorKey,
+      homeScreenKey: _homeScreenKey,
+      getCategories: () => widget.categories ?? [],
+      getChallenges: () => widget.challenges,
+      startQuiz: _startQuiz,
+    );
+
+    // Register navigation for static access (used by deep link handlers)
+    QuizNavigationProvider.register(_navigation);
 
     // Create notification controller if notifications are enabled
     if (widget.showAchievementNotifications) {
@@ -511,6 +528,7 @@ class _QuizAppState extends State<QuizApp> {
     _settingsSubscription.cancel();
     _achievementSubscription?.cancel();
     _notificationController?.dispose();
+    QuizNavigationProvider.unregister();
     super.dispose();
   }
 
@@ -614,7 +632,11 @@ class _QuizAppState extends State<QuizApp> {
 
   Widget _buildHome(BuildContext context) {
     if (widget.homeBuilder != null) {
-      return widget.homeBuilder!(context);
+      // Wrap custom home with navigation provider
+      return QuizNavigationProvider(
+        navigation: _navigation,
+        child: widget.homeBuilder!(context),
+      );
     }
 
     // When dataProvider is provided, QuizApp handles navigation internally
@@ -627,38 +649,42 @@ class _QuizAppState extends State<QuizApp> {
         // Pass context for localization
         final homeConfig = _buildHomeConfig(innerContext);
 
-        return QuizHomeScreen(
-          categories: widget.categories ?? [],
-          config: homeConfig,
-          onCategorySelected:
-              hasDataProvider
-                  ? (category) =>
-                      _handleCategorySelected(innerContext, category)
-                  : widget.callbacks.onCategorySelected != null
-                  ? (category) {
-                    _trackCategorySelected(innerContext, category);
-                    widget.callbacks.onCategorySelected!(category);
-                  }
-                  : null,
-          onSettingsPressed:
-              hasDataProvider
-                  ? () => _openSettings(innerContext)
-                  : widget.callbacks.onSettingsPressed,
-          onSessionTap: widget.callbacks.onSessionTap,
-          onViewAllSessions: widget.callbacks.onViewAllSessions,
-          historyDataProvider: widget.historyDataProvider,
-          statisticsDataProvider: widget.statisticsDataProvider,
-          achievementsDataProvider:
-              widget.achievementsDataProvider != null
-                  ? () =>
-                      widget.achievementsDataProvider!.loadAchievementsData()
-                  : null,
-          onAchievementTap: widget.onAchievementTap,
-          settingsBuilder: _buildSettingsBuilder(),
-          formatDate: widget.formatDate,
-          formatStatus: widget.formatStatus,
-          formatDuration: widget.formatDuration,
-          // Services (analytics, storage) are obtained from QuizServicesProvider via context
+        return QuizNavigationProvider(
+          navigation: _navigation,
+          child: QuizHomeScreen(
+            key: _homeScreenKey,
+            categories: widget.categories ?? [],
+            config: homeConfig,
+            onCategorySelected:
+                hasDataProvider
+                    ? (category) =>
+                        _handleCategorySelected(innerContext, category)
+                    : widget.callbacks.onCategorySelected != null
+                    ? (category) {
+                      _trackCategorySelected(innerContext, category);
+                      widget.callbacks.onCategorySelected!(category);
+                    }
+                    : null,
+            onSettingsPressed:
+                hasDataProvider
+                    ? () => _openSettings(innerContext)
+                    : widget.callbacks.onSettingsPressed,
+            onSessionTap: widget.callbacks.onSessionTap,
+            onViewAllSessions: widget.callbacks.onViewAllSessions,
+            historyDataProvider: widget.historyDataProvider,
+            statisticsDataProvider: widget.statisticsDataProvider,
+            achievementsDataProvider:
+                widget.achievementsDataProvider != null
+                    ? () =>
+                        widget.achievementsDataProvider!.loadAchievementsData()
+                    : null,
+            onAchievementTap: widget.onAchievementTap,
+            settingsBuilder: _buildSettingsBuilder(),
+            formatDate: widget.formatDate,
+            formatStatus: widget.formatStatus,
+            formatDuration: widget.formatDuration,
+            // Services (analytics, storage) are obtained from QuizServicesProvider via context
+          ),
         );
       },
     );
@@ -1368,5 +1394,122 @@ class _PracticeQuizScreenState extends State<_PracticeQuizScreen> {
         quizAnalyticsService: _quizAnalyticsService,
       ),
     );
+  }
+}
+
+/// Internal implementation of [QuizNavigation] used by [QuizApp].
+///
+/// Provides programmatic navigation capabilities for deep link handling
+/// and other external navigation triggers.
+class _QuizNavigationImpl implements QuizNavigation {
+  final GlobalKey<NavigatorState> _navigatorKey;
+  final GlobalKey<QuizHomeScreenState> _homeScreenKey;
+  final List<QuizCategory> Function() _getCategories;
+  final List<ChallengeMode>? Function() _getChallenges;
+  final Future<void> Function(BuildContext, QuizCategory) _startQuiz;
+
+  _QuizNavigationImpl({
+    required GlobalKey<NavigatorState> navigatorKey,
+    required GlobalKey<QuizHomeScreenState> homeScreenKey,
+    required List<QuizCategory> Function() getCategories,
+    required List<ChallengeMode>? Function() getChallenges,
+    required Future<void> Function(BuildContext, QuizCategory) startQuiz,
+  })  : _navigatorKey = navigatorKey,
+        _homeScreenKey = homeScreenKey,
+        _getCategories = getCategories,
+        _getChallenges = getChallenges,
+        _startQuiz = startQuiz;
+
+  @override
+  bool get isReady => _navigatorKey.currentState != null;
+
+  @override
+  Future<QuizNavigationResult> navigateToQuiz(String categoryId) async {
+    if (!isReady) {
+      return const NavigationNotReady();
+    }
+
+    // Find category by ID
+    final categories = _getCategories();
+    final category = categories.where((c) => c.id == categoryId).firstOrNull;
+
+    if (category == null) {
+      return NavigationInvalidId(id: categoryId, type: 'category');
+    }
+
+    // Get context from navigator
+    final context = _navigatorKey.currentContext;
+    if (context == null) {
+      return const NavigationNotReady();
+    }
+
+    // Pop to home screen first (in case we're on a different screen)
+    _navigatorKey.currentState?.popUntil((route) => route.isFirst);
+
+    // Switch to play tab
+    _homeScreenKey.currentState?.switchToTab(0);
+
+    // Start the quiz
+    await _startQuiz(context, category);
+
+    return const NavigationSuccess();
+  }
+
+  @override
+  Future<QuizNavigationResult> navigateToAchievement(
+      String achievementId) async {
+    if (!isReady) {
+      return const NavigationNotReady();
+    }
+
+    // Pop to home screen first
+    _navigatorKey.currentState?.popUntil((route) => route.isFirst);
+
+    // Find achievements tab index
+    // Typically achievements is tab index 1, but we'll look for it
+    final homeState = _homeScreenKey.currentState;
+    if (homeState == null) {
+      return const NavigationNotReady();
+    }
+
+    // Switch to achievements tab (assuming index 1)
+    // TODO: Find the actual achievements tab index dynamically
+    homeState.switchToTab(1);
+
+    // Note: Achievement highlighting is not yet implemented
+    // This would require passing the achievementId to the achievements screen
+    return const NavigationSuccess();
+  }
+
+  @override
+  Future<QuizNavigationResult> navigateToChallenge(String challengeId) async {
+    if (!isReady) {
+      return const NavigationNotReady();
+    }
+
+    // Verify challenge exists
+    final challenges = _getChallenges();
+    if (challenges == null) {
+      return NavigationInvalidId(id: challengeId, type: 'challenge');
+    }
+
+    final challenge =
+        challenges.where((c) => c.id == challengeId).firstOrNull;
+    if (challenge == null) {
+      return NavigationInvalidId(id: challengeId, type: 'challenge');
+    }
+
+    // Pop to home screen first
+    _navigatorKey.currentState?.popUntil((route) => route.isFirst);
+
+    // Switch to challenges sub-tab within play tab
+    _homeScreenKey.currentState?.switchToPlaySubTab('challenges');
+
+    return const NavigationSuccess();
+  }
+
+  @override
+  void switchToTab(int tabIndex) {
+    _homeScreenKey.currentState?.switchToTab(tabIndex);
   }
 }

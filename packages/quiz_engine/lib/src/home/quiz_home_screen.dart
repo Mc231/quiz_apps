@@ -139,10 +139,14 @@ class QuizHomeScreen extends StatefulWidget {
   });
 
   @override
-  State<QuizHomeScreen> createState() => _QuizHomeScreenState();
+  QuizHomeScreenState createState() => QuizHomeScreenState();
 }
 
-class _QuizHomeScreenState extends State<QuizHomeScreen>
+/// State for [QuizHomeScreen].
+///
+/// Exposed publicly to allow programmatic tab switching via [switchToTab],
+/// primarily for deep link navigation.
+class QuizHomeScreenState extends State<QuizHomeScreen>
     with WidgetsBindingObserver {
   late int _currentIndex;
   HistoryTabData _historyData = const HistoryTabData();
@@ -152,6 +156,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
   AchievementsTabData _achievementsData = AchievementsTabData.empty();
   DefaultDataLoader? _dataLoader;
   bool _dataLoaderInitialized = false;
+  final GlobalKey<TabbedPlayScreenState> _playScreenKey =
+      GlobalKey<TabbedPlayScreenState>();
 
   /// Gets the analytics service from context.
   AnalyticsService get _analyticsService => context.screenAnalyticsService;
@@ -536,6 +542,37 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
     }
   }
 
+  /// Programmatically switches to a specific tab.
+  ///
+  /// Use this for deep link navigation or other programmatic tab changes.
+  /// Tab indices are based on the app's tab configuration:
+  /// - 0: First tab (usually Play)
+  /// - 1: Second tab (e.g., Achievements)
+  /// - etc.
+  ///
+  /// Does nothing if index is out of range.
+  void switchToTab(int index) {
+    if (index < 0 || index >= _tabs.length) return;
+    _onTabSelected(index);
+  }
+
+  /// Switches to a specific sub-tab within the Play tab.
+  ///
+  /// Use this for deep link navigation to challenges or other play sub-tabs.
+  /// First switches to the Play tab (index 0), then switches to the sub-tab.
+  ///
+  /// Returns true if the sub-tab was found and switched to.
+  bool switchToPlaySubTab(String subTabId) {
+    // First switch to play tab
+    switchToTab(0);
+
+    // Then switch to sub-tab
+    return _playScreenKey.currentState?.switchToTabById(subTabId) ?? false;
+  }
+
+  /// The current tab index.
+  int get currentTabIndex => _currentIndex;
+
   void _onTabSelected(int index) {
     final isSameTab = index == _currentIndex;
     final previousTabId = isSameTab ? null : _getTabId(_tabs[_currentIndex]);
@@ -691,6 +728,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen>
         ];
 
     return TabbedPlayScreen(
+      key: _playScreenKey,
       tabs: tabs,
       initialTabId: widget.config.initialPlayTabId,
       onCategorySelected: widget.onCategorySelected,

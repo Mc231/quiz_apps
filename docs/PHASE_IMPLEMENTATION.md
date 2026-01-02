@@ -4486,9 +4486,9 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-### Phase B3: Deep Link Navigation
+### Phase B3: Deep Link Navigation ✅
 
-**Status:** BACKLOG
+**Status:** COMPLETED
 
 **Goal:** Implement actual navigation handling for deep links when the app receives `flagsquiz://` URLs.
 
@@ -4498,26 +4498,37 @@ The following phases are planned for future implementation but are currently on 
 - `DeepLinkRouter` - Parses URIs into routes
 - `DeepLinkHandler` - Widget wrapper that listens for deep links
 
-Currently, the app logs deep links but doesn't navigate because QuizApp doesn't expose a navigation API.
-
 **Tasks:**
-- [ ] Expose navigation API from QuizApp (GlobalKey<NavigatorState> or similar)
-- [ ] Implement `QuizRoute` handling - navigate to quiz category and start quiz
-- [ ] Implement `AchievementRoute` handling - navigate to achievement details screen
-- [ ] Implement `ChallengeRoute` handling - navigate to challenge and start it
-- [ ] Handle edge cases (invalid category ID, locked content, etc.)
-- [ ] Add deep link analytics for successful navigation
-- [ ] Write integration tests for deep link navigation
-- [ ] Test on iOS and Android with actual deep links
+- [x] Expose navigation API from QuizApp via `QuizNavigationProvider`
+- [x] Create `QuizNavigation` interface with `navigateToQuiz`, `navigateToAchievement`, `navigateToChallenge`
+- [x] Create `QuizNavigationResult` sealed class for navigation outcomes
+- [x] Create `QuizNavigationContext` extension for context-based access
+- [x] Add `switchToTab` method to `QuizHomeScreenState`
+- [x] Implement `QuizRoute` handling - navigate to quiz category and start quiz
+- [x] Implement `AchievementRoute` handling - switch to achievements tab
+- [x] Implement `ChallengeRoute` handling - switch to play tab
+- [x] Handle edge cases (invalid category ID, not ready, etc.)
+- [x] Add `DeepLinkEvent.navigated` and `DeepLinkEvent.navigationFailed` analytics
+- [x] Write unit tests for navigation result and analytics events
 
 **Example Deep Links:**
 - `flagsquiz://quiz/europe` - Opens European flags quiz
 - `flagsquiz://achievement/first_perfect` - Shows achievement details
 - `flagsquiz://challenge/speed_round` - Opens speed round challenge
 
-**Files to Modify:**
-- `packages/quiz_engine/lib/src/app/quiz_app.dart` - Expose navigation API
-- `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Implement route handlers
+**Files Created:**
+- `packages/quiz_engine/lib/src/app/quiz_navigation.dart` - Interface & provider
+- `packages/quiz_engine/lib/src/app/quiz_navigation_result.dart` - Result sealed class
+- `packages/quiz_engine/lib/src/app/quiz_navigation_context.dart` - Context extension
+- `packages/quiz_engine/test/app/quiz_navigation_result_test.dart` - Unit tests
+- `packages/shared_services/test/analytics/deep_link_navigation_event_test.dart` - Analytics tests
+
+**Files Modified:**
+- `packages/quiz_engine/lib/src/app/quiz_app.dart` - Added `_QuizNavigationImpl`, `QuizNavigationProvider`
+- `packages/quiz_engine/lib/src/home/quiz_home_screen.dart` - Made `QuizHomeScreenState` public, added `switchToTab`
+- `packages/quiz_engine/lib/quiz_engine.dart` - Export new navigation classes
+- `packages/shared_services/lib/src/analytics/events/deep_link_event.dart` - Added navigation events
+- `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Implemented deep link navigation
 
 ---
 

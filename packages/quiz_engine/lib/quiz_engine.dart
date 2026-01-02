@@ -18,6 +18,9 @@ export 'src/models/quiz_data_provider.dart';
 // App
 export 'src/app/play_tab_type.dart';
 export 'src/app/quiz_app.dart';
+export 'src/app/quiz_navigation.dart';
+export 'src/app/quiz_navigation_context.dart';
+export 'src/app/quiz_navigation_result.dart';
 export 'src/app/quiz_tab.dart';
 
 // Localization

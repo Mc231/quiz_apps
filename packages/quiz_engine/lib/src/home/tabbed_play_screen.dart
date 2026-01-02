@@ -78,10 +78,13 @@ class TabbedPlayScreen extends StatefulWidget {
   final TabbedPlayScreenConfig config;
 
   @override
-  State<TabbedPlayScreen> createState() => _TabbedPlayScreenState();
+  State<TabbedPlayScreen> createState() => TabbedPlayScreenState();
 }
 
-class _TabbedPlayScreenState extends State<TabbedPlayScreen>
+/// State for [TabbedPlayScreen].
+///
+/// Exposes [switchToTabById] for programmatic tab switching (e.g., deep links).
+class TabbedPlayScreenState extends State<TabbedPlayScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   final Map<String, List<QuizCategory>> _practiceCache = {};
@@ -109,6 +112,20 @@ class _TabbedPlayScreenState extends State<TabbedPlayScreen>
     final index = widget.tabs.indexWhere((tab) => tab.id == widget.initialTabId);
     return index >= 0 ? index : 0;
   }
+
+  /// Switches to the tab with the given ID.
+  ///
+  /// Returns true if the tab was found and switched to, false otherwise.
+  bool switchToTabById(String tabId) {
+    final index = widget.tabs.indexWhere((tab) => tab.id == tabId);
+    if (index < 0) return false;
+
+    _tabController.animateTo(index);
+    return true;
+  }
+
+  /// Gets the current tab ID.
+  String get currentTabId => widget.tabs[_tabController.index].id;
 
   void _onTabChanged() {
     if (_tabController.indexIsChanging) return;
