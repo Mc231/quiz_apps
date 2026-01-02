@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
 import 'package:shared_services/shared_services.dart';
@@ -88,6 +90,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
   int _streakCount = 0;
   StreakStatus _streakStatus = StreakStatus.none;
   bool _streakLoaded = false;
+  StreamSubscription<StreakData>? _streakSubscription;
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +103,12 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
     }
 
     return _buildScreen(context);
+  }
+
+  @override
+  void dispose() {
+    _streakSubscription?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadStreakData() async {
@@ -116,9 +125,33 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
           _streakLoaded = true;
         });
       }
+
+      // Subscribe to streak updates for real-time refresh
+      _streakSubscription ??= streakService.watchStreakData().listen(
+        _onStreakDataChanged,
+        onError: (_) {}, // Silently ignore errors
+      );
     } catch (e) {
       // Silently ignore streak loading errors
     }
+  }
+
+  /// Handles streak data changes from the stream.
+  void _onStreakDataChanged(StreakData data) {
+    if (!mounted) return;
+
+    final streakService = context.streakService;
+    if (streakService == null) return;
+
+    streakService.getStreakStatus().then((status) {
+      if (mounted) {
+        setState(() {
+          _streakCount = data.currentStreak;
+          _streakStatus = status;
+          _streakLoaded = true;
+        });
+      }
+    });
   }
 
   void _logScreenView() {
