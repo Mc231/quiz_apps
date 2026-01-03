@@ -35,6 +35,11 @@ export 'cloud_save_data.dart';
 export 'sync_status.dart';
 export 'cloud_save_conflict_resolver.dart';
 
+// Configuration
+export 'game_service_config.dart';
+export 'leaderboard_config.dart';
+export 'leaderboard_score_type.dart';
+
 // No-op implementations for unsupported platforms
 export 'noop_game_services.dart';
 export 'noop_cloud_save_service.dart';
