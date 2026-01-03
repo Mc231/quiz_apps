@@ -77,6 +77,7 @@ export 'src/widgets/trends_widget.dart';
 export 'src/widgets/category_statistics_widget.dart';
 export 'src/widgets/progress_chart_widget.dart';
 export 'src/widgets/leaderboard_widget.dart';
+export 'src/widgets/global_leaderboard_tab.dart';
 
 // Challenge Widgets
 export 'src/widgets/challenge_card.dart';
@@ -117,6 +118,9 @@ export 'src/settings/quiz_settings_screen.dart';
 export 'src/settings/quiz_settings_config.dart';
 export 'src/settings/export_data_tile.dart';
 export 'src/settings/shop/shop_exports.dart';
+export 'src/settings/game_service_account_tile.dart';
+export 'src/settings/cloud_sync_tile.dart';
+export 'src/settings/sync_status_indicator.dart';
 
 // Theme
 export 'src/theme/quiz_theme_data.dart';
