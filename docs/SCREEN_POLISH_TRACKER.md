@@ -68,7 +68,7 @@ This document tracks the UI polish status of all screens in the Quiz Apps projec
 
 | Screen | File | Status | Notes |
 |--------|------|--------|-------|
-| Daily Challenge Screen | `quiz_engine/lib/src/daily_challenge/daily_challenge_screen.dart` | [ ] | |
+| Daily Challenge Screen | `quiz_engine/lib/src/daily_challenge/daily_challenge_screen.dart` | [x] | Fixed button alignment, loading state, time display, navigation to home |
 | Daily Challenge Results Screen | `quiz_engine/lib/src/daily_challenge/daily_challenge_results_screen.dart` | [x] | Status bar, score display, share button, done button fixed |
 
 ---
