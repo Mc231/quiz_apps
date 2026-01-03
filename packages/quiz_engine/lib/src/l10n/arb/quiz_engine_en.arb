@@ -2899,5 +2899,193 @@
     "placeholders": {
       "name": {"type": "String"}
     }
+  },
+
+  "account": "Account",
+  "@account": {
+    "description": "Account section header in settings"
+  },
+
+  "gameServiceLoading": "Loading...",
+  "@gameServiceLoading": {
+    "description": "Loading state for game service account"
+  },
+
+  "gameServiceConnected": "Connected to {platform}",
+  "@gameServiceConnected": {
+    "description": "Connected status for game service",
+    "placeholders": {
+      "platform": {"type": "String"}
+    }
+  },
+
+  "gameServiceNotConnected": "Not connected",
+  "@gameServiceNotConnected": {
+    "description": "Not connected status for game service"
+  },
+
+  "gameServiceSignInSubtitle": "Sign in to {platform} to sync progress",
+  "@gameServiceSignInSubtitle": {
+    "description": "Subtitle prompting sign in",
+    "placeholders": {
+      "platform": {"type": "String"}
+    }
+  },
+
+  "gameServiceError": "Connection error. Try again.",
+  "@gameServiceError": {
+    "description": "Error state for game service"
+  },
+
+  "signIn": "Sign In",
+  "@signIn": {
+    "description": "Sign in button"
+  },
+
+  "signOut": "Sign Out",
+  "@signOut": {
+    "description": "Sign out button"
+  },
+
+  "gameCenter": "Game Center",
+  "@gameCenter": {
+    "description": "Apple Game Center platform name"
+  },
+
+  "playGames": "Play Games",
+  "@playGames": {
+    "description": "Google Play Games platform name"
+  },
+
+  "gameServices": "Game Services",
+  "@gameServices": {
+    "description": "Generic game services platform name"
+  },
+
+  "cloudSync": "Cloud Sync",
+  "@cloudSync": {
+    "description": "Cloud sync tile title"
+  },
+
+  "syncNow": "Sync Now",
+  "@syncNow": {
+    "description": "Sync now button"
+  },
+
+  "syncStatusSynced": "All synced",
+  "@syncStatusSynced": {
+    "description": "Sync status: synced"
+  },
+
+  "syncStatusSyncing": "Syncing...",
+  "@syncStatusSyncing": {
+    "description": "Sync status: syncing"
+  },
+
+  "syncStatusPending": "Changes pending sync",
+  "@syncStatusPending": {
+    "description": "Sync status: pending"
+  },
+
+  "syncStatusOffline": "Offline",
+  "@syncStatusOffline": {
+    "description": "Sync status: offline"
+  },
+
+  "syncStatusError": "Sync error",
+  "@syncStatusError": {
+    "description": "Sync status: error"
+  },
+
+  "lastSynced": "Last synced {time}",
+  "@lastSynced": {
+    "description": "Last sync time display",
+    "placeholders": {
+      "time": {"type": "String"}
+    }
+  },
+
+  "justNow": "just now",
+  "@justNow": {
+    "description": "Time: just now"
+  },
+
+  "minutesAgo": "{count} min ago",
+  "@minutesAgo": {
+    "description": "Time: minutes ago",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "hoursAgo": "{count} hr ago",
+  "@hoursAgo": {
+    "description": "Time: hours ago",
+    "placeholders": {
+      "count": {"type": "int"}
+    }
+  },
+
+  "syncSuccess": "Synced successfully",
+  "@syncSuccess": {
+    "description": "Sync success message"
+  },
+
+  "syncConflictResolved": "Sync conflict resolved",
+  "@syncConflictResolved": {
+    "description": "Sync conflict resolved message"
+  },
+
+  "syncFailed": "Sync failed: {error}",
+  "@syncFailed": {
+    "description": "Sync failed message",
+    "placeholders": {
+      "error": {"type": "String"}
+    }
+  },
+
+  "syncNotAuthenticated": "Sign in to sync",
+  "@syncNotAuthenticated": {
+    "description": "Sync not authenticated message"
+  },
+
+  "syncOffline": "Cannot sync while offline",
+  "@syncOffline": {
+    "description": "Sync offline message"
+  },
+
+  "viewAchievements": "View Achievements",
+  "@viewAchievements": {
+    "description": "View achievements button"
+  },
+
+  "viewLeaderboards": "View Leaderboards",
+  "@viewLeaderboards": {
+    "description": "View leaderboards button"
+  },
+
+  "localLeaderboard": "Local",
+  "@localLeaderboard": {
+    "description": "Local leaderboard tab"
+  },
+
+  "noGlobalLeaderboardData": "No global scores yet",
+  "@noGlobalLeaderboardData": {
+    "description": "Empty state for global leaderboard"
+  },
+
+  "noGlobalLeaderboardMessage": "Be the first to submit a score!",
+  "@noGlobalLeaderboardMessage": {
+    "description": "Empty state message for global leaderboard"
+  },
+
+  "yourRank": "Your Rank",
+  "@yourRank": {
+    "description": "Your rank label"
+  },
+
+  "openInGameCenter": "Open in Game Center",
+  "@openInGameCenter": {
+    "description": "Open in Game Center button"
   }
 }
