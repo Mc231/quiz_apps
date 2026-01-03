@@ -42,6 +42,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   late QuizSettings _currentSettings;
   PackageInfo? _packageInfo;
   bool _isInitialized = false;
+  bool _isGameServiceSignedIn = false;
 
   /// Gets the settings service from context.
   SettingsService get _settingsService => context.settingsService;
@@ -53,6 +54,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   void initState() {
     super.initState();
     _loadPackageInfo();
+    _checkGameServiceSignIn();
   }
 
   @override
@@ -62,6 +64,17 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
       _isInitialized = true;
       _initializeSettings();
       _logScreenView();
+    }
+  }
+
+  Future<void> _checkGameServiceSignIn() async {
+    if (widget.config.gameService != null) {
+      final isSignedIn = await widget.config.gameService!.isSignedIn();
+      if (mounted) {
+        setState(() {
+          _isGameServiceSignedIn = isSignedIn;
+        });
+      }
     }
   }
 
@@ -351,6 +364,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
 
   List<Widget> _buildAccountSection(QuizLocalizations l10n) {
     final widgets = <Widget>[];
+    final theme = Theme.of(context);
 
     if (widget.config.showGameServiceAccount &&
         widget.config.gameService != null) {
@@ -358,9 +372,17 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         GameServiceAccountTile(
           gameService: widget.config.gameService!,
           onSignedIn: (_) {
+            setState(() {
+              _isGameServiceSignedIn = true;
+            });
             if (widget.config.cloudSaveService != null) {
               widget.config.cloudSaveService!.forceSync();
             }
+          },
+          onSignedOut: () {
+            setState(() {
+              _isGameServiceSignedIn = false;
+            });
           },
         ),
       );
@@ -375,52 +397,79 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
       );
     }
 
-    // View Achievements button
+    // View Achievements button (disabled when not signed in)
     if (widget.config.showViewAchievements &&
         widget.config.cloudAchievementService != null) {
+      final isEnabled = _isGameServiceSignedIn;
       widgets.add(
         ListTile(
-          leading: const SizedBox(
+          leading: SizedBox(
             width: 40,
             height: 40,
-            child: Icon(Icons.emoji_events_outlined),
+            child: Icon(
+              Icons.emoji_events_outlined,
+              color: isEnabled ? null : theme.disabledColor,
+            ),
           ),
-          title: Text(l10n.viewAchievements),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () async {
-            _analyticsService.logEvent(
-              InteractionEvent.buttonTapped(
-                buttonName: 'view_achievements',
-                context: _settingsSource,
-              ),
-            );
-            await widget.config.cloudAchievementService!.showAchievements();
-          },
+          title: Text(
+            l10n.viewAchievements,
+            style: isEnabled ? null : TextStyle(color: theme.disabledColor),
+          ),
+          trailing: Icon(
+            Icons.chevron_right,
+            color: isEnabled ? null : theme.disabledColor,
+          ),
+          enabled: isEnabled,
+          onTap: isEnabled
+              ? () async {
+                  _analyticsService.logEvent(
+                    InteractionEvent.buttonTapped(
+                      buttonName: 'view_achievements',
+                      context: _settingsSource,
+                    ),
+                  );
+                  await widget.config.cloudAchievementService!
+                      .showAchievements();
+                }
+              : null,
         ),
       );
     }
 
-    // View Leaderboards button
+    // View Leaderboards button (disabled when not signed in)
     if (widget.config.showViewLeaderboards &&
         widget.config.leaderboardService != null) {
+      final isEnabled = _isGameServiceSignedIn;
       widgets.add(
         ListTile(
-          leading: const SizedBox(
+          leading: SizedBox(
             width: 40,
             height: 40,
-            child: Icon(Icons.leaderboard_outlined),
+            child: Icon(
+              Icons.leaderboard_outlined,
+              color: isEnabled ? null : theme.disabledColor,
+            ),
           ),
-          title: Text(l10n.viewLeaderboards),
-          trailing: const Icon(Icons.chevron_right),
-          onTap: () async {
-            _analyticsService.logEvent(
-              InteractionEvent.buttonTapped(
-                buttonName: 'view_leaderboards',
-                context: _settingsSource,
-              ),
-            );
-            await widget.config.leaderboardService!.showAllLeaderboards();
-          },
+          title: Text(
+            l10n.viewLeaderboards,
+            style: isEnabled ? null : TextStyle(color: theme.disabledColor),
+          ),
+          trailing: Icon(
+            Icons.chevron_right,
+            color: isEnabled ? null : theme.disabledColor,
+          ),
+          enabled: isEnabled,
+          onTap: isEnabled
+              ? () async {
+                  _analyticsService.logEvent(
+                    InteractionEvent.buttonTapped(
+                      buttonName: 'view_leaderboards',
+                      context: _settingsSource,
+                    ),
+                  );
+                  await widget.config.leaderboardService!.showAllLeaderboards();
+                }
+              : null,
         ),
       );
     }
