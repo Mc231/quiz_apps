@@ -101,7 +101,9 @@ void main() {
       await tester.pumpWidget(buildTestWidget(availableData));
       await tester.pumpAndSettle();
 
-      expect(find.textContaining('5'), findsWidgets); // 5 minutes
+      // Shows time per question (300 sec from test data)
+      expect(find.text('300 sec/question'), findsOneWidget);
+      expect(find.text('Per Question'), findsOneWidget);
     });
 
     testWidgets('displays rules section when enabled', (tester) async {

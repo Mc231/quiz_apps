@@ -1724,6 +1724,14 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String get dailyChallengeNoTimeLimit => 'No time limit';
 
   @override
+  String dailyChallengeTimePerQuestion(int seconds) {
+    return '$seconds sec/question';
+  }
+
+  @override
+  String get timePerQuestion => 'Per Question';
+
+  @override
   String get dailyChallengeStart => 'Start Challenge';
 
   @override

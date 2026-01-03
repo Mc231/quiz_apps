@@ -3058,6 +3058,18 @@ abstract class QuizEngineLocalizations {
   /// **'No time limit'**
   String get dailyChallengeNoTimeLimit;
 
+  /// Time limit per question display
+  ///
+  /// In en, this message translates to:
+  /// **'{seconds} sec/question'**
+  String dailyChallengeTimePerQuestion(int seconds);
+
+  /// Label for time per question
+  ///
+  /// In en, this message translates to:
+  /// **'Per Question'**
+  String get timePerQuestion;
+
   /// Button to start daily challenge
   ///
   /// In en, this message translates to:

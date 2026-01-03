@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
-import '../theme/quiz_accessibility.dart';
 import '../theme/quiz_animations.dart';
 
 /// Data required for the daily challenge screen.
@@ -30,6 +29,7 @@ class DailyChallengeScreenConfig {
     this.showRules = true,
     this.showCategory = true,
     this.animateEntrance = true,
+    this.defaultTimePerQuestion = 30,
   });
 
   /// Primary color for the screen theme.
@@ -46,6 +46,9 @@ class DailyChallengeScreenConfig {
 
   /// Whether to animate the entrance.
   final bool animateEntrance;
+
+  /// Default time per question in seconds when [DailyChallenge.timeLimitSeconds] is null.
+  final int defaultTimePerQuestion;
 }
 
 /// Screen displaying the daily challenge intro with rules.
@@ -167,6 +170,12 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen>
   void _handleStartChallenge() {
     setState(() => _isLoading = true);
     widget.onStartChallenge();
+    // Reset loading state after a short delay in case user returns to this screen
+    Future.delayed(const Duration(milliseconds: 500), () {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    });
   }
 
   @override
@@ -337,9 +346,9 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen>
     QuizEngineLocalizations l10n,
     DailyChallenge challenge,
   ) {
-    final timeLimitMinutes = challenge.timeLimitSeconds != null
-        ? (challenge.timeLimitSeconds! / 60).round()
-        : null;
+    // Time per question: use challenge value or default from config
+    final timePerQuestion =
+        challenge.timeLimitSeconds ?? widget.config.defaultTimePerQuestion;
 
     return Card(
       elevation: 1,
@@ -364,10 +373,8 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen>
               child: _buildInfoItem(
                 theme,
                 Icons.timer_outlined,
-                timeLimitMinutes != null
-                    ? '$timeLimitMinutes ${l10n.minutes}'
-                    : l10n.dailyChallengeNoTimeLimit,
-                l10n.duration,
+                l10n.dailyChallengeTimePerQuestion(timePerQuestion),
+                l10n.timePerQuestion,
               ),
             ),
           ],
@@ -469,35 +476,32 @@ class _DailyChallengeScreenState extends State<DailyChallengeScreen>
     QuizEngineLocalizations l10n,
     Color primaryColor,
   ) {
-    return QuizAccessibility.ensureMinTouchTarget(
-      child: FilledButton.icon(
-        onPressed: _isLoading ? null : _handleStartChallenge,
-        icon: _isLoading
-            ? SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
-                ),
-              )
-            : const Icon(Icons.play_arrow, size: 24, color: Colors.white),
-        label: Text(
-          l10n.dailyChallengeStart,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+    return FilledButton.icon(
+      onPressed: _isLoading ? null : _handleStartChallenge,
+      icon: _isLoading
+          ? SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+              ),
+            )
+          : const Icon(Icons.play_arrow, size: 24, color: Colors.white),
+      label: Text(
+        l10n.dailyChallengeStart,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
         ),
-        style: FilledButton.styleFrom(
-          alignment: Alignment.center,
-          backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+      ),
+      style: FilledButton.styleFrom(
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
     );

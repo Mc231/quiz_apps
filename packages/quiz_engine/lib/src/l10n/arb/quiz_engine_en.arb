@@ -2659,6 +2659,19 @@
     "description": "When daily challenge has no time limit"
   },
 
+  "dailyChallengeTimePerQuestion": "{seconds} sec/question",
+  "@dailyChallengeTimePerQuestion": {
+    "description": "Time limit per question display",
+    "placeholders": {
+      "seconds": {"type": "int"}
+    }
+  },
+
+  "timePerQuestion": "Per Question",
+  "@timePerQuestion": {
+    "description": "Label for time per question"
+  },
+
   "dailyChallengeStart": "Start Challenge",
   "@dailyChallengeStart": {
     "description": "Button to start daily challenge"
