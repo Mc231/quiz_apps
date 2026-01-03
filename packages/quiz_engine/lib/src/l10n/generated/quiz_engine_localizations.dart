@@ -3297,6 +3297,210 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Achievement details for {name}'**
   String accessibilityAchievementDetails(String name);
+
+  /// Account section header in settings
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// Loading state for game service account
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get gameServiceLoading;
+
+  /// Connected status for game service
+  ///
+  /// In en, this message translates to:
+  /// **'Connected to {platform}'**
+  String gameServiceConnected(String platform);
+
+  /// Not connected status for game service
+  ///
+  /// In en, this message translates to:
+  /// **'Not connected'**
+  String get gameServiceNotConnected;
+
+  /// Subtitle prompting sign in
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to {platform} to sync progress'**
+  String gameServiceSignInSubtitle(String platform);
+
+  /// Error state for game service
+  ///
+  /// In en, this message translates to:
+  /// **'Connection error. Try again.'**
+  String get gameServiceError;
+
+  /// Sign in button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// Sign out button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Out'**
+  String get signOut;
+
+  /// Apple Game Center platform name
+  ///
+  /// In en, this message translates to:
+  /// **'Game Center'**
+  String get gameCenter;
+
+  /// Google Play Games platform name
+  ///
+  /// In en, this message translates to:
+  /// **'Play Games'**
+  String get playGames;
+
+  /// Generic game services platform name
+  ///
+  /// In en, this message translates to:
+  /// **'Game Services'**
+  String get gameServices;
+
+  /// Cloud sync tile title
+  ///
+  /// In en, this message translates to:
+  /// **'Cloud Sync'**
+  String get cloudSync;
+
+  /// Sync now button
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Now'**
+  String get syncNow;
+
+  /// Sync status: synced
+  ///
+  /// In en, this message translates to:
+  /// **'All synced'**
+  String get syncStatusSynced;
+
+  /// Sync status: syncing
+  ///
+  /// In en, this message translates to:
+  /// **'Syncing...'**
+  String get syncStatusSyncing;
+
+  /// Sync status: pending
+  ///
+  /// In en, this message translates to:
+  /// **'Changes pending sync'**
+  String get syncStatusPending;
+
+  /// Sync status: offline
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get syncStatusOffline;
+
+  /// Sync status: error
+  ///
+  /// In en, this message translates to:
+  /// **'Sync error'**
+  String get syncStatusError;
+
+  /// Last sync time display
+  ///
+  /// In en, this message translates to:
+  /// **'Last synced {time}'**
+  String lastSynced(String time);
+
+  /// Time: just now
+  ///
+  /// In en, this message translates to:
+  /// **'just now'**
+  String get justNow;
+
+  /// Time: minutes ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count} min ago'**
+  String minutesAgo(int count);
+
+  /// Time: hours ago
+  ///
+  /// In en, this message translates to:
+  /// **'{count} hr ago'**
+  String hoursAgo(int count);
+
+  /// Sync success message
+  ///
+  /// In en, this message translates to:
+  /// **'Synced successfully'**
+  String get syncSuccess;
+
+  /// Sync conflict resolved message
+  ///
+  /// In en, this message translates to:
+  /// **'Sync conflict resolved'**
+  String get syncConflictResolved;
+
+  /// Sync failed message
+  ///
+  /// In en, this message translates to:
+  /// **'Sync failed: {error}'**
+  String syncFailed(String error);
+
+  /// Sync not authenticated message
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to sync'**
+  String get syncNotAuthenticated;
+
+  /// Sync offline message
+  ///
+  /// In en, this message translates to:
+  /// **'Cannot sync while offline'**
+  String get syncOffline;
+
+  /// View achievements button
+  ///
+  /// In en, this message translates to:
+  /// **'View Achievements'**
+  String get viewAchievements;
+
+  /// View leaderboards button
+  ///
+  /// In en, this message translates to:
+  /// **'View Leaderboards'**
+  String get viewLeaderboards;
+
+  /// Local leaderboard tab
+  ///
+  /// In en, this message translates to:
+  /// **'Local'**
+  String get localLeaderboard;
+
+  /// Empty state for global leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'No global scores yet'**
+  String get noGlobalLeaderboardData;
+
+  /// Empty state message for global leaderboard
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to submit a score!'**
+  String get noGlobalLeaderboardMessage;
+
+  /// Your rank label
+  ///
+  /// In en, this message translates to:
+  /// **'Your Rank'**
+  String get yourRank;
+
+  /// Open in Game Center button
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Game Center'**
+  String get openInGameCenter;
 }
 
 class _QuizEngineLocalizationsDelegate
