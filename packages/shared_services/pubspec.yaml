@@ -10,6 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  equatable: ^2.0.7
   http: ^1.2.0
   audioplayers: ^6.1.0
   shared_preferences: ^2.3.3
@@ -35,6 +36,10 @@ dependencies:
   share_plus: ^10.1.4
   # Game Services (Game Center, Play Games)
   games_services: ^5.0.0
+  # iCloud Key-Value Storage (iOS cloud saves)
+  icloud_kv_storage: ^0.0.1
+  # Connectivity (for offline detection)
+  connectivity_plus: ^6.1.2
 
 dev_dependencies:
   flutter_test:
