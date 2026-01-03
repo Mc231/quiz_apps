@@ -5392,9 +5392,9 @@ The following phases are planned for future implementation but are currently on 
 - ✅ `packages/quiz_engine/lib/quiz_engine.dart`
 - ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
 
-**Pending Integration (for Sprint 17.6):**
-- [ ] Create `FlagsGameServiceConfig` with actual platform IDs
-- [ ] Integrate game services with FlagsQuiz app
+**Pending Integration (for Sprint 17.6):** ✅
+- [x] Create `FlagsGameServiceConfig` with placeholder IDs (actual IDs pending from App Store Connect / Google Play Console)
+- [x] Integrate game services with FlagsQuiz app
 
 </details>
 
@@ -5583,9 +5583,14 @@ For leaderboards and achievements, the primary experience opens **native Game Ce
 - ✅ `packages/shared_services/test/game/achievement_sync_service_test.dart`
 
 **Pending Integration (for when platform IDs are provided):**
-- [ ] Wire services in `flags_quiz_app_provider.dart`
+- [x] Wire services in `flags_quiz_app_provider.dart`
 - [ ] Update `FlagsGameServiceConfig` with actual platform IDs
 - [ ] Test on real devices with sandbox accounts
+
+**Files Modified (App Integration):**
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart` - Added platform game services initialization
+- ✅ `apps/flagsquiz/lib/initialization/flags_quiz_dependencies.dart` - Added game service fields
+- ✅ `apps/flagsquiz/lib/app/flags_quiz_app.dart` - Enabled Account section in settings
 
 **Notes:**
 - Game Center has a 1MB limit per leaderboard entry
