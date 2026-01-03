@@ -185,7 +185,6 @@ List<BundlePack> createProductionBundlePacks() {
       id: 'bundle_starter',
       productId: 'com.flagsquiz.bundle_starter',
       name: 'Starter Pack',
-      description: '5 Lives (recover from mistakes) + 5 Hints (narrow answers to 2 choices) + 5 Skips (pass hard questions)',
       contents: {
         ResourceType.lives(): 5,
         ResourceType.fiftyFifty(): 5,
@@ -196,7 +195,6 @@ List<BundlePack> createProductionBundlePacks() {
       id: 'bundle_value',
       productId: 'com.flagsquiz.bundle_value',
       name: 'Value Pack',
-      description: '15 Lives (recover from mistakes) + 15 Hints (narrow answers to 2 choices) + 15 Skips (pass hard questions)',
       contents: {
         ResourceType.lives(): 15,
         ResourceType.fiftyFifty(): 15,
@@ -207,7 +205,6 @@ List<BundlePack> createProductionBundlePacks() {
       id: 'bundle_pro',
       productId: 'com.flagsquiz.bundle_pro',
       name: 'Pro Pack',
-      description: '50 Lives (recover from mistakes) + 50 Hints (narrow answers to 2 choices) + 50 Skips (pass hard questions)',
       contents: {
         ResourceType.lives(): 50,
         ResourceType.fiftyFifty(): 50,

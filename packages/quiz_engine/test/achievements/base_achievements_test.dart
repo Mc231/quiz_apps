@@ -1136,6 +1136,14 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get fiftyFiftyDescription => '50/50 hints remove two wrong answers.';
   @override
   String get skipDescription => 'Skips let you pass difficult questions.';
+
+  // Bundle content descriptions
+  @override
+  String bundleLivesContent(int count) => '$count Lives (recover from mistakes)';
+  @override
+  String bundleHintsContent(int count) => '$count Hints (narrow to 2 choices)';
+  @override
+  String bundleSkipsContent(int count) => '$count Skips (pass hard questions)';
 }
 
 void main() {

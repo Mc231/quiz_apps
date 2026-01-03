@@ -1707,6 +1707,39 @@
     "description": "Detailed description of skip resource for purchase screen"
   },
 
+  "bundleLivesContent": "{count} Lives (recover from mistakes)",
+  "@bundleLivesContent": {
+    "description": "Short lives description for bundle cards",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+
+  "bundleHintsContent": "{count} Hints (narrow to 2 choices)",
+  "@bundleHintsContent": {
+    "description": "Short hints description for bundle cards",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+
+  "bundleSkipsContent": "{count} Skips (pass hard questions)",
+  "@bundleSkipsContent": {
+    "description": "Short skips description for bundle cards",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+
   "needMoreLives": "Need More Lives?",
   "@needMoreLives": {
     "description": "Dialog title when lives are depleted"

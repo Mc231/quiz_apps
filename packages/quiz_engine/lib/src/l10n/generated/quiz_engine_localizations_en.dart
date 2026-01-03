@@ -1143,6 +1143,21 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
       'Skips let you pass difficult questions without losing a life or affecting your score. Move instantly to the next question when you\'re stuck.';
 
   @override
+  String bundleLivesContent(int count) {
+    return '$count Lives (recover from mistakes)';
+  }
+
+  @override
+  String bundleHintsContent(int count) {
+    return '$count Hints (narrow to 2 choices)';
+  }
+
+  @override
+  String bundleSkipsContent(int count) {
+    return '$count Skips (pass hard questions)';
+  }
+
+  @override
   String get needMoreLives => 'Need More Lives?';
 
   @override

@@ -2092,6 +2092,24 @@ abstract class QuizEngineLocalizations {
   /// **'Skips let you pass difficult questions without losing a life or affecting your score. Move instantly to the next question when you\'re stuck.'**
   String get skipDescription;
 
+  /// Short lives description for bundle cards
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Lives (recover from mistakes)'**
+  String bundleLivesContent(int count);
+
+  /// Short hints description for bundle cards
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Hints (narrow to 2 choices)'**
+  String bundleHintsContent(int count);
+
+  /// Short skips description for bundle cards
+  ///
+  /// In en, this message translates to:
+  /// **'{count} Skips (pass hard questions)'**
+  String bundleSkipsContent(int count);
+
   /// Dialog title when lives are depleted
   ///
   /// In en, this message translates to:

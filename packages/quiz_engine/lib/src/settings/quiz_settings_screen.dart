@@ -214,11 +214,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         final bundlePacks = context.resourceManager.config.bundlePacks;
         for (final bundle in bundlePacks) {
           widgets.add(
-            BundlePackCard(
-              productId: bundle.productId,
-              title: bundle.name,
-              description: bundle.description ?? '',
-            ),
+            BundlePackCard(bundle: bundle),
           );
         }
         widgets.add(const SizedBox(height: 8));
@@ -703,11 +699,7 @@ class SettingsContent extends StatelessWidget {
         final bundlePacks = context.resourceManager.config.bundlePacks;
         for (final bundle in bundlePacks) {
           widgets.add(
-            BundlePackCard(
-              productId: bundle.productId,
-              title: bundle.name,
-              description: bundle.description ?? '',
-            ),
+            BundlePackCard(bundle: bundle),
           );
         }
         widgets.add(const SizedBox(height: 8));
