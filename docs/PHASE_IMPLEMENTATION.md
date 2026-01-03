@@ -4331,7 +4331,7 @@ The following phases are planned for future implementation but are currently on 
 
 ### Phase B0: Manual Testing, Bug Fixing & Polish
 
-**Status:** BACKLOG
+**Status:** IN PROGRESS
 
 **Goal:** Comprehensive manual testing across all platforms and fixing discovered issues.
 
@@ -4343,6 +4343,14 @@ The following phases are planned for future implementation but are currently on 
 - [ ] Fix discovered bugs
 - [ ] Polish UI interactions and transitions
 - [ ] Performance optimization if needed
+
+**Polished Screens:**
+- [x] Settings Screen
+  - Removed background music option (feature not implemented)
+  - Disabled data export by default
+  - Added Privacy Policy & Terms of Service URL support
+  - Removed redundant inline Version display (kept About dialog)
+  - Fixed theme dialog landscape overflow
 
 **Notes:** This is an ongoing task to be done by manual testing, not automated.
 
