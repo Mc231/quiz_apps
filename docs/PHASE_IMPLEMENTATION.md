@@ -5220,23 +5220,36 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 17.3: Android Play Games Integration
+#### Sprint 17.3: Android Play Games Integration ✅
 
 **Goal:** Implement Google Play Games for Android.
 
 **Tasks:**
-- [ ] Add `games_services` package for Android
-- [ ] Create `PlayGamesService` implementing `GameService`
-- [ ] Configure Play Games in Google Play Console:
+- [x] Add `games_services` package for Android (already added in Sprint 17.2)
+- [x] Create `PlayGamesService` implementing `GameService`
+- [x] Create `PlayGamesLeaderboardService` implementing `LeaderboardService`
+- [x] Create `PlayGamesAchievementService` implementing `CloudAchievementService`
+- [x] Create `PlayGamesServices` combined convenience class
+- [x] Update exports to include Play Games services
+- [x] Write unit tests for all Play Games services
+- [ ] Configure Play Games in Google Play Console (app-specific setup):
   - Create leaderboards
   - Create achievements
   - Set up OAuth consent
-- [ ] Implement authentication flow:
-  - Google Sign-In integration
-  - Handle sign-in/sign-out
-- [ ] Map in-app achievements to Play Games achievements
 - [ ] Test on real device with test account
-- [ ] Write integration tests
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/game/play_games_service.dart`
+- ✅ `packages/shared_services/lib/src/game/play_games_leaderboard_service.dart`
+- ✅ `packages/shared_services/lib/src/game/play_games_achievement_service.dart`
+- ✅ `packages/shared_services/lib/src/game/play_games_services.dart`
+- ✅ `packages/shared_services/test/game/play_games_service_test.dart`
+- ✅ `packages/shared_services/test/game/play_games_leaderboard_service_test.dart`
+- ✅ `packages/shared_services/test/game/play_games_achievement_service_test.dart`
+- ✅ `packages/shared_services/test/game/play_games_services_test.dart`
+
+**Files Updated:**
+- ✅ `packages/shared_services/lib/src/game/game_exports.dart`
 
 ---
 
