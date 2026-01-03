@@ -50,8 +50,8 @@ This document tracks the UI polish status of all screens in the Quiz Apps projec
 
 | Screen | File | Status | Notes |
 |--------|------|--------|-------|
-| Statistics Screen | `quiz_engine/lib/src/screens/statistics_screen.dart` | [ ] | |
-| Statistics Dashboard Screen | `quiz_engine/lib/src/screens/statistics_dashboard_screen.dart` | [ ] | |
+| Statistics Screen | `quiz_engine/lib/src/screens/statistics_screen.dart` | [x] | |
+| Statistics Dashboard Screen | `quiz_engine/lib/src/screens/statistics_dashboard_screen.dart` | [x] | |
 
 ---
 
@@ -107,11 +107,11 @@ When polishing a screen, verify:
 | Quiz Execution | 1 | 1 | 100% |
 | Session Flow | 2 | 3 | 67% |
 | Content & History | 3 | 3 | 100% |
-| Statistics | 0 | 2 | 0% |
+| Statistics | 2 | 2 | 100% |
 | Feature | 2 | 2 | 100% |
 | Daily Challenge | 2 | 2 | 100% |
 | App Entry | 0 | 1 | 0% |
-| **Total** | **12** | **17** | **71%** |
+| **Total** | **14** | **17** | **82%** |
 
 ---
 
