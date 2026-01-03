@@ -77,7 +77,7 @@ This document tracks the UI polish status of all screens in the Quiz Apps projec
 
 | Screen | File | Status | Notes |
 |--------|------|--------|-------|
-| Flags Quiz App | `flagsquiz/lib/app/flags_quiz_app.dart` | [ ] | Main app widget |
+| Flags Quiz App | `flagsquiz/lib/app/flags_quiz_app.dart` | [x] | Main app widget |
 
 ---
 
@@ -110,8 +110,8 @@ When polishing a screen, verify:
 | Statistics | 2 | 2 | 100% |
 | Feature | 2 | 2 | 100% |
 | Daily Challenge | 2 | 2 | 100% |
-| App Entry | 0 | 1 | 0% |
-| **Total** | **16** | **17** | **94%** |
+| App Entry | 1 | 1 | 100% |
+| **Total** | **17** | **17** | **100%** |
 
 ---
 
