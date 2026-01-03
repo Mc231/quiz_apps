@@ -157,29 +157,36 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
 
   Widget _buildFilterToggle(BuildContext context) {
     final theme = Theme.of(context);
-    final borderColor = theme.colorScheme.outline;
+    final isDark = theme.brightness == Brightness.dark;
+    final borderColor = isDark ? Colors.grey[600]! : Colors.grey[400]!;
 
-    return SegmentedButton<QuestionFilterMode>(
-      segments: [
-        ButtonSegment<QuestionFilterMode>(
-          value: QuestionFilterMode.all,
-          label: Text(widget.texts.showAllLabel),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: borderColor),
+      ),
+      child: SegmentedButton<QuestionFilterMode>(
+        segments: [
+          ButtonSegment<QuestionFilterMode>(
+            value: QuestionFilterMode.all,
+            label: Text(widget.texts.showAllLabel),
+          ),
+          ButtonSegment<QuestionFilterMode>(
+            value: QuestionFilterMode.wrongOnly,
+            label: Text(widget.texts.showWrongOnlyLabel),
+          ),
+        ],
+        selected: {_filterMode},
+        onSelectionChanged: (Set<QuestionFilterMode> newSelection) {
+          setState(() {
+            _filterMode = newSelection.first;
+          });
+        },
+        style: ButtonStyle(
+          visualDensity: VisualDensity.compact,
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          side: const WidgetStatePropertyAll(BorderSide.none),
         ),
-        ButtonSegment<QuestionFilterMode>(
-          value: QuestionFilterMode.wrongOnly,
-          label: Text(widget.texts.showWrongOnlyLabel),
-        ),
-      ],
-      selected: {_filterMode},
-      onSelectionChanged: (Set<QuestionFilterMode> newSelection) {
-        setState(() {
-          _filterMode = newSelection.first;
-        });
-      },
-      style: ButtonStyle(
-        visualDensity: VisualDensity.compact,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        side: WidgetStatePropertyAll(BorderSide(color: borderColor)),
       ),
     );
   }
@@ -654,30 +661,37 @@ class SessionDetailContent extends StatelessWidget {
   Widget _buildFilterToggle(BuildContext context) {
     final l10n = QuizL10n.of(context);
     final theme = Theme.of(context);
-    final borderColor = theme.colorScheme.outline;
+    final isDark = theme.brightness == Brightness.dark;
+    final borderColor = isDark ? Colors.grey[600]! : Colors.grey[400]!;
 
     return Semantics(
       label: l10n.accessibilityFilterQuestions,
       hint: l10n.accessibilityFilterHint,
-      child: SegmentedButton<QuestionFilterMode>(
-        segments: [
-          ButtonSegment<QuestionFilterMode>(
-            value: QuestionFilterMode.all,
-            label: Text(texts.showAllLabel),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: borderColor),
+        ),
+        child: SegmentedButton<QuestionFilterMode>(
+          segments: [
+            ButtonSegment<QuestionFilterMode>(
+              value: QuestionFilterMode.all,
+              label: Text(texts.showAllLabel),
+            ),
+            ButtonSegment<QuestionFilterMode>(
+              value: QuestionFilterMode.wrongOnly,
+              label: Text(texts.showWrongOnlyLabel),
+            ),
+          ],
+          selected: {filterMode},
+          onSelectionChanged: (Set<QuestionFilterMode> newSelection) {
+            onFilterModeChanged?.call(newSelection.first);
+          },
+          style: ButtonStyle(
+            visualDensity: VisualDensity.compact,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            side: const WidgetStatePropertyAll(BorderSide.none),
           ),
-          ButtonSegment<QuestionFilterMode>(
-            value: QuestionFilterMode.wrongOnly,
-            label: Text(texts.showWrongOnlyLabel),
-          ),
-        ],
-        selected: {filterMode},
-        onSelectionChanged: (Set<QuestionFilterMode> newSelection) {
-          onFilterModeChanged?.call(newSelection.first);
-        },
-        style: ButtonStyle(
-          visualDensity: VisualDensity.compact,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          side: WidgetStatePropertyAll(BorderSide(color: borderColor)),
         ),
       ),
     );
