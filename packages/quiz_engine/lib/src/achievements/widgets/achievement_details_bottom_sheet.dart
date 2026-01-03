@@ -148,41 +148,57 @@ class AchievementDetailsBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    // Limit max height to 90% of screen height for landscape support
+    final maxHeight = mediaQuery.size.height * 0.9;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: theme.colorScheme.surface,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: maxHeight),
+      child: Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Drag handle
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(2),
+              // Drag handle (outside scroll view)
+              Padding(
+                padding: const EdgeInsets.only(top: 24),
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
 
-              // Content based on state
-              if (data.isHiddenAndLocked)
-                _buildHiddenContent(context, theme)
-              else if (data.isUnlocked)
-                _buildUnlockedContent(context, theme)
-              else
-                _buildLockedContent(context, theme),
+              // Scrollable content
+              Flexible(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+                  child: _buildContent(context, theme),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _buildContent(BuildContext context, ThemeData theme) {
+    if (data.isHiddenAndLocked) {
+      return _buildHiddenContent(context, theme);
+    } else if (data.isUnlocked) {
+      return _buildUnlockedContent(context, theme);
+    } else {
+      return _buildLockedContent(context, theme);
+    }
   }
 
   Widget _buildHiddenContent(BuildContext context, ThemeData theme) {
