@@ -298,16 +298,40 @@ For all leaderboards:
 
 ### Step 4: Achievement Images
 
-Create achievement images for each tier:
-- **Bronze** (10-20 points): Bronze-tinted badge
-- **Silver** (25-40 points): Silver-tinted badge
-- **Gold** (50-75 points): Gold-tinted badge
-- **Platinum** (100-150 points): Platinum-tinted badge
+**Approach:** Single template badge with tier-based colors.
 
-Requirements:
+Instead of creating 75 unique images, we use one badge template and apply different colors based on achievement tier:
+
+| Tier | Points Range | Color | Hex Code | Count |
+|------|--------------|-------|----------|-------|
+| Bronze | 10-20 | Bronze/Copper | #CD7F32 | 25 |
+| Silver | 25-40 | Silver | #C0C0C0 | 24 |
+| Gold | 50-75 | Gold | #FFD700 | 18 |
+| Platinum | 100-150 | Platinum/Diamond | #E5E4E2 | 8 |
+
+**Template Design:**
+- Central icon: Trophy, star, or flag emblem
+- Circular badge shape
+- Tier color as background or border accent
+- Achievement category icon overlay (optional)
+
+**Creating the Images:**
+1. Design one master badge template (512x512 or 1024x1024 PNG)
+2. Create 4 color variants (Bronze, Silver, Gold, Platinum)
+3. Export each variant as separate PNG files
+4. Name files to match achievement IDs (e.g., `first_quiz.png`)
+
+**Tools:**
+- Canva (free templates available)
+- Figma (with color adjustment)
+- Photoshop/GIMP (batch processing)
+- AI generators (DALL-E, Midjourney) for base template
+
+**Requirements:**
 - Size: 512x512 or 1024x1024 pixels
 - Format: PNG
 - No transparency on edges
+- Same dimensions for all achievements
 
 ### Step 5: Copy IDs
 
