@@ -10,6 +10,10 @@
 ///   - [GameCenterService]
 ///   - [GameCenterLeaderboardService]
 ///   - [GameCenterAchievementService]
+/// - **Android:** [PlayGamesServices] - Google Play Games
+///   - [PlayGamesService]
+///   - [PlayGamesLeaderboardService]
+///   - [PlayGamesAchievementService]
 ///
 /// For unsupported platforms, use:
 /// - [NoOpGameService]
@@ -31,3 +35,9 @@ export 'game_center_service.dart';
 export 'game_center_leaderboard_service.dart';
 export 'game_center_achievement_service.dart';
 export 'game_center_services.dart';
+
+// Android Play Games implementations
+export 'play_games_service.dart';
+export 'play_games_leaderboard_service.dart';
+export 'play_games_achievement_service.dart';
+export 'play_games_services.dart';
