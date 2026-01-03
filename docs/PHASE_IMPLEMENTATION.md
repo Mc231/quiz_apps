@@ -5311,7 +5311,31 @@ The following phases are planned for future implementation but are currently on 
 
 **Goal:** Build and integrate UI widgets for game services into the app.
 
+**Design Decisions:**
+- **Auto-merge only:** No manual conflict resolution dialog (Sprint 17.4's `CloudSaveConflictResolver` handles merging automatically)
+- **Reusable config:** `GameServiceConfig` allows each app to define its own leaderboards and achievement mappings
+
 **Tasks:**
+
+**Configuration (shared_services):**
+- [ ] Create `GameServiceConfig` class:
+  - `isEnabled` - Whether game services are enabled
+  - `cloudSyncEnabled` - Whether cloud sync is enabled
+  - `syncOnLaunch` - Auto-sync when app launches
+  - `syncAfterQuizCompletion` - Auto-sync after quiz completion
+  - `showAccountInSettings` - Show Account section in settings
+  - `leaderboards` - List of `LeaderboardConfig`
+  - `achievementIdMap` - Maps internal achievement IDs to platform IDs
+  - Factory constructors: `disabled()`, `test()`
+- [ ] Create `LeaderboardConfig` model:
+  - `id` - Internal ID (e.g., 'global', 'europe')
+  - `gameCenterId` - iOS Game Center leaderboard ID
+  - `playGamesId` - Android Play Games leaderboard ID
+  - `scoreType` - `LeaderboardScoreType` enum (highScore, lowestTime, cumulative)
+- [ ] Create `LeaderboardScoreType` enum
+- [ ] Export from `game_exports.dart`
+
+**UI Widgets (quiz_engine):**
 - [ ] Create `GameServiceAccountTile` widget:
   - Player avatar and display name
   - "Connected to Game Center/Play Games" subtitle
@@ -5330,15 +5354,22 @@ The following phases are planned for future implementation but are currently on 
   - Highlight current player's rank
   - "Open in Game Center" button
 - [ ] Add Local/Global tab switcher to leaderboard screen
-- [ ] Create `SyncConflictDialog`:
-  - Show local vs cloud data comparison
-  - "Merge (Recommended)" option
-  - "Use Local" / "Use Cloud" options
 - [ ] Create `SyncStatusIndicator` widget:
   - Compact icon for app bar or home screen
   - States: syncing, synced, offline, error
 - [ ] Add localization strings for all new UI
-- [ ] Write widget tests
+
+**App Integration (flagsquiz):**
+- [ ] Create `FlagsGameServiceConfig`:
+  - Define leaderboard IDs for all continents + global
+  - Map all 75 achievement IDs to Game Center/Play Games IDs
+- [ ] Integrate `GameServiceConfig` into app initialization
+- [ ] Wire up game services to settings screen
+
+**Testing:**
+- [ ] Write unit tests for `GameServiceConfig`
+- [ ] Write unit tests for `LeaderboardConfig`
+- [ ] Write widget tests for all new UI widgets
 
 </details>
 
@@ -5462,6 +5493,67 @@ Syncing...        Synced ✓        Offline ⚠
 #### Native UI Integration
 
 For leaderboards and achievements, the primary experience opens **native Game Center / Play Games UI** via platform APIs. In-app widgets serve as entry points and show quick summaries.
+
+---
+
+#### Sprint 17.6: Leaderboard & Achievement Integration
+
+**Goal:** Integrate quiz results with Game Center and Google Play Games leaderboards and achievements.
+
+**Prerequisites:**
+- Sprint 17.5 completed (GameServiceConfig with leaderboard/achievement mappings)
+- Leaderboards and achievements registered in App Store Connect and Google Play Console
+
+**Tasks:**
+
+**Platform Configuration (Manual):**
+- [ ] Register leaderboards in App Store Connect:
+  - Global leaderboard
+  - Per-continent leaderboards (Europe, Asia, Africa, Americas, Oceania)
+  - Category-specific leaderboards (if applicable)
+- [ ] Register leaderboards in Google Play Console (same structure)
+- [ ] Register achievements in App Store Connect (75 achievements)
+- [ ] Register achievements in Google Play Console (75 achievements)
+- [ ] Update `FlagsGameServiceConfig` with actual platform IDs
+
+**Leaderboard Integration (uses existing services from Sprint 17.2/17.3):**
+- [ ] Create `LeaderboardIntegrationService` - orchestrates score submission:
+  - Uses `GameCenterLeaderboardService` (iOS) / `PlayGamesLeaderboardService` (Android)
+  - Maps internal category IDs to platform leaderboard IDs via `GameServiceConfig`
+  - Handles platform detection and service selection
+- [ ] Add score submission after quiz completion:
+  - Calculate aggregate score for leaderboard category
+  - Submit to both global and category-specific leaderboards
+- [ ] Handle offline score submission (queue and retry)
+
+**Achievement Integration (uses existing services from Sprint 17.2/17.3):**
+- [ ] Create `AchievementSyncService` - bridges local achievements to platforms:
+  - Uses `GameCenterAchievementService` (iOS) / `PlayGamesAchievementService` (Android)
+  - Maps internal achievement IDs to platform IDs via `GameServiceConfig.achievementIdMap`
+  - Handles platform detection and service selection
+- [ ] Listen to `AchievementService.onAchievementUnlocked` stream
+- [ ] Sync unlocked achievements on sign-in (catch up missed unlocks)
+- [ ] Handle incremental achievements (progress reporting)
+
+**App Integration (flagsquiz):**
+- [ ] Wire `LeaderboardIntegrationService` to quiz completion flow
+- [ ] Wire `AchievementSyncService` to achievement unlock events
+- [ ] Add retry logic for failed submissions
+- [ ] Log analytics events for leaderboard/achievement submissions
+
+**Testing:**
+- [ ] Write unit tests for `LeaderboardIntegrationService`
+- [ ] Write unit tests for `AchievementSyncService`
+- [ ] Create sandbox test accounts (iOS and Android)
+- [ ] Test leaderboard submission on real devices
+- [ ] Test achievement unlock on real devices
+- [ ] Test offline → online sync behavior
+
+**Notes:**
+- Game Center has a 1MB limit per leaderboard entry
+- Play Games requires achievements to be published before they can be unlocked
+- Both platforms may have rate limits on score submissions
+- Consider batching multiple achievement unlocks
 
 ---
 
