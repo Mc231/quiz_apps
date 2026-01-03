@@ -1921,6 +1921,10 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String get dailyChallengeNoTimeLimit => 'No time limit';
   @override
+  String dailyChallengeTimePerQuestion(int seconds) => '$seconds sec/question';
+  @override
+  String get timePerQuestion => 'Per Question';
+  @override
   String get dailyChallengeStart => 'Start Challenge';
   @override
   String dailyChallengeDecline(int points) => 'Maybe Later (-$points pts)';
