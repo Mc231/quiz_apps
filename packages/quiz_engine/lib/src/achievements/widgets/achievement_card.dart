@@ -95,13 +95,14 @@ class AchievementDisplayData {
 ///   onTap: () => showAchievementDetails(achievement),
 /// )
 /// ```
-class AchievementCard extends StatelessWidget {
+class AchievementCard extends StatefulWidget {
   /// Creates an [AchievementCard].
   const AchievementCard({
     super.key,
     required this.data,
     this.onTap,
     this.style = const AchievementCardStyle(),
+    this.isHighlighted = false,
   });
 
   /// The achievement data to display.
@@ -112,6 +113,65 @@ class AchievementCard extends StatelessWidget {
 
   /// Style configuration for the card.
   final AchievementCardStyle style;
+
+  /// Whether this card is highlighted (e.g., from deep link navigation).
+  ///
+  /// When true, the card displays a glowing border in the tier color
+  /// that fades out over 2 seconds.
+  final bool isHighlighted;
+
+  @override
+  State<AchievementCard> createState() => _AchievementCardState();
+}
+
+class _AchievementCardState extends State<AchievementCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _highlightController;
+  late Animation<double> _highlightAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _highlightController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    );
+    _highlightAnimation = Tween<double>(begin: 1.0, end: 0.0).animate(
+      CurvedAnimation(parent: _highlightController, curve: Curves.easeOut),
+    );
+
+    if (widget.isHighlighted) {
+      // Start fade-out after a brief moment
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          _highlightController.forward();
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(AchievementCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isHighlighted && !oldWidget.isHighlighted) {
+      _highlightController.reset();
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          _highlightController.forward();
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _highlightController.dispose();
+    super.dispose();
+  }
+
+  AchievementDisplayData get data => widget.data;
+  VoidCallback? get onTap => widget.onTap;
+  AchievementCardStyle get style => widget.style;
 
   @override
   Widget build(BuildContext context) {
@@ -212,6 +272,7 @@ class AchievementCard extends StatelessWidget {
     final isUnlocked = data.isUnlocked;
     final l10n = QuizL10n.of(context);
     final tierName = data.achievement.tier.name;
+    final tierColor = data.achievement.tier.color;
 
     // Build accessibility label
     final String semanticLabel;
@@ -230,47 +291,75 @@ class AchievementCard extends StatelessWidget {
       );
     }
 
+    Widget card = Card(
+      elevation: style.elevation,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(style.borderRadius),
+      ),
+      color: isUnlocked
+          ? style.backgroundColor
+          : style.lockedBackgroundColor ??
+              theme.colorScheme.surfaceContainerHighest
+                  .withValues(alpha: style.lockedOpacity),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(style.borderRadius),
+        excludeFromSemantics: true,
+        child: Padding(
+          padding: style.padding,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildIcon(context, theme, isUnlocked),
+                  const SizedBox(width: 16),
+                  Expanded(child: _buildContent(context, theme, isUnlocked)),
+                  _buildTrailing(context, theme, isUnlocked),
+                ],
+              ),
+              if (style.showProgressBar && data.showProgress) ...[
+                const SizedBox(height: 12),
+                _buildProgressBar(context, theme),
+              ],
+            ],
+          ),
+        ),
+      ),
+    );
+
+    // Apply highlight glow effect if highlighted
+    if (widget.isHighlighted) {
+      card = AnimatedBuilder(
+        animation: _highlightAnimation,
+        builder: (context, child) {
+          final glowOpacity = _highlightAnimation.value * 0.6;
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(style.borderRadius + 4),
+              boxShadow: glowOpacity > 0
+                  ? [
+                      BoxShadow(
+                        color: tierColor.withValues(alpha: glowOpacity),
+                        blurRadius: 16,
+                        spreadRadius: 2,
+                      ),
+                    ]
+                  : null,
+            ),
+            child: child,
+          );
+        },
+        child: card,
+      );
+    }
+
     return Semantics(
       label: semanticLabel,
       hint: onTap != null ? l10n.accessibilityDoubleTapToView : null,
       button: onTap != null,
-      child: Card(
-        elevation: style.elevation,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(style.borderRadius),
-        ),
-        color: isUnlocked
-            ? style.backgroundColor
-            : style.lockedBackgroundColor ??
-                theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: style.lockedOpacity),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(style.borderRadius),
-          excludeFromSemantics: true,
-          child: Padding(
-            padding: style.padding,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildIcon(context, theme, isUnlocked),
-                    const SizedBox(width: 16),
-                    Expanded(child: _buildContent(context, theme, isUnlocked)),
-                    _buildTrailing(context, theme, isUnlocked),
-                  ],
-                ),
-                if (style.showProgressBar && data.showProgress) ...[
-                  const SizedBox(height: 12),
-                  _buildProgressBar(context, theme),
-                ],
-              ],
-            ),
-          ),
-        ),
-      ),
+      child: card,
     );
   }
 

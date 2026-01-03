@@ -1823,4 +1823,21 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String accessibilityDailyChallengeCountdown(String time) {
     return 'Next daily challenge available in $time';
   }
+
+  @override
+  String get achievementDetailsHiddenMessage =>
+      'This achievement is hidden. Keep playing to discover it!';
+
+  @override
+  String achievementDetailsUnlockedOn(String date) {
+    return 'Unlocked on $date';
+  }
+
+  @override
+  String get achievementDetailsKeepPlaying => 'Keep playing to unlock!';
+
+  @override
+  String accessibilityAchievementDetails(String name) {
+    return 'Achievement details for $name';
+  }
 }

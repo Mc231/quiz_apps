@@ -2822,5 +2822,31 @@
     "placeholders": {
       "time": {"type": "String"}
     }
+  },
+
+  "achievementDetailsHiddenMessage": "This achievement is hidden. Keep playing to discover it!",
+  "@achievementDetailsHiddenMessage": {
+    "description": "Message shown for hidden achievements in details bottom sheet"
+  },
+
+  "achievementDetailsUnlockedOn": "Unlocked on {date}",
+  "@achievementDetailsUnlockedOn": {
+    "description": "Message showing when achievement was unlocked",
+    "placeholders": {
+      "date": {"type": "String"}
+    }
+  },
+
+  "achievementDetailsKeepPlaying": "Keep playing to unlock!",
+  "@achievementDetailsKeepPlaying": {
+    "description": "Encouragement message for locked achievements"
+  },
+
+  "accessibilityAchievementDetails": "Achievement details for {name}",
+  "@accessibilityAchievementDetails": {
+    "description": "Accessibility label for achievement details bottom sheet",
+    "placeholders": {
+      "name": {"type": "String"}
+    }
   }
 }

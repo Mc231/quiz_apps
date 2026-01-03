@@ -146,6 +146,8 @@ export 'src/achievements/screens/achievements_screen.dart';
 export 'src/achievements/screens/achievements_screen_config.dart';
 export 'src/achievements/screens/achievements_screen_data.dart';
 export 'src/achievements/widgets/achievement_card.dart';
+export 'src/achievements/widgets/achievement_details_bottom_sheet.dart';
+export 'src/achievements/widgets/achievement_icon_animated.dart';
 export 'src/achievements/widgets/achievement_notification.dart';
 export 'src/achievements/widgets/achievement_tier_badge.dart';
 export 'src/achievements/widgets/achievements_list.dart';

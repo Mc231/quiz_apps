@@ -1997,6 +1997,18 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get dailyChallengeStreak => 'Daily Streak';
   @override
   String get dailyChallengeNewBestStreak => 'New Best Streak!';
+
+  // Achievement details bottom sheet localizations
+  @override
+  String get achievementDetailsHiddenMessage =>
+      'This achievement is hidden. Keep playing to discover it!';
+  @override
+  String achievementDetailsUnlockedOn(String date) => 'Unlocked on $date';
+  @override
+  String get achievementDetailsKeepPlaying => 'Keep playing to unlock!';
+  @override
+  String accessibilityAchievementDetails(String name) =>
+      'Achievement details for $name';
 }
 
 void main() {

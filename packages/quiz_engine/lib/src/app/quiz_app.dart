@@ -303,7 +303,11 @@ class QuizApp extends StatefulWidget {
   final AchievementsDataProvider? achievementsDataProvider;
 
   /// Callback when an achievement is tapped.
-  final void Function(AchievementDisplayData achievement)? onAchievementTap;
+  ///
+  /// The callback receives both the [BuildContext] for showing dialogs/bottom sheets
+  /// and the [AchievementDisplayData] containing achievement details.
+  final void Function(BuildContext context, AchievementDisplayData achievement)?
+      onAchievementTap;
 
   /// Additional callback invoked when a quiz is completed.
   ///
@@ -1541,8 +1545,17 @@ class _QuizNavigationImpl implements QuizNavigation {
     // TODO: Find the actual achievements tab index dynamically
     homeState.switchToTab(1);
 
-    // Note: Achievement highlighting is not yet implemented
-    // This would require passing the achievementId to the achievements screen
+    // Highlight the achievement and trigger bottom sheet after delay
+    // The highlightAchievement method will:
+    // 1. Wait for achievements data to load if needed
+    // 2. Scroll to and highlight the achievement
+    // 3. After 500ms, show the bottom sheet via onAchievementTap callback
+    final achievement = await homeState.highlightAchievement(achievementId);
+
+    if (achievement == null) {
+      return NavigationInvalidId(id: achievementId, type: 'achievement');
+    }
+
     return const NavigationSuccess();
   }
 

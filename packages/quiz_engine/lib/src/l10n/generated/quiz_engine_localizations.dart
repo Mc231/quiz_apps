@@ -3237,6 +3237,30 @@ abstract class QuizEngineLocalizations {
   /// In en, this message translates to:
   /// **'Next daily challenge available in {time}'**
   String accessibilityDailyChallengeCountdown(String time);
+
+  /// Message shown for hidden achievements in details bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'This achievement is hidden. Keep playing to discover it!'**
+  String get achievementDetailsHiddenMessage;
+
+  /// Message showing when achievement was unlocked
+  ///
+  /// In en, this message translates to:
+  /// **'Unlocked on {date}'**
+  String achievementDetailsUnlockedOn(String date);
+
+  /// Encouragement message for locked achievements
+  ///
+  /// In en, this message translates to:
+  /// **'Keep playing to unlock!'**
+  String get achievementDetailsKeepPlaying;
+
+  /// Accessibility label for achievement details bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Achievement details for {name}'**
+  String accessibilityAchievementDetails(String name);
 }
 
 class _QuizEngineLocalizationsDelegate

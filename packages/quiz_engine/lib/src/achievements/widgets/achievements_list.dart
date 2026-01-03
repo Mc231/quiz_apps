@@ -134,6 +134,7 @@ class AchievementsListConfig {
 /// - Filtering by tier
 /// - Grouping by category
 /// - Sorting by category, tier, progress, or unlock date
+/// - Highlighting and scrolling to a specific achievement
 ///
 /// Example:
 /// ```dart
@@ -144,9 +145,10 @@ class AchievementsListConfig {
 ///     groupByCategory: true,
 ///   ),
 ///   onAchievementTap: (data) => showDetails(data),
+///   highlightedAchievementId: 'first_quiz', // Optional: scroll and highlight
 /// )
 /// ```
-class AchievementsList extends StatelessWidget {
+class AchievementsList extends StatefulWidget {
   /// Creates an [AchievementsList].
   const AchievementsList({
     super.key,
@@ -157,6 +159,7 @@ class AchievementsList extends StatelessWidget {
     this.onSortChanged,
     this.emptyBuilder,
     this.headerBuilder,
+    this.highlightedAchievementId,
   });
 
   /// All achievements to display.
@@ -180,6 +183,67 @@ class AchievementsList extends StatelessWidget {
   /// Builder for optional header.
   final Widget Function(BuildContext)? headerBuilder;
 
+  /// The ID of an achievement to highlight and scroll to.
+  ///
+  /// When set, the list will scroll to this achievement and apply
+  /// a glowing highlight effect that fades over 2 seconds.
+  final String? highlightedAchievementId;
+
+  @override
+  State<AchievementsList> createState() => _AchievementsListState();
+}
+
+class _AchievementsListState extends State<AchievementsList> {
+  final Map<String, GlobalKey> _achievementKeys = {};
+  bool _hasScrolledToHighlight = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupAchievementKeys();
+  }
+
+  @override
+  void didUpdateWidget(AchievementsList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.highlightedAchievementId != oldWidget.highlightedAchievementId) {
+      _hasScrolledToHighlight = false;
+    }
+    _setupAchievementKeys();
+  }
+
+  void _setupAchievementKeys() {
+    // Create keys for all achievements
+    for (final achievement in widget.achievements) {
+      _achievementKeys.putIfAbsent(
+        achievement.achievement.id,
+        () => GlobalKey(),
+      );
+    }
+  }
+
+  void _scrollToHighlightedAchievement() {
+    if (_hasScrolledToHighlight) return;
+    if (widget.highlightedAchievementId == null) return;
+
+    final key = _achievementKeys[widget.highlightedAchievementId];
+    if (key?.currentContext != null) {
+      _hasScrolledToHighlight = true;
+      Scrollable.ensureVisible(
+        key!.currentContext!,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+        alignment: 0.3, // Position 30% from top
+      );
+    }
+  }
+
+  List<AchievementDisplayData> get achievements => widget.achievements;
+  AchievementsListConfig get config => widget.config;
+  void Function(AchievementDisplayData)? get onAchievementTap => widget.onAchievementTap;
+  Widget Function(BuildContext)? get emptyBuilder => widget.emptyBuilder;
+  Widget Function(BuildContext)? get headerBuilder => widget.headerBuilder;
+
   @override
   Widget build(BuildContext context) {
     final filtered = _filterAchievements();
@@ -187,6 +251,13 @@ class AchievementsList extends StatelessWidget {
 
     if (sorted.isEmpty) {
       return emptyBuilder?.call(context) ?? _buildEmptyState(context);
+    }
+
+    // Schedule scroll after build
+    if (widget.highlightedAchievementId != null && !_hasScrolledToHighlight) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _scrollToHighlightedAchievement();
+      });
     }
 
     if (config.groupByCategory) {
@@ -358,16 +429,21 @@ class AchievementsList extends StatelessWidget {
           )
         else
           ...items.map(
-            (item) => Padding(
-              padding: EdgeInsets.only(bottom: config.itemSpacing),
-              child: AchievementCard(
-                data: item,
-                style: config.cardStyle,
-                onTap: onAchievementTap != null
-                    ? () => onAchievementTap!(item)
-                    : null,
-              ),
-            ),
+            (item) {
+              final isHighlighted = item.achievement.id == widget.highlightedAchievementId;
+              return Padding(
+                key: _achievementKeys[item.achievement.id],
+                padding: EdgeInsets.only(bottom: config.itemSpacing),
+                child: AchievementCard(
+                  data: item,
+                  style: config.cardStyle,
+                  isHighlighted: isHighlighted,
+                  onTap: onAchievementTap != null
+                      ? () => onAchievementTap!(item)
+                      : null,
+                ),
+              );
+            },
           ),
         SizedBox(height: config.sectionSpacing - config.itemSpacing),
       ],
@@ -410,15 +486,20 @@ class AchievementsList extends StatelessWidget {
           ),
         ),
         ...items.map(
-          (item) => Padding(
-            padding: EdgeInsets.only(bottom: config.itemSpacing),
-            child: AchievementCard(
-              data: item,
-              style: config.cardStyle,
-              onTap:
-                  onAchievementTap != null ? () => onAchievementTap!(item) : null,
-            ),
-          ),
+          (item) {
+            final isHighlighted = item.achievement.id == widget.highlightedAchievementId;
+            return Padding(
+              key: _achievementKeys[item.achievement.id],
+              padding: EdgeInsets.only(bottom: config.itemSpacing),
+              child: AchievementCard(
+                data: item,
+                style: config.cardStyle,
+                isHighlighted: isHighlighted,
+                onTap:
+                    onAchievementTap != null ? () => onAchievementTap!(item) : null,
+              ),
+            );
+          },
         ),
       ],
     );
@@ -438,12 +519,15 @@ class AchievementsList extends StatelessWidget {
 
         final itemIndex = headerBuilder != null ? index - 1 : index;
         final item = items[itemIndex];
+        final isHighlighted = item.achievement.id == widget.highlightedAchievementId;
 
         return Padding(
+          key: _achievementKeys[item.achievement.id],
           padding: EdgeInsets.only(bottom: config.itemSpacing),
           child: AchievementCard(
             data: item,
             style: config.cardStyle,
+            isHighlighted: isHighlighted,
             onTap:
                 onAchievementTap != null ? () => onAchievementTap!(item) : null,
           ),

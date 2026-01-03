@@ -55,6 +55,7 @@ class AchievementsScreen extends StatefulWidget {
     this.onAchievementTap,
     this.appBar,
     this.showScaffold = false,
+    this.highlightedAchievementId,
   });
 
   /// The achievements data to display.
@@ -67,7 +68,11 @@ class AchievementsScreen extends StatefulWidget {
   final Future<void> Function()? onRefresh;
 
   /// Callback when an achievement is tapped.
-  final void Function(AchievementDisplayData)? onAchievementTap;
+  ///
+  /// The callback receives both the [BuildContext] for showing dialogs/bottom sheets
+  /// and the [AchievementDisplayData] containing achievement details.
+  final void Function(BuildContext context, AchievementDisplayData achievement)?
+      onAchievementTap;
 
   /// Optional custom app bar.
   final PreferredSizeWidget? appBar;
@@ -77,6 +82,12 @@ class AchievementsScreen extends StatefulWidget {
   /// Set to `false` when using inside a tab or another scaffold.
   /// Defaults to `false` for use in QuizHomeScreen tabs.
   final bool showScaffold;
+
+  /// The ID of an achievement to highlight and scroll to.
+  ///
+  /// When set, the screen will scroll to this achievement and apply
+  /// a glowing highlight effect that fades over 2 seconds.
+  final String? highlightedAchievementId;
 
   @override
   State<AchievementsScreen> createState() => _AchievementsScreenState();
@@ -112,8 +123,8 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
   void _handleAchievementTap(AchievementDisplayData data) {
     // Track the view event
     _trackAchievementDetailViewed(_analyticsService, data);
-    // Call the original callback
-    widget.onAchievementTap?.call(data);
+    // Call the original callback with context
+    widget.onAchievementTap?.call(context, data);
   }
 
   @override
@@ -185,6 +196,7 @@ class _AchievementsScreenState extends State<AchievementsScreen> {
             onAchievementTap: widget.onAchievementTap != null
                 ? _handleAchievementTap
                 : null,
+            highlightedAchievementId: widget.highlightedAchievementId,
           ),
         ),
       ],
@@ -354,7 +366,11 @@ class AchievementsScreenSliver extends StatefulWidget {
   final AchievementsScreenConfig config;
 
   /// Callback when an achievement is tapped.
-  final void Function(AchievementDisplayData)? onAchievementTap;
+  ///
+  /// The callback receives both the [BuildContext] for showing dialogs/bottom sheets
+  /// and the [AchievementDisplayData] containing achievement details.
+  final void Function(BuildContext context, AchievementDisplayData achievement)?
+      onAchievementTap;
 
   @override
   State<AchievementsScreenSliver> createState() =>
@@ -391,8 +407,8 @@ class _AchievementsScreenSliverState extends State<AchievementsScreenSliver> {
   void _handleAchievementTap(AchievementDisplayData data) {
     // Track the view event
     _trackAchievementDetailViewed(_analyticsService, data);
-    // Call the original callback
-    widget.onAchievementTap?.call(data);
+    // Call the original callback with context
+    widget.onAchievementTap?.call(context, data);
   }
 
   @override
@@ -486,6 +502,7 @@ class AchievementsContent extends StatelessWidget {
     this.onTierFilterChanged,
     this.onRefresh,
     this.onAchievementTap,
+    this.highlightedAchievementId,
   });
 
   /// The achievements data to display.
@@ -513,7 +530,14 @@ class AchievementsContent extends StatelessWidget {
   final Future<void> Function()? onRefresh;
 
   /// Callback when an achievement is tapped.
-  final void Function(AchievementDisplayData)? onAchievementTap;
+  ///
+  /// The callback receives both the [BuildContext] for showing dialogs/bottom sheets
+  /// and the [AchievementDisplayData] containing achievement details.
+  final void Function(BuildContext context, AchievementDisplayData achievement)?
+      onAchievementTap;
+
+  /// The ID of an achievement to highlight and scroll to.
+  final String? highlightedAchievementId;
 
   void _handleAchievementTap(
     BuildContext context,
@@ -524,8 +548,8 @@ class AchievementsContent extends StatelessWidget {
       context.screenAnalyticsService,
       achievementData,
     );
-    // Call the original callback
-    onAchievementTap?.call(achievementData);
+    // Call the original callback with context
+    onAchievementTap?.call(context, achievementData);
   }
 
   @override
@@ -586,6 +610,7 @@ class AchievementsContent extends StatelessWidget {
               onAchievementTap: onAchievementTap != null
                   ? (data) => _handleAchievementTap(ctx, data)
                   : null,
+              highlightedAchievementId: highlightedAchievementId,
             ),
           ),
         ),
@@ -618,7 +643,11 @@ class AchievementsScreenBuilder extends StatelessWidget {
   final AchievementsScreenConfig config;
 
   /// Callback when an achievement is tapped.
-  final void Function(AchievementDisplayData)? onAchievementTap;
+  ///
+  /// The callback receives both the [BuildContext] for showing dialogs/bottom sheets
+  /// and the [AchievementDisplayData] containing achievement details.
+  final void Function(BuildContext context, AchievementDisplayData achievement)?
+      onAchievementTap;
 
   /// Custom loading widget builder.
   final Widget Function(BuildContext)? loadingBuilder;

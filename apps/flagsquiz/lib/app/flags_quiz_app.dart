@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:quiz_engine_core/quiz_engine_core.dart';
+import 'package:share_plus/share_plus.dart' as share_plus;
 import 'package:shared_services/shared_services.dart';
 
 import '../data/flags_challenges.dart';
@@ -104,6 +105,7 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
         ),
         shareCategoryIconBuilder: _buildShareCategoryIcon,
         playTabHeaderWidgetBuilder: _buildDailyChallengeCard,
+        onAchievementTap: _showAchievementDetails,
         config: QuizAppConfig(
           title: 'Flags Quiz',
           appLocalizationDelegates: AppLocalizations.localizationsDelegates,
@@ -458,6 +460,29 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
         appName: 'Flags Quiz',
         showImageOption: shareService.canShareImage(),
       ),
+    );
+  }
+
+  // ===========================================================================
+  // Achievement Details
+  // ===========================================================================
+
+  /// Shows achievement details in a bottom sheet.
+  void _showAchievementDetails(BuildContext context, AchievementDisplayData data) {
+    AchievementDetailsBottomSheet.show(
+      context: context,
+      data: AchievementDetailsData(
+        achievement: data.achievement,
+        progress: data.progress,
+      ),
+      shareConfig: const AchievementShareConfig(
+        appName: 'Flags Quiz',
+        deepLinkScheme: 'flagsquiz',
+        hashtags: ['FlagsQuiz', 'Achievement'],
+      ),
+      onShare: (shareText) async {
+        await share_plus.Share.share(shareText);
+      },
     );
   }
 

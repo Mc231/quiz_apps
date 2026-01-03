@@ -308,7 +308,7 @@ void main() {
               showHeader: false, // Hide header to make room for list
               showFilterChips: false,
             ),
-            onAchievementTap: (achievement) => tappedAchievement = achievement,
+            onAchievementTap: (context, achievement) => tappedAchievement = achievement,
           ),
         ),
       );

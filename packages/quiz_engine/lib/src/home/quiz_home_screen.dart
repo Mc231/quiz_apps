@@ -95,7 +95,11 @@ class QuizHomeScreen extends StatefulWidget {
   final Future<AchievementsTabData> Function()? achievementsDataProvider;
 
   /// Callback when an achievement is tapped.
-  final void Function(AchievementDisplayData achievement)? onAchievementTap;
+  ///
+  /// The callback receives both the [BuildContext] for showing dialogs/bottom sheets
+  /// and the [AchievementDisplayData] containing achievement details.
+  final void Function(BuildContext context, AchievementDisplayData achievement)?
+      onAchievementTap;
 
   /// Builder for the Settings tab content.
   /// If not provided and Settings tab is in tabs, a placeholder is shown.
@@ -166,6 +170,14 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
   int _streakCount = 0;
   StreakStatus _streakStatus = StreakStatus.none;
   StreamSubscription<StreakData>? _streakSubscription;
+
+  // Achievement highlight state (for deep link navigation)
+  String? _highlightedAchievementId;
+  Timer? _highlightTimer;
+
+  // Pending highlight for when achievement data hasn't loaded yet
+  String? _pendingHighlightAchievementId;
+  Completer<AchievementDisplayData?>? _pendingHighlightCompleter;
 
   /// Gets the analytics service from context.
   AnalyticsService get _analyticsService => context.screenAnalyticsService;
@@ -289,6 +301,9 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     _streakSubscription?.cancel();
+    _highlightTimer?.cancel();
+    // Complete pending highlight to prevent hanging futures
+    _completePendingHighlight(null);
     super.dispose();
   }
 
@@ -407,7 +422,11 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
 
   Future<void> _loadAchievementsData() async {
     final provider = widget.achievementsDataProvider;
-    if (provider == null) return;
+    if (provider == null) {
+      // Complete any pending highlight with null since we can't load data
+      _completePendingHighlight(null);
+      return;
+    }
 
     setState(() {
       _achievementsData = AchievementsTabData(
@@ -422,14 +441,44 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
         setState(() {
           _achievementsData = data;
         });
+
+        // Handle any pending highlight after data loads
+        _handlePendingHighlight();
       }
     } catch (e) {
       if (mounted) {
         setState(() {
           _achievementsData = AchievementsTabData.empty();
         });
+
+        // Complete pending highlight with null on error
+        _completePendingHighlight(null);
       }
     }
+  }
+
+  /// Handles a pending highlight after achievements data has loaded.
+  void _handlePendingHighlight() {
+    final pendingId = _pendingHighlightAchievementId;
+    if (pendingId == null) return;
+
+    // Clear pending state
+    _pendingHighlightAchievementId = null;
+
+    // Execute the highlight
+    final result = _executeHighlight(pendingId);
+
+    // Complete the pending completer
+    _completePendingHighlight(result);
+  }
+
+  /// Completes the pending highlight completer with the given result.
+  void _completePendingHighlight(AchievementDisplayData? result) {
+    final completer = _pendingHighlightCompleter;
+    if (completer != null && !completer.isCompleted) {
+      completer.complete(result);
+    }
+    _pendingHighlightCompleter = null;
   }
 
   /// Handles session tap with default navigation if no callback provided.
@@ -625,6 +674,105 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
 
     // Then switch to sub-tab
     return _playScreenKey.currentState?.switchToTabById(subTabId) ?? false;
+  }
+
+  /// Highlights a specific achievement and triggers the bottom sheet after a delay.
+  ///
+  /// Use this for deep link navigation to a specific achievement.
+  /// This will:
+  /// 1. Set the highlighted achievement ID (causing scroll and highlight)
+  /// 2. After 500ms delay, call the onAchievementTap callback to show details
+  ///
+  /// If achievements data hasn't loaded yet, this will wait for the data to load
+  /// before highlighting. The returned Future completes when:
+  /// - The achievement is found and highlighted, or
+  /// - The data loads but the achievement isn't found (returns null), or
+  /// - A timeout occurs (10 seconds, returns null)
+  ///
+  /// Returns the achievement data if found, null otherwise.
+  Future<AchievementDisplayData?> highlightAchievement(String achievementId) async {
+    // Cancel any existing timer and pending highlight
+    _highlightTimer?.cancel();
+    _pendingHighlightCompleter?.complete(null);
+    _pendingHighlightCompleter = null;
+    _pendingHighlightAchievementId = null;
+
+    // Check if achievements data is loaded
+    final hasData = _achievementsData.screenData.achievements.isNotEmpty;
+
+    if (!hasData) {
+      // Data not loaded yet - store pending highlight and wait
+      _pendingHighlightAchievementId = achievementId;
+      _pendingHighlightCompleter = Completer<AchievementDisplayData?>();
+
+      // Trigger data load if not already loading
+      if (!_achievementsData.isLoading) {
+        _loadAchievementsData();
+      }
+
+      // Wait for completion with timeout
+      try {
+        return await _pendingHighlightCompleter!.future.timeout(
+          const Duration(seconds: 10),
+          onTimeout: () {
+            _pendingHighlightAchievementId = null;
+            _pendingHighlightCompleter = null;
+            return null;
+          },
+        );
+      } catch (e) {
+        return null;
+      }
+    }
+
+    // Data is loaded - find and highlight the achievement
+    return _executeHighlight(achievementId);
+  }
+
+  /// Internal method to execute the highlight after data is available.
+  AchievementDisplayData? _executeHighlight(String achievementId) {
+    // Find the achievement
+    AchievementDisplayData? foundAchievement;
+    for (final achievement in _achievementsData.screenData.achievements) {
+      if (achievement.achievement.id == achievementId) {
+        foundAchievement = achievement;
+        break;
+      }
+    }
+
+    if (foundAchievement == null) {
+      return null;
+    }
+
+    // Set the highlighted achievement ID
+    setState(() {
+      _highlightedAchievementId = achievementId;
+    });
+
+    // After 500ms delay, trigger the achievement tap callback
+    final achievement = foundAchievement;
+    _highlightTimer = Timer(const Duration(milliseconds: 500), () {
+      if (mounted && widget.onAchievementTap != null) {
+        widget.onAchievementTap!(context, achievement);
+      }
+
+      // Clear the highlight after the bottom sheet would have appeared
+      // The card's own animation handles the fade-out
+      if (mounted) {
+        // We don't clear it here - let the card animation handle it
+        // The card will fade out on its own after 2.5 seconds total
+      }
+    });
+
+    return foundAchievement;
+  }
+
+  /// Clears the highlighted achievement.
+  void clearHighlightedAchievement() {
+    _highlightTimer?.cancel();
+    setState(() {
+      _highlightedAchievementId = null;
+    });
   }
 
   /// The current tab index.
@@ -880,6 +1028,7 @@ class QuizHomeScreenState extends State<QuizHomeScreen>
       onRefresh: widget.achievementsDataProvider != null
           ? _loadAchievementsData
           : null,
+      highlightedAchievementId: _highlightedAchievementId,
     );
   }
 
@@ -1028,7 +1177,11 @@ class HomeTabContent extends StatelessWidget {
   final VoidCallback? onViewAllSessions;
 
   /// Callback when an achievement is tapped.
-  final void Function(AchievementDisplayData achievement)? onAchievementTap;
+  ///
+  /// The callback receives both the [BuildContext] for showing dialogs/bottom sheets
+  /// and the [AchievementDisplayData] containing achievement details.
+  final void Function(BuildContext context, AchievementDisplayData achievement)?
+      onAchievementTap;
 
   /// Callback to refresh history.
   final Future<void> Function()? onRefreshHistory;
