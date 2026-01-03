@@ -403,7 +403,7 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
             bestStreak: stats.longestStreak,
             categoryName: categoryName,
           ),
-          onDone: () => Navigator.of(ctx).pop(),
+          onDone: () => Navigator.of(ctx).popUntil((route) => route.isFirst),
           onShareResult: () => _shareDailyChallengeResult(
             ctx,
             result,
