@@ -271,8 +271,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         );
       }
 
-      if (widget.config.showPrivacyPolicy &&
-          widget.config.privacyPolicyUrl != null) {
+      if (widget.config.privacyPolicyUrl != null) {
         widgets.add(
           ListTile(
             title: Text(l10n.privacyPolicy),
@@ -282,8 +281,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         );
       }
 
-      if (widget.config.showTermsOfService &&
-          widget.config.termsOfServiceUrl != null) {
+      if (widget.config.termsOfServiceUrl != null) {
         widgets.add(
           ListTile(
             title: Text(l10n.termsOfService),
@@ -335,10 +333,8 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
     return (widget.config.showVersionInfo && _packageInfo != null) ||
         widget.config.showAboutDialog ||
         widget.config.showLicenses ||
-        (widget.config.showPrivacyPolicy &&
-            widget.config.privacyPolicyUrl != null) ||
-        (widget.config.showTermsOfService &&
-            widget.config.termsOfServiceUrl != null);
+        widget.config.privacyPolicyUrl != null ||
+        widget.config.termsOfServiceUrl != null;
   }
 
   bool _hasAdvancedItems() {
@@ -779,7 +775,7 @@ class SettingsContent extends StatelessWidget {
         );
       }
 
-      if (config.showPrivacyPolicy && config.privacyPolicyUrl != null) {
+      if (config.privacyPolicyUrl != null) {
         widgets.add(
           ListTile(
             title: Text(l10n.privacyPolicy),
@@ -789,7 +785,7 @@ class SettingsContent extends StatelessWidget {
         );
       }
 
-      if (config.showTermsOfService && config.termsOfServiceUrl != null) {
+      if (config.termsOfServiceUrl != null) {
         widgets.add(
           ListTile(
             title: Text(l10n.termsOfService),
@@ -841,8 +837,8 @@ class SettingsContent extends StatelessWidget {
     return (config.showVersionInfo && packageInfo != null) ||
         config.showAboutDialog ||
         config.showLicenses ||
-        (config.showPrivacyPolicy && config.privacyPolicyUrl != null) ||
-        (config.showTermsOfService && config.termsOfServiceUrl != null);
+        config.privacyPolicyUrl != null ||
+        config.termsOfServiceUrl != null;
   }
 
   bool _hasAdvancedItems() {
