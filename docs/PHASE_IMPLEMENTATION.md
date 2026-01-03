@@ -5253,25 +5253,57 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 17.4: Cloud Save Sync
+#### Sprint 17.4: Cloud Save Sync ✅
 
 **Goal:** Enable progress sync across devices using cloud saves.
 
+**Design Decisions:**
+- **Automatic sync:** On app launch + after quiz completion
+- **Auto-merge:** Silent conflict resolution (no user dialog)
+- **Offline handling:** Queue changes with `pendingSync` flag, sync when online
+- **Minimal data:** Only sync achievements, scores, stats (NOT full session history or settings)
+
 **Tasks:**
-- [ ] Create `CloudSaveService` interface:
-  - `saveGameData(data)` - Save to cloud
-  - `loadGameData()` - Load from cloud
-  - `resolveConflict(local, remote)` - Handle conflicts
-- [ ] Create save data model including:
-  - Achievement progress
-  - Streak data
-  - High scores per category
-  - Settings preferences
-- [ ] Implement for Game Center (iCloud) and Play Games
-- [ ] Handle merge conflicts (take highest scores, union of achievements)
-- [ ] Add "Sync Now" button in settings
-- [ ] Create sync status indicator
-- [ ] Write unit tests
+- [x] Create `CloudSaveData` model:
+  - `unlockedAchievementIds` - Set of unlocked achievement IDs
+  - `highScores` - Map of categoryId → best score
+  - `perfectCounts` - Map of categoryId → perfect quiz count
+  - `totalQuizzesCompleted` - Total quizzes completed
+  - `longestStreak` - Longest streak record (NOT current streak)
+  - `version` - Schema version for future migrations
+  - `lastModified` - Timestamp for conflict resolution
+- [x] Create `SyncStatus` enum: `synced`, `syncing`, `pendingSync`, `offline`, `error`
+- [x] Create `CloudSaveService` interface:
+  - `saveGameData(CloudSaveData)` → `SaveResult`
+  - `loadGameData()` → `LoadResult`
+  - `getSyncStatus()` → `SyncStatus`
+  - `getLastSyncTime()` → `DateTime?`
+- [x] Create `CloudSaveConflictResolver`:
+  - Union achievements (never lose unlocked)
+  - Take highest scores per category
+  - Take max longest streak
+  - Take highest total quizzes completed
+- [x] Implement `GameCenterCloudSaveService` (iOS using iCloud key-value storage)
+- [x] Implement `PlayGamesCloudSaveService` (Android with local storage, ready for Snapshots API)
+- [x] Create `NoOpCloudSaveService` (web/unsupported platforms)
+- [x] Write unit tests for all services and conflict resolution
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/game/cloud_save_data.dart`
+- ✅ `packages/shared_services/lib/src/game/sync_status.dart`
+- ✅ `packages/shared_services/lib/src/game/cloud_save_service.dart`
+- ✅ `packages/shared_services/lib/src/game/cloud_save_conflict_resolver.dart`
+- ✅ `packages/shared_services/lib/src/game/game_center_cloud_save_service.dart`
+- ✅ `packages/shared_services/lib/src/game/play_games_cloud_save_service.dart`
+- ✅ `packages/shared_services/lib/src/game/noop_cloud_save_service.dart`
+- ✅ `packages/shared_services/test/game/cloud_save_data_test.dart`
+- ✅ `packages/shared_services/test/game/sync_status_test.dart`
+- ✅ `packages/shared_services/test/game/cloud_save_conflict_resolver_test.dart`
+- ✅ `packages/shared_services/test/game/cloud_save_service_test.dart`
+
+**Files Updated:**
+- ✅ `packages/shared_services/lib/src/game/game_exports.dart`
+- ✅ `packages/shared_services/pubspec.yaml` (added icloud_kv_storage, connectivity_plus, equatable)
 
 ---
 
