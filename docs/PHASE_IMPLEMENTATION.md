@@ -5307,7 +5307,7 @@ The following phases are planned for future implementation but are currently on 
 
 ---
 
-#### Sprint 17.5: UI Integration
+#### Sprint 17.5: UI Integration ✅
 
 **Goal:** Build and integrate UI widgets for game services into the app.
 
@@ -5318,7 +5318,7 @@ The following phases are planned for future implementation but are currently on 
 **Tasks:**
 
 **Configuration (shared_services):**
-- [ ] Create `GameServiceConfig` class:
+- [x] Create `GameServiceConfig` class:
   - `isEnabled` - Whether game services are enabled
   - `cloudSyncEnabled` - Whether cloud sync is enabled
   - `syncOnLaunch` - Auto-sync when app launches
@@ -5327,37 +5327,40 @@ The following phases are planned for future implementation but are currently on 
   - `leaderboards` - List of `LeaderboardConfig`
   - `achievementIdMap` - Maps internal achievement IDs to platform IDs
   - Factory constructors: `disabled()`, `test()`
-- [ ] Create `LeaderboardConfig` model:
+- [x] Create `LeaderboardConfig` model:
   - `id` - Internal ID (e.g., 'global', 'europe')
   - `gameCenterId` - iOS Game Center leaderboard ID
   - `playGamesId` - Android Play Games leaderboard ID
   - `scoreType` - `LeaderboardScoreType` enum (highScore, lowestTime, cumulative)
-- [ ] Create `LeaderboardScoreType` enum
-- [ ] Export from `game_exports.dart`
+- [x] Create `LeaderboardScoreType` enum
+- [x] Export from `game_exports.dart`
 
 **UI Widgets (quiz_engine):**
-- [ ] Create `GameServiceAccountTile` widget:
+- [x] Create `GameServiceAccountTile` widget:
   - Player avatar and display name
   - "Connected to Game Center/Play Games" subtitle
   - Sign in/Sign out functionality
-- [ ] Create `CloudSyncTile` widget:
+- [x] Create `CloudSyncTile` widget:
   - Last synced timestamp
   - "Sync Now" button with loading state
   - Sync status indicator (syncing/synced/offline)
-- [ ] Add "Account" section to `QuizSettingsScreen`:
+- [x] Add "Account" section to `QuizSettingsScreen`:
   - Integrate `GameServiceAccountTile`
   - Integrate `CloudSyncTile`
   - Add "View Achievements" tile (opens native UI)
   - Add "View Leaderboards" tile (opens native UI)
-- [ ] Create `GlobalLeaderboardTab` widget:
+- [x] Create `GlobalLeaderboardTab` widget:
   - Fetch and display global scores from Game Center/Play Games
   - Highlight current player's rank
   - "Open in Game Center" button
-- [ ] Add Local/Global tab switcher to leaderboard screen
-- [ ] Create `SyncStatusIndicator` widget:
+- [x] Add Local/Global tab switcher to leaderboard screen
+- [x] Create `SyncStatusIndicator` widget:
   - Compact icon for app bar or home screen
   - States: syncing, synced, offline, error
-- [ ] Add localization strings for all new UI
+- [x] Add localization strings for all new UI
+
+**Analytics:**
+- [x] Add `ButtonTappedEvent` to `InteractionEvent` for generic button tracking
 
 **App Integration (flagsquiz):**
 - [ ] Create `FlagsGameServiceConfig`:
@@ -5367,9 +5370,31 @@ The following phases are planned for future implementation but are currently on 
 - [ ] Wire up game services to settings screen
 
 **Testing:**
-- [ ] Write unit tests for `GameServiceConfig`
-- [ ] Write unit tests for `LeaderboardConfig`
+- [x] Write unit tests for `GameServiceConfig`
+- [x] Write unit tests for `LeaderboardConfig`
 - [ ] Write widget tests for all new UI widgets
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/game/game_service_config.dart`
+- ✅ `packages/shared_services/lib/src/game/leaderboard_config.dart`
+- ✅ `packages/shared_services/lib/src/game/leaderboard_score_type.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/game_service_account_tile.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/cloud_sync_tile.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/sync_status_indicator.dart`
+- ✅ `packages/quiz_engine/lib/src/widgets/global_leaderboard_tab.dart`
+- ✅ `packages/shared_services/test/game/game_service_config_test.dart`
+
+**Files Updated:**
+- ✅ `packages/shared_services/lib/src/game/game_exports.dart`
+- ✅ `packages/shared_services/lib/src/analytics/events/interaction_event.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_config.dart`
+- ✅ `packages/quiz_engine/lib/src/settings/quiz_settings_screen.dart`
+- ✅ `packages/quiz_engine/lib/quiz_engine.dart`
+- ✅ `packages/quiz_engine/lib/src/l10n/arb/quiz_engine_en.arb`
+
+**Pending Integration (for Sprint 17.6):**
+- [ ] Create `FlagsGameServiceConfig` with actual platform IDs
+- [ ] Integrate game services with FlagsQuiz app
 
 </details>
 
