@@ -5141,8 +5141,9 @@ The following phases are planned for future implementation but are currently on 
 | 17.2 | iOS Game Center Integration | Medium |
 | 17.3 | Android Play Games Integration | Medium |
 | 17.4 | Cloud Save Sync | Large |
+| 17.5 | UI Integration | Medium |
 
-**Total: 4 sprints**
+**Total: 5 sprints**
 
 <details>
 <summary>Sprint Details (click to expand)</summary>
@@ -5231,7 +5232,163 @@ The following phases are planned for future implementation but are currently on 
 - [ ] Create sync status indicator
 - [ ] Write unit tests
 
+---
+
+#### Sprint 17.5: UI Integration
+
+**Goal:** Build and integrate UI widgets for game services into the app.
+
+**Tasks:**
+- [ ] Create `GameServiceAccountTile` widget:
+  - Player avatar and display name
+  - "Connected to Game Center/Play Games" subtitle
+  - Sign in/Sign out functionality
+- [ ] Create `CloudSyncTile` widget:
+  - Last synced timestamp
+  - "Sync Now" button with loading state
+  - Sync status indicator (syncing/synced/offline)
+- [ ] Add "Account" section to `QuizSettingsScreen`:
+  - Integrate `GameServiceAccountTile`
+  - Integrate `CloudSyncTile`
+  - Add "View Achievements" tile (opens native UI)
+  - Add "View Leaderboards" tile (opens native UI)
+- [ ] Create `GlobalLeaderboardTab` widget:
+  - Fetch and display global scores from Game Center/Play Games
+  - Highlight current player's rank
+  - "Open in Game Center" button
+- [ ] Add Local/Global tab switcher to leaderboard screen
+- [ ] Create `SyncConflictDialog`:
+  - Show local vs cloud data comparison
+  - "Merge (Recommended)" option
+  - "Use Local" / "Use Cloud" options
+- [ ] Create `SyncStatusIndicator` widget:
+  - Compact icon for app bar or home screen
+  - States: syncing, synced, offline, error
+- [ ] Add localization strings for all new UI
+- [ ] Write widget tests
+
 </details>
+
+### UI Specifications
+
+#### 1. Settings Screen - New "Account" Section
+
+**Signed In State:**
+```
+┌─────────────────────────────────────────────────┐
+│  ACCOUNT                                        │
+├─────────────────────────────────────────────────┤
+│  ┌──────┐                                       │
+│  │ 👤   │  John Doe                       >    │
+│  │avatar│  Connected to Game Center             │
+│  └──────┘                                       │
+├─────────────────────────────────────────────────┤
+│  ☁️  Cloud Sync                                 │
+│     Last synced: 2 minutes ago            ⟳    │
+├─────────────────────────────────────────────────┤
+│  🏆  View Achievements                    >    │
+│     Open Game Center achievements               │
+├─────────────────────────────────────────────────┤
+│  📊  View Leaderboards                    >    │
+│     Open Game Center leaderboards               │
+├─────────────────────────────────────────────────┤
+│  🚪  Sign Out                                   │
+└─────────────────────────────────────────────────┘
+```
+
+**Not Signed In State:**
+```
+┌─────────────────────────────────────────────────┐
+│  ACCOUNT                                        │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│     ┌─────────────────────────────────┐         │
+│     │  🎮  Sign in with Game Center   │         │
+│     └─────────────────────────────────┘         │
+│                                                 │
+│  Sign in to sync progress across devices,       │
+│  compete on leaderboards, and earn              │
+│  achievements.                                  │
+│                                                 │
+└─────────────────────────────────────────────────┘
+```
+
+#### 2. Leaderboard Screen - Global Tab
+
+```
+┌─────────────────────────────────────────────────┐
+│  ←  Leaderboards                                │
+├─────────────────────────────────────────────────┤
+│  ┌──────────┐  ┌──────────┐                     │
+│  │  Local   │  │  Global  │ ← New tab           │
+│  └──────────┘  └──────────┘                     │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│   🥇  1. WorldChamp92        98%               │
+│   🥈  2. QuizMaster          95%               │
+│   🥉  3. FlagKing            94%               │
+│       4. You ★               92%  ← highlighted │
+│       5. GeoWhiz             91%               │
+│       ...                                       │
+│                                                 │
+├─────────────────────────────────────────────────┤
+│  ┌─────────────────────────────────────────┐    │
+│  │  🏆  Open Game Center Leaderboard       │    │
+│  └─────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────┘
+```
+
+#### 3. Sync Conflict Dialog
+
+```
+┌─────────────────────────────────────────────────┐
+│           Sync Conflict Detected                │
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  Your local and cloud data are different.       │
+│  How would you like to resolve this?            │
+│                                                 │
+│  Local Data          Cloud Data                 │
+│  ────────────        ──────────                 │
+│  Score: 15,420       Score: 12,800              │
+│  Achievements: 45    Achievements: 52           │
+│  Streak: 7 days      Streak: 3 days             │
+│                                                 │
+│  ┌───────────────────────────────────────┐      │
+│  │  🔀  Merge (Recommended)              │      │
+│  │     Keep highest scores & all         │      │
+│  │     achievements                      │      │
+│  └───────────────────────────────────────┘      │
+│                                                 │
+│  ┌─────────────┐    ┌─────────────────┐         │
+│  │ Use Local   │    │   Use Cloud     │         │
+│  └─────────────┘    └─────────────────┘         │
+│                                                 │
+└─────────────────────────────────────────────────┘
+```
+
+#### 4. Sync Status Indicators
+
+```
+Syncing...        Synced ✓        Offline ⚠
+┌──────┐          ┌──────┐        ┌──────┐
+│  ⟳  │          │  ☁️  │        │  ⚠️  │
+└──────┘          └──────┘        └──────┘
+```
+
+#### UI Widgets to Create
+
+| Widget | Location | Purpose |
+|--------|----------|---------|
+| `GameServiceAccountTile` | `quiz_engine/settings/` | Player profile card with avatar, name, sign in/out |
+| `CloudSyncTile` | `quiz_engine/settings/` | Sync status + "Sync Now" button |
+| `GlobalLeaderboardTab` | `quiz_engine/widgets/` | Tab content for online leaderboards |
+| `SyncConflictDialog` | `quiz_engine/dialogs/` | Conflict resolution modal |
+| `SyncStatusIndicator` | `quiz_engine/widgets/` | Small icon showing sync state |
+
+#### Native UI Integration
+
+For leaderboards and achievements, the primary experience opens **native Game Center / Play Games UI** via platform APIs. In-app widgets serve as entry points and show quick summaries.
 
 ---
 
