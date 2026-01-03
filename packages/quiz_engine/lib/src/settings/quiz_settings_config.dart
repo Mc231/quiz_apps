@@ -24,9 +24,6 @@ class QuizSettingsConfig {
   /// Whether to show the About section.
   final bool showAboutSection;
 
-  /// Whether to show the version info.
-  final bool showVersionInfo;
-
   /// Whether to show the about dialog item.
   final bool showAboutDialog;
 
@@ -104,7 +101,6 @@ class QuizSettingsConfig {
     this.showAppearanceSection = true,
     this.showThemeSelector = true,
     this.showAboutSection = true,
-    this.showVersionInfo = false,
     this.showAboutDialog = true,
     this.showLicenses = true,
     this.privacyPolicyUrl,
@@ -130,7 +126,6 @@ class QuizSettingsConfig {
         showAppearanceSection = true,
         showThemeSelector = true,
         showAboutSection = false,
-        showVersionInfo = false,
         showAboutDialog = false,
         showLicenses = false,
         privacyPolicyUrl = null,
@@ -155,7 +150,6 @@ class QuizSettingsConfig {
     bool? showAppearanceSection,
     bool? showThemeSelector,
     bool? showAboutSection,
-    bool? showVersionInfo,
     bool? showAboutDialog,
     bool? showLicenses,
     String? privacyPolicyUrl,
@@ -181,7 +175,6 @@ class QuizSettingsConfig {
           showAppearanceSection ?? this.showAppearanceSection,
       showThemeSelector: showThemeSelector ?? this.showThemeSelector,
       showAboutSection: showAboutSection ?? this.showAboutSection,
-      showVersionInfo: showVersionInfo ?? this.showVersionInfo,
       showAboutDialog: showAboutDialog ?? this.showAboutDialog,
       showLicenses: showLicenses ?? this.showLicenses,
       privacyPolicyUrl: privacyPolicyUrl ?? this.privacyPolicyUrl,

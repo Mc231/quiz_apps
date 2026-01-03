@@ -240,17 +240,6 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
     if (widget.config.showAboutSection && _hasAboutItems()) {
       widgets.add(_buildSectionHeader(l10n.about));
 
-      if (widget.config.showVersionInfo && _packageInfo != null) {
-        widgets.add(
-          ListTile(
-            title: Text(l10n.version),
-            subtitle: Text(
-              '${_packageInfo!.version} (${_packageInfo!.buildNumber})',
-            ),
-          ),
-        );
-      }
-
       if (widget.config.showAboutDialog) {
         widgets.add(
           ListTile(
@@ -330,8 +319,7 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   }
 
   bool _hasAboutItems() {
-    return (widget.config.showVersionInfo && _packageInfo != null) ||
-        widget.config.showAboutDialog ||
+    return widget.config.showAboutDialog ||
         widget.config.showLicenses ||
         widget.config.privacyPolicyUrl != null ||
         widget.config.termsOfServiceUrl != null;
@@ -744,17 +732,6 @@ class SettingsContent extends StatelessWidget {
     if (config.showAboutSection && _hasAboutItems()) {
       widgets.add(_buildSectionHeader(context, l10n.about));
 
-      if (config.showVersionInfo && packageInfo != null) {
-        widgets.add(
-          ListTile(
-            title: Text(l10n.version),
-            subtitle: Text(
-              '${packageInfo!.version} (${packageInfo!.buildNumber})',
-            ),
-          ),
-        );
-      }
-
       if (config.showAboutDialog) {
         widgets.add(
           ListTile(
@@ -834,8 +811,7 @@ class SettingsContent extends StatelessWidget {
   }
 
   bool _hasAboutItems() {
-    return (config.showVersionInfo && packageInfo != null) ||
-        config.showAboutDialog ||
+    return config.showAboutDialog ||
         config.showLicenses ||
         config.privacyPolicyUrl != null ||
         config.termsOfServiceUrl != null;
