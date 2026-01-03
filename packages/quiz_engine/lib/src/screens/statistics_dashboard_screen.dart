@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_services/shared_services.dart';
 
 import '../l10n/quiz_localizations.dart';
 import '../services/quiz_services_context.dart';
+import '../streak/streak_card.dart';
 import '../widgets/category_statistics_widget.dart';
 import '../widgets/empty_state_widget.dart';
 import '../widgets/leaderboard_widget.dart';
@@ -65,6 +68,10 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
   ProgressTimeRange _progressTimeRange = ProgressTimeRange.week;
   LeaderboardType _leaderboardType = LeaderboardType.bestScores;
 
+  // Streak state
+  StreakCardData? _streakCardData;
+  StreamSubscription<StreakData>? _streakSubscription;
+
   /// Gets the analytics service from context.
   AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
@@ -80,6 +87,7 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
     // Log screen view after first frame when context is available
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _logScreenView();
+      _loadStreakData();
     });
   }
 
@@ -109,7 +117,65 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
   void dispose() {
     _tabController.removeListener(_handleTabChange);
     _tabController.dispose();
+    _streakSubscription?.cancel();
     super.dispose();
+  }
+
+  Future<void> _loadStreakData() async {
+    final streakService = context.streakService;
+    if (streakService == null) return;
+
+    try {
+      final status = await streakService.getStreakStatus();
+      final nextMilestone = await streakService.getNextMilestone();
+      final progress = await streakService.getMilestoneProgress();
+      final data = await streakService.watchStreakData().first;
+
+      if (mounted) {
+        setState(() {
+          _streakCardData = StreakCardData.fromStreakData(
+            data: data,
+            status: status,
+            nextMilestone: nextMilestone,
+            milestoneProgress: progress,
+          );
+        });
+      }
+
+      // Subscribe to streak updates
+      _streakSubscription ??= streakService.watchStreakData().listen(
+        (data) => _onStreakDataChanged(data, streakService),
+        onError: (_) {},
+      );
+    } catch (_) {
+      // Silently ignore streak loading errors
+    }
+  }
+
+  Future<void> _onStreakDataChanged(
+    StreakData data,
+    StreakService streakService,
+  ) async {
+    if (!mounted) return;
+
+    try {
+      final status = await streakService.getStreakStatus();
+      final nextMilestone = await streakService.getNextMilestone();
+      final progress = await streakService.getMilestoneProgress();
+
+      if (mounted) {
+        setState(() {
+          _streakCardData = StreakCardData.fromStreakData(
+            data: data,
+            status: status,
+            nextMilestone: nextMilestone,
+            milestoneProgress: progress,
+          );
+        });
+      }
+    } catch (_) {
+      // Silently ignore errors
+    }
   }
 
   @override
@@ -194,6 +260,18 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
         // Insights
         _buildSectionHeader(context, l10n.insights),
         _buildInsightsGrid(context, l10n),
+
+        // Streak card
+        if (_streakCardData != null) ...[
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: StreakCard(
+              data: _streakCardData!,
+              style: const StreakCardStyle(showStats: true),
+            ),
+          ),
+        ],
 
         // Recent sessions
         if (widget.data.recentSessions.isNotEmpty) ...[
@@ -470,13 +548,6 @@ class _StatisticsDashboardScreenState extends State<StatisticsDashboardScreen>
           icon: Icons.star,
           iconColor: Colors.amber,
         ),
-        StatisticsCard(
-          title: l10n.currentStreak,
-          value: '${stats.currentStreak}',
-          subtitle: '${l10n.bestStreak}: ${stats.bestStreak}',
-          icon: Icons.local_fire_department,
-          iconColor: Colors.deepOrange,
-        ),
       ],
     );
   }
@@ -725,6 +796,10 @@ class _StatisticsDashboardContentState extends State<StatisticsDashboardContent>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  // Streak state
+  StreakCardData? _streakCardData;
+  StreamSubscription<StreakData>? _streakSubscription;
+
   /// Gets the analytics service from context.
   AnalyticsService get _analyticsService => context.screenAnalyticsService;
 
@@ -737,6 +812,9 @@ class _StatisticsDashboardContentState extends State<StatisticsDashboardContent>
       initialIndex: widget.selectedTab.index,
     );
     _tabController.addListener(_handleTabControllerChange);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadStreakData();
+    });
   }
 
   @override
@@ -753,7 +831,65 @@ class _StatisticsDashboardContentState extends State<StatisticsDashboardContent>
   void dispose() {
     _tabController.removeListener(_handleTabControllerChange);
     _tabController.dispose();
+    _streakSubscription?.cancel();
     super.dispose();
+  }
+
+  Future<void> _loadStreakData() async {
+    final streakService = context.streakService;
+    if (streakService == null) return;
+
+    try {
+      final status = await streakService.getStreakStatus();
+      final nextMilestone = await streakService.getNextMilestone();
+      final progress = await streakService.getMilestoneProgress();
+      final data = await streakService.watchStreakData().first;
+
+      if (mounted) {
+        setState(() {
+          _streakCardData = StreakCardData.fromStreakData(
+            data: data,
+            status: status,
+            nextMilestone: nextMilestone,
+            milestoneProgress: progress,
+          );
+        });
+      }
+
+      // Subscribe to streak updates
+      _streakSubscription ??= streakService.watchStreakData().listen(
+        (data) => _onStreakDataChanged(data, streakService),
+        onError: (_) {},
+      );
+    } catch (_) {
+      // Silently ignore streak loading errors
+    }
+  }
+
+  Future<void> _onStreakDataChanged(
+    StreakData data,
+    StreakService streakService,
+  ) async {
+    if (!mounted) return;
+
+    try {
+      final status = await streakService.getStreakStatus();
+      final nextMilestone = await streakService.getNextMilestone();
+      final progress = await streakService.getMilestoneProgress();
+
+      if (mounted) {
+        setState(() {
+          _streakCardData = StreakCardData.fromStreakData(
+            data: data,
+            status: status,
+            nextMilestone: nextMilestone,
+            milestoneProgress: progress,
+          );
+        });
+      }
+    } catch (_) {
+      // Silently ignore errors
+    }
   }
 
   void _handleTabControllerChange() {
@@ -845,6 +981,18 @@ class _StatisticsDashboardContentState extends State<StatisticsDashboardContent>
         // Insights
         _buildSectionHeader(context, l10n.insights),
         _buildInsightsGrid(context, l10n),
+
+        // Streak card
+        if (_streakCardData != null) ...[
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: StreakCard(
+              data: _streakCardData!,
+              style: const StreakCardStyle(showStats: true),
+            ),
+          ),
+        ],
 
         // Recent sessions
         if (widget.data.recentSessions.isNotEmpty) ...[
@@ -1112,13 +1260,6 @@ class _StatisticsDashboardContentState extends State<StatisticsDashboardContent>
           value: stats.perfectScores.toString(),
           icon: Icons.star,
           iconColor: Colors.amber,
-        ),
-        StatisticsCard(
-          title: l10n.currentStreak,
-          value: '${stats.currentStreak}',
-          subtitle: '${l10n.bestStreak}: ${stats.bestStreak}',
-          icon: Icons.local_fire_department,
-          iconColor: Colors.deepOrange,
         ),
       ],
     );

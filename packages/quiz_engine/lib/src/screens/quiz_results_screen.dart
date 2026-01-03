@@ -11,6 +11,7 @@ import '../services/quiz_services_context.dart';
 import '../share/share_bottom_sheet.dart';
 import '../utils/layout_mode_labels.dart';
 import '../streak/streak_badge.dart';
+import '../streak/streak_card.dart';
 import '../widgets/banner_ad_widget.dart';
 import '../widgets/question_review_widget.dart';
 import '../widgets/score_breakdown.dart';
@@ -91,6 +92,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
   StreakStatus _streakStatus = StreakStatus.none;
   bool _streakLoaded = false;
   StreamSubscription<StreakData>? _streakSubscription;
+  StreakCardData? _streakCardData;
 
   @override
   Widget build(BuildContext context) {
@@ -118,17 +120,27 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
     try {
       final streak = await streakService.getCurrentStreak();
       final status = await streakService.getStreakStatus();
+      final nextMilestone = await streakService.getNextMilestone();
+      final progress = await streakService.getMilestoneProgress();
+      final data = await streakService.watchStreakData().first;
+
       if (mounted) {
         setState(() {
           _streakCount = streak;
           _streakStatus = status;
           _streakLoaded = true;
+          _streakCardData = StreakCardData.fromStreakData(
+            data: data,
+            status: status,
+            nextMilestone: nextMilestone,
+            milestoneProgress: progress,
+          );
         });
       }
 
       // Subscribe to streak updates for real-time refresh
       _streakSubscription ??= streakService.watchStreakData().listen(
-        _onStreakDataChanged,
+        (data) => _onStreakDataChanged(data, streakService),
         onError: (_) {}, // Silently ignore errors
       );
     } catch (e) {
@@ -137,21 +149,33 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
   }
 
   /// Handles streak data changes from the stream.
-  void _onStreakDataChanged(StreakData data) {
+  Future<void> _onStreakDataChanged(
+    StreakData data,
+    StreakService streakService,
+  ) async {
     if (!mounted) return;
 
-    final streakService = context.streakService;
-    if (streakService == null) return;
+    try {
+      final status = await streakService.getStreakStatus();
+      final nextMilestone = await streakService.getNextMilestone();
+      final progress = await streakService.getMilestoneProgress();
 
-    streakService.getStreakStatus().then((status) {
       if (mounted) {
         setState(() {
           _streakCount = data.currentStreak;
           _streakStatus = status;
           _streakLoaded = true;
+          _streakCardData = StreakCardData.fromStreakData(
+            data: data,
+            status: status,
+            nextMilestone: nextMilestone,
+            milestoneProgress: progress,
+          );
         });
       }
-    });
+    } catch (_) {
+      // Silently ignore errors
+    }
   }
 
   void _logScreenView() {
@@ -277,6 +301,14 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> {
                     ] else
                       const SizedBox(height: 8),
                     _buildStatisticsGrid(context, l10n),
+                    // Show streak card when streak is active
+                    if (_streakCardData != null && _streakCount > 0) ...[
+                      const SizedBox(height: 24),
+                      StreakCard(
+                        data: _streakCardData!,
+                        style: StreakCardStyle.compactStyle,
+                      ),
+                    ],
                     const Spacer(flex: 2),
                     _buildActionButtons(context, l10n),
                     const SizedBox(height: 16),

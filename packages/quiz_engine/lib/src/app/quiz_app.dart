@@ -35,6 +35,7 @@ import '../widgets/restore_resource_dialog.dart';
 import '../widgets/session_card.dart';
 import '../rate_app/rate_app_config_provider.dart';
 import '../share/share_bottom_sheet.dart';
+import '../streak/streak_milestone_celebration.dart';
 import 'play_tab_type.dart';
 import 'quiz_navigation.dart';
 import 'quiz_navigation_result.dart';
@@ -1086,8 +1087,19 @@ class _QuizAppState extends State<QuizApp> {
       }
     }
 
-    // Record activity for streak tracking
-    await _streakService?.recordActivity();
+    // Record activity for streak tracking and check for milestone
+    final streakResult = await _streakService?.recordActivity();
+    if (streakResult?.milestoneReached != null && mounted) {
+      // Show milestone celebration after a brief delay to let the results screen load
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) {
+          StreakMilestoneCelebration.show(
+            context: context,
+            milestone: streakResult!.milestoneReached!,
+          );
+        }
+      });
+    }
   }
 
   /// Handles practice session completion.
