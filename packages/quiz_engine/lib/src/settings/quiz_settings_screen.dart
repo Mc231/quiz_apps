@@ -141,28 +141,6 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         );
       }
 
-      if (widget.config.showBackgroundMusic) {
-        widgets.add(
-          SwitchListTile(
-            title: Text(l10n.backgroundMusic),
-            subtitle: Text(l10n.backgroundMusicDescription),
-            value: _currentSettings.musicEnabled,
-            onChanged: (value) async {
-              final oldValue = _currentSettings.musicEnabled;
-              await _settingsService.toggleMusic();
-              _analyticsService.logEvent(
-                SettingsEvent.changed(
-                  settingName: 'background_music',
-                  oldValue: oldValue.toString(),
-                  newValue: value.toString(),
-                  settingCategory: 'audio',
-                ),
-              );
-            },
-          ),
-        );
-      }
-
       if (widget.config.showHapticFeedback) {
         widgets.add(
           SwitchListTile(
@@ -323,7 +301,6 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
 
   bool _hasAudioHapticsItems() {
     return widget.config.showSoundEffects ||
-        widget.config.showBackgroundMusic ||
         widget.config.showHapticFeedback;
   }
 
@@ -542,7 +519,6 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
 ///     packageInfo: state.packageInfo,
 ///     config: config,
 ///     onToggleSound: () => bloc.add(SettingsEvent.toggleSound()),
-///     onToggleMusic: () => bloc.add(SettingsEvent.toggleMusic()),
 ///     onToggleHaptic: () => bloc.add(SettingsEvent.toggleHaptic()),
 ///     onChangeTheme: (theme) => bloc.add(SettingsEvent.changeTheme(theme)),
 ///     onResetToDefaults: () => bloc.add(SettingsEvent.resetToDefaults()),
@@ -558,7 +534,6 @@ class SettingsContent extends StatelessWidget {
     this.config = const QuizSettingsConfig(),
     this.appName,
     this.onToggleSound,
-    this.onToggleMusic,
     this.onToggleHaptic,
     this.onChangeTheme,
     this.onResetToDefaults,
@@ -578,9 +553,6 @@ class SettingsContent extends StatelessWidget {
 
   /// Callback when sound is toggled.
   final VoidCallback? onToggleSound;
-
-  /// Callback when music is toggled.
-  final VoidCallback? onToggleMusic;
 
   /// Callback when haptic is toggled.
   final VoidCallback? onToggleHaptic;
@@ -634,30 +606,6 @@ class SettingsContent extends StatelessWidget {
                       SettingsEvent.soundEffectsToggled(
                         enabled: value,
                         source: _settingsSource,
-                      ),
-                    );
-                  }
-                : null,
-          ),
-        );
-      }
-
-      if (config.showBackgroundMusic) {
-        widgets.add(
-          SwitchListTile(
-            title: Text(l10n.backgroundMusic),
-            subtitle: Text(l10n.backgroundMusicDescription),
-            value: settings.musicEnabled,
-            onChanged: onToggleMusic != null
-                ? (value) {
-                    final oldValue = settings.musicEnabled;
-                    onToggleMusic!();
-                    context.screenAnalyticsService.logEvent(
-                      SettingsEvent.changed(
-                        settingName: 'background_music',
-                        oldValue: oldValue.toString(),
-                        newValue: value.toString(),
-                        settingCategory: 'audio',
                       ),
                     );
                   }
@@ -828,7 +776,6 @@ class SettingsContent extends StatelessWidget {
 
   bool _hasAudioHapticsItems() {
     return config.showSoundEffects ||
-        config.showBackgroundMusic ||
         config.showHapticFeedback;
   }
 

@@ -8,7 +8,6 @@ void main() {
       final settings = QuizSettings.defaultSettings();
 
       expect(settings.soundEnabled, true);
-      expect(settings.musicEnabled, true);
       expect(settings.hapticEnabled, true);
       expect(settings.themeMode, AppThemeMode.system);
     });
@@ -21,7 +20,6 @@ void main() {
       );
 
       expect(modified.soundEnabled, false);
-      expect(modified.musicEnabled, true); // unchanged
       expect(modified.hapticEnabled, true); // unchanged
       expect(modified.themeMode, AppThemeMode.dark);
     });
@@ -29,7 +27,6 @@ void main() {
     test('toJson serializes settings correctly', () {
       final settings = QuizSettings(
         soundEnabled: false,
-        musicEnabled: true,
         hapticEnabled: false,
         themeMode: AppThemeMode.dark,
       );
@@ -37,7 +34,6 @@ void main() {
       final json = settings.toJson();
 
       expect(json['soundEnabled'], false);
-      expect(json['musicEnabled'], true);
       expect(json['hapticEnabled'], false);
       expect(json['themeMode'], 'dark');
     });
@@ -45,7 +41,6 @@ void main() {
     test('fromJson deserializes settings correctly', () {
       final json = {
         'soundEnabled': false,
-        'musicEnabled': true,
         'hapticEnabled': false,
         'themeMode': 'dark',
       };
@@ -53,7 +48,6 @@ void main() {
       final settings = QuizSettings.fromJson(json);
 
       expect(settings.soundEnabled, false);
-      expect(settings.musicEnabled, true);
       expect(settings.hapticEnabled, false);
       expect(settings.themeMode, AppThemeMode.dark);
     });
@@ -63,7 +57,6 @@ void main() {
       final settings = QuizSettings.fromJson(json);
 
       expect(settings.soundEnabled, true);
-      expect(settings.musicEnabled, true);
       expect(settings.hapticEnabled, true);
       expect(settings.themeMode, AppThemeMode.system);
     });
@@ -71,7 +64,6 @@ void main() {
     test('fromJson handles invalid theme mode with default', () {
       final json = {
         'soundEnabled': true,
-        'musicEnabled': true,
         'hapticEnabled': true,
         'themeMode': 'invalid',
       };
@@ -102,7 +94,6 @@ void main() {
 
       expect(string, contains('QuizSettings'));
       expect(string, contains('soundEnabled: true'));
-      expect(string, contains('musicEnabled: true'));
     });
   });
 

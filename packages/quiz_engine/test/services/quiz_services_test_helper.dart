@@ -37,13 +37,6 @@ class MockSettingsService implements SettingsService {
   }
 
   @override
-  Future<bool> toggleMusic() async {
-    _settings = _settings.copyWith(musicEnabled: !_settings.musicEnabled);
-    _controller.add(_settings);
-    return _settings.musicEnabled;
-  }
-
-  @override
   Future<bool> toggleHaptic() async {
     _settings = _settings.copyWith(hapticEnabled: !_settings.hapticEnabled);
     _controller.add(_settings);

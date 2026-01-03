@@ -12,9 +12,6 @@ class QuizSettingsConfig {
   /// Whether to show the sound effects toggle.
   final bool showSoundEffects;
 
-  /// Whether to show the background music toggle.
-  final bool showBackgroundMusic;
-
   /// Whether to show the haptic feedback toggle.
   final bool showHapticFeedback;
 
@@ -93,7 +90,6 @@ class QuizSettingsConfig {
   const QuizSettingsConfig({
     this.showAudioHapticsSection = true,
     this.showSoundEffects = true,
-    this.showBackgroundMusic = true,
     this.showHapticFeedback = true,
     this.showAppearanceSection = true,
     this.showThemeSelector = true,
@@ -103,7 +99,7 @@ class QuizSettingsConfig {
     this.showLicenses = true,
     this.showAdvancedSection = true,
     this.showResetToDefaults = true,
-    this.showDataExport = true,
+    this.showDataExport = false,
     this.showShopSection = true,
     this.showRemoveAds = true,
     this.showBundles = true,
@@ -118,7 +114,6 @@ class QuizSettingsConfig {
   const QuizSettingsConfig.minimal()
       : showAudioHapticsSection = true,
         showSoundEffects = true,
-        showBackgroundMusic = false,
         showHapticFeedback = true,
         showAppearanceSection = true,
         showThemeSelector = true,
@@ -142,7 +137,6 @@ class QuizSettingsConfig {
   QuizSettingsConfig copyWith({
     bool? showAudioHapticsSection,
     bool? showSoundEffects,
-    bool? showBackgroundMusic,
     bool? showHapticFeedback,
     bool? showAppearanceSection,
     bool? showThemeSelector,
@@ -166,7 +160,6 @@ class QuizSettingsConfig {
       showAudioHapticsSection:
           showAudioHapticsSection ?? this.showAudioHapticsSection,
       showSoundEffects: showSoundEffects ?? this.showSoundEffects,
-      showBackgroundMusic: showBackgroundMusic ?? this.showBackgroundMusic,
       showHapticFeedback: showHapticFeedback ?? this.showHapticFeedback,
       showAppearanceSection:
           showAppearanceSection ?? this.showAppearanceSection,

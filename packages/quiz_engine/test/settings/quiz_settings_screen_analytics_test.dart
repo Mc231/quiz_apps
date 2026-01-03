@@ -182,42 +182,6 @@ void main() {
       expect(event.parameters['achievements_reset'], 0);
     });
 
-    testWidgets('tracks background music toggle', (tester) async {
-      await tester.pumpWidget(
-        wrapWithServices(
-          const QuizSettingsScreen(
-            config: QuizSettingsConfig(
-              showAppBar: false,
-              showDataExport: false,
-            ),
-          ),
-          settingsService: settingsService,
-          screenAnalyticsService: analyticsService,
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      // Reset analytics after screen view event is logged
-      analyticsService.reset();
-
-      // Find and tap background music toggle
-      final musicToggle =
-          find.widgetWithText(SwitchListTile, 'Background Music');
-      expect(musicToggle, findsOneWidget);
-
-      await tester.tap(musicToggle);
-      await tester.pumpAndSettle();
-
-      // Verify event was logged (uses generic SettingsEvent.changed)
-      expect(analyticsService.loggedEvents.length, 1);
-      final event = analyticsService.loggedEvents.first as SettingsEvent;
-      expect(event.eventName, 'settings_changed');
-      expect(event.parameters['setting_name'], 'background_music');
-      expect(event.parameters['old_value'], 'true');
-      expect(event.parameters['new_value'], 'false');
-      expect(event.parameters['setting_category'], 'audio');
-    });
-
     testWidgets('does not track events when NoOp analytics service is used',
         (tester) async {
       await tester.pumpWidget(

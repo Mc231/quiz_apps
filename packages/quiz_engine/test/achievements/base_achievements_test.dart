@@ -353,10 +353,6 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String get soundEffectsDescription => 'Sound effects';
   @override
-  String get backgroundMusic => 'Music';
-  @override
-  String get backgroundMusicDescription => 'Background music';
-  @override
   String get hapticFeedback => 'Haptics';
   @override
   String get hapticFeedbackDescription => 'Vibrate';

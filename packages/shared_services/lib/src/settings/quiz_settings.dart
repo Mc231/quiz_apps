@@ -30,9 +30,6 @@ class QuizSettings {
   /// Whether sound effects are enabled
   final bool soundEnabled;
 
-  /// Whether background music is enabled (if implemented)
-  final bool musicEnabled;
-
   /// Whether haptic feedback is enabled
   final bool hapticEnabled;
 
@@ -56,7 +53,6 @@ class QuizSettings {
   /// Creates a new QuizSettings instance
   const QuizSettings({
     required this.soundEnabled,
-    required this.musicEnabled,
     required this.hapticEnabled,
     required this.themeMode,
     this.preferredLayoutModeId,
@@ -67,7 +63,6 @@ class QuizSettings {
   factory QuizSettings.defaultSettings() {
     return const QuizSettings(
       soundEnabled: true,
-      musicEnabled: true,
       hapticEnabled: true,
       themeMode: AppThemeMode.system,
     );
@@ -76,7 +71,6 @@ class QuizSettings {
   /// Creates a copy of this settings with the specified fields replaced
   QuizSettings copyWith({
     bool? soundEnabled,
-    bool? musicEnabled,
     bool? hapticEnabled,
     AppThemeMode? themeMode,
     String? preferredLayoutModeId,
@@ -86,7 +80,6 @@ class QuizSettings {
   }) {
     return QuizSettings(
       soundEnabled: soundEnabled ?? this.soundEnabled,
-      musicEnabled: musicEnabled ?? this.musicEnabled,
       hapticEnabled: hapticEnabled ?? this.hapticEnabled,
       themeMode: themeMode ?? this.themeMode,
       preferredLayoutModeId: clearPreferredLayoutModeId
@@ -102,7 +95,6 @@ class QuizSettings {
   Map<String, dynamic> toJson() {
     return {
       'soundEnabled': soundEnabled,
-      'musicEnabled': musicEnabled,
       'hapticEnabled': hapticEnabled,
       'themeMode': themeMode.name,
       if (preferredLayoutModeId != null)
@@ -116,7 +108,6 @@ class QuizSettings {
   factory QuizSettings.fromJson(Map<String, dynamic> json) {
     return QuizSettings(
       soundEnabled: json['soundEnabled'] as bool? ?? true,
-      musicEnabled: json['musicEnabled'] as bool? ?? true,
       hapticEnabled: json['hapticEnabled'] as bool? ?? true,
       themeMode: _parseThemeMode(json['themeMode'] as String?),
       preferredLayoutModeId: json['preferredLayoutModeId'] as String?,
@@ -155,7 +146,6 @@ class QuizSettings {
 
     return other is QuizSettings &&
         other.soundEnabled == soundEnabled &&
-        other.musicEnabled == musicEnabled &&
         other.hapticEnabled == hapticEnabled &&
         other.themeMode == themeMode &&
         other.preferredLayoutModeId == preferredLayoutModeId &&
@@ -166,7 +156,6 @@ class QuizSettings {
   int get hashCode {
     return Object.hash(
       soundEnabled,
-      musicEnabled,
       hapticEnabled,
       themeMode,
       preferredLayoutModeId,
@@ -178,7 +167,6 @@ class QuizSettings {
   String toString() {
     return 'QuizSettings('
         'soundEnabled: $soundEnabled, '
-        'musicEnabled: $musicEnabled, '
         'hapticEnabled: $hapticEnabled, '
         'themeMode: $themeMode, '
         'preferredLayoutModeId: $preferredLayoutModeId, '

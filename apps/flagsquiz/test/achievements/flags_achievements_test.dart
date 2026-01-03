@@ -138,10 +138,6 @@ class MockAppLocalizations extends AppLocalizations {
   @override
   String get soundEffectsDescription => 'Sound effects';
   @override
-  String get backgroundMusic => 'Music';
-  @override
-  String get backgroundMusicDescription => 'Background music';
-  @override
   String get hapticFeedback => 'Haptics';
   @override
   String get hapticFeedbackDescription => 'Vibrate';
@@ -1229,10 +1225,6 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String get soundEffects => 'Sound';
   @override
   String get soundEffectsDescription => 'Sound';
-  @override
-  String get backgroundMusic => 'Music';
-  @override
-  String get backgroundMusicDescription => 'Music';
   @override
   String get hapticFeedback => 'Haptics';
   @override

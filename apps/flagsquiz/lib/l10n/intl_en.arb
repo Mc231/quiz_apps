@@ -1091,14 +1091,6 @@
   "@soundEffectsDescription": {
     "description": "Sound effects toggle subtitle"
   },
-  "backgroundMusic": "Background Music",
-  "@backgroundMusic": {
-    "description": "Background music toggle title"
-  },
-  "backgroundMusicDescription": "Play background music during quiz",
-  "@backgroundMusicDescription": {
-    "description": "Background music toggle subtitle"
-  },
   "hapticFeedback": "Haptic Feedback",
   "@hapticFeedback": {
     "description": "Haptic feedback toggle title"

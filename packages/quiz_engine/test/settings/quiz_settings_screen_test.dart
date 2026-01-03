@@ -35,13 +35,6 @@ class MockSettingsService implements SettingsService {
   }
 
   @override
-  Future<bool> toggleMusic() async {
-    _settings = _settings.copyWith(musicEnabled: !_settings.musicEnabled);
-    _controller.add(_settings);
-    return _settings.musicEnabled;
-  }
-
-  @override
   Future<bool> toggleHaptic() async {
     _settings = _settings.copyWith(hapticEnabled: !_settings.hapticEnabled);
     _controller.add(_settings);
@@ -397,7 +390,6 @@ void main() {
 
       expect(config.showAudioHapticsSection, isTrue);
       expect(config.showSoundEffects, isTrue);
-      expect(config.showBackgroundMusic, isTrue);
       expect(config.showHapticFeedback, isTrue);
       expect(config.showAppearanceSection, isTrue);
       expect(config.showThemeSelector, isTrue);
@@ -410,7 +402,6 @@ void main() {
       const config = QuizSettingsConfig.minimal();
 
       expect(config.showAudioHapticsSection, isTrue);
-      expect(config.showBackgroundMusic, isFalse);
       expect(config.showAboutSection, isFalse);
       expect(config.showAdvancedSection, isFalse);
     });
@@ -418,12 +409,10 @@ void main() {
     test('copyWith creates modified copy', () {
       const original = QuizSettingsConfig();
       final modified = original.copyWith(
-        showBackgroundMusic: false,
         showAboutSection: false,
         title: 'Custom Title',
       );
 
-      expect(modified.showBackgroundMusic, isFalse);
       expect(modified.showAboutSection, isFalse);
       expect(modified.title, 'Custom Title');
       // Unchanged values

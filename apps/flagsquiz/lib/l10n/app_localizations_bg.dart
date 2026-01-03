@@ -830,12 +830,6 @@ class AppLocalizationsBg extends AppLocalizations {
       'Play sounds for answers and interactions';
 
   @override
-  String get backgroundMusic => 'Background Music';
-
-  @override
-  String get backgroundMusicDescription => 'Play background music during quiz';
-
-  @override
   String get hapticFeedback => 'Haptic Feedback';
 
   @override

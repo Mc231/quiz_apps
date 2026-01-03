@@ -120,17 +120,6 @@ class SettingsService {
     return newSettings.soundEnabled;
   }
 
-  /// Toggles background music on/off
-  ///
-  /// Returns the new music enabled state
-  Future<bool> toggleMusic() async {
-    final newSettings = _currentSettings.copyWith(
-      musicEnabled: !_currentSettings.musicEnabled,
-    );
-    await updateSettings(newSettings);
-    return newSettings.musicEnabled;
-  }
-
   /// Toggles haptic feedback on/off
   ///
   /// Returns the new haptic enabled state

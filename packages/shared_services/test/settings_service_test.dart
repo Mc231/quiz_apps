@@ -21,7 +21,6 @@ void main() {
       await settingsService.initialize();
 
       expect(settingsService.currentSettings.soundEnabled, true);
-      expect(settingsService.currentSettings.musicEnabled, true);
       expect(settingsService.currentSettings.hapticEnabled, true);
       expect(settingsService.currentSettings.themeMode, AppThemeMode.system);
     });
@@ -29,13 +28,12 @@ void main() {
     test('initialize loads stored settings', () async {
       SharedPreferences.setMockInitialValues({
         'quiz_settings':
-            '{"soundEnabled":false,"musicEnabled":false,"hapticEnabled":true,"themeMode":"dark"}',
+            '{"soundEnabled":false,"hapticEnabled":true,"themeMode":"dark"}',
       });
 
       await settingsService.initialize();
 
       expect(settingsService.currentSettings.soundEnabled, false);
-      expect(settingsService.currentSettings.musicEnabled, false);
       expect(settingsService.currentSettings.hapticEnabled, true);
       expect(settingsService.currentSettings.themeMode, AppThemeMode.dark);
     });
@@ -45,7 +43,6 @@ void main() {
 
       final newSettings = QuizSettings(
         soundEnabled: false,
-        musicEnabled: true,
         hapticEnabled: false,
         themeMode: AppThemeMode.light,
       );
@@ -70,16 +67,6 @@ void main() {
 
       expect(newState, !initialState);
       expect(settingsService.currentSettings.soundEnabled, newState);
-    });
-
-    test('toggleMusic toggles music enabled state', () async {
-      await settingsService.initialize();
-
-      final initialState = settingsService.currentSettings.musicEnabled;
-      final newState = await settingsService.toggleMusic();
-
-      expect(newState, !initialState);
-      expect(settingsService.currentSettings.musicEnabled, newState);
     });
 
     test('toggleHaptic toggles haptic enabled state', () async {
@@ -112,7 +99,6 @@ void main() {
       await settingsService.updateSettings(
         QuizSettings(
           soundEnabled: false,
-          musicEnabled: false,
           hapticEnabled: false,
           themeMode: AppThemeMode.dark,
         ),

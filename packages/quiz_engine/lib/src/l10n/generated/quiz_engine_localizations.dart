@@ -499,18 +499,6 @@ abstract class QuizEngineLocalizations {
   /// **'Play sounds for answers and interactions'**
   String get soundEffectsDescription;
 
-  /// Background music toggle title
-  ///
-  /// In en, this message translates to:
-  /// **'Background Music'**
-  String get backgroundMusic;
-
-  /// Background music description
-  ///
-  /// In en, this message translates to:
-  /// **'Play background music during quiz'**
-  String get backgroundMusicDescription;
-
   /// Haptic feedback toggle title
   ///
   /// In en, this message translates to:
