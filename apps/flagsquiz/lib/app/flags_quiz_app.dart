@@ -121,11 +121,20 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
             delaySeconds: 2,
           ),
         ),
-        // TODO: Add privacy policy and terms of service URLs
-        // settingsConfig: const QuizSettingsConfig(
-        //   privacyPolicyUrl: 'https://yourapp.com/privacy',
-        //   termsOfServiceUrl: 'https://yourapp.com/terms',
-        // ),
+        settingsConfig: QuizSettingsConfig(
+          // Account section with Game Center / Play Games
+          showAccountSection: true,
+          showGameServiceAccount: true,
+          showCloudSync: false, // Cloud sync not implemented yet
+          showViewAchievements: true,
+          showViewLeaderboards: true,
+          gameService: _deps.gameService,
+          cloudAchievementService: _deps.cloudAchievementService,
+          leaderboardService: _deps.leaderboardService,
+          // TODO: Add privacy policy and terms of service URLs
+          // privacyPolicyUrl: 'https://yourapp.com/privacy',
+          // termsOfServiceUrl: 'https://yourapp.com/terms',
+        ),
         homeConfig: QuizHomeScreenConfig(
           tabConfig: QuizTabConfig(
             tabs: [
