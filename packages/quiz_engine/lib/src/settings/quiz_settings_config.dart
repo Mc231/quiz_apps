@@ -104,7 +104,7 @@ class QuizSettingsConfig {
     this.showAppearanceSection = true,
     this.showThemeSelector = true,
     this.showAboutSection = true,
-    this.showVersionInfo = true,
+    this.showVersionInfo = false,
     this.showAboutDialog = true,
     this.showLicenses = true,
     this.privacyPolicyUrl,
