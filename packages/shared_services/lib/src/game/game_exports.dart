@@ -57,3 +57,7 @@ export 'play_games_leaderboard_service.dart';
 export 'play_games_achievement_service.dart';
 export 'play_games_cloud_save_service.dart';
 export 'play_games_services.dart';
+
+// Integration services
+export 'leaderboard_integration_service.dart';
+export 'achievement_sync_service.dart';
