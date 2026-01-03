@@ -5521,7 +5521,7 @@ For leaderboards and achievements, the primary experience opens **native Game Ce
 
 ---
 
-#### Sprint 17.6: Leaderboard & Achievement Integration
+#### Sprint 17.6: Leaderboard & Achievement Integration ✅
 
 **Goal:** Integrate quiz results with Game Center and Google Play Games leaderboards and achievements.
 
@@ -5542,37 +5542,50 @@ For leaderboards and achievements, the primary experience opens **native Game Ce
 - [ ] Update `FlagsGameServiceConfig` with actual platform IDs
 
 **Leaderboard Integration (uses existing services from Sprint 17.2/17.3):**
-- [ ] Create `LeaderboardIntegrationService` - orchestrates score submission:
+- [x] Create `LeaderboardIntegrationService` - orchestrates score submission:
   - Uses `GameCenterLeaderboardService` (iOS) / `PlayGamesLeaderboardService` (Android)
   - Maps internal category IDs to platform leaderboard IDs via `GameServiceConfig`
   - Handles platform detection and service selection
-- [ ] Add score submission after quiz completion:
+- [x] Add score submission after quiz completion:
   - Calculate aggregate score for leaderboard category
   - Submit to both global and category-specific leaderboards
-- [ ] Handle offline score submission (queue and retry)
+- [x] Handle offline score submission (queue and retry)
 
 **Achievement Integration (uses existing services from Sprint 17.2/17.3):**
-- [ ] Create `AchievementSyncService` - bridges local achievements to platforms:
+- [x] Create `AchievementSyncService` - bridges local achievements to platforms:
   - Uses `GameCenterAchievementService` (iOS) / `PlayGamesAchievementService` (Android)
   - Maps internal achievement IDs to platform IDs via `GameServiceConfig.achievementIdMap`
   - Handles platform detection and service selection
-- [ ] Listen to `AchievementService.onAchievementUnlocked` stream
-- [ ] Sync unlocked achievements on sign-in (catch up missed unlocks)
-- [ ] Handle incremental achievements (progress reporting)
+- [x] Listen to `AchievementService.onAchievementsUnlocked` stream
+- [x] Sync unlocked achievements on sign-in (catch up missed unlocks)
+- [x] Handle incremental achievements (progress reporting)
 
 **App Integration (flagsquiz):**
+- [x] Create `FlagsGameServiceConfig` with placeholder IDs
 - [ ] Wire `LeaderboardIntegrationService` to quiz completion flow
 - [ ] Wire `AchievementSyncService` to achievement unlock events
-- [ ] Add retry logic for failed submissions
-- [ ] Log analytics events for leaderboard/achievement submissions
+- [x] Add retry logic for failed submissions (built into services)
+- [x] Log analytics events for leaderboard/achievement submissions
 
 **Testing:**
-- [ ] Write unit tests for `LeaderboardIntegrationService`
-- [ ] Write unit tests for `AchievementSyncService`
+- [x] Write unit tests for `LeaderboardIntegrationService`
+- [x] Write unit tests for `AchievementSyncService`
 - [ ] Create sandbox test accounts (iOS and Android)
 - [ ] Test leaderboard submission on real devices
 - [ ] Test achievement unlock on real devices
 - [ ] Test offline → online sync behavior
+
+**Files Created:**
+- ✅ `packages/shared_services/lib/src/game/leaderboard_integration_service.dart`
+- ✅ `packages/shared_services/lib/src/game/achievement_sync_service.dart`
+- ✅ `apps/flagsquiz/lib/config/flags_game_service_config.dart`
+- ✅ `packages/shared_services/test/game/leaderboard_integration_service_test.dart`
+- ✅ `packages/shared_services/test/game/achievement_sync_service_test.dart`
+
+**Pending Integration (for when platform IDs are provided):**
+- [ ] Wire services in `flags_quiz_app_provider.dart`
+- [ ] Update `FlagsGameServiceConfig` with actual platform IDs
+- [ ] Test on real devices with sandbox accounts
 
 **Notes:**
 - Game Center has a 1MB limit per leaderboard entry
