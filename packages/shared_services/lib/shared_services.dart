@@ -60,3 +60,6 @@ export 'src/deeplink/deeplink_exports.dart';
 
 // Streak (Daily play tracking and retention)
 export 'src/streak/streak_exports.dart';
+
+// Game Services (Platform gaming integration - Game Center, Play Games)
+export 'src/game/game_exports.dart';
