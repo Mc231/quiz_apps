@@ -9,81 +9,81 @@ import 'package:shared_services/shared_services.dart';
 IAPConfig createProductionIAPConfig() {
   return const IAPConfig(
     consumableProducts: [
-      // Lives
+      // Lives - Continue playing after wrong answers
       IAPProduct.definition(
         id: 'com.flagsquiz.lives_small',
         type: IAPProductType.consumable,
         title: '5 Lives',
-        description: 'Get 5 extra lives',
+        description: 'Continue playing after 5 wrong answers. Each life lets you recover from one mistake.',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.lives_medium',
         type: IAPProductType.consumable,
         title: '15 Lives',
-        description: 'Get 15 extra lives',
+        description: 'Continue playing after 15 wrong answers. Each life lets you recover from one mistake.',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.lives_large',
         type: IAPProductType.consumable,
         title: '50 Lives',
-        description: 'Get 50 extra lives',
+        description: 'Continue playing after 50 wrong answers. Each life lets you recover from one mistake.',
       ),
-      // 50/50 Hints
+      // 50/50 Hints - Remove wrong answers to make questions easier
       IAPProduct.definition(
         id: 'com.flagsquiz.fifty_fifty_small',
         type: IAPProductType.consumable,
         title: '5 50/50 Hints',
-        description: 'Get 5 fifty-fifty hints',
+        description: 'Remove 2 wrong answers from 5 questions. Makes difficult questions easier by showing only 2 choices.',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.fifty_fifty_medium',
         type: IAPProductType.consumable,
         title: '15 50/50 Hints',
-        description: 'Get 15 fifty-fifty hints',
+        description: 'Remove 2 wrong answers from 15 questions. Makes difficult questions easier by showing only 2 choices.',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.fifty_fifty_large',
         type: IAPProductType.consumable,
         title: '50 50/50 Hints',
-        description: 'Get 50 fifty-fifty hints',
+        description: 'Remove 2 wrong answers from 50 questions. Makes difficult questions easier by showing only 2 choices.',
       ),
-      // Skips
+      // Skips - Skip difficult questions without penalty
       IAPProduct.definition(
         id: 'com.flagsquiz.skips_small',
         type: IAPProductType.consumable,
         title: '5 Skips',
-        description: 'Get 5 skips',
+        description: 'Skip 5 difficult questions without penalty. Move to the next question instantly.',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.skips_medium',
         type: IAPProductType.consumable,
         title: '15 Skips',
-        description: 'Get 15 skips',
+        description: 'Skip 15 difficult questions without penalty. Move to the next question instantly.',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.skips_large',
         type: IAPProductType.consumable,
         title: '50 Skips',
-        description: 'Get 50 skips',
+        description: 'Skip 50 difficult questions without penalty. Move to the next question instantly.',
       ),
-      // Bundles (consumable because they grant resources)
+      // Bundles - Best value packs with all resources
       IAPProduct.definition(
         id: 'com.flagsquiz.bundle_starter',
         type: IAPProductType.consumable,
         title: 'Starter Pack',
-        description: '5 lives + 5 fifty-fifty + 5 skips',
+        description: 'Get 5 lives, 5 hints, and 5 skips. Perfect for beginners to try all game helpers.',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.bundle_value',
         type: IAPProductType.consumable,
         title: 'Value Pack',
-        description: '15 lives + 15 fifty-fifty + 15 skips',
+        description: 'Get 15 lives, 15 hints, and 15 skips. Great value for regular players.',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.bundle_pro',
         type: IAPProductType.consumable,
         title: 'Pro Pack',
-        description: '50 lives + 50 fifty-fifty + 50 skips',
+        description: 'Get 50 lives, 50 hints, and 50 skips. Best value for dedicated quiz masters.',
       ),
     ],
     nonConsumableProducts: [

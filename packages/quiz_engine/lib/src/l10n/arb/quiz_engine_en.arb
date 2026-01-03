@@ -1692,6 +1692,21 @@
     "description": "Short label for skip hint"
   },
 
+  "livesDescription": "Lives let you continue playing after wrong answers. Each life saves you from one mistake, so you can keep learning without starting over.",
+  "@livesDescription": {
+    "description": "Detailed description of lives resource for purchase screen"
+  },
+
+  "fiftyFiftyDescription": "50/50 hints remove two wrong answers, leaving only two choices. Use them on difficult questions to improve your chances of getting the right answer.",
+  "@fiftyFiftyDescription": {
+    "description": "Detailed description of 50/50 hint resource for purchase screen"
+  },
+
+  "skipDescription": "Skips let you pass difficult questions without losing a life or affecting your score. Move instantly to the next question when you're stuck.",
+  "@skipDescription": {
+    "description": "Detailed description of skip resource for purchase screen"
+  },
+
   "needMoreLives": "Need More Lives?",
   "@needMoreLives": {
     "description": "Dialog title when lives are depleted"

@@ -1131,6 +1131,18 @@ class QuizEngineLocalizationsEn extends QuizEngineLocalizations {
   String get skipLabel => 'Skip';
 
   @override
+  String get livesDescription =>
+      'Lives let you continue playing after wrong answers. Each life saves you from one mistake, so you can keep learning without starting over.';
+
+  @override
+  String get fiftyFiftyDescription =>
+      '50/50 hints remove two wrong answers, leaving only two choices. Use them on difficult questions to improve your chances of getting the right answer.';
+
+  @override
+  String get skipDescription =>
+      'Skips let you pass difficult questions without losing a life or affecting your score. Move instantly to the next question when you\'re stuck.';
+
+  @override
   String get needMoreLives => 'Need More Lives?';
 
   @override

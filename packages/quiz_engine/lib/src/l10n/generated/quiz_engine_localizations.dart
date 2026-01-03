@@ -2074,6 +2074,24 @@ abstract class QuizEngineLocalizations {
   /// **'Skip'**
   String get skipLabel;
 
+  /// Detailed description of lives resource for purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Lives let you continue playing after wrong answers. Each life saves you from one mistake, so you can keep learning without starting over.'**
+  String get livesDescription;
+
+  /// Detailed description of 50/50 hint resource for purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'50/50 hints remove two wrong answers, leaving only two choices. Use them on difficult questions to improve your chances of getting the right answer.'**
+  String get fiftyFiftyDescription;
+
+  /// Detailed description of skip resource for purchase screen
+  ///
+  /// In en, this message translates to:
+  /// **'Skips let you pass difficult questions without losing a life or affecting your score. Move instantly to the next question when you\'re stuck.'**
+  String get skipDescription;
+
   /// Dialog title when lives are depleted
   ///
   /// In en, this message translates to:

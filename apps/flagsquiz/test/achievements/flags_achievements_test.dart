@@ -2005,6 +2005,14 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   @override
   String accessibilityAchievementDetails(String name) =>
       'Achievement details for $name';
+
+  // Resource descriptions for purchase screen
+  @override
+  String get livesDescription => 'Lives let you continue playing after wrong answers.';
+  @override
+  String get fiftyFiftyDescription => '50/50 hints remove two wrong answers.';
+  @override
+  String get skipDescription => 'Skips let you pass difficult questions.';
 }
 
 void main() {

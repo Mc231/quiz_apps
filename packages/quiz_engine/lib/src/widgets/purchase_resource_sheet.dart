@@ -95,11 +95,13 @@ class _PurchaseResourceSheetState extends State<PurchaseResourceSheet> {
     final l10n = QuizL10n.of(context);
     final theme = Theme.of(context);
     final packs = widget.manager.config.getPacksForType(widget.resourceType);
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     return DraggableScrollableSheet(
-      initialChildSize: 0.5,
-      minChildSize: 0.3,
-      maxChildSize: 0.8,
+      initialChildSize: isLandscape ? 0.9 : 0.6,
+      minChildSize: isLandscape ? 0.5 : 0.3,
+      maxChildSize: 0.95,
       expand: false,
       builder: (context, scrollController) {
         return Column(
@@ -115,7 +117,7 @@ class _PurchaseResourceSheetState extends State<PurchaseResourceSheet> {
               ),
             ),
 
-            // Header
+            // Header with icon and title
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
@@ -126,16 +128,41 @@ class _PurchaseResourceSheetState extends State<PurchaseResourceSheet> {
                     size: 32,
                   ),
                   const SizedBox(width: 12),
-                  Text(
-                    _getTitle(l10n),
-                    style: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+                  Expanded(
+                    child: Text(
+                      _getTitle(l10n),
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
 
+            // Resource description - explains what user is buying
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: widget.resourceType.color.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(
+                    color: widget.resourceType.color.withValues(alpha: 0.3),
+                  ),
+                ),
+                child: Text(
+                  _getResourceDescription(l10n),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 8),
             const Divider(),
 
             // Pack list
@@ -263,6 +290,14 @@ class _PurchaseResourceSheetState extends State<PurchaseResourceSheet> {
       LivesResource() => l10n.livesLabel,
       FiftyFiftyResource() => l10n.fiftyFiftyLabel,
       SkipResource() => l10n.skipLabel,
+    };
+  }
+
+  String _getResourceDescription(QuizEngineLocalizations l10n) {
+    return switch (widget.resourceType) {
+      LivesResource() => l10n.livesDescription,
+      FiftyFiftyResource() => l10n.fiftyFiftyDescription,
+      SkipResource() => l10n.skipDescription,
     };
   }
 
