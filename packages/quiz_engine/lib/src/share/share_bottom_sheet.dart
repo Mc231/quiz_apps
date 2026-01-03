@@ -150,20 +150,24 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = QuizL10n.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
+    final maxHeight = mediaQuery.size.height * (isLandscape ? 0.9 : 0.8);
 
     return Container(
+      constraints: BoxConstraints(maxHeight: maxHeight),
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Handle bar
-              Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Handle bar (fixed at top)
+            Padding(
+              padding: const EdgeInsets.only(top: 12, bottom: 8),
+              child: Container(
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
@@ -171,36 +175,47 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              const SizedBox(height: 20),
+            ),
 
-              // Title
-              Text(
-                l10n.share,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+            // Scrollable content
+            Flexible(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Title
+                    Text(
+                      l10n.share,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+
+                    // Preview (only if image sharing is available)
+                    if (widget.shareService.canShareImage() &&
+                        widget.config.showImageOption) ...[
+                      _buildImagePreview(context),
+                      const SizedBox(height: 24),
+                    ],
+
+                    // Share options
+                    _buildShareOptions(context, l10n),
+
+                    const SizedBox(height: 16),
+
+                    // Cancel button
+                    TextButton(
+                      onPressed: _isSharing ? null : () => Navigator.of(context).pop(),
+                      child: Text(l10n.cancel),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                 ),
               ),
-              const SizedBox(height: 24),
-
-              // Preview (only if image sharing is available)
-              if (widget.shareService.canShareImage() &&
-                  widget.config.showImageOption) ...[
-                _buildImagePreview(context),
-                const SizedBox(height: 24),
-              ],
-
-              // Share options
-              _buildShareOptions(context, l10n),
-
-              const SizedBox(height: 16),
-
-              // Cancel button
-              TextButton(
-                onPressed: _isSharing ? null : () => Navigator.of(context).pop(),
-                child: Text(l10n.cancel),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
