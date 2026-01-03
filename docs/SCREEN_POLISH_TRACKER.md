@@ -60,7 +60,7 @@ This document tracks the UI polish status of all screens in the Quiz Apps projec
 | Screen | File | Status | Notes |
 |--------|------|--------|-------|
 | Achievements Screen | `quiz_engine/lib/src/achievements/screens/achievements_screen.dart` | [x] | Added subtle shadow to progress bar |
-| Settings Screen | `quiz_engine/lib/src/settings/quiz_settings_screen.dart` | [ ] | |
+| Settings Screen | `quiz_engine/lib/src/settings/quiz_settings_screen.dart` | [x] | Removed unused options, fixed landscape overflow |
 
 ---
 
@@ -108,11 +108,11 @@ When polishing a screen, verify:
 | Session Flow | 2 | 3 | 67% |
 | Content & History | 1 | 3 | 33% |
 | Statistics | 0 | 2 | 0% |
-| Feature | 0 | 2 | 0% |
-| Daily Challenge | 1 | 2 | 50% |
+| Feature | 2 | 2 | 100% |
+| Daily Challenge | 2 | 2 | 100% |
 | App Entry | 0 | 1 | 0% |
-| **Total** | **7** | **17** | **41%** |
+| **Total** | **10** | **17** | **59%** |
 
 ---
 
-*Last updated: 2026-01-02*
+*Last updated: 2026-01-03*
