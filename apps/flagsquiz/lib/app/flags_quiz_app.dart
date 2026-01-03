@@ -121,11 +121,11 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
             delaySeconds: 2,
           ),
         ),
-        // TODO: Remove test URLs - replace with real ones
-        settingsConfig: const QuizSettingsConfig(
-          privacyPolicyUrl: 'https://example.com/privacy',
-          termsOfServiceUrl: 'https://example.com/terms',
-        ),
+        // TODO: Add privacy policy and terms of service URLs
+        // settingsConfig: const QuizSettingsConfig(
+        //   privacyPolicyUrl: 'https://yourapp.com/privacy',
+        //   termsOfServiceUrl: 'https://yourapp.com/terms',
+        // ),
         homeConfig: QuizHomeScreenConfig(
           tabConfig: QuizTabConfig(
             tabs: [
