@@ -380,42 +380,39 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.selectTheme),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioGroup<AppThemeMode>(
-              groupValue: _currentSettings.themeMode,
-              onChanged: (value) async {
-                if (value == null) return;
-                await _settingsService.setThemeMode(value);
-                _analyticsService.logEvent(
-                  SettingsEvent.themeChanged(
-                    newTheme: value.name,
-                    previousTheme: previousTheme.name,
-                    source: _settingsSource,
-                  ),
-                );
-                if (mounted) Navigator.pop(context);
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RadioListTile<AppThemeMode>(
-                    title: Text(l10n.themeLight),
-                    value: AppThemeMode.light,
-                  ),
-                  RadioListTile<AppThemeMode>(
-                    title: Text(l10n.themeDark),
-                    value: AppThemeMode.dark,
-                  ),
-                  RadioListTile<AppThemeMode>(
-                    title: Text(l10n.themeSystem),
-                    value: AppThemeMode.system,
-                  ),
-                ],
-              ),
+        content: SingleChildScrollView(
+          child: RadioGroup<AppThemeMode>(
+            groupValue: _currentSettings.themeMode,
+            onChanged: (value) async {
+              if (value == null) return;
+              await _settingsService.setThemeMode(value);
+              _analyticsService.logEvent(
+                SettingsEvent.themeChanged(
+                  newTheme: value.name,
+                  previousTheme: previousTheme.name,
+                  source: _settingsSource,
+                ),
+              );
+              if (mounted) Navigator.pop(context);
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RadioListTile<AppThemeMode>(
+                  title: Text(l10n.themeLight),
+                  value: AppThemeMode.light,
+                ),
+                RadioListTile<AppThemeMode>(
+                  title: Text(l10n.themeDark),
+                  value: AppThemeMode.dark,
+                ),
+                RadioListTile<AppThemeMode>(
+                  title: Text(l10n.themeSystem),
+                  value: AppThemeMode.system,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
         actions: [
           TextButton(
@@ -873,42 +870,39 @@ class SettingsContent extends StatelessWidget {
       context: context,
       builder: (dialogContext) => AlertDialog(
         title: Text(l10n.selectTheme),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            RadioGroup<AppThemeMode>(
-              groupValue: settings.themeMode,
-              onChanged: (value) {
-                if (value == null) return;
-                onChangeTheme?.call(value);
-                analyticsService.logEvent(
-                  SettingsEvent.themeChanged(
-                    newTheme: value.name,
-                    previousTheme: previousTheme.name,
-                    source: _settingsSource,
-                  ),
-                );
-                Navigator.pop(dialogContext);
-              },
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RadioListTile<AppThemeMode>(
-                    title: Text(l10n.themeLight),
-                    value: AppThemeMode.light,
-                  ),
-                  RadioListTile<AppThemeMode>(
-                    title: Text(l10n.themeDark),
-                    value: AppThemeMode.dark,
-                  ),
-                  RadioListTile<AppThemeMode>(
-                    title: Text(l10n.themeSystem),
-                    value: AppThemeMode.system,
-                  ),
-                ],
-              ),
+        content: SingleChildScrollView(
+          child: RadioGroup<AppThemeMode>(
+            groupValue: settings.themeMode,
+            onChanged: (value) {
+              if (value == null) return;
+              onChangeTheme?.call(value);
+              analyticsService.logEvent(
+                SettingsEvent.themeChanged(
+                  newTheme: value.name,
+                  previousTheme: previousTheme.name,
+                  source: _settingsSource,
+                ),
+              );
+              Navigator.pop(dialogContext);
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                RadioListTile<AppThemeMode>(
+                  title: Text(l10n.themeLight),
+                  value: AppThemeMode.light,
+                ),
+                RadioListTile<AppThemeMode>(
+                  title: Text(l10n.themeDark),
+                  value: AppThemeMode.dark,
+                ),
+                RadioListTile<AppThemeMode>(
+                  title: Text(l10n.themeSystem),
+                  value: AppThemeMode.system,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
         actions: [
           TextButton(
