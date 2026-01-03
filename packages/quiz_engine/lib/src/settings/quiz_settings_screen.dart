@@ -119,6 +119,13 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   ) {
     final widgets = <Widget>[];
 
+    // Account section (at the top)
+    if (widget.config.showAccountSection && _hasAccountItems()) {
+      widgets.add(_buildSectionHeader(l10n.account));
+      widgets.addAll(_buildAccountSection(l10n));
+      widgets.add(const Divider());
+    }
+
     // Audio & Haptics Section
     if (widget.config.showAudioHapticsSection && _hasAudioHapticsItems()) {
       widgets.add(_buildSectionHeader(l10n.audioAndHaptics));
@@ -224,13 +231,6 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         widgets.add(const RestorePurchasesTile());
       }
 
-      widgets.add(const Divider());
-    }
-
-    // Account section
-    if (widget.config.showAccountSection && _hasAccountItems()) {
-      widgets.add(_buildSectionHeader(l10n.account));
-      widgets.addAll(_buildAccountSection(l10n));
       widgets.add(const Divider());
     }
 
@@ -380,7 +380,11 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         widget.config.cloudAchievementService != null) {
       widgets.add(
         ListTile(
-          leading: const Icon(Icons.emoji_events_outlined),
+          leading: const SizedBox(
+            width: 40,
+            height: 40,
+            child: Icon(Icons.emoji_events_outlined),
+          ),
           title: Text(l10n.viewAchievements),
           trailing: const Icon(Icons.chevron_right),
           onTap: () async {
@@ -401,7 +405,11 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         widget.config.leaderboardService != null) {
       widgets.add(
         ListTile(
-          leading: const Icon(Icons.leaderboard_outlined),
+          leading: const SizedBox(
+            width: 40,
+            height: 40,
+            child: Icon(Icons.leaderboard_outlined),
+          ),
           title: Text(l10n.viewLeaderboards),
           trailing: const Icon(Icons.chevron_right),
           onTap: () async {
