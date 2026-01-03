@@ -4345,12 +4345,9 @@ The following phases are planned for future implementation but are currently on 
 - [ ] Performance optimization if needed
 
 **Polished Screens:**
+- [x] Achievements Screen
+- [x] Daily Challenge Screen
 - [x] Settings Screen
-  - Removed background music option (feature not implemented)
-  - Disabled data export by default
-  - Added Privacy Policy & Terms of Service URL support
-  - Removed redundant inline Version display (kept About dialog)
-  - Fixed theme dialog landscape overflow
 
 **Notes:** This is an ongoing task to be done by manual testing, not automated.
 
