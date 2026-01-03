@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_services/shared_services.dart';
 
 /// Configuration for which sections to show in the settings screen.
 ///
@@ -81,6 +82,58 @@ class QuizSettingsConfig {
   /// Allows users to restore previous purchases.
   final bool showRestorePurchases;
 
+  /// Whether to show the Account section.
+  ///
+  /// When enabled, shows:
+  /// - Game service account (Game Center/Play Games)
+  /// - Cloud sync status and controls
+  /// - View Achievements/Leaderboards buttons
+  ///
+  /// Requires [GameService] and [CloudSaveService] to be provided.
+  final bool showAccountSection;
+
+  /// Whether to show the game service account tile.
+  ///
+  /// Only shown if [showAccountSection] is also true.
+  final bool showGameServiceAccount;
+
+  /// Whether to show the cloud sync tile.
+  ///
+  /// Only shown if [showAccountSection] is also true.
+  final bool showCloudSync;
+
+  /// Whether to show the View Achievements button.
+  ///
+  /// Only shown if [showAccountSection] is also true.
+  /// Opens native achievements UI.
+  final bool showViewAchievements;
+
+  /// Whether to show the View Leaderboards button.
+  ///
+  /// Only shown if [showAccountSection] is also true.
+  /// Opens native leaderboards UI.
+  final bool showViewLeaderboards;
+
+  /// Game service for account management.
+  ///
+  /// Required when [showAccountSection] is true.
+  final GameService? gameService;
+
+  /// Cloud save service for sync management.
+  ///
+  /// Required when [showCloudSync] is true.
+  final CloudSaveService? cloudSaveService;
+
+  /// Cloud achievement service for viewing achievements.
+  ///
+  /// Required when [showViewAchievements] is true.
+  final CloudAchievementService? cloudAchievementService;
+
+  /// Leaderboard service for viewing leaderboards.
+  ///
+  /// Required when [showViewLeaderboards] is true.
+  final LeaderboardService? leaderboardService;
+
   /// Whether to show the app bar.
   final bool showAppBar;
 
@@ -112,6 +165,15 @@ class QuizSettingsConfig {
     this.showRemoveAds = true,
     this.showBundles = true,
     this.showRestorePurchases = true,
+    this.showAccountSection = false,
+    this.showGameServiceAccount = true,
+    this.showCloudSync = true,
+    this.showViewAchievements = true,
+    this.showViewLeaderboards = true,
+    this.gameService,
+    this.cloudSaveService,
+    this.cloudAchievementService,
+    this.leaderboardService,
     this.showAppBar = true,
     this.title,
     this.customSections,
@@ -137,6 +199,15 @@ class QuizSettingsConfig {
         showRemoveAds = false,
         showBundles = false,
         showRestorePurchases = false,
+        showAccountSection = false,
+        showGameServiceAccount = false,
+        showCloudSync = false,
+        showViewAchievements = false,
+        showViewLeaderboards = false,
+        gameService = null,
+        cloudSaveService = null,
+        cloudAchievementService = null,
+        leaderboardService = null,
         showAppBar = true,
         title = null,
         customSections = null,
@@ -161,6 +232,15 @@ class QuizSettingsConfig {
     bool? showRemoveAds,
     bool? showBundles,
     bool? showRestorePurchases,
+    bool? showAccountSection,
+    bool? showGameServiceAccount,
+    bool? showCloudSync,
+    bool? showViewAchievements,
+    bool? showViewLeaderboards,
+    GameService? gameService,
+    CloudSaveService? cloudSaveService,
+    CloudAchievementService? cloudAchievementService,
+    LeaderboardService? leaderboardService,
     bool? showAppBar,
     String? title,
     List<Widget> Function(BuildContext context)? customSections,
@@ -186,6 +266,17 @@ class QuizSettingsConfig {
       showRemoveAds: showRemoveAds ?? this.showRemoveAds,
       showBundles: showBundles ?? this.showBundles,
       showRestorePurchases: showRestorePurchases ?? this.showRestorePurchases,
+      showAccountSection: showAccountSection ?? this.showAccountSection,
+      showGameServiceAccount:
+          showGameServiceAccount ?? this.showGameServiceAccount,
+      showCloudSync: showCloudSync ?? this.showCloudSync,
+      showViewAchievements: showViewAchievements ?? this.showViewAchievements,
+      showViewLeaderboards: showViewLeaderboards ?? this.showViewLeaderboards,
+      gameService: gameService ?? this.gameService,
+      cloudSaveService: cloudSaveService ?? this.cloudSaveService,
+      cloudAchievementService:
+          cloudAchievementService ?? this.cloudAchievementService,
+      leaderboardService: leaderboardService ?? this.leaderboardService,
       showAppBar: showAppBar ?? this.showAppBar,
       title: title ?? this.title,
       customSections: customSections ?? this.customSections,
