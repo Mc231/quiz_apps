@@ -156,6 +156,9 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
   }
 
   Widget _buildFilterToggle(BuildContext context) {
+    final theme = Theme.of(context);
+    final borderColor = theme.colorScheme.outline;
+
     return SegmentedButton<QuestionFilterMode>(
       segments: [
         ButtonSegment<QuestionFilterMode>(
@@ -176,6 +179,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
       style: ButtonStyle(
         visualDensity: VisualDensity.compact,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        side: WidgetStatePropertyAll(BorderSide(color: borderColor)),
       ),
     );
   }
@@ -649,6 +653,8 @@ class SessionDetailContent extends StatelessWidget {
 
   Widget _buildFilterToggle(BuildContext context) {
     final l10n = QuizL10n.of(context);
+    final theme = Theme.of(context);
+    final borderColor = theme.colorScheme.outline;
 
     return Semantics(
       label: l10n.accessibilityFilterQuestions,
@@ -671,6 +677,7 @@ class SessionDetailContent extends StatelessWidget {
         style: ButtonStyle(
           visualDensity: VisualDensity.compact,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          side: WidgetStatePropertyAll(BorderSide(color: borderColor)),
         ),
       ),
     );
