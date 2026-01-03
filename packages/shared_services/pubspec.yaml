@@ -33,6 +33,8 @@ dependencies:
   in_app_review: ^2.0.10
   # Share
   share_plus: ^10.1.4
+  # Game Services (Game Center, Play Games)
+  games_services: ^5.0.0
 
 dev_dependencies:
   flutter_test:
