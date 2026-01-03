@@ -71,19 +71,19 @@ IAPConfig createProductionIAPConfig() {
         id: 'com.flagsquiz.bundle_starter',
         type: IAPProductType.consumable,
         title: 'Starter Pack',
-        description: 'Get 5 lives, 5 hints, and 5 skips. Perfect for beginners to try all game helpers.',
+        description: '5 Lives (recover from mistakes) + 5 Hints (narrow answers to 2 choices) + 5 Skips (pass hard questions). Try all helpers!',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.bundle_value',
         type: IAPProductType.consumable,
         title: 'Value Pack',
-        description: 'Get 15 lives, 15 hints, and 15 skips. Great value for regular players.',
+        description: '15 Lives (recover from mistakes) + 15 Hints (narrow answers to 2 choices) + 15 Skips (pass hard questions). Great value!',
       ),
       IAPProduct.definition(
         id: 'com.flagsquiz.bundle_pro',
         type: IAPProductType.consumable,
         title: 'Pro Pack',
-        description: 'Get 50 lives, 50 hints, and 50 skips. Best value for dedicated quiz masters.',
+        description: '50 Lives (recover from mistakes) + 50 Hints (narrow answers to 2 choices) + 50 Skips (pass hard questions). Best value!',
       ),
     ],
     nonConsumableProducts: [
