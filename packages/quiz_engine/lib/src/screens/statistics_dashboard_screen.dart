@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_services/shared_services.dart';
+import 'package:shared_services/shared_services.dart'
+    hide LeaderboardEntry; // Hide game service LeaderboardEntry, use widget version
 
 import '../l10n/quiz_localizations.dart';
 import '../services/quiz_services_context.dart';

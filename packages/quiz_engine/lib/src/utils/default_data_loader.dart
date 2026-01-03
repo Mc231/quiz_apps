@@ -1,4 +1,5 @@
-import 'package:shared_services/shared_services.dart';
+import 'package:shared_services/shared_services.dart'
+    hide LeaderboardEntry; // Hide game service LeaderboardEntry, use widget version
 
 import '../home/quiz_home_data.dart';
 import '../screens/statistics_dashboard_data.dart';
