@@ -33,6 +33,26 @@ class QuizSettingsConfig {
   /// Whether to show the licenses item.
   final bool showLicenses;
 
+  /// Whether to show the Privacy Policy link.
+  ///
+  /// Only shown if [showAboutSection] is also true and [privacyPolicyUrl] is provided.
+  final bool showPrivacyPolicy;
+
+  /// The URL to open when Privacy Policy is tapped.
+  ///
+  /// If null, the Privacy Policy item won't be shown even if [showPrivacyPolicy] is true.
+  final String? privacyPolicyUrl;
+
+  /// Whether to show the Terms of Service link.
+  ///
+  /// Only shown if [showAboutSection] is also true and [termsOfServiceUrl] is provided.
+  final bool showTermsOfService;
+
+  /// The URL to open when Terms of Service is tapped.
+  ///
+  /// If null, the Terms of Service item won't be shown even if [showTermsOfService] is true.
+  final String? termsOfServiceUrl;
+
   /// Whether to show the Advanced section.
   final bool showAdvancedSection;
 
@@ -97,6 +117,10 @@ class QuizSettingsConfig {
     this.showVersionInfo = true,
     this.showAboutDialog = true,
     this.showLicenses = true,
+    this.showPrivacyPolicy = true,
+    this.privacyPolicyUrl,
+    this.showTermsOfService = true,
+    this.termsOfServiceUrl,
     this.showAdvancedSection = true,
     this.showResetToDefaults = true,
     this.showDataExport = false,
@@ -121,6 +145,10 @@ class QuizSettingsConfig {
         showVersionInfo = false,
         showAboutDialog = false,
         showLicenses = false,
+        showPrivacyPolicy = false,
+        privacyPolicyUrl = null,
+        showTermsOfService = false,
+        termsOfServiceUrl = null,
         showAdvancedSection = false,
         showResetToDefaults = false,
         showDataExport = false,
@@ -144,6 +172,10 @@ class QuizSettingsConfig {
     bool? showVersionInfo,
     bool? showAboutDialog,
     bool? showLicenses,
+    bool? showPrivacyPolicy,
+    String? privacyPolicyUrl,
+    bool? showTermsOfService,
+    String? termsOfServiceUrl,
     bool? showAdvancedSection,
     bool? showResetToDefaults,
     bool? showDataExport,
@@ -168,6 +200,10 @@ class QuizSettingsConfig {
       showVersionInfo: showVersionInfo ?? this.showVersionInfo,
       showAboutDialog: showAboutDialog ?? this.showAboutDialog,
       showLicenses: showLicenses ?? this.showLicenses,
+      showPrivacyPolicy: showPrivacyPolicy ?? this.showPrivacyPolicy,
+      privacyPolicyUrl: privacyPolicyUrl ?? this.privacyPolicyUrl,
+      showTermsOfService: showTermsOfService ?? this.showTermsOfService,
+      termsOfServiceUrl: termsOfServiceUrl ?? this.termsOfServiceUrl,
       showAdvancedSection: showAdvancedSection ?? this.showAdvancedSection,
       showResetToDefaults: showResetToDefaults ?? this.showResetToDefaults,
       showDataExport: showDataExport ?? this.showDataExport,

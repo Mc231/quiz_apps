@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:quiz_engine/quiz_engine.dart';
 import 'package:shared_services/shared_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Source identifier for settings analytics events.
 const String _settingsSource = 'settings_screen';
@@ -270,6 +271,28 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
         );
       }
 
+      if (widget.config.showPrivacyPolicy &&
+          widget.config.privacyPolicyUrl != null) {
+        widgets.add(
+          ListTile(
+            title: Text(l10n.privacyPolicy),
+            trailing: const Icon(Icons.privacy_tip_outlined),
+            onTap: () => _launchUrl(widget.config.privacyPolicyUrl!),
+          ),
+        );
+      }
+
+      if (widget.config.showTermsOfService &&
+          widget.config.termsOfServiceUrl != null) {
+        widgets.add(
+          ListTile(
+            title: Text(l10n.termsOfService),
+            trailing: const Icon(Icons.article_outlined),
+            onTap: () => _launchUrl(widget.config.termsOfServiceUrl!),
+          ),
+        );
+      }
+
       widgets.add(const Divider());
     }
 
@@ -311,7 +334,11 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
   bool _hasAboutItems() {
     return (widget.config.showVersionInfo && _packageInfo != null) ||
         widget.config.showAboutDialog ||
-        widget.config.showLicenses;
+        widget.config.showLicenses ||
+        (widget.config.showPrivacyPolicy &&
+            widget.config.privacyPolicyUrl != null) ||
+        (widget.config.showTermsOfService &&
+            widget.config.termsOfServiceUrl != null);
   }
 
   bool _hasAdvancedItems() {
@@ -465,6 +492,13 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
       applicationName: widget.appName ?? _packageInfo?.appName,
       applicationVersion: _packageInfo?.version,
     );
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   void _showResetDialog(QuizLocalizations l10n) {
@@ -745,6 +779,26 @@ class SettingsContent extends StatelessWidget {
         );
       }
 
+      if (config.showPrivacyPolicy && config.privacyPolicyUrl != null) {
+        widgets.add(
+          ListTile(
+            title: Text(l10n.privacyPolicy),
+            trailing: const Icon(Icons.privacy_tip_outlined),
+            onTap: () => _launchUrl(config.privacyPolicyUrl!),
+          ),
+        );
+      }
+
+      if (config.showTermsOfService && config.termsOfServiceUrl != null) {
+        widgets.add(
+          ListTile(
+            title: Text(l10n.termsOfService),
+            trailing: const Icon(Icons.article_outlined),
+            onTap: () => _launchUrl(config.termsOfServiceUrl!),
+          ),
+        );
+      }
+
       widgets.add(const Divider());
     }
 
@@ -786,7 +840,9 @@ class SettingsContent extends StatelessWidget {
   bool _hasAboutItems() {
     return (config.showVersionInfo && packageInfo != null) ||
         config.showAboutDialog ||
-        config.showLicenses;
+        config.showLicenses ||
+        (config.showPrivacyPolicy && config.privacyPolicyUrl != null) ||
+        (config.showTermsOfService && config.termsOfServiceUrl != null);
   }
 
   bool _hasAdvancedItems() {
@@ -941,6 +997,13 @@ class SettingsContent extends StatelessWidget {
       applicationName: appName ?? packageInfo?.appName,
       applicationVersion: packageInfo?.version,
     );
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 
   void _showResetDialog(BuildContext context, QuizLocalizations l10n) {
