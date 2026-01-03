@@ -258,14 +258,31 @@ class _AchievementsHeader extends StatelessWidget {
           ),
           if (style.showProgressBar) ...[
             const SizedBox(height: 16),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(style.progressBarHeight / 2),
-              child: LinearProgressIndicator(
-                value: progress,
-                minHeight: style.progressBarHeight,
-                backgroundColor: theme.colorScheme.surfaceContainerHighest,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  theme.colorScheme.primary,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(style.progressBarHeight / 2),
+                boxShadow: [
+                  BoxShadow(
+                    color: theme.colorScheme.shadow.withValues(alpha: 0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                  BoxShadow(
+                    color: theme.colorScheme.shadow.withValues(alpha: 0.05),
+                    blurRadius: 1,
+                    spreadRadius: -1,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(style.progressBarHeight / 2),
+                child: LinearProgressIndicator(
+                  value: progress,
+                  minHeight: style.progressBarHeight,
+                  backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    theme.colorScheme.primary,
+                  ),
                 ),
               ),
             ),

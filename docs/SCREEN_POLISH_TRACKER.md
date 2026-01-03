@@ -59,7 +59,7 @@ This document tracks the UI polish status of all screens in the Quiz Apps projec
 
 | Screen | File | Status | Notes |
 |--------|------|--------|-------|
-| Achievements Screen | `quiz_engine/lib/src/achievements/screens/achievements_screen.dart` | [ ] | |
+| Achievements Screen | `quiz_engine/lib/src/achievements/screens/achievements_screen.dart` | [x] | Added subtle shadow to progress bar |
 | Settings Screen | `quiz_engine/lib/src/settings/quiz_settings_screen.dart` | [ ] | |
 
 ---
