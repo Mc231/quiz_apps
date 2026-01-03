@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:shared_services/shared_services.dart';
 
 import '../achievements/flags_achievements_data_provider.dart';
 import '../app/flags_quiz_app.dart';
+import '../config/flags_game_service_config.dart';
 import '../config/iap_config_production.dart';
 import '../daily_challenge/flags_daily_challenge_data_provider.dart';
 import '../data/country_counts.dart';
@@ -293,6 +296,35 @@ class FlagsQuizAppProvider {
     // Get statistics repository for updating daily challenge stats
     final statisticsRepository = sl.get<StatisticsRepository>();
 
+    // Initialize platform game services (Game Center for iOS/macOS, Play Games for Android)
+    final (gameService, leaderboardService, cloudAchievementService) =
+        _createPlatformGameServices();
+
+    // Create game service configuration with placeholder IDs
+    // Replace with actual platform IDs from App Store Connect / Google Play Console
+    final gameServiceConfig = FlagsGameServiceConfig.development();
+
+    // Create integration services for leaderboards and achievements
+    final leaderboardIntegrationService = LeaderboardIntegrationService(
+      config: gameServiceConfig,
+      gameService: gameService,
+      leaderboardService: leaderboardService,
+      analyticsService: screenAnalyticsService,
+    );
+    await leaderboardIntegrationService.initialize();
+
+    final achievementSyncService = AchievementSyncService(
+      config: gameServiceConfig,
+      gameService: gameService,
+      cloudAchievementService: cloudAchievementService,
+      achievementService: achievementService,
+      analyticsService: screenAnalyticsService,
+    );
+    await achievementSyncService.initialize();
+
+    // Attempt silent sign-in on startup (Game Center auto-authenticates on iOS)
+    _attemptSilentSignIn(gameService);
+
     return FlagsQuizDependencies(
       services: services,
       secrets: secrets,
@@ -304,7 +336,63 @@ class FlagsQuizAppProvider {
       dailyChallengeService: dailyChallengeService,
       dailyChallengeDataProvider: dailyChallengeDataProvider,
       statisticsRepository: statisticsRepository,
+      gameService: gameService,
+      leaderboardService: leaderboardService,
+      cloudAchievementService: cloudAchievementService,
+      leaderboardIntegrationService: leaderboardIntegrationService,
+      achievementSyncService: achievementSyncService,
+      gameServiceConfig: gameServiceConfig,
     );
+  }
+
+  /// Creates platform-specific game services.
+  ///
+  /// Returns a tuple of (GameService, LeaderboardService, CloudAchievementService).
+  static (GameService, LeaderboardService, CloudAchievementService)
+      _createPlatformGameServices() {
+    if (Platform.isIOS || Platform.isMacOS) {
+      // Use Game Center on Apple platforms
+      final gameCenterServices = GameCenterServices();
+      return (
+        gameCenterServices.gameService,
+        gameCenterServices.leaderboardService,
+        gameCenterServices.cloudAchievementService,
+      );
+    } else if (Platform.isAndroid) {
+      // Use Play Games on Android
+      final playGamesServices = PlayGamesServices();
+      return (
+        playGamesServices.gameService,
+        playGamesServices.leaderboardService,
+        playGamesServices.cloudAchievementService,
+      );
+    } else {
+      // Use no-op services on unsupported platforms (web, Windows, Linux)
+      return (
+        NoOpGameServices.gameService,
+        NoOpGameServices.leaderboardService,
+        NoOpGameServices.cloudAchievementService,
+      );
+    }
+  }
+
+  /// Attempts silent sign-in without user interaction.
+  ///
+  /// Game Center on iOS typically auto-authenticates if the user is signed in
+  /// at the system level. Play Games may also support silent sign-in.
+  static void _attemptSilentSignIn(GameService gameService) {
+    // Fire and forget - don't block app startup
+    gameService.signIn().then((result) {
+      if (kDebugMode) {
+        final status = switch (result) {
+          SignInSuccess(:final displayName) => 'Signed in as $displayName',
+          SignInCancelled() => 'Sign-in cancelled',
+          SignInFailed(:final error) => 'Sign-in failed: $error',
+          SignInNotAuthenticated() => 'Not authenticated',
+        };
+        debugPrint('[GameService] $status');
+      }
+    });
   }
 
   /// Test resource packs matching IAPConfig.test() product IDs.
