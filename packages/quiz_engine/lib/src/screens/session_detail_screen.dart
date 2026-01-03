@@ -162,7 +162,7 @@ class _SessionDetailScreenState extends State<SessionDetailScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: borderColor),
       ),
       child: SegmentedButton<QuestionFilterMode>(
@@ -669,7 +669,7 @@ class SessionDetailContent extends StatelessWidget {
       hint: l10n.accessibilityFilterHint,
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(color: borderColor),
         ),
         child: SegmentedButton<QuestionFilterMode>(
