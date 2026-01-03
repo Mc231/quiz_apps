@@ -23,6 +23,12 @@ class FlagsQuizDependencies {
     required this.dailyChallengeService,
     required this.dailyChallengeDataProvider,
     required this.statisticsRepository,
+    required this.gameService,
+    required this.leaderboardService,
+    required this.cloudAchievementService,
+    required this.leaderboardIntegrationService,
+    required this.achievementSyncService,
+    required this.gameServiceConfig,
   });
 
   /// All core services bundled together.
@@ -54,4 +60,22 @@ class FlagsQuizDependencies {
 
   /// Statistics repository for updating global statistics.
   final StatisticsRepository statisticsRepository;
+
+  /// Game service for Game Center / Play Games authentication.
+  final GameService gameService;
+
+  /// Leaderboard service for score submission.
+  final LeaderboardService leaderboardService;
+
+  /// Cloud achievement service for platform achievements.
+  final CloudAchievementService cloudAchievementService;
+
+  /// Leaderboard integration service for orchestrating score submissions.
+  final LeaderboardIntegrationService leaderboardIntegrationService;
+
+  /// Achievement sync service for syncing local achievements to platforms.
+  final AchievementSyncService achievementSyncService;
+
+  /// Game service configuration with platform IDs.
+  final GameServiceConfig gameServiceConfig;
 }
