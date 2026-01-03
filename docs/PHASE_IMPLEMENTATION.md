@@ -5135,15 +5135,18 @@ The following phases are planned for future implementation but are currently on 
 
 **Priority:** Medium (Post-Launch or v1.1)
 
-| Sprint | Description | Size |
-|--------|-------------|------|
-| 17.1 | Game Service Abstraction | Small |
-| 17.2 | iOS Game Center Integration | Medium |
-| 17.3 | Android Play Games Integration | Medium |
-| 17.4 | Cloud Save Sync | Large |
-| 17.5 | UI Integration | Medium |
+| Sprint | Description | Size | Status |
+|--------|-------------|------|--------|
+| 17.1 | Game Service Abstraction | Small | ✅ |
+| 17.2 | iOS Game Center Integration | Medium | ✅ |
+| 17.3 | Android Play Games Integration | Medium | ✅ |
+| 17.4 | Cloud Save Sync | Large | ✅ |
+| 17.5 | UI Integration | Medium | ✅ |
+| 17.6 | Leaderboard & Achievement Integration | Medium | ✅ |
+| 17.7 | Platform Store Configuration | Large | Not Started |
+| 17.8 | Cloud Save Service Integration | Large | Not Started |
 
-**Total: 5 sprints**
+**Total: 8 sprints**
 
 <details>
 <summary>Sprint Details (click to expand)</summary>
@@ -5597,6 +5600,147 @@ For leaderboards and achievements, the primary experience opens **native Game Ce
 - Play Games requires achievements to be published before they can be unlocked
 - Both platforms may have rate limits on score submissions
 - Consider batching multiple achievement unlocks
+
+---
+
+#### Sprint 17.7: Platform Store Configuration
+
+**Goal:** Configure Game Center (iOS) and Play Games (Android) with all leaderboards and achievements.
+
+**Reference Documentation:** [GAME_SERVICES_CONFIGURATION.md](./GAME_SERVICES_CONFIGURATION.md)
+
+**Prerequisites:**
+- Apple Developer Account
+- Google Play Developer Account
+- App registered in both stores
+
+**Tasks:**
+
+**App Store Connect (Game Center):**
+- [ ] Enable Game Center capability
+- [ ] Create 6 leaderboards with localizations:
+  - [ ] Global leaderboard
+  - [ ] Europe leaderboard
+  - [ ] Asia leaderboard
+  - [ ] Africa leaderboard
+  - [ ] Americas leaderboard
+  - [ ] Oceania leaderboard
+- [ ] Create 75 achievements with localizations:
+  - [ ] Beginner achievements (3)
+  - [ ] Progress achievements (11)
+  - [ ] Mastery achievements (7)
+  - [ ] Speed achievements (4)
+  - [ ] Streak achievements (4)
+  - [ ] Challenge achievements (10)
+  - [ ] Dedication achievements (8)
+  - [ ] Skill achievements (6)
+  - [ ] Flags-specific achievements (22)
+- [ ] Upload achievement images (512x512 or 1024x1024)
+- [ ] Copy all Game Center IDs
+
+**Google Play Console (Play Games):**
+- [ ] Enable Play Games Services
+- [ ] Configure OAuth credentials
+- [ ] Create 6 leaderboards with icons
+- [ ] Create 75 achievements with icons
+- [ ] Publish Play Games Services for testing
+- [ ] Copy all Play Games IDs
+
+**Code Integration:**
+- [ ] Update `FlagsGameServiceConfig` with production IDs
+- [ ] Create platform-aware ID mapping (iOS vs Android)
+- [ ] Switch `flags_quiz_app_provider.dart` to use production config
+
+**Testing:**
+- [ ] Test on iOS device with sandbox account
+- [ ] Test on Android device with tester account
+- [ ] Verify achievement unlock notifications
+- [ ] Verify leaderboard score submission
+- [ ] Test offline → online sync
+
+**Files to Modify:**
+- `apps/flagsquiz/lib/config/flags_game_service_config.dart`
+- `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
+
+---
+
+#### Sprint 17.8: Cloud Save Service Integration
+
+**Goal:** Implement cloud save functionality to sync game progress across devices.
+
+**Prerequisites:**
+- Sprint 17.7 completed (Game Center / Play Games configured)
+- Platform game services working
+
+**Tasks:**
+
+**CloudSaveService Implementation:**
+- [ ] Create `CloudSaveService` interface in shared_services:
+  - `initialize()` - Setup cloud save
+  - `saveData(key, data)` - Save to cloud
+  - `loadData(key)` - Load from cloud
+  - `deleteData(key)` - Delete from cloud
+  - `forceSync()` - Force immediate sync
+  - `getLastSyncTime()` - Get last successful sync
+  - `onSyncStatusChanged` - Stream for sync status
+- [ ] Create `CloudSaveData` model:
+  - Quiz statistics (scores, counts)
+  - Category progress
+  - Streak data
+  - Settings preferences
+
+**Platform Implementations:**
+- [ ] `GameCenterCloudSaveService` for iOS/macOS:
+  - Use Game Center saved games API
+  - Handle iCloud availability
+- [ ] `PlayGamesCloudSaveService` for Android:
+  - Use Play Games Saved Games API
+  - Handle snapshot conflicts
+
+**Conflict Resolution:**
+- [ ] Create `CloudSaveConflictResolver`:
+  - Merge strategy (keep highest scores, latest timestamps)
+  - Conflict detection
+  - Resolution UI (if needed)
+- [ ] Handle offline changes queue
+- [ ] Implement retry with exponential backoff
+
+**App Integration:**
+- [ ] Create `CloudSyncTile` widget for Settings:
+  - Show sync status (synced, syncing, offline)
+  - Last sync timestamp
+  - Manual sync button
+- [ ] Wire CloudSaveService to FlagsQuizDependencies
+- [ ] Enable `showCloudSync: true` in QuizSettingsConfig
+- [ ] Sync on app launch (if signed in)
+- [ ] Sync after quiz completion
+
+**Data to Sync:**
+- [ ] Quiz session history (scores per category)
+- [ ] Overall statistics
+- [ ] Current streak data
+- [ ] Achievement progress (already synced separately)
+- [ ] User preferences/settings
+
+**Testing:**
+- [ ] Test sync between two iOS devices
+- [ ] Test sync between two Android devices
+- [ ] Test conflict resolution scenarios
+- [ ] Test offline editing → online sync
+- [ ] Test data migration from local-only
+
+**Files to Create:**
+- `packages/shared_services/lib/src/cloud/cloud_save_service.dart`
+- `packages/shared_services/lib/src/cloud/cloud_save_data.dart`
+- `packages/shared_services/lib/src/cloud/game_center_cloud_save_service.dart`
+- `packages/shared_services/lib/src/cloud/play_games_cloud_save_service.dart`
+- `packages/shared_services/lib/src/cloud/cloud_save_conflict_resolver.dart`
+- `packages/shared_services/test/cloud/cloud_save_service_test.dart`
+
+**Files to Modify:**
+- `apps/flagsquiz/lib/initialization/flags_quiz_dependencies.dart`
+- `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
+- `apps/flagsquiz/lib/app/flags_quiz_app.dart`
 
 ---
 
