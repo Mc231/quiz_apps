@@ -426,12 +426,18 @@ class _ShareOptionTile extends StatelessWidget {
                   color: theme.colorScheme.primaryContainer,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: isLoading
-                    ? const LoadingIndicator.small()
-                    : Icon(
-                        icon,
-                        color: theme.colorScheme.onPrimaryContainer,
-                      ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Icon(
+                      icon,
+                      color: isLoading
+                          ? theme.colorScheme.onPrimaryContainer.withValues(alpha: 0.3)
+                          : theme.colorScheme.onPrimaryContainer,
+                    ),
+                    if (isLoading) const LoadingIndicator.small(),
+                  ],
+                ),
               ),
               const SizedBox(width: 16),
               Expanded(
