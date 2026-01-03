@@ -3,9 +3,18 @@ import '../analytics_event.dart';
 /// Sealed class for user interaction events.
 ///
 /// Tracks user interactions with UI elements, navigation, and data operations.
-/// Total: 12 events.
+/// Total: 13 events.
 sealed class InteractionEvent extends AnalyticsEvent {
   const InteractionEvent();
+
+  // ============ Button Events ============
+
+  /// Generic button tapped event.
+  factory InteractionEvent.buttonTapped({
+    required String buttonName,
+    required String context,
+    Map<String, dynamic>? extra,
+  }) = ButtonTappedEvent;
 
   // ============ Navigation Events ============
 
@@ -109,6 +118,36 @@ sealed class InteractionEvent extends AnalyticsEvent {
     required int totalEntries,
     String? categoryId,
   }) = LeaderboardViewedEvent;
+}
+
+// ============ Button Event Implementations ============
+
+/// Generic button tapped event.
+final class ButtonTappedEvent extends InteractionEvent {
+  const ButtonTappedEvent({
+    required this.buttonName,
+    required this.context,
+    this.extra,
+  });
+
+  /// Button identifier.
+  final String buttonName;
+
+  /// Screen or component context where button was tapped.
+  final String context;
+
+  /// Additional parameters.
+  final Map<String, dynamic>? extra;
+
+  @override
+  String get eventName => 'button_tapped';
+
+  @override
+  Map<String, dynamic> get parameters => {
+        'button_name': buttonName,
+        'context': context,
+        if (extra != null) ...extra!,
+      };
 }
 
 // ============ Navigation Event Implementations ============
