@@ -227,6 +227,13 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
       widgets.add(const Divider());
     }
 
+    // Account section
+    if (widget.config.showAccountSection && _hasAccountItems()) {
+      widgets.add(_buildSectionHeader(l10n.account));
+      widgets.addAll(_buildAccountSection(l10n));
+      widgets.add(const Divider());
+    }
+
     // Custom sections before About
     if (widget.config.customSectionsBeforeAbout != null) {
       widgets.addAll(widget.config.customSectionsBeforeAbout!(context));
@@ -329,6 +336,88 @@ class _QuizSettingsScreenState extends State<QuizSettingsScreen> {
     return widget.config.showRemoveAds ||
         widget.config.showBundles ||
         widget.config.showRestorePurchases;
+  }
+
+  bool _hasAccountItems() {
+    return (widget.config.showGameServiceAccount &&
+            widget.config.gameService != null) ||
+        (widget.config.showCloudSync &&
+            widget.config.cloudSaveService != null) ||
+        (widget.config.showViewAchievements &&
+            widget.config.cloudAchievementService != null) ||
+        (widget.config.showViewLeaderboards &&
+            widget.config.leaderboardService != null);
+  }
+
+  List<Widget> _buildAccountSection(QuizLocalizations l10n) {
+    final widgets = <Widget>[];
+
+    if (widget.config.showGameServiceAccount &&
+        widget.config.gameService != null) {
+      widgets.add(
+        GameServiceAccountTile(
+          gameService: widget.config.gameService!,
+          onSignedIn: (_) {
+            if (widget.config.cloudSaveService != null) {
+              widget.config.cloudSaveService!.forceSync();
+            }
+          },
+        ),
+      );
+    }
+
+    if (widget.config.showCloudSync &&
+        widget.config.cloudSaveService != null) {
+      widgets.add(
+        CloudSyncTile(
+          syncService: widget.config.cloudSaveService!,
+        ),
+      );
+    }
+
+    // View Achievements button
+    if (widget.config.showViewAchievements &&
+        widget.config.cloudAchievementService != null) {
+      widgets.add(
+        ListTile(
+          leading: const Icon(Icons.emoji_events_outlined),
+          title: Text(l10n.viewAchievements),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () async {
+            _analyticsService.logEvent(
+              InteractionEvent.buttonTapped(
+                buttonName: 'view_achievements',
+                context: _settingsSource,
+              ),
+            );
+            await widget.config.cloudAchievementService!.showAchievements();
+          },
+        ),
+      );
+    }
+
+    // View Leaderboards button
+    if (widget.config.showViewLeaderboards &&
+        widget.config.leaderboardService != null) {
+      widgets.add(
+        ListTile(
+          leading: const Icon(Icons.leaderboard_outlined),
+          title: Text(l10n.viewLeaderboards),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () async {
+            _analyticsService.logEvent(
+              InteractionEvent.buttonTapped(
+                buttonName: 'view_leaderboards',
+                context: _settingsSource,
+              ),
+            );
+            await widget.config.leaderboardService!.showAllLeaderboards();
+          },
+        ),
+      );
+    }
+
+    return widgets;
   }
 
   Widget _buildSectionHeader(String title) {
