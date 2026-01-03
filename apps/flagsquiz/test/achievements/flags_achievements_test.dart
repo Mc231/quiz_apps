@@ -2021,6 +2021,77 @@ class MockQuizEngineLocalizations extends QuizEngineLocalizations {
   String bundleHintsContent(int count) => '$count Hints (narrow to 2 choices)';
   @override
   String bundleSkipsContent(int count) => '$count Skips (pass hard questions)';
+
+  // Account & Cloud Sync localizations
+  @override
+  String get account => 'Account';
+  @override
+  String get gameServiceLoading => 'Loading...';
+  @override
+  String gameServiceConnected(String platform) => 'Connected to $platform';
+  @override
+  String get gameServiceNotConnected => 'Not connected';
+  @override
+  String gameServiceSignInSubtitle(String platform) =>
+      'Sign in to $platform to sync progress';
+  @override
+  String get gameServiceError => 'Connection error';
+  @override
+  String get signIn => 'Sign In';
+  @override
+  String get signOut => 'Sign Out';
+  @override
+  String get gameCenter => 'Game Center';
+  @override
+  String get playGames => 'Play Games';
+  @override
+  String get gameServices => 'Game Services';
+  @override
+  String get cloudSync => 'Cloud Sync';
+  @override
+  String get syncNow => 'Sync Now';
+  @override
+  String get syncStatusSynced => 'All synced';
+  @override
+  String get syncStatusSyncing => 'Syncing...';
+  @override
+  String get syncStatusPending => 'Changes pending sync';
+  @override
+  String get syncStatusOffline => 'Offline';
+  @override
+  String get syncStatusError => 'Sync error';
+  @override
+  String lastSynced(String time) => 'Last synced $time';
+  @override
+  String get justNow => 'just now';
+  @override
+  String minutesAgo(int count) => '$count min ago';
+  @override
+  String hoursAgo(int count) => '$count hr ago';
+  @override
+  String get syncSuccess => 'Synced successfully';
+  @override
+  String get syncConflictResolved => 'Sync conflict resolved';
+  @override
+  String syncFailed(String error) => 'Sync failed: $error';
+  @override
+  String get syncNotAuthenticated => 'Sign in to sync';
+  @override
+  String get syncOffline => 'Cannot sync while offline';
+  @override
+  String get viewAchievements => 'View Achievements';
+  @override
+  String get viewLeaderboards => 'View Leaderboards';
+  @override
+  String get localLeaderboard => 'Local';
+  @override
+  String get noGlobalLeaderboardData => 'No global scores yet';
+  @override
+  String get noGlobalLeaderboardMessage => 'Be the first to submit a score!';
+  @override
+  String get yourRank => 'Your Rank';
+  @override
+  String get openInGameCenter => 'Open in Game Center';
 }
 
 void main() {
