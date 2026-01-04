@@ -106,6 +106,7 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
         shareCategoryIconBuilder: _buildShareCategoryIcon,
         playTabHeaderWidgetBuilder: _buildDailyChallengeCard,
         onAchievementTap: _showAchievementDetails,
+        onQuizCompleted: _handleQuizCompletedForLeaderboard,
         config: QuizAppConfig(
           title: 'Flags Quiz',
           appLocalizationDelegates: AppLocalizations.localizationsDelegates,
@@ -498,6 +499,38 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
         await share_plus.Share.share(shareText);
       },
     );
+  }
+
+  // ===========================================================================
+  // Leaderboard Integration
+  // ===========================================================================
+
+  /// Handles quiz completion for leaderboard score submission.
+  ///
+  /// Called by QuizApp's onQuizCompleted callback for regular quizzes and challenges.
+  /// Submits the score to Play Games / Game Center leaderboards.
+  void _handleQuizCompletedForLeaderboard(QuizResults results) {
+    // TODO: Add category-specific leaderboards mapping
+    // Currently submits to global leaderboard only.
+    // Future enhancement: Map quizId to specific leaderboard IDs
+    // e.g., 'eu' -> 'europe_leaderboard', 'af' -> 'africa_leaderboard'
+
+    // Calculate score as percentage (0-100)
+    final score = results.scorePercentage.round();
+
+    // Submit to global leaderboard
+    _deps.leaderboardIntegrationService.submitScore(
+      leaderboardId: 'global',
+      score: score,
+      quizId: results.quizId,
+    );
+
+    if (kDebugMode) {
+      debugPrint(
+        'FlagsQuizApp: Submitted score $score to leaderboard '
+        '(quiz: ${results.quizId})',
+      );
+    }
   }
 
   // ===========================================================================

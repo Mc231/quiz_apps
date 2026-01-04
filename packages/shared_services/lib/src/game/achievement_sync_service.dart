@@ -539,10 +539,11 @@ class AchievementSyncService {
         buttonName: isProgress ? 'achievement_progress' : 'achievement_sync',
         context: achievementId,
         extra: {
-          'success': success,
+          // Firebase Analytics only accepts String or num values, not bool
+          'success': success ? 'true' : 'false',
           if (error != null) 'error': error,
           if (wasAlreadyUnlocked != null)
-            'was_already_unlocked': wasAlreadyUnlocked,
+            'was_already_unlocked': wasAlreadyUnlocked ? 'true' : 'false',
           if (progress != null) 'progress': progress,
           if (total != null) 'total': total,
           'platform': Platform.operatingSystem,
