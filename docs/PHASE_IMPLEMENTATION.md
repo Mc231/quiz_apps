@@ -5744,6 +5744,66 @@ For leaderboards and achievements, the primary experience opens **native Game Ce
 
 ---
 
+#### Sprint 17.9: Game Services Polish & Production Readiness
+
+**Goal:** Polish game services integration for production release.
+
+**Prerequisites:**
+- Sprint 17.6 completed (Leaderboard & Achievement Integration)
+- Play Games / Game Center authentication working
+
+**Tasks:**
+
+**Remote → Local Achievement Sync:**
+- [ ] Create `syncFromCloud()` method in `AchievementSyncService`:
+  - Fetch all achievements from Play Games / Game Center
+  - Compare with local achievement progress
+  - Unlock locally any achievements that are unlocked in cloud but not locally
+  - Handle new device / app reinstall scenario
+- [ ] Call `syncFromCloud()` on user sign-in
+- [ ] Add `CloudAchievementInfo` to `Achievement` mapping (reverse of current mapping)
+- [ ] Handle incremental achievements (sync progress, not just unlock state)
+- [ ] Write unit tests for bidirectional sync
+
+**Category-Specific Leaderboards:**
+- [ ] Create leaderboards in Google Play Console for each category:
+  - Europe leaderboard
+  - Asia leaderboard
+  - Africa leaderboard
+  - Americas leaderboard
+  - Oceania leaderboard
+- [ ] Create leaderboards in App Store Connect Game Center
+- [ ] Update `_handleQuizCompletedForLeaderboard` to submit to category leaderboard:
+  - Map `quizId` to category (e.g., 'eu' → 'europe')
+  - Submit to both global and category leaderboard
+- [ ] Update `flags_game_service_config.dart` with real leaderboard IDs
+
+**Production ID Configuration:**
+- [ ] Replace all `PLACEHOLDER_*` achievement IDs with real Play Games IDs
+- [ ] Replace all `PLACEHOLDER_*` achievement IDs with real Game Center IDs
+- [ ] Replace placeholder leaderboard IDs with real IDs
+- [ ] Create `production()` config with all real IDs
+- [ ] Switch from `development()` to `production()` config in FlagsQuizAppProvider
+- [ ] Remove or gate debug logging for game services
+
+**Testing:**
+- [ ] Test achievement sync: unlock on Device A, verify appears on Device B
+- [ ] Test leaderboard: submit score, verify in native UI
+- [ ] Test category leaderboards: submit to Europe, verify separate from global
+- [ ] Test sign-out → sign-in flow (should re-sync)
+- [ ] Test new install with existing Play Games account
+
+**Files to Create:**
+- `packages/shared_services/lib/src/game/achievement_download_service.dart` (optional, could be in AchievementSyncService)
+
+**Files to Modify:**
+- `packages/shared_services/lib/src/game/achievement_sync_service.dart`
+- `apps/flagsquiz/lib/config/flags_game_service_config.dart`
+- `apps/flagsquiz/lib/app/flags_quiz_app.dart`
+- `apps/flagsquiz/lib/initialization/flags_quiz_app_provider.dart`
+
+---
+
 ## Phase 18: Push Notifications (Re-engagement)
 
 **Goal:** Implement push notifications to re-engage users and remind them to play.
