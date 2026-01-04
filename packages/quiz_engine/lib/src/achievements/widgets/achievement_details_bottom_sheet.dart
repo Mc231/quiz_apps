@@ -106,7 +106,7 @@ class AchievementShareConfig {
 ///   },
 /// );
 /// ```
-class AchievementDetailsBottomSheet extends StatelessWidget {
+class AchievementDetailsBottomSheet extends StatefulWidget {
   /// Creates an [AchievementDetailsBottomSheet].
   const AchievementDetailsBottomSheet({
     super.key,
@@ -122,16 +122,27 @@ class AchievementDetailsBottomSheet extends StatelessWidget {
   final AchievementShareConfig? shareConfig;
 
   /// Callback when share button is pressed.
-  final Future<void> Function(String shareText)? onShare;
+  ///
+  /// The [sharePositionOrigin] is the position of the share button,
+  /// required for iPad share sheet positioning.
+  final Future<void> Function(String shareText, Rect? sharePositionOrigin)?
+      onShare;
+
+  @override
+  State<AchievementDetailsBottomSheet> createState() =>
+      _AchievementDetailsBottomSheetState();
 
   /// Shows the achievement details bottom sheet.
   ///
   /// Returns `true` if the share button was pressed, `false` otherwise.
+  ///
+  /// The [onShare] callback receives the share text and an optional [Rect]
+  /// representing the share button position (required for iPad popover).
   static Future<bool?> show({
     required BuildContext context,
     required AchievementDetailsData data,
     AchievementShareConfig? shareConfig,
-    Future<void> Function(String shareText)? onShare,
+    Future<void> Function(String shareText, Rect? sharePositionOrigin)? onShare,
   }) {
     return showModalBottomSheet<bool>(
       context: context,
@@ -144,6 +155,18 @@ class AchievementDetailsBottomSheet extends StatelessWidget {
       ),
     );
   }
+
+}
+
+class _AchievementDetailsBottomSheetState
+    extends State<AchievementDetailsBottomSheet> {
+  /// Key for the share button to get its position for iPad popover.
+  final _shareButtonKey = GlobalKey();
+
+  AchievementDetailsData get data => widget.data;
+  AchievementShareConfig? get shareConfig => widget.shareConfig;
+  Future<void> Function(String shareText, Rect? sharePositionOrigin)?
+      get onShare => widget.onShare;
 
   @override
   Widget build(BuildContext context) {
@@ -343,6 +366,7 @@ class AchievementDetailsBottomSheet extends StatelessWidget {
         // Share button
         if (shareConfig != null && onShare != null)
           SizedBox(
+            key: _shareButtonKey,
             width: double.infinity,
             child: FilledButton.icon(
               onPressed: () => _handleShare(context),
@@ -522,6 +546,17 @@ class AchievementDetailsBottomSheet extends StatelessWidget {
     }
   }
 
+  /// Gets the share button's position for iPad popover.
+  Rect? _getShareButtonRect() {
+    final renderBox =
+        _shareButtonKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox == null) return null;
+
+    final position = renderBox.localToGlobal(Offset.zero);
+    final size = renderBox.size;
+    return Rect.fromLTWH(position.dx, position.dy, size.width, size.height);
+  }
+
   Future<void> _handleShare(BuildContext context) async {
     if (shareConfig == null || onShare == null) return;
 
@@ -533,7 +568,10 @@ class AchievementDetailsBottomSheet extends StatelessWidget {
       achievementId: data.achievement.id,
     );
 
-    await onShare!(shareText);
+    // Get the share button position for iPad popover
+    final sharePositionOrigin = _getShareButtonRect();
+
+    await onShare!(shareText, sharePositionOrigin);
 
     if (context.mounted) {
       Navigator.of(context).pop(true);

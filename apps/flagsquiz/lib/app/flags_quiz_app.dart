@@ -495,8 +495,11 @@ class _FlagsQuizAppState extends State<FlagsQuizApp> {
         deepLinkScheme: 'flagsquiz',
         hashtags: ['FlagsQuiz', 'Achievement'],
       ),
-      onShare: (shareText) async {
-        await share_plus.Share.share(shareText);
+      onShare: (shareText, sharePositionOrigin) async {
+        await share_plus.Share.share(
+          shareText,
+          sharePositionOrigin: sharePositionOrigin,
+        );
       },
     );
   }

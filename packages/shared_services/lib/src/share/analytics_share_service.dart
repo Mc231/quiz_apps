@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui';
 
 import '../analytics/analytics_exports.dart';
 import 'share_config.dart';
@@ -48,7 +49,10 @@ class AnalyticsShareService implements ShareService {
   bool canShareImage() => _shareService.canShareImage();
 
   @override
-  Future<ShareOperationResult> shareText(ShareResult result) async {
+  Future<ShareOperationResult> shareText(
+    ShareResult result, {
+    Rect? sharePositionOrigin,
+  }) async {
     // Log type selected
     _analyticsService.logEvent(
       ShareEvent.typeSelected(
@@ -59,7 +63,10 @@ class AnalyticsShareService implements ShareService {
     );
 
     // Perform share
-    final shareResult = await _shareService.shareText(result);
+    final shareResult = await _shareService.shareText(
+      result,
+      sharePositionOrigin: sharePositionOrigin,
+    );
 
     // Log result
     _logShareResult(shareResult, 'text');
@@ -72,6 +79,7 @@ class AnalyticsShareService implements ShareService {
     ShareResult result, {
     required Uint8List imageData,
     String? text,
+    Rect? sharePositionOrigin,
   }) async {
     // Log type selected
     _analyticsService.logEvent(
@@ -87,6 +95,7 @@ class AnalyticsShareService implements ShareService {
       result,
       imageData: imageData,
       text: text,
+      sharePositionOrigin: sharePositionOrigin,
     );
 
     // Log result

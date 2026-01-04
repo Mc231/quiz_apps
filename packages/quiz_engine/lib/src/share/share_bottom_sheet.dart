@@ -127,6 +127,10 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
   bool _isSharing = false;
   bool _isGeneratingImage = false;
 
+  /// Keys for share option tiles to get their positions for iPad popover.
+  final _imageShareKey = GlobalKey();
+  final _textShareKey = GlobalKey();
+
   ShareImageTemplateType get _templateType {
     if (widget.result.isPerfect) {
       return ShareImageTemplateType.perfectScore();
@@ -255,6 +259,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
         if (widget.shareService.canShareImage() &&
             widget.config.showImageOption) ...[
           _ShareOptionTile(
+            key: _imageShareKey,
             icon: Icons.image_outlined,
             title: l10n.shareAsImage,
             subtitle: l10n.shareAsImageDescription,
@@ -269,6 +274,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
         if (widget.shareService.canShare() &&
             widget.config.showTextOption) ...[
           _ShareOptionTile(
+            key: _textShareKey,
             icon: Icons.text_fields,
             title: l10n.shareAsText,
             subtitle: l10n.shareAsTextDescription,
@@ -295,13 +301,29 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     );
   }
 
+  /// Gets the position of a widget from its GlobalKey for iPad popover.
+  Rect? _getPositionFromKey(GlobalKey key) {
+    final renderBox = key.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox == null) return null;
+
+    final position = renderBox.localToGlobal(Offset.zero);
+    final size = renderBox.size;
+    return Rect.fromLTWH(position.dx, position.dy, size.width, size.height);
+  }
+
   Future<void> _shareAsText() async {
     if (_isSharing) return;
 
     setState(() => _isSharing = true);
 
     try {
-      final result = await widget.shareService.shareText(widget.result);
+      // Get the share button position for iPad popover
+      final sharePositionOrigin = _getPositionFromKey(_textShareKey);
+
+      final result = await widget.shareService.shareText(
+        widget.result,
+        sharePositionOrigin: sharePositionOrigin,
+      );
 
       if (!mounted) return;
 
@@ -335,6 +357,9 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
     });
 
     try {
+      // Get the share button position for iPad popover
+      final sharePositionOrigin = _getPositionFromKey(_imageShareKey);
+
       // Generate the image
       final imageResult = await _imageGenerator.generateImage(
         context: context,
@@ -353,6 +378,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
           final shareResult = await widget.shareService.shareImage(
             widget.result,
             imageData: imageData,
+            sharePositionOrigin: sharePositionOrigin,
           );
 
           if (!mounted) return;
@@ -390,6 +416,7 @@ class _ShareBottomSheetState extends State<ShareBottomSheet> {
 /// A tile representing a share option.
 class _ShareOptionTile extends StatelessWidget {
   const _ShareOptionTile({
+    super.key,
     required this.icon,
     required this.title,
     required this.subtitle,

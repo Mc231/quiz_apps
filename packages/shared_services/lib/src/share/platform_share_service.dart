@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
@@ -70,7 +71,10 @@ class PlatformShareService implements ShareService {
   }
 
   @override
-  Future<ShareOperationResult> shareText(ShareResult result) async {
+  Future<ShareOperationResult> shareText(
+    ShareResult result, {
+    Rect? sharePositionOrigin,
+  }) async {
     if (!canShare()) {
       return const ShareOperationUnavailable(reason: 'Text sharing is disabled');
     }
@@ -81,6 +85,7 @@ class PlatformShareService implements ShareService {
       final shareResult = await share_plus.Share.share(
         text,
         subject: _getShareSubject(result),
+        sharePositionOrigin: sharePositionOrigin,
       );
 
       return _mapShareResult(shareResult);
@@ -97,6 +102,7 @@ class PlatformShareService implements ShareService {
     ShareResult result, {
     required Uint8List imageData,
     String? text,
+    Rect? sharePositionOrigin,
   }) async {
     if (!canShareImage()) {
       return const ShareOperationUnavailable(reason: 'Image sharing is not available');
@@ -120,6 +126,7 @@ class PlatformShareService implements ShareService {
         [xFile],
         text: shareText,
         subject: _getShareSubject(result),
+        sharePositionOrigin: sharePositionOrigin,
       );
 
       // Clean up temp file (with delay to ensure sharing completes)

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:shared_services/shared_services.dart';
 
 /// Game service configuration for the Flags Quiz app.
@@ -88,14 +90,19 @@ class FlagsGameServiceConfig {
   /// Creates a test/development configuration.
   ///
   /// Uses real Play Games IDs for testing on Android.
-  /// For iOS, uses placeholder Game Center IDs.
+  /// Uses real Game Center IDs for testing on iOS.
   ///
   /// TODO: Before production release:
   /// 1. Replace all placeholder leaderboard IDs with real Play Games/Game Center IDs
-  /// 2. Replace all placeholder achievement IDs in _developmentAchievementIdMap
+  /// 2. Replace all placeholder achievement IDs in achievement maps
   /// 3. Create category-specific leaderboards (europe, asia, africa, americas, oceania)
   /// 4. Switch to production() config in FlagsQuizAppProvider
   static GameServiceConfig development() {
+    // Select platform-specific achievement IDs
+    final achievementMap = (Platform.isIOS || Platform.isMacOS)
+        ? _developmentGameCenterAchievementIdMap
+        : _developmentPlayGamesAchievementIdMap;
+
     return GameServiceConfig(
       isEnabled: true,
       cloudSyncEnabled: true,
@@ -105,57 +112,137 @@ class FlagsGameServiceConfig {
       leaderboards: [
         const LeaderboardConfig(
           id: 'global',
-          gameCenterId: 'grp.dev.flagsquiz.leaderboard.global',
-          // TODO: This is a hardcoded Play Games leaderboard ID for testing
-          // Replace with production ID before release
-          playGamesId: 'CgkIgsKuwf8GEAIQAQ',
+          // TODO: Replace with real Game Center leaderboard ID
+          gameCenterId: 'PLACEHOLDER_global_leaderboard',
+          // TODO: Replace with real Play Games leaderboard ID
+          playGamesId: 'PLACEHOLDER_global_leaderboard',
           scoreType: LeaderboardScoreType.highScore,
         ),
         const LeaderboardConfig(
           id: 'europe',
-          gameCenterId: 'grp.dev.flagsquiz.leaderboard.europe',
-          playGamesId: 'dev_europe_leaderboard',
+          gameCenterId: 'PLACEHOLDER_europe_leaderboard',
+          playGamesId: 'PLACEHOLDER_europe_leaderboard',
           scoreType: LeaderboardScoreType.highScore,
         ),
         const LeaderboardConfig(
           id: 'asia',
-          gameCenterId: 'grp.dev.flagsquiz.leaderboard.asia',
-          playGamesId: 'dev_asia_leaderboard',
+          gameCenterId: 'PLACEHOLDER_asia_leaderboard',
+          playGamesId: 'PLACEHOLDER_asia_leaderboard',
           scoreType: LeaderboardScoreType.highScore,
         ),
         const LeaderboardConfig(
           id: 'africa',
-          gameCenterId: 'grp.dev.flagsquiz.leaderboard.africa',
-          playGamesId: 'dev_africa_leaderboard',
+          gameCenterId: 'PLACEHOLDER_africa_leaderboard',
+          playGamesId: 'PLACEHOLDER_africa_leaderboard',
           scoreType: LeaderboardScoreType.highScore,
         ),
         const LeaderboardConfig(
           id: 'americas',
-          gameCenterId: 'grp.dev.flagsquiz.leaderboard.americas',
-          playGamesId: 'dev_americas_leaderboard',
+          gameCenterId: 'PLACEHOLDER_americas_leaderboard',
+          playGamesId: 'PLACEHOLDER_americas_leaderboard',
           scoreType: LeaderboardScoreType.highScore,
         ),
         const LeaderboardConfig(
           id: 'oceania',
-          gameCenterId: 'grp.dev.flagsquiz.leaderboard.oceania',
-          playGamesId: 'dev_oceania_leaderboard',
+          gameCenterId: 'PLACEHOLDER_oceania_leaderboard',
+          playGamesId: 'PLACEHOLDER_oceania_leaderboard',
           scoreType: LeaderboardScoreType.highScore,
         ),
       ],
-      achievementIdMap: _developmentAchievementIdMap,
+      achievementIdMap: achievementMap,
     );
   }
 
-  /// Development achievement ID mapping with real Play Games IDs for testing.
+  /// Development Game Center achievement ID mapping for iOS testing.
   ///
-  /// TODO: Before production release:
-  /// Replace all PLACEHOLDER_* values with real Play Games achievement IDs
-  /// from Google Play Console → Play Games Services → Achievements
-  static const Map<String, String> _developmentAchievementIdMap = {
-    // TODO: This is a hardcoded Play Games achievement ID for testing
-    // Replace with production ID before release
-    'first_quiz': 'CgkIgsKuwf8GEAIQAg',
-    // TODO: Replace all placeholders below with real Play Games IDs
+  /// Maps internal achievement IDs to Game Center achievement IDs
+  /// from App Store Connect → Game Center → Achievements.
+  static const Map<String, String> _developmentGameCenterAchievementIdMap = {
+    // TODO: Replace with real Game Center achievement IDs
+    'first_quiz': 'PLACEHOLDER_first_quiz',
+    'first_perfect': 'PLACEHOLDER_first_perfect',
+    'first_challenge': 'PLACEHOLDER_first_challenge',
+    'quizzes_10': 'PLACEHOLDER_quizzes_10',
+    'quizzes_50': 'PLACEHOLDER_quizzes_50',
+    'quizzes_100': 'PLACEHOLDER_quizzes_100',
+    'quizzes_500': 'PLACEHOLDER_quizzes_500',
+    'questions_100': 'PLACEHOLDER_questions_100',
+    'questions_500': 'PLACEHOLDER_questions_500',
+    'questions_1000': 'PLACEHOLDER_questions_1000',
+    'questions_5000': 'PLACEHOLDER_questions_5000',
+    'correct_100': 'PLACEHOLDER_correct_100',
+    'correct_500': 'PLACEHOLDER_correct_500',
+    'correct_1000': 'PLACEHOLDER_correct_1000',
+    'perfect_5': 'PLACEHOLDER_perfect_5',
+    'perfect_10': 'PLACEHOLDER_perfect_10',
+    'perfect_25': 'PLACEHOLDER_perfect_25',
+    'perfect_50': 'PLACEHOLDER_perfect_50',
+    'score_90_10': 'PLACEHOLDER_score_90_10',
+    'score_95_10': 'PLACEHOLDER_score_95_10',
+    'perfect_streak_3': 'PLACEHOLDER_perfect_streak_3',
+    'speed_demon': 'PLACEHOLDER_speed_demon',
+    'lightning': 'PLACEHOLDER_lightning',
+    'quick_answer_10': 'PLACEHOLDER_quick_answer_10',
+    'quick_answer_50': 'PLACEHOLDER_quick_answer_50',
+    'streak_10': 'PLACEHOLDER_streak_10',
+    'streak_25': 'PLACEHOLDER_streak_25',
+    'streak_50': 'PLACEHOLDER_streak_50',
+    'streak_100': 'PLACEHOLDER_streak_100',
+    'survival_complete': 'PLACEHOLDER_survival_complete',
+    'survival_perfect': 'PLACEHOLDER_survival_perfect',
+    'blitz_complete': 'PLACEHOLDER_blitz_complete',
+    'blitz_perfect': 'PLACEHOLDER_blitz_perfect',
+    'time_attack_20': 'PLACEHOLDER_time_attack_20',
+    'time_attack_30': 'PLACEHOLDER_time_attack_30',
+    'marathon_50': 'PLACEHOLDER_marathon_50',
+    'marathon_100': 'PLACEHOLDER_marathon_100',
+    'speed_run_fast': 'PLACEHOLDER_speed_run_fast',
+    'all_challenges': 'PLACEHOLDER_all_challenges',
+    'time_1h': 'PLACEHOLDER_time_1h',
+    'time_5h': 'PLACEHOLDER_time_5h',
+    'time_10h': 'PLACEHOLDER_time_10h',
+    'time_24h': 'PLACEHOLDER_time_24h',
+    'days_3': 'PLACEHOLDER_days_3',
+    'days_7': 'PLACEHOLDER_days_7',
+    'days_14': 'PLACEHOLDER_days_14',
+    'days_30': 'PLACEHOLDER_days_30',
+    'no_hints': 'PLACEHOLDER_no_hints',
+    'no_hints_10': 'PLACEHOLDER_no_hints_10',
+    'no_skip': 'PLACEHOLDER_no_skip',
+    'flawless': 'PLACEHOLDER_flawless',
+    'comeback': 'PLACEHOLDER_comeback',
+    'clutch': 'PLACEHOLDER_clutch',
+    'explore_africa': 'PLACEHOLDER_explore_africa',
+    'explore_asia': 'PLACEHOLDER_explore_asia',
+    'explore_europe': 'PLACEHOLDER_explore_europe',
+    'explore_north_america': 'PLACEHOLDER_explore_north_america',
+    'explore_south_america': 'PLACEHOLDER_explore_south_america',
+    'explore_oceania': 'PLACEHOLDER_explore_oceania',
+    'world_traveler': 'PLACEHOLDER_world_traveler',
+    'master_europe': 'PLACEHOLDER_master_europe',
+    'master_asia': 'PLACEHOLDER_master_asia',
+    'master_africa': 'PLACEHOLDER_master_africa',
+    'master_americas': 'PLACEHOLDER_master_americas',
+    'master_oceania': 'PLACEHOLDER_master_oceania',
+    'master_world': 'PLACEHOLDER_master_world',
+    'flag_collector': 'PLACEHOLDER_flag_collector',
+    'first_flame': 'PLACEHOLDER_first_flame',
+    'week_warrior': 'PLACEHOLDER_week_warrior',
+    'monthly_master': 'PLACEHOLDER_monthly_master',
+    'centurion': 'PLACEHOLDER_centurion',
+    'dedication': 'PLACEHOLDER_dedication',
+    'daily_devotee': 'PLACEHOLDER_daily_devotee',
+    'perfect_day': 'PLACEHOLDER_perfect_day',
+    'early_bird': 'PLACEHOLDER_early_bird',
+  };
+
+  /// Development Play Games achievement ID mapping for Android testing.
+  ///
+  /// Maps internal achievement IDs to Play Games achievement IDs
+  /// from Google Play Console → Play Games Services → Achievements.
+  static const Map<String, String> _developmentPlayGamesAchievementIdMap = {
+    // TODO: Replace with real Play Games achievement IDs
+    'first_quiz': 'PLACEHOLDER_first_quiz',
     'first_perfect': 'PLACEHOLDER_first_perfect',
     'first_challenge': 'PLACEHOLDER_first_challenge',
     'quizzes_10': 'PLACEHOLDER_quizzes_10',

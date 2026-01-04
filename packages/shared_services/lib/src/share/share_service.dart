@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'share_config.dart';
 import 'share_result.dart';
@@ -120,8 +121,14 @@ abstract class ShareService {
   /// Generates a text message with the score, category, and optionally
   /// an app download link and hashtags.
   ///
+  /// The [sharePositionOrigin] is required for iPad to position the
+  /// share popover. Pass the rect of the share button.
+  ///
   /// Returns a [ShareOperationResult] indicating the outcome.
-  Future<ShareOperationResult> shareText(ShareResult result);
+  Future<ShareOperationResult> shareText(
+    ShareResult result, {
+    Rect? sharePositionOrigin,
+  });
 
   /// Share quiz result as an image with text.
   ///
@@ -130,11 +137,15 @@ abstract class ShareService {
   ///
   /// An optional [text] can be included alongside the image.
   ///
+  /// The [sharePositionOrigin] is required for iPad to position the
+  /// share popover. Pass the rect of the share button.
+  ///
   /// Returns a [ShareOperationResult] indicating the outcome.
   Future<ShareOperationResult> shareImage(
     ShareResult result, {
     required Uint8List imageData,
     String? text,
+    Rect? sharePositionOrigin,
   });
 
   /// Generate the share text for a result.
@@ -168,7 +179,10 @@ class NoOpShareService implements ShareService {
   bool canShareImage() => false;
 
   @override
-  Future<ShareOperationResult> shareText(ShareResult result) async {
+  Future<ShareOperationResult> shareText(
+    ShareResult result, {
+    Rect? sharePositionOrigin,
+  }) async {
     return const ShareOperationUnavailable(reason: 'Sharing is disabled');
   }
 
@@ -177,6 +191,7 @@ class NoOpShareService implements ShareService {
     ShareResult result, {
     required Uint8List imageData,
     String? text,
+    Rect? sharePositionOrigin,
   }) async {
     return const ShareOperationUnavailable(reason: 'Sharing is disabled');
   }
@@ -225,7 +240,10 @@ class MockShareService implements ShareService {
   bool canShareImage() => _config.enableImageSharing;
 
   @override
-  Future<ShareOperationResult> shareText(ShareResult result) async {
+  Future<ShareOperationResult> shareText(
+    ShareResult result, {
+    Rect? sharePositionOrigin,
+  }) async {
     if (simulatedDelay > Duration.zero) {
       await Future<void>.delayed(simulatedDelay);
     }
@@ -244,6 +262,7 @@ class MockShareService implements ShareService {
     ShareResult result, {
     required Uint8List imageData,
     String? text,
+    Rect? sharePositionOrigin,
   }) async {
     if (simulatedDelay > Duration.zero) {
       await Future<void>.delayed(simulatedDelay);
